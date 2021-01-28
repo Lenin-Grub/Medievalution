@@ -1,0 +1,163 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Исходные файлы">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Файлы заголовков">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="System">
+      <UniqueIdentifier>{34f085eb-2211-471e-b619-2b17447c8516}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{f205b8d3-68bc-4902-92ef-79f482cd51fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resourses">
+      <UniqueIdentifier>{5d84048a-1a33-455b-b3be-0caafea16b7e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World">
+      <UniqueIdentifier>{3a1e9c09-b162-4465-988b-c8fe514b92c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Map">
+      <UniqueIdentifier>{c10f67f4-cdd4-41d3-bbfb-a6399286188c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="World\Tile">
+      <UniqueIdentifier>{f9885b9a-9210-4a84-935c-4a1b90e98c30}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="System\Includes">
+      <UniqueIdentifier>{efc92598-7191-490f-863f-760cd258f81f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{f5a8cd58-08af-4cf0-8c29-0f960ddbe0a7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Settings">
+      <UniqueIdentifier>{469216cf-a2f1-4d04-aa59-1cc41f847788}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets">
+      <UniqueIdentifier>{b39ef0a1-f6be-4597-bd35-caf1e3ccb6ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\Button">
+      <UniqueIdentifier>{6104317b-471d-4d74-af28-e1ac4b15575e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\DropList">
+      <UniqueIdentifier>{8b69a24b-127a-48cf-b7fd-2977288d31a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\ChekBox">
+      <UniqueIdentifier>{f810844d-4951-4fcd-8776-3717be84e536}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\Canvas">
+      <UniqueIdentifier>{5bbd3e40-06e2-4411-8e3d-768b84a61e60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\TextBox">
+      <UniqueIdentifier>{c928c022-87b2-4b84-9a1c-fcb4919c1e89}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\Slider">
+      <UniqueIdentifier>{8dfd49c3-c6cf-4c3d-b98d-d0025efd05cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\Window">
+      <UniqueIdentifier>{4db76816-7b4f-4037-977d-60af82d0cea4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>System\Includes</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="Define.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicSettings.cpp">
+      <Filter>GUI\Settings</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>System</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>System\Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>System</Filter>
+    </ClInclude>
+    <ClInclude Include="Textures.h">
+      <Filter>Resourses</Filter>
+    </ClInclude>
+    <ClInclude Include="Fonts.h">
+      <Filter>Resourses</Filter>
+    </ClInclude>
+    <ClInclude Include="Audio.h">
+      <Filter>Resourses</Filter>
+    </ClInclude>
+    <ClInclude Include="GraphicSettings.h">
+      <Filter>GUI\Settings</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Button.h">
+      <Filter>GUI\Widgets\Button</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="AbstractButton.h">
+      <Filter>GUI\Widgets</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Map.h">
+      <Filter>World\Map</Filter>
+    </ClInclude>
+    <ClInclude Include="Tile.h">
+      <Filter>World\Tile</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Medievalution.rc">
+      <Filter>Файлы ресурсов</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Resourses\Icons\icon.ico">
+      <Filter>Файлы ресурсов</Filter>
+    </Image>
+  </ItemGroup>
+</Project>
