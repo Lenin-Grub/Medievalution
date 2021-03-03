@@ -49,9 +49,6 @@
     <Filter Include="GUI\Widgets\DropList">
       <UniqueIdentifier>{8b69a24b-127a-48cf-b7fd-2977288d31a5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GUI\Widgets\ChekBox">
-      <UniqueIdentifier>{f810844d-4951-4fcd-8776-3717be84e536}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GUI\Widgets\Canvas">
       <UniqueIdentifier>{5bbd3e40-06e2-4411-8e3d-768b84a61e60}</UniqueIdentifier>
     </Filter>
@@ -63,6 +60,9 @@
     </Filter>
     <Filter Include="GUI\Widgets\Window">
       <UniqueIdentifier>{4db76816-7b4f-4037-977d-60af82d0cea4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Widgets\CheckBox">
+      <UniqueIdentifier>{f810844d-4951-4fcd-8776-3717be84e536}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +148,9 @@
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>World\Tile</Filter>
+    </ClInclude>
+    <ClInclude Include="CheckBox.h">
+      <Filter>GUI\Widgets\CheckBox</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

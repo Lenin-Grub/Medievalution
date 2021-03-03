@@ -32,11 +32,11 @@ void State::updateMousePositions(sf::View* view)
 	S::mousePosWindow = sf::Mouse::getPosition(*this->window);															// положение мыши относительно окна приложения
 	S::mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));							// положение мыши относительно камеры вида
 	S::mousePosGrid = sf::Vector2u(static_cast <unsigned>(S::mousePosView.x) / static_cast<unsigned>(S::gridSize),		// полоэение мыши относительно сетки карты
-		static_cast <unsigned>(S::mousePosView.y) / static_cast<unsigned>(S::gridSize));
+								static_cast <unsigned>(S::mousePosView.y) / static_cast<unsigned>(S::gridSize));
 	this->window->setView(this->window->getDefaultView());																// устанавливаем дефолтную камеру
 
-	if (sec_timer < 1000.f) {																			//fps
-		sec_timer += dtime;
+	if (sec_timer < 1000.f) {																							//fps
+		sec_timer += S::dtime;
 		fps_counter++;
 	}
 	else {

@@ -1,5 +1,4 @@
 #pragma once
-#include "System.h"
 
 enum TILE_TYPE
 {
@@ -54,7 +53,7 @@ public:
 			break;
 		}
 	};
-	~Tile() { /*cout << "button destroed" << endl;*/};
+	~Tile() {};
 	void update(){}
 	void render(sf::RenderTarget& target) { target.draw(this->tile); }
 };

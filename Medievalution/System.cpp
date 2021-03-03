@@ -16,7 +16,7 @@ unsigned short int		S::mapSize = 50;				// размер карты
 sf::Vector2i			S::mousePosScreen;				// глобальное положение мыши на мониторе
 sf::Vector2i			S::mousePosWindow;				// положение мыши относительно окна приложения
 sf::Vector2f			S::mousePosView;				// положение мыши относительно камеры вида
-sf::Vector2u			S::mousePosGrid;				// полоэение мыши относительно сетки карты
+sf::Vector2u			S::mousePosGrid;				// положение мыши относительно сетки карты
 
 System::System()
 {

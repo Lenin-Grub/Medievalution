@@ -175,6 +175,7 @@
     <ClInclude Include="AbstractButton.h" />
     <ClInclude Include="Audio.h" />
     <ClInclude Include="Button.h" />
+    <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Define.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="Game.h" />

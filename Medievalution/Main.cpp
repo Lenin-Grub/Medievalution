@@ -11,6 +11,6 @@ int main()
 {
 	Game game;
 	game.run();
-	//_CrtDumpMemoryLeaks();
+//	_CrtDumpMemoryLeaks();
 	return 0;
 }

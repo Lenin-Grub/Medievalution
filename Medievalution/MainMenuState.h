@@ -12,8 +12,6 @@ private:
 	sf::Text version_text;												// текст версии
 	sf::Text mouseCordsText;											// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
-	sf::SoundBuffer buffer;												// тест звуков
-	sf::Sound sound;													// звук
 
 	std::map<std::string, Button*> buttons;								// кнопки
 

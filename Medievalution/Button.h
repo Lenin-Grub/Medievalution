@@ -1,14 +1,6 @@
 #pragma once
 #include "AbstractButton.h"
 
-enum widget_states				// состояния виджетов
-{
-	WIDGET_IDLE = 0,			// кнопка без действия	"бездельник"
-	WIDGET_ACTIVE,				// нажатая кнопка		"нажато"
-	WIDGET_HOVER,				// мышь над кнопкой		"готово к нажатию"
-};
-
-
 class Button
 	:public AbstractButton
 {
@@ -21,15 +13,20 @@ private:
 	sf::Color textHoverColor;				// текст в состоянии "готово к нажатию"
 	sf::Color textActiveColor;				// текст в состоянии "нажато"
 
-	sf::Color idleColor;
-	sf::Color hoverColor;
-	sf::Color activeColor;
+	sf::Color idleColor;					// цвет в состоянии "бездельник"
+	sf::Color hoverColor;					// цвет в состоянии "готово к нажатию"
+	sf::Color activeColor;					// цвет в состоянии "нажато"
 
-	sf::Color outLineIdleColor;
-	sf::Color outLineHoverColor;
-	sf::Color outLineActiveColor;
+	sf::Color outLineIdleColor;				// обвокдка в состоянии "бездельник"
+	sf::Color outLineHoverColor;			// обвокдка в состоянии "готово к нажатию"
+	sf::Color outLineActiveColor;			// обвокдка в состоянии "нажато"
 public:
-	Button(float x, float y, float width, float height, sf::Texture& texture) :AbstractButton(shape) 
+	/*
+	 @	кнопка с текстурой
+	 @	позиция кнопки, размер, текстура
+	 */
+	Button(float x, float y, float width, float height, sf::Texture& texture)
+		:AbstractButton(shape) 
 	{
 		this->shape.setPosition(v2f(x, y));
 		this->shape.setSize(v2f(width, height));
@@ -40,11 +37,42 @@ public:
 		this->hoverColor = Color::Green;
 		this->activeColor = Color::Blue;
 	}
-
-	Button(float x, float y, float width, float height, string text, int uinit ,sf::Font& font) :AbstractButton(shape)
+	/*
+	@	кнопка с текстом, без текстуры
+	@	позиция кнопки, размер, текст, размер текста, шрифт
+	*/
+	Button(float x, float y, float width, float height, sf::String text, int uinit ,sf::Font& font) 
+		:AbstractButton(shape)
 	{
 		this->shape.setPosition(v2f(x, y));
 		this->shape.setSize(v2f(width, height));
+
+		this->text.setFont(font);
+		this->text.setString(text);
+		this->text.setCharacterSize(uinit);
+		this->text.setPosition(
+		std::round(this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f),
+		std::round(this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f));
+
+		this->idleColor = Color::White;
+		this->hoverColor = Color::Green;
+		this->activeColor = Color::Blue;
+
+		this->textIdleColor = Color::Black;
+		this->textHoverColor = Color::Black;
+		this->textActiveColor = Color::White;
+	}
+	/*
+	@	кнопка с текстом и текстурой
+	@	позиция кнопки, размер, текст, размер текста, шрифт, текстура
+	*/
+	Button(float x, float y, float width, float height, string text, int uinit, sf::Font& font, sf::Texture& texture)
+		:AbstractButton(shape)
+	{
+		this->shape.setPosition(v2f(x, y));
+		this->shape.setSize(v2f(width, height));
+
+		this->shape.setTexture(&texture);
 
 		this->text.setFont(font);
 		this->text.setString(text);
@@ -58,13 +86,13 @@ public:
 		this->activeColor = Color::Blue;
 
 		this->textIdleColor = Color::Black;
-		this->textHoverColor = Color::Black;
+		this->textHoverColor = Color::Yellow;
 		this->textActiveColor = Color::White;
 	}
 
-	virtual ~Button() { cout << "button destroed" << endl; }
+	virtual ~Button() {}
 
-	const bool isWidgetPressed() override																	// нажата ли кнопка?
+	const bool isWidgetPressed() override															// нажата ли кнопка?
 	{
 		if (this->buttonState == WIDGET_ACTIVE)
 			return true;
@@ -100,13 +128,14 @@ public:
 
 		default:																					// если что-то пошло не так
 			this->shape.setFillColor(Color::Red);
-			this->text.setFillColor(Color::White);
+			this->text.setFillColor(Color::Red);
 			break;
 		}
 	}
-	void render(sf::RenderTarget& target) override 
+
+	void render(sf::RenderTarget& target) override													// рендер
 	{
-		target.draw(shape);
-		target.draw(text);
-	}								// рендер
+		target.draw(this->shape);
+		target.draw(this->text);
+	}
 };

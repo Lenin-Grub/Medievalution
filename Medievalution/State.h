@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphicSettings.h"
-
+#include "System.h"
 
 class GraphicSettings;
 class State;
@@ -19,7 +19,7 @@ public:
 };
 
 class State
-	:public S
+//	:public S
 {
 protected:
 	StateData* stateData;												// передает в дочерние состояния информацию о времени, событиях и тд

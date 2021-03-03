@@ -9,6 +9,7 @@ void SettingsState::initView()				// установка камеры вида
 
 void SettingsState::initVariables()			// инициализация различных вещей
 {
+	
 	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
 	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n11.01.2021", S::fonts._font, Color(255, 255, 255, 100));
@@ -16,15 +17,15 @@ void SettingsState::initVariables()			// инициализация различных вещей
 
 void SettingsState::initGUI()				//инициализация GUI
 {
-	this->buttons["APPLAY"] = new Button(this->window->getSize().x - 110, this->window->getSize().y - 110, 100, 50, "Applay", 12, fonts._font);
-	this->buttons["EXIT"] = new Button(this->window->getSize().x - 110, this->window->getSize().y- 60, 100, 50, "Exit", 12, fonts._font);
+	this->buttons["APPLAY"] = new Button(this->window->getSize().x - 110, this->window->getSize().y - 110, 100, 50, L"Принять", 12, S::fonts._font);
+	this->buttons["EXIT"] = new Button(this->window->getSize().x - 110, this->window->getSize().y- 60, 100, 50, L"Выход", 12, S::fonts._font);
 }
 
 void SettingsState::updateGUI()				// обвноление GUI
 {
 	for (auto& it : this->buttons)			// обновляем кнопку
 	{
-		it.second->update(this->mousePosWindow);
+		it.second->update(S::mousePosWindow);
 	}
 	if (this->buttons["APPLAY"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound(); cout<<"Debug:: Настройки изменены"<<endl; }
 	if (this->buttons["EXIT"]->isWidgetPressed()) { S::audio.sounds.setSounds(1); S::audio.sounds.playSound(); this->endState(); cout << "Debug:: Вы вышли из меню настроек" << endl; }

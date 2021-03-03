@@ -2,7 +2,6 @@
 #include "Tile.h"
 
 class Map
-	//:public Tile
 {
 private:
 	v2u maxSize;
@@ -13,24 +12,23 @@ private:
 	int tileType;
 
 public:
-	Map(float gridSize, unsigned width, unsigned height, int tileType)// :Tile(v2f(0,0), this->gridSizeF, this->tiletype, S::textures.Terrain[1])
+	Map(float gridSize, unsigned width, unsigned height, int tileType)
 	{
 		this->maxSize.x = width;
 		this->maxSize.y = height;
 		this->gridSizeF = gridSize;
 		this->gridSizeU = static_cast<unsigned>(this->gridSizeF);
 		this->tileType = tileType;
-	//	Tile::tileType = this->tileType;
 
-		this->map.resize(this->maxSize.x, std::vector<std::vector<Tile*>>());
+		map.resize(this->maxSize.x, std::vector<std::vector<Tile*>>());
 		for (size_t x = 0; x < this->maxSize.y; x++)
 		{
 			for (size_t y = 0; y < this->maxSize.x; y++)
 			{
-				this->map[x].resize(this->maxSize.y, std::vector<Tile*>());
+				map[x].resize(this->maxSize.y, std::vector<Tile*>());
 				for (size_t z = 0; z < this->layer; z++)
 				{
-					this->map[x][y].resize(this->layer, new Tile(x * this->gridSizeF, y * this->gridSizeF,this->gridSizeF,rand()%4+1));
+					map[x][y].resize(this->layer, new Tile(x * this->gridSizeF, y * this->gridSizeF,this->gridSizeF,rand()%4+1));
 				}
 			}
 		}

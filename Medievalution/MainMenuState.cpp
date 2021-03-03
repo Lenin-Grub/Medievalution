@@ -16,20 +16,20 @@ void MainMenuState::initVariables()			// инициализация различных вещей
 
 void MainMenuState::initGUI()				//инициализация GUI
 {
-	this->buttons["GAME"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 150, 100, 50, "Game",12,fonts._font);
-	this->buttons["SETTINGS"]	= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 100, 100, 50, "Settings", 12, fonts._font);
-	this->buttons["EXIT"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 50, 100, 50, "Exit", 12, fonts._font);
+	this->buttons["GAME"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 150, 100, 50, L"Игра",12, S::fonts._font);
+	this->buttons["SETTINGS"]	= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 100, 100, 50, L"Настройки", 12, S::fonts._font);
+	this->buttons["EXIT"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 50, 100, 50, L"Выход", 12, S::fonts._font);
 }
 
 void MainMenuState::updateGUI()				// обвноление GUI
 {
 	for (auto& it : this->buttons)			// обновляем кнопку
 	{
-		it.second->update(this->mousePosWindow);
+		it.second->update(S::mousePosWindow);
 	}
-	if (this->buttons["GAME"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound();	this->states->push(new GameState(this->stateData)); }
-	if (this->buttons["SETTINGS"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound(); this->states->push(new SettingsState(this->stateData));}
-	if (this->buttons["EXIT"]->isWidgetPressed()) { S::audio.sounds.setSounds(1); S::audio.sounds.playSound(); this->endState(); cout << "Debug:: Вы вышли из главного меню" << endl;}
+	if (this->buttons["GAME"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound();		this->states->push(new GameState(this->stateData)); }
+	if (this->buttons["SETTINGS"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound();	this->states->push(new SettingsState(this->stateData));}
+	if (this->buttons["EXIT"]->isWidgetPressed()) { S::audio.sounds.setSounds(1); S::audio.sounds.playSound();		this->endState(); cout << "Debug:: Вы вышли из главного меню" << endl;}
 }
 
 void MainMenuState::renderGUI(sf::RenderTarget& target)		//рисуем кнопки

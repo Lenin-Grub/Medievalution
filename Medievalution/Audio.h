@@ -21,10 +21,10 @@ public:
 	vector <sf::SoundBuffer> soundBufferGUI;							// GUI звки
 	Sounds()
 	{
-		soundBufferGUI.push_back(loadSound("button_click_sound.wav"));
-		soundBufferGUI.push_back(loadSound("exit_sound.wav"));
-		soundBufferGUI.push_back(loadSound("dig_sound.wav"));
-		soundBufferGUI.push_back(loadSound("destroy_sound.wav"));
+		soundBufferGUI.push_back(loadSound("button_click_sound.wav"));	//0
+		soundBufferGUI.push_back(loadSound("exit_sound.wav"));			//1
+		soundBufferGUI.push_back(loadSound("dig_sound.wav"));			//2
+		soundBufferGUI.push_back(loadSound("destroy_sound.wav"));		//3
 	}
 	virtual ~Sounds() {};
 
@@ -49,5 +49,5 @@ public:
 	Audio()	
 	{
 	};
-	virtual ~Audio() { cout << "audio destroed" << endl; };
+	~Audio() {};
 };

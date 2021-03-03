@@ -5,8 +5,6 @@ void Game::initVariables()
 {
 	this->window = NULL;																// стартовое окно
 	S::dtime = 0.f;																		// начало времени
-//	S::gridSize = 32;																	// размер тайла
-//	S::mapSize = 10;																	// размер карты
 }
 
 void Game::initGraphicSettings()														// загрузка настроек графики
@@ -49,9 +47,6 @@ Game::Game()
 	this->initWindow();																	// инициализируем окно
 	this->initStateData();																// инициализируем data-буфер состояний
 	this->initStates();																	// инициализируем состояния
-	//fonts = Fonts();																	// загрузка шрифтов
-	//textures = Textures();																// загрузка текстур
-	//audio = Audio();																	// загрузка звуков
 }
 
 Game::~Game() { delete this->window; }													// очищаем память от окон
@@ -70,23 +65,6 @@ void Game::updateSFMLevents()															// обновление событий sfml
 		{
 			this->states.top()->updateEvents();
 		}
-	//	if (!this->states.empty())															// обновляем состояния, если они есть в стеке
-	//	{
-	//		if (this->window->hasFocus()) {
-	//			this->states.top()->update(S::dtime);										// обновляем активное состояние за единицу времени
-	//			if (this->states.top()->getQuit())											// проверяем выход из приложения
-	//			{
-	//				this->states.top()->endState();											// выходим из состояния
-	//				delete this->states.top();												// очищаем последнее состояние(пример вышли из состояния игры в главное меню, удаляем состояние игры)
-	//				this->states.pop();
-	//			}
-	//		}
-	//	}
-	//	else
-	//	{
-	//		this->endApplication();															// выводим в консоль успешное завершение программы
-	//		this->window->close();															// закрываем окно приложения
-	//	}
 	}
 }
 
