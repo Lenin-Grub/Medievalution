@@ -4,20 +4,19 @@
 class Textures
 {
 protected:
-	sf::Texture Load(const std::string file, bool isSmooth = false)						//загрузка текстуры, по умолчанию сглаживание отключено
+	sf::Texture Load(const std::string file, bool isSmooth = false)						// загрузка текстуры, по умолчанию сглаживание отключено
 	{
 		sf::Texture texture;
 		texture.loadFromFile("Resourses/" + file);
 		return texture;
 	}
 
-public:																					//добававлять текстуры тут
-	vector <Img> GUIcons;
+public:																					// добававлять текстуры тут
+	vector <Img> GUIcons;																// текустуры иконок
+	vector<Img> Terrain;																// текстуры группы terrain
+	vector<Img> Grass;																	// текстуры группы grass и тд
 
-	vector<Img> Terrain;																//текстуры группы terrain
-	vector<Img> Grass;																	//текстуры группы grass и тд
-
-	Textures()																			//загружать текстуры здесь /папка/название + .формат
+	Textures()																			// загружать текстуры здесь /папка/название + .формат
 	{
 		sf::Context context;
 		for (int i = 0; i < 4; i++)
@@ -30,5 +29,5 @@ public:																					//добававлять текстуры тут
 		GUIcons.push_back(Load("Icons/dynamite.png"));
 	}
 
-	~Textures() {};
+	virtual ~Textures() {};
 };

@@ -1,6 +1,9 @@
 #pragma once
 #define NOMINMAX
 
+#include <stdlib.h>
+#include <crtdbg.h>
+
 #include <Windows.h>
 #include <algorithm>
 #include <deque>

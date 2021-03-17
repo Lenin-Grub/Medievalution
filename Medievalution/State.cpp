@@ -3,17 +3,14 @@
 
 State::State(StateData* state_data)
 {
-	this->stateData = state_data;						//файл отвечающий за все подключения в стейт
-	this->window = state_data->window;					//окно
-	this->states = state_data->states;					//состояния игры
-	this->quit = false;									//выход их игры
-	this->fps_counter = state_data->fps_counter;		//счетчик fps
-	this->sec_timer = state_data->sec_timer;			//таймер для просчета fps
+	this->stateData = state_data;
+	this->window = state_data->window;
+	this->states = state_data->states;
+	this->quit = false;
+
 }
 
-State::~State()
-{
-}
+State::~State() {}
 
 const bool& State::getQuit() const
 {
@@ -28,14 +25,14 @@ void State::endState()
 
 void State::updateMousePositions(sf::View* view)
 {
-	S::mousePosScreen = sf::Mouse::getPosition();																		// глобальное положение мыши на мониторе
-	S::mousePosWindow = sf::Mouse::getPosition(*this->window);															// положение мыши относительно окна приложения
-	S::mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));							// положение мыши относительно камеры вида
-	S::mousePosGrid = sf::Vector2u(static_cast <unsigned>(S::mousePosView.x) / static_cast<unsigned>(S::gridSize),		// полоэение мыши относительно сетки карты
-								static_cast <unsigned>(S::mousePosView.y) / static_cast<unsigned>(S::gridSize));
-	this->window->setView(this->window->getDefaultView());																// устанавливаем дефолтную камеру
+	S::mousePosScreen = sf::Mouse::getPosition();																		
+	S::mousePosWindow = sf::Mouse::getPosition(*this->window);															
+	S::mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));							
+	S::mousePosGrid = sf::Vector2u(static_cast <unsigned>(S::mousePosView.x) / static_cast<unsigned>(S::gridSize),		
+		static_cast <unsigned>(S::mousePosView.y) / static_cast<unsigned>(S::gridSize));
+	this->window->setView(this->window->getDefaultView());																
 
-	if (sec_timer < 1000.f) {																							//fps
+	if (sec_timer < 1000.f) {																							
 		sec_timer += S::dtime;
 		fps_counter++;
 	}

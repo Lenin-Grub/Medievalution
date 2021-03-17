@@ -10,39 +10,36 @@ class StateData
 public:
 	StateData() {};
 
-	GraphicSettings* graphicSettings;									// настройки графики
-	std::stack<State*>* states;											// состояния
-	sf::RenderWindow* window;											// окно
+	GraphicSettings* graphicSettings;
+	std::stack<State*>* states;
+	std::shared_ptr <sf::RenderWindow> window;
 
-	unsigned short int fps_counter = 0;									// счетчик fps
-	float sec_timer = 0.00;												// таймер в секундах
+	unsigned short int fps_counter = 0;
+	float sec_timer = 0.00;
 };
 
 class State
-//	:public S
+	:public System
 {
 protected:
-	StateData* stateData;												// передает в дочерние состояния информацию о времени, событиях и тд
-	std::stack<State*>* states;											// стек  всех состояний (главное меню, экран настроек, редактор карт и тд)
-	bool quit;															// вышли ли из программы?
-	sf::RenderWindow* window;											// окно
+	StateData* stateData;
+	std::stack<State*>* states;
+	bool quit;
+	std::shared_ptr <sf::RenderWindow> window;
 
-	unsigned short int fps_counter = 0;									// счетчик fps
-	float sec_timer = 0.00;												// таймер в секундах
-	sf::Text fpsText;													// fps
+	unsigned short int fps_counter = 0;									
+	float sec_timer = 0.00;												
+	sf::Text fpsText;
+
 public:
 	State(StateData* state_data);
 	virtual ~State();
 
-	const bool& getQuit() const;										// завершение приложения
-//	const bool getKeytime();											// задержка отклика клавиатуры
-	void endState();													// выход из состояния игры (например из игры в главное меню)
+	const bool& getQuit() const;
+	void endState();
 
-	virtual void updateMousePositions(sf::View* view = NULL);			// обвноление позиции мыши
-	//virtual void updateKeytime(const float& dtime);						// обновление отклика клавиатуры
-	//virtual void updateInput(const float& dtime) = 0;					// обновление нажатий
+	virtual void updateMousePositions(sf::View* view = NULL);
 	virtual void updateEvents() = 0;
-	virtual void update(const float& dtime) = 0;						// обновление
-
-	virtual void render(sf::RenderTarget* target = nullptr) = 0;		// рендер
+	virtual void update(const float& dtime) = 0;
+	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 };

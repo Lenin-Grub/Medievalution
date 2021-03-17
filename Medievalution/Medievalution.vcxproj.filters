@@ -96,6 +96,9 @@
     <ClCompile Include="SettingsState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="LoadingScreanState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -151,6 +154,9 @@
     </ClInclude>
     <ClInclude Include="CheckBox.h">
       <Filter>GUI\Widgets\CheckBox</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadingScreanState.h">
+      <Filter>States</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ private:
 	GraphicSettings graphicSettings;				// настройки графики
 	StateData stateData;							// передает в дочерние состояния информацию о времени, событиях и тд
 	std::stack<State*> states;						// стэк состояния игры (главное меню, игра, настройки и тд)
-	sf::RenderWindow* window;						// окно
+	std::shared_ptr <sf::RenderWindow> window;		// окно
 	sf::Clock m_clock;								// время
 
 private:
@@ -32,4 +32,3 @@ public:
 	void render();									// рендер
 	void run();										// запуск приложения
 };
-

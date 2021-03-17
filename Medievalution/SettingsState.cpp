@@ -66,7 +66,7 @@ void SettingsState::update(const float& dtime)			//обновляем все
 void SettingsState::render(sf::RenderTarget* target)							//рисуем все
 {
 	if (!target)
-		target = this->window;
+		target = this->window.get();
 	target->setView(S::view);													// установлена камера вида
 	this->renderGUI(*target);
 	target->draw(this->fpsText);												// fps

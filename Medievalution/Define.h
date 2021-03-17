@@ -28,12 +28,12 @@ using std::ifstream;
 using std::ofstream;
 using std::thread;
 
-typedef unsigned int uint;					//размер
-typedef sf::Vector2i v2i;					//v2i
-typedef sf::Vector2f v2f;					//v2f
-typedef sf::Vector2u v2u;					//v2u
-typedef sf::Keyboard Key;					//клавиша
-typedef sf::RectangleShape Shape;			//фигура
-typedef sf::Texture Img;					//изображение
-typedef sf::Color Color;					//цвет
-typedef sf::Sound Sound;					//звук
+typedef unsigned int uint;					// размер
+typedef sf::Vector2i v2i;					// v2i
+typedef sf::Vector2f v2f;					// v2f
+typedef sf::Vector2u v2u;					// v2u
+typedef sf::Keyboard Key;					// клавиша
+typedef sf::RectangleShape Shape;			// фигура
+typedef sf::Texture Img;					// изображение
+typedef sf::Color Color;					// цвет
+typedef sf::Sound Sound;					// звук

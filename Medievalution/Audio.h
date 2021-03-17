@@ -49,5 +49,5 @@ public:
 	Audio()	
 	{
 	};
-	~Audio() {};
+	virtual ~Audio() {};
 };

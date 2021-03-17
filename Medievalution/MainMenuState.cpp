@@ -70,7 +70,7 @@ void MainMenuState::update(const float& dtime)			//обновляем все
 void MainMenuState::render(sf::RenderTarget* target)							//рисуем все
 {
 	if (!target)
-		target = this->window;
+		target = this->window.get();
 	target->setView(this->window->getDefaultView());
 	this->renderGUI(*target);
 	target->draw(this->fpsText);												// fps

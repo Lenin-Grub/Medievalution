@@ -14,5 +14,5 @@ struct Fonts																	//רנטפעû
 			cout << "Resourses:: Fonts:: font _font loaded" << endl;
 	}
 
-	~Fonts() {}
+	virtual ~Fonts() {}
 };

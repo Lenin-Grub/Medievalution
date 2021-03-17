@@ -15,8 +15,8 @@ private:
 	bool isBuild = false;												// разрешено ли строительство
 	bool isBuldoze = false;												// разрешено ил разрушение
 
-	std::map<std::string, Button*> buttons;				// кнопки
-	Map* map;
+	std::map<std::string, Button*> buttons;								// кнопки
+	std::shared_ptr	<Map> map;											// карта
 
 	void initView();													// инициализация камеры вида
 	void initVariables();												//инициализация чего-либо
@@ -25,7 +25,7 @@ private:
 	void updateGUI();													// обновление кнопок
 	void renderGUI(sf::RenderTarget& target);							// рендер кнопок
 
-	void updateView(const float& dtime);													// обновление камеры вида
+	void updateView(const float& dtime);								// обновление камеры вида
 
 public:
 	GameState(StateData* state_data);

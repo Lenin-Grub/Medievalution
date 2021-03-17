@@ -159,6 +159,7 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GraphicSettings.cpp" />
+    <ClCompile Include="LoadingScreanState.cpp" />
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="SettingsState.cpp" />
@@ -181,6 +182,7 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="GraphicSettings.h" />
+    <ClInclude Include="LoadingScreanState.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Map.h" />
     <ClInclude Include="resource.h" />

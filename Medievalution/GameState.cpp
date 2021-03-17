@@ -12,7 +12,7 @@ void GameState::initVariables()			// инициализация различных вещей
 	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
 	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n11.01.2021", S::fonts._font, Color(255, 255, 255, 100));
-	this->map = new Map(S::gridSize, S::mapSize, S::mapSize, 1);
+	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize, 1));
 }
 
 void GameState::initGUI()				//инициализация GUI
@@ -35,11 +35,11 @@ void GameState::updateGUI()				// обвноление GUI
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
 		S::audio.sounds.setSounds(2); S::audio.sounds.playSound();
-		this->map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,3);
+		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,3);
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		this->map->removeTile(S::mousePosGrid.x,S::mousePosGrid.y,0);
+		map->removeTile(S::mousePosGrid.x,S::mousePosGrid.y,0);
 	}
 }
 
@@ -76,7 +76,6 @@ GameState::GameState(StateData* state_data)
 
 GameState::~GameState()
 {
-	//delete this->map;
 	auto it = this->buttons.begin();
 	for (it = this->buttons.begin(); it != this->buttons.end(); ++it)
 	{
@@ -104,11 +103,11 @@ void GameState::update(const float& dtime)			//обновляем все
 void GameState::render(sf::RenderTarget* target)							//рисуем все
 {
 	if (!target)
-		target = this->window;
+		target = this->window.get();
 	///////////
 	target->setView(S::view);
 	//рисуем динамические объекты тут (игрок и тд)
-	this->map->render(*target);
+	map->render(*target);
 	sf::Text mouseText;
 	mouseText.setPosition(S::mousePosView.x + 20, S::mousePosView.y);
 	mouseText.setFont(S::fonts._font);
