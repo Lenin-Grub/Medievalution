@@ -8,15 +8,13 @@ enum TILE_TYPE
 	TILE_SAND,			// песок
 	TILE_GROUND,		// земля
 	TILE_GRASS,			// трава
+	TILE_ROCK,			// cкала
 };
 
 class Tile
 {
-private:
-	sf::RectangleShape tile;								// тайл
 public:
 	short unsigned int tileType;							// тип тайла
-//	Tile() {}
 	Tile(int x, int y, float tilesize, int tileType)		// pos (x,y),размер тайла, тип тайла
 	{
 		this->tileType = tileType;
@@ -30,22 +28,27 @@ public:
 		case TILE_WATER:									//вода
 			this->tile.setSize(v2f(tilesize, tilesize));
 			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::textures.Terrain[0]);
+			this->tile.setTexture(&S::res.textureResources.useTexture("WATER"));
 			break;
 		case TILE_SAND:										// песок
 			this->tile.setSize(v2f(tilesize, tilesize));
 			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::textures.Terrain[1]);
+			this->tile.setTexture(&S::res.textureResources.useTexture("SAND"));
 			break;
 		case TILE_GROUND:									// земля
 			this->tile.setSize(v2f(tilesize, tilesize));
 			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::textures.Terrain[2]);
+			this->tile.setTexture(&S::res.textureResources.useTexture("DIRT"));
 			break;
 		case TILE_GRASS:									// трава
 			this->tile.setSize(v2f(tilesize, tilesize));
 			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::textures.Terrain[3]);
+			this->tile.setTexture(&S::res.textureResources.useTexture("GRASS"));
+			break;
+		case TILE_ROCK:									// трава
+			this->tile.setSize(v2f(tilesize, tilesize));
+			this->tile.setPosition(x, y);
+			this->tile.setTexture(&S::res.textureResources.useTexture("ROCK"));
 			break;
 		default:											// дефолтный красный
 			this->tile.setSize(v2f(tilesize, tilesize));
@@ -54,8 +57,15 @@ public:
 			break;
 		}
 	};
+
 	~Tile() {};
-	//void update(){}
-	void render(sf::RenderTarget& target) { target.draw(this->tile); }
+
+	void render(sf::RenderTarget& target)					// рендер
+	{
+		target.draw(this->tile); 
+	}
+
+private:
+	sf::RectangleShape tile;								// тайл
 };
 

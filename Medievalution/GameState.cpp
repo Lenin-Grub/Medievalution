@@ -11,15 +11,15 @@ void GameState::initVariables()			// инициализация различных вещей
 {
 	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
-	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n11.01.2021", S::fonts._font, Color(255, 255, 255, 100));
+	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
 	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize, 1));
 }
 
 void GameState::initGUI()				//инициализация GUI
 {
-	this->buttons["EXIT"] = (new Button(this->window->getSize().x - 60, 10, 50, 50, S::textures.GUIcons[0]));
-	this->buttons["BUILD"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 110, 50, 50, S::textures.GUIcons[1]);
-	this->buttons["DESTROY"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 60, 50, 50, S::textures.GUIcons[2]);
+	this->buttons["EXIT"] = (new Button(this->window->getSize().x - 60, 10, 50, 50, S::res.textureResources.useTexture("DOOR_EXIT")));
+	this->buttons["BUILD"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 110, 50, 50, S::res.textureResources.useTexture("DIG_DUG"));
+	this->buttons["DESTROY"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 60, 50, 50, S::res.textureResources.useTexture("MINING"));
 }
 
 void GameState::updateGUI()				// обвноление GUI
@@ -28,17 +28,18 @@ void GameState::updateGUI()				// обвноление GUI
 	{
 		it.second->update(S::mousePosWindow);
 	}
-	if (this->buttons["EXIT"]->isWidgetPressed()) { S::audio.sounds.setSounds(1); S::audio.sounds.playSound(); this->endState(); cout << "Debug:: Вы вышли из игры" << endl; }
-	if (this->buttons["BUILD"]->isWidgetPressed()) { S::audio.sounds.setSounds(2); S::audio.sounds.playSound(); }
-	if (this->buttons["DESTROY"]->isWidgetPressed()) { S::audio.sounds.setSounds(3); S::audio.sounds.playSound(); }
+	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/ this->endState(); cout << "Debug:: Вы вышли из игры" << endl; }
+	if (this->buttons["BUILD"]->isWidgetPressed()) {/* S::audio.sounds.setSounds(2); S::audio.sounds.playSound();*/ }
+	if (this->buttons["DESTROY"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(3); S::audio.sounds.playSound();*/ }
 	//добавляем и разрушаем тайлы на карте
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		S::audio.sounds.setSounds(2); S::audio.sounds.playSound();
+		/*S::audio.sounds.setSounds(2); S::audio.sounds.playSound();*/
 		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,3);
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
+		/*S::audio.sounds.setSounds(3); S::audio.sounds.playSound();*/
 		map->removeTile(S::mousePosGrid.x,S::mousePosGrid.y,0);
 	}
 }
@@ -72,6 +73,7 @@ GameState::GameState(StateData* state_data)
 	this->initView();					// вид
 	this->initVariables();				// переменные
 	this->initGUI();					// интерфейс
+	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
 }
 
 GameState::~GameState()

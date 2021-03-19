@@ -1,7 +1,7 @@
 #pragma once
 #include "Fonts.h"
-#include "Textures.h"
 #include "Audio.h"
+#include "Resources.h"
 
 
 class System
@@ -136,8 +136,9 @@ public:
 	static float dtime;								// время
 
 	static Fonts fonts;								// шрифты
-	static Textures textures;						// текстуры
-	static Audio audio;								// звуки
+//	static Textures textures;						// текстуры
+	static Resources res;							// ресурсы
+//	static Audio audio;								// звуки
 
 	static unsigned short int gridSize;				// размер сетки карты
 	static unsigned short int mapSize;				// размер карты

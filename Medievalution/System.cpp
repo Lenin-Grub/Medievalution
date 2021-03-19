@@ -7,8 +7,8 @@ sf::Clock				S::clock;						// время
 float					S::dtime;						// время
 
 Fonts					S::fonts;						// шрифты
-Textures				S::textures;					// текстуры
-Audio					S::audio;						// звуки
+Resources				S::res;							// ресурсы игры (текстуры, звуки, музыка, шрифты)
+//Audio					S::audio;						// звуки
 
 unsigned short int		S::gridSize = 32;				// размер сетки карты
 unsigned short int		S::mapSize = 50;				// размер карты

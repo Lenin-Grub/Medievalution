@@ -28,7 +28,7 @@ public:
 				map[x].resize(this->maxSize.y,std::vector<std::shared_ptr<Tile>>());
 				for (size_t z = 0; z < this->layer; z++)
 				{
-					map[x][y].resize(this->layer, std::make_unique<Tile>(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, rand() % 4 + 1));
+					map[x][y].resize(this->layer, std::make_unique<Tile>(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, rand() % 5 + 1));
 				}
 			}
 		}
@@ -57,6 +57,26 @@ public:
 
 	void addTile(const unsigned x, const unsigned y, const unsigned z, int tileType)
 	{
+		if (x < this->maxSize.x && x >= 0 &&
+			y < this->maxSize.y && y >= 0 &&
+			z <= this->layer && z >= 0)
+		{
+			if (this->map[x][y][z] != NULL)
+			{
+				//delete this->map[x][y][z];
+				this->map[x][y][z] = NULL;
+			}
+		}
+
+		if (x < this->maxSize.x && x >= 0 &&
+			y < this->maxSize.y && y >= 0 &&
+			z <= this->layer && z >= 0)
+		{
+			if (this->map[x][y][z] == NULL)
+			{
+				this->map[x][y][z] = std::make_unique<Tile>(x * this->gridSizeF, y * this->gridSizeF, this->gridSizeF, tileType);
+			}
+		}
 	}
 
 	const int getTileType() const{		// возвращает тип тайла
@@ -69,6 +89,16 @@ public:
 
 	void removeTile(const unsigned x, const unsigned y, const unsigned z)
 	{
+		if (x < this->maxSize.x && x >= 0 &&
+			y < this->maxSize.y && y >= 0 &&
+			z <= this->layer && z >= 0)
+		{
+			if (this->map[x][y][z] != NULL)
+			{
+				//delete this->map[x][y][z];
+				this->map[x][y][z] = NULL;
+			}
+		}
 	}
 
 

@@ -1,32 +1,15 @@
 #pragma once
-#include "AbstractButton.h"
+#include "AbstracWidget.h"
 
-class Button
-	:public AbstractButton
+class Button:
+	public AbstracWidget
 {
-private:
-	short unsigned buttonState;
-//	short unsigned id;
-	sf::Text text;
-
-	sf::Color textIdleColor;				// текст в состоянии "бездельник"
-	sf::Color textHoverColor;				// текст в состоянии "готово к нажатию"
-	sf::Color textActiveColor;				// текст в состоянии "нажато"
-
-	sf::Color idleColor;					// цвет в состоянии "бездельник"
-	sf::Color hoverColor;					// цвет в состоянии "готово к нажатию"
-	sf::Color activeColor;					// цвет в состоянии "нажато"
-
-	sf::Color outLineIdleColor;				// обвокдка в состоянии "бездельник"
-	sf::Color outLineHoverColor;			// обвокдка в состоянии "готово к нажатию"
-	sf::Color outLineActiveColor;			// обвокдка в состоянии "нажато"
 public:
-	/*
-	 @	кнопка с текстурой
-	 @	позиция кнопки, размер, текстура
-	 */
+
+	/*	 @	кнопка с текстурой							@	позиция кнопки, размер, текстура	 */
+
 	Button(float x, float y, float width, float height, sf::Texture& texture)
-		:AbstractButton(shape) 
+		:AbstracWidget(shape)
 	{
 		this->shape.setPosition(v2f(x, y));
 		this->shape.setSize(v2f(width, height));
@@ -37,12 +20,11 @@ public:
 		this->hoverColor = Color::Green;
 		this->activeColor = Color::Blue;
 	}
-	/*
-	@	кнопка с текстом, без текстуры
-	@	позиция кнопки, размер, текст, размер текста, шрифт
-	*/
+
+	/*	@	кнопка с текстом, без текстуры					@	позиция кнопки, размер, текст, размер текста, шрифт	*/
+
 	Button(float x, float y, float width, float height, sf::String text, int uinit ,sf::Font& font) 
-		:AbstractButton(shape)
+		:AbstracWidget(shape)
 	{
 		this->shape.setPosition(v2f(x, y));
 		this->shape.setSize(v2f(width, height));
@@ -62,12 +44,11 @@ public:
 		this->textHoverColor = Color::Black;
 		this->textActiveColor = Color::White;
 	}
-	/*
-	@	кнопка с текстом и текстурой
-	@	позиция кнопки, размер, текст, размер текста, шрифт, текстура
-	*/
+
+	/*	@	кнопка с текстом и текстурой				@	позиция кнопки, размер, текст, размер текста, шрифт, текстура */
+
 	Button(float x, float y, float width, float height, string text, int uinit, sf::Font& font, sf::Texture& texture)
-		:AbstractButton(shape)
+		:AbstracWidget(shape)
 	{
 		this->shape.setPosition(v2f(x, y));
 		this->shape.setSize(v2f(width, height));
@@ -86,7 +67,7 @@ public:
 		this->activeColor = Color::Blue;
 
 		this->textIdleColor = Color::Black;
-		this->textHoverColor = Color::Yellow;
+		this->textHoverColor = Color::Black;
 		this->textActiveColor = Color::White;
 	}
 
@@ -138,4 +119,20 @@ public:
 		target.draw(this->shape);
 		target.draw(this->text);
 	}
+
+	private:
+		short unsigned buttonState;
+		sf::Text text;
+
+		sf::Color textIdleColor;				// текст в состоянии "бездельник"
+		sf::Color textHoverColor;				// текст в состоянии "готово к нажатию"
+		sf::Color textActiveColor;				// текст в состоянии "нажато"
+
+		sf::Color idleColor;					// цвет в состоянии "бездельник"
+		sf::Color hoverColor;					// цвет в состоянии "готово к нажатию"
+		sf::Color activeColor;					// цвет в состоянии "нажато"
+
+		sf::Color outLineIdleColor;				// обвокдка в состоянии "бездельник"
+		sf::Color outLineHoverColor;			// обвокдка в состоянии "готово к нажатию"
+		sf::Color outLineActiveColor;			// обвокдка в состоянии "нажато"
 };

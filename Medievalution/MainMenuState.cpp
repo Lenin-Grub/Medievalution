@@ -11,7 +11,7 @@ void MainMenuState::initVariables()			// инициализация различных вещей
 {
 	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
-	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n11.01.2021", S::fonts._font, Color(255, 255, 255, 100));
+	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
 }
 
 void MainMenuState::initGUI()				//инициализация GUI
@@ -27,9 +27,9 @@ void MainMenuState::updateGUI()				// обвноление GUI
 	{
 		it.second->update(S::mousePosWindow);
 	}
-	if (this->buttons["GAME"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound();		this->states->push(new GameState(this->stateData)); }
-	if (this->buttons["SETTINGS"]->isWidgetPressed()) { S::audio.sounds.setSounds(0); S::audio.sounds.playSound();	this->states->push(new SettingsState(this->stateData));}
-	if (this->buttons["EXIT"]->isWidgetPressed()) { S::audio.sounds.setSounds(1); S::audio.sounds.playSound();		this->endState(); cout << "Debug:: Вы вышли из главного меню" << endl;}
+	if (this->buttons["GAME"]->isWidgetPressed()) {	this->states->push(new GameState(this->stateData)); }
+	if (this->buttons["SETTINGS"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(0); S::audio.sounds.playSound();*/	this->states->push(new SettingsState(this->stateData));}
+	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/		this->endState(); cout << "Debug:: Вы вышли из главного меню" << endl;}
 }
 
 void MainMenuState::renderGUI(sf::RenderTarget& target)		//рисуем кнопки
@@ -46,6 +46,7 @@ MainMenuState::MainMenuState(StateData* state_data)
 	this->initView();					// вид
 	this->initVariables();				// переменные
 	this->initGUI();					// интерфейс
+	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
 }
 
 MainMenuState::~MainMenuState()

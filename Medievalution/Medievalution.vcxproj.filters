@@ -99,6 +99,18 @@
     <ClCompile Include="LoadingScreanState.cpp">
       <Filter>States</Filter>
     </ClCompile>
+    <ClCompile Include="CheckBox.cpp">
+      <Filter>GUI\Widgets\CheckBox</Filter>
+    </ClCompile>
+    <ClCompile Include="Textures.cpp">
+      <Filter>Resourses</Filter>
+    </ClCompile>
+    <ClCompile Include="Resources.cpp">
+      <Filter>Resourses</Filter>
+    </ClCompile>
+    <ClCompile Include="Audio.cpp">
+      <Filter>Resourses</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
@@ -137,7 +149,7 @@
     <ClInclude Include="resource.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="AbstractButton.h">
+    <ClInclude Include="AbstracWidget.h">
       <Filter>GUI\Widgets</Filter>
     </ClInclude>
     <ClInclude Include="GameState.h">
@@ -152,11 +164,14 @@
     <ClInclude Include="Tile.h">
       <Filter>World\Tile</Filter>
     </ClInclude>
+    <ClInclude Include="LoadingScreanState.h">
+      <Filter>States</Filter>
+    </ClInclude>
     <ClInclude Include="CheckBox.h">
       <Filter>GUI\Widgets\CheckBox</Filter>
     </ClInclude>
-    <ClInclude Include="LoadingScreanState.h">
-      <Filter>States</Filter>
+    <ClInclude Include="Resources.h">
+      <Filter>Resourses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
