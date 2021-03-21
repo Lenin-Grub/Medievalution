@@ -31,9 +31,6 @@
     <Filter Include="World\Tile">
       <UniqueIdentifier>{f9885b9a-9210-4a84-935c-4a1b90e98c30}</UniqueIdentifier>
     </Filter>
-    <Filter Include="System\Includes">
-      <UniqueIdentifier>{efc92598-7191-490f-863f-760cd258f81f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="GUI">
       <UniqueIdentifier>{f5a8cd58-08af-4cf0-8c29-0f960ddbe0a7}</UniqueIdentifier>
     </Filter>
@@ -64,19 +61,28 @@
     <Filter Include="GUI\Widgets\CheckBox">
       <UniqueIdentifier>{f810844d-4951-4fcd-8776-3717be84e536}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{893f44ec-4baa-484d-8dbc-39cb04498c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entity">
+      <UniqueIdentifier>{8775ff55-cfc8-4040-acc1-d8bc6caf8db8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core">
+      <UniqueIdentifier>{3d72091b-6196-400e-a3c8-e25878d600ee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Core\Includes">
+      <UniqueIdentifier>{efc92598-7191-490f-863f-760cd258f81f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Style">
+      <UniqueIdentifier>{b8a508bc-8058-42fc-b69c-5e56d5f75e61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{8fbe23e7-4753-40af-a8e4-6f5c85948cc1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
-      <Filter>System\Includes</Filter>
-    </ClCompile>
-    <ClCompile Include="Game.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="Define.cpp">
-      <Filter>System</Filter>
-    </ClCompile>
-    <ClCompile Include="System.cpp">
-      <Filter>System</Filter>
+      <Filter>Core\Includes</Filter>
     </ClCompile>
     <ClCompile Include="GraphicSettings.cpp">
       <Filter>GUI\Settings</Filter>
@@ -86,9 +92,6 @@
     </ClCompile>
     <ClCompile Include="MainMenuState.cpp">
       <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>System</Filter>
     </ClCompile>
     <ClCompile Include="GameState.cpp">
       <Filter>States</Filter>
@@ -111,19 +114,34 @@
     <ClCompile Include="Audio.cpp">
       <Filter>Resourses</Filter>
     </ClCompile>
+    <ClCompile Include="Define.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Game.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="System.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>Entity</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h">
-      <Filter>System\Includes</Filter>
-    </ClInclude>
-    <ClInclude Include="Game.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="Define.h">
-      <Filter>System</Filter>
-    </ClInclude>
-    <ClInclude Include="System.h">
-      <Filter>System</Filter>
+      <Filter>Core\Includes</Filter>
     </ClInclude>
     <ClInclude Include="Textures.h">
       <Filter>Resourses</Filter>
@@ -145,9 +163,6 @@
     </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>GUI\Widgets\Button</Filter>
-    </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="AbstracWidget.h">
       <Filter>GUI\Widgets</Filter>
@@ -172,6 +187,33 @@
     </ClInclude>
     <ClInclude Include="Resources.h">
       <Filter>Resourses</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Game.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="System.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>Entity</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "GameState.h"
+#include "TransformComponent.h"
 
 void GameState::initView()				// установка камеры вида
 {
@@ -15,6 +16,13 @@ void GameState::initVariables()			// инициализация различных вещей
 	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize, 1));
 }
 
+void GameState::initEntities()
+{
+	auto player = _entityManager.addEntity();
+	player->addComponent<TransformComponent>("transform");
+	_entityManager.init();
+}
+
 void GameState::initGUI()				//инициализация GUI
 {
 	this->buttons["EXIT"] = (new Button(this->window->getSize().x - 60, 10, 50, 50, S::res.textureResources.useTexture("DOOR_EXIT")));
@@ -28,18 +36,21 @@ void GameState::updateGUI()				// обвноление GUI
 	{
 		it.second->update(S::mousePosWindow);
 	}
-	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/ this->endState(); cout << "Debug:: Вы вышли из игры" << endl; }
-	if (this->buttons["BUILD"]->isWidgetPressed()) {/* S::audio.sounds.setSounds(2); S::audio.sounds.playSound();*/ }
-	if (this->buttons["DESTROY"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(3); S::audio.sounds.playSound();*/ }
-	//добавляем и разрушаем тайлы на карте
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	if (this->buttons["EXIT"]->isWidgetPressed()) {
+		this->endState(); cout << "Debug:: Вы вышли из игры" << endl;
+	}
+	if (this->buttons["BUILD"]->isWidgetPressed()) {
+	}
+	if (this->buttons["DESTROY"]->isWidgetPressed()) { 
+	}
+
+
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))						//добавляем и разрушаем тайлы на карте
 	{
-		/*S::audio.sounds.setSounds(2); S::audio.sounds.playSound();*/
 		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,3);
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
-		/*S::audio.sounds.setSounds(3); S::audio.sounds.playSound();*/
 		map->removeTile(S::mousePosGrid.x,S::mousePosGrid.y,0);
 	}
 }
@@ -72,6 +83,7 @@ GameState::GameState(StateData* state_data)
 	cout << "Debug:: Вы зашли в меню настроек" << endl;
 	this->initView();					// вид
 	this->initVariables();				// переменные
+	this->initEntities();				// сущности
 	this->initGUI();					// интерфейс
 	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
 }
@@ -100,6 +112,7 @@ void GameState::update(const float& dtime)			//обновляем все
 {
 	this->updateMousePositions();
 	this->updateView(dtime);
+	_entityManager.update();
 }
 
 void GameState::render(sf::RenderTarget* target)							//рисуем все
@@ -110,6 +123,9 @@ void GameState::render(sf::RenderTarget* target)							//рисуем все
 	target->setView(S::view);
 	//рисуем динамические объекты тут (игрок и тд)
 	map->render(*target);
+	_entityManager.render();
+
+
 	sf::Text mouseText;
 	mouseText.setPosition(S::mousePosView.x + 20, S::mousePosView.y);
 	mouseText.setFont(S::fonts._font);

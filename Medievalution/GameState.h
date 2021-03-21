@@ -19,7 +19,8 @@ private:
 	std::shared_ptr	<Map> map;											// карта
 
 	void initView();													// инициализация камеры вида
-	void initVariables();												//инициализация чего-либо
+	void initVariables();												// инициализация чего-либо
+	void initEntities();												// инициализация сущностей
 
 	void initGUI();														// инизициализация кнопок
 	void updateGUI();													// обновление кнопок

@@ -136,9 +136,7 @@ public:
 	static float dtime;								// время
 
 	static Fonts fonts;								// шрифты
-//	static Textures textures;						// текстуры
 	static Resources res;							// ресурсы
-//	static Audio audio;								// звуки
 
 	static unsigned short int gridSize;				// размер сетки карты
 	static unsigned short int mapSize;				// размер карты

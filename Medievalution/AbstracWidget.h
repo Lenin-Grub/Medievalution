@@ -1,13 +1,6 @@
 #pragma once
 #include "System.h"
-
-enum widget_states				// состояния виджетов
-{
-	WIDGET_IDLE = 0,			// кнопка без действия	"бездельник"
-	WIDGET_ACTIVE,				// нажатая кнопка		"нажато"
-	WIDGET_HOVER,				// мышь над кнопкой		"готово к нажатию"
-	WIDGET_DISABLED,			// мышь не активна		"не доступна для нажатия"
-};
+#include "Enums.h"
 
 class AbstracWidget :
 	public S

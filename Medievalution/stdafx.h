@@ -9,6 +9,7 @@
 #include <deque>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 #include <memory>
 #include <set>
 #include <thread>
@@ -20,6 +21,7 @@
 #include <sstream>
 #include <fstream>
 #include <cmath>
+#include <functional>
 
 //SFML
 #include <SFML\System.hpp>

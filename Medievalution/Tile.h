@@ -1,15 +1,7 @@
 #pragma once
 #include "System.h"
+#include "Enums.h"
 
-enum TILE_TYPE
-{
-	TILE_NONE = 0,		// ничего
-	TILE_WATER,			// вода
-	TILE_SAND,			// песок
-	TILE_GROUND,		// земля
-	TILE_GRASS,			// трава
-	TILE_ROCK,			// cкала
-};
 
 class Tile
 {

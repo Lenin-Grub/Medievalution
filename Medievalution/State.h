@@ -1,6 +1,7 @@
 #pragma once
 #include "GraphicSettings.h"
 #include "System.h"
+#include "EntityManager.h"
 
 class GraphicSettings;
 class State;
@@ -32,6 +33,8 @@ protected:
 	sf::Text fpsText;
 
 public:
+	EntityManager _entityManager;
+
 	State(StateData* state_data);
 	virtual ~State();
 
