@@ -12,7 +12,7 @@ private:
 	std::stringstream cords;											// координаты мыши вывод
 	
 
-	std::map <std::string, Button*> buttons;								// кнопки
+	std::map <std::string, Button*> buttons;							// кнопки
 	std::map <std::string, CheckBox*> checkboxs;
 
 	void initView();													// инициализация камеры вида

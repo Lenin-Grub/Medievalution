@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="System">
-      <UniqueIdentifier>{34f085eb-2211-471e-b619-2b17447c8516}</UniqueIdentifier>
-    </Filter>
     <Filter Include="States">
       <UniqueIdentifier>{f205b8d3-68bc-4902-92ef-79f482cd51fb}</UniqueIdentifier>
     </Filter>
@@ -76,8 +73,11 @@
     <Filter Include="GUI\Style">
       <UniqueIdentifier>{b8a508bc-8058-42fc-b69c-5e56d5f75e61}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Log">
-      <UniqueIdentifier>{8fbe23e7-4753-40af-a8e4-6f5c85948cc1}</UniqueIdentifier>
+    <Filter Include="Game">
+      <UniqueIdentifier>{315e5bc1-3854-4abb-b499-3d1601a4ab39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game\Camera">
+      <UniqueIdentifier>{ac91e7cd-9b6a-479e-adbd-25a893caec58}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -88,18 +88,6 @@
       <Filter>GUI\Settings</Filter>
     </ClCompile>
     <ClCompile Include="State.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenuState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="GameState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="SettingsState.cpp">
-      <Filter>States</Filter>
-    </ClCompile>
-    <ClCompile Include="LoadingScreanState.cpp">
       <Filter>States</Filter>
     </ClCompile>
     <ClCompile Include="CheckBox.cpp">
@@ -120,9 +108,6 @@
     <ClCompile Include="Game.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Main.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="System.cpp">
       <Filter>Core</Filter>
     </ClCompile>
@@ -137,6 +122,30 @@
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Main.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="MainMenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="SettingsState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="RichText.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="Map.cpp">
+      <Filter>World\Map</Filter>
+    </ClCompile>
+    <ClCompile Include="Tile.cpp">
+      <Filter>World\Tile</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -158,29 +167,17 @@
     <ClInclude Include="State.h">
       <Filter>States</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenuState.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="Button.h">
       <Filter>GUI\Widgets\Button</Filter>
     </ClInclude>
     <ClInclude Include="AbstracWidget.h">
       <Filter>GUI\Widgets</Filter>
     </ClInclude>
-    <ClInclude Include="GameState.h">
-      <Filter>States</Filter>
-    </ClInclude>
-    <ClInclude Include="SettingsState.h">
-      <Filter>States</Filter>
-    </ClInclude>
     <ClInclude Include="Map.h">
       <Filter>World\Map</Filter>
     </ClInclude>
     <ClInclude Include="Tile.h">
       <Filter>World\Tile</Filter>
-    </ClInclude>
-    <ClInclude Include="LoadingScreanState.h">
-      <Filter>States</Filter>
     </ClInclude>
     <ClInclude Include="CheckBox.h">
       <Filter>GUI\Widgets\CheckBox</Filter>
@@ -214,6 +211,21 @@
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
       <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Input.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="MainMenuState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="SettingsState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="RichText.h">
+      <Filter>GUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

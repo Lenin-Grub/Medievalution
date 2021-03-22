@@ -1,6 +1,7 @@
 #pragma once
 #include "AbstracWidget.h"
 
+
 class Button:
 	public AbstracWidget
 {
@@ -86,7 +87,7 @@ public:
 		if (this->shape.getGlobalBounds().contains(static_cast <sf::Vector2f> (mousePosWindow)))	// проверяем попали ли мышью по кнопке
 		{
 			this->buttonState = WIDGET_HOVER;														// есои прпали, кнопка готова к нажатию
-			if (isMouseReleased(sf::Mouse::Left))													// проверка на нажатие ЛКМ
+			if (S::input.isMouseReleased(sf::Mouse::Left))													// проверка на нажатие ЛКМ
 				this->buttonState = WIDGET_ACTIVE;													// кнопка нажата
 		}
 

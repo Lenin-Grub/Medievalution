@@ -3,11 +3,12 @@
 
 sf::Event				S::sfmlEvent;					// события sfml
 sf::View				S::view;						// камера вида
-sf::Clock				S::clock;						// время
 float					S::dtime;						// время
 
 Fonts					S::fonts;						// шрифты
 Resources				S::res;							// ресурсы игры (текстуры, звуки, музыка, шрифты)
+Input					S::input;						// нажатия игрока
+sfe::RichText			S::rText;						// цветной текст
 
 unsigned short int		S::gridSize = 32;				// размер сетки карты
 unsigned short int		S::mapSize = 50;				// размер карты

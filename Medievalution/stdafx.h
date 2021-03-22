@@ -3,6 +3,7 @@
 
 #include <stdlib.h>
 #include <crtdbg.h>
+#include <cassert>
 
 #include <Windows.h>
 #include <algorithm>
@@ -22,6 +23,7 @@
 #include <fstream>
 #include <cmath>
 #include <functional>
+
 
 //SFML
 #include <SFML\System.hpp>

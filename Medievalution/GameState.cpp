@@ -13,7 +13,7 @@ void GameState::initVariables()			// инициализация различных вещей
 	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
 	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
-	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize, 1));
+	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize));
 }
 
 void GameState::initEntities()
@@ -25,9 +25,9 @@ void GameState::initEntities()
 
 void GameState::initGUI()				//инициализация GUI
 {
-	this->buttons["EXIT"] = (new Button(this->window->getSize().x - 60, 10, 50, 50, S::res.textureResources.useTexture("DOOR_EXIT")));
-	this->buttons["BUILD"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 110, 50, 50, S::res.textureResources.useTexture("DIG_DUG"));
-	this->buttons["DESTROY"] = new Button(this->window->getSize().x - 60, this->window->getSize().y - 60, 50, 50, S::res.textureResources.useTexture("MINING"));
+	this->buttons["EXIT"] =		new Button(this->window->getSize().x - 60, 10, 50, 50,								S::res.textureResources.useTexture("DOOR_EXIT"));
+	this->buttons["BUILD"] =	new Button(this->window->getSize().x - 60, this->window->getSize().y - 110, 50, 50, S::res.textureResources.useTexture("DIG_DUG"));
+	this->buttons["DESTROY"] =	new Button(this->window->getSize().x - 60, this->window->getSize().y - 60, 50, 50,	S::res.textureResources.useTexture("MINING"));
 }
 
 void GameState::updateGUI()				// обвноление GUI
@@ -43,11 +43,20 @@ void GameState::updateGUI()				// обвноление GUI
 	}
 	if (this->buttons["DESTROY"]->isWidgetPressed()) { 
 	}
-
+	if (S::input.isKeyReleased(Key::Num1))
+		type = 1;
+	else if (S::input.isKeyReleased(Key::Num2))
+		type = 2;
+	else if (S::input.isKeyReleased(Key::Num3))
+		type = 3;
+	else if (S::input.isKeyReleased(Key::Num4))
+		type = 4;
+	else if (S::input.isKeyReleased(Key::Num5))
+		type = 5;
 
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))						//добавляем и разрушаем тайлы на карте
 	{
-		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,3);
+		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,type);
 	}
 	else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
 	{
@@ -111,6 +120,7 @@ void GameState::updateEvents()
 void GameState::update(const float& dtime)			//обновляем все
 {
 	this->updateMousePositions();
+	this->updateFPS();
 	this->updateView(dtime);
 	_entityManager.update();
 }
@@ -125,6 +135,9 @@ void GameState::render(sf::RenderTarget* target)							//рисуем все
 	map->render(*target);
 	_entityManager.render();
 
+	sfe::RichText text(S::fonts._font);
+	text.setPosition(S::mousePosView.x + 20, S::mousePosView.y);
+	text.setCharacterSize(10);
 
 	sf::Text mouseText;
 	mouseText.setPosition(S::mousePosView.x + 20, S::mousePosView.y);

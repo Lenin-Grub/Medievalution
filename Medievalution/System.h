@@ -2,7 +2,8 @@
 #include "Fonts.h"
 #include "Audio.h"
 #include "Resources.h"
-
+#include "Input.h"
+#include "RichText.h"
 
 class System
 {
@@ -70,56 +71,7 @@ public:
 		text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 1.5f);
 	}
 
-	/**************************************************************/
-	/*функции для удобства вызова событий sfml. Клавиатуры и мыши*/
-	virtual bool isKeyPressed(const sf::Keyboard::Key& code) {													//была ли нажата кнопка мыши?
-		if (sfmlEvent.type == sf::Event::KeyPressed)
-			if (sfmlEvent.key.code == code) return true;
-		return false;
-	}
-
-	virtual bool isKeyReleased(const sf::Keyboard::Key& code) {													//была ли отжата кнопка клавиатуры
-		if (sfmlEvent.type == sf::Event::KeyReleased)
-			if (sfmlEvent.key.code == code) return true;
-		return false;
-	}
-
-	virtual bool isMouseReleased(const sf::Mouse::Button& code) {												//была ли отжата кнопка мыши
-		if (sfmlEvent.type == sf::Event::MouseButtonReleased)
-			if (sfmlEvent.key.code == code) return true;
-		return false;
-	}
-
-	virtual bool isMousePressed(const sf::Mouse::Button& code) {												//была ли зажата кнопка мыши?
-		if (sfmlEvent.type == sf::Event::MouseButtonPressed)
-			if (sfmlEvent.key.code == code) return true;
-		return false;
-	}
-
-	virtual bool isMouseWheelUp(const sf::Mouse::Wheel code) {													//было ли нажато(прокручено) колесико мышки?
-		if (sfmlEvent.mouseWheel.x == code) return true;
-		return false;
-	}
-
-	virtual bool isMouseDoubleReleased(const sf::Mouse::Button& code)											// двойной клик
-	{ 
-		float timer;
-		if (sfmlEvent.type == sf::Event::MouseButtonReleased && sfmlEvent.key.code == code)
-		{
-			timer = clock.getElapsedTime().asMilliseconds();
-			if (sfmlEvent.type == sf::Event::MouseButtonReleased && sfmlEvent.key.code == code && timer <= 300.0f)
-			{
-				cout << "click!\n";
-				return true;
-			}
-			else {
-				cout << "ooops!\n";
-				clock.restart();
-				return false;
-			}
-		}
-	}
-
+	/********************************************************/
 	static const sf::FloatRect getFieldofView()						//возвращает поле видимости камеры
 	{
 		return sf::FloatRect(
@@ -137,6 +89,8 @@ public:
 
 	static Fonts fonts;								// шрифты
 	static Resources res;							// ресурсы
+	static Input input;								// нажатия
+	static sfe::RichText rText;						// цветной текст
 
 	static unsigned short int gridSize;				// размер сетки карты
 	static unsigned short int mapSize;				// размер карты
@@ -147,7 +101,4 @@ public:
 	static sf::Vector2u mousePosGrid;				// полоэение мыши относительно сетки карты
 
 	System();
-
-private:
-	static sf::Clock clock;							// время
 };

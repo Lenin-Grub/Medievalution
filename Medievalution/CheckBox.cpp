@@ -25,7 +25,7 @@ void CheckBox::setActive(bool isActive, sf::Texture& texture)
 
 void CheckBox::update(const sf::Vector2i& mousePosWindow)
 {
-		if (this->shape.getGlobalBounds().contains(static_cast <sf::Vector2f> (mousePosWindow)) && isMouseReleased(sf::Mouse::Left))	// проверяем попали ли мышью по кнопке
+		if (this->shape.getGlobalBounds().contains(static_cast <sf::Vector2f> (mousePosWindow)) && (S::input.isMouseReleased(sf::Mouse::Left)))	// проверяем попали ли мышью по кнопке
 		{
 			if (this->isActive == false)
 			{

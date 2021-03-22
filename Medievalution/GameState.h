@@ -4,6 +4,7 @@
 #include "Map.h"
 
 
+
 class GameState :
     public State
 {
@@ -11,6 +12,8 @@ private:
 	sf::Text version_text;												// текст версии
 	sf::Text mouseCordsText;											// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
+
+	int type = 1;
 
 	bool isBuild = false;												// разрешено ли строительство
 	bool isBuldoze = false;												// разрешено ил разрушение

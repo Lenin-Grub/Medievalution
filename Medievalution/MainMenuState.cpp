@@ -66,6 +66,7 @@ void MainMenuState::updateEvents()
 void MainMenuState::update(const float& dtime)			//обновляем все
 {
 	this->updateMousePositions();
+	this->updateFPS();
 }
 
 void MainMenuState::render(sf::RenderTarget* target)							//рисуем все

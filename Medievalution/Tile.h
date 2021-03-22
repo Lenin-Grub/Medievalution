@@ -6,58 +6,32 @@
 class Tile
 {
 public:
-	short unsigned int tileType;							// тип тайла
-	Tile(int x, int y, float tilesize, int tileType)		// pos (x,y),размер тайла, тип тайла
-	{
-		this->tileType = tileType;
-		switch (this->tileType)
-		{
-		case TILE_NONE:										//ничего
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x,y);
-			this->tile.setFillColor(sf::Color::Transparent);
-				break;
-		case TILE_WATER:									//вода
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::res.textureResources.useTexture("WATER"));
-			break;
-		case TILE_SAND:										// песок
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::res.textureResources.useTexture("SAND"));
-			break;
-		case TILE_GROUND:									// земля
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::res.textureResources.useTexture("DIRT"));
-			break;
-		case TILE_GRASS:									// трава
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::res.textureResources.useTexture("GRASS"));
-			break;
-		case TILE_ROCK:									// трава
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setTexture(&S::res.textureResources.useTexture("ROCK"));
-			break;
-		default:											// дефолтный красный
-			this->tile.setSize(v2f(tilesize, tilesize));
-			this->tile.setPosition(x, y);
-			this->tile.setFillColor(sf::Color::Red);
-			break;
-		}
-	};
+	Tile() {};
+	Tile(float x, float y, float tilesize, int tileType);											// pos (x,y),размер тайла, тип тайла
+	virtual ~Tile() {};
 
-	~Tile() {};
+	virtual void newTile(float x, float y, float tilesize, int tileType, sf::Texture& texture);		// новый тайл
 
-	void render(sf::RenderTarget& target)					// рендер
-	{
-		target.draw(this->tile); 
-	}
+	virtual void		setTileSize(v2f size);														// установить размер тайла
+	const sf::Vector2f	getTileSize();																// вернуть размер тайла
 
+	virtual void		setTilePosition(v2f pos);													// утсновить позицию тайла
+	const sf::Vector2f	getTilePosition() const;													// вернуть позицию тайла
+
+	virtual void		setTileType(int tileType);													// утсновить тип тайла
+	const short unsigned int getTileType() const;													// вернуть тип тайла
+
+	virtual void		setTileTexture(sf::Texture& texture);										// установить текстуру тайла
+
+	virtual void		initNeighbours();															// устанавливаем как регировать на соседей
+	virtual void		updateNeighbours();															// обновить соседей
+
+	virtual void		update();																	// обновить
+	virtual void		render(sf::RenderTarget& target);											// рендер
+	int tileType;																					// тип тайла
+
+protected:
 private:
-	sf::RectangleShape tile;								// тайл
+	sf::RectangleShape tile;																		// тайл
 };
 

@@ -67,6 +67,7 @@ void SettingsState::updateEvents()
 void SettingsState::update(const float& dtime)									//обновляем все
 {
 	this->updateMousePositions();
+	this->updateFPS();
 }
 
 void SettingsState::render(sf::RenderTarget* target)							//рисуем все
