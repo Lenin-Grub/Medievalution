@@ -1,18 +1,18 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Textures.h"
+// Г®ГІ
 
-
-sf::Texture& Textures::useTexture(const std::string& texture)					// вызов текстуры
+sf::Texture& Textures::useTexture(const std::string& texture)					// РІС‹Р·РѕРІ С‚РµРєСЃС‚СѓСЂС‹
 {
-	return this->textures.at(texture);											// возвращаем текстуру по запросу
+	return this->textures.at(texture);											// РІРѕР·РІСЂР°С‰Р°РµРј С‚РµРєСЃС‚СѓСЂСѓ РїРѕ Р·Р°РїСЂРѕСЃСѓ
 }
 
-void Textures::loadTexture(const std::string& name, const std::string& file)	// загрузка текстуры из файла
+void Textures::loadTexture(const std::string& name, const std::string& file)	// Р·Р°РіСЂСѓР·РєР° С‚РµРєСЃС‚СѓСЂС‹ РёР· С„Р°Р№Р»Р°
 {
 	sf::Texture texture;
 
-	texture.loadFromFile("Resourses/" + file);									// загружаем текстуру
-	this->textures[name] = texture;												// даем текстуре имя
+	texture.loadFromFile("Resourses/" + file);									// Р·Р°РіСЂСѓР¶Р°РµРј С‚РµРєСЃС‚СѓСЂСѓ
+	this->textures[name] = texture;												// РґР°РµРј С‚РµРєСЃС‚СѓСЂРµ РёРјСЏ
 
 	return;
 }

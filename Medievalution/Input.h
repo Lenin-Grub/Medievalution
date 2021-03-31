@@ -1,22 +1,22 @@
-#pragma once
+п»ї#pragma once
 #include "Define.h"
-
+// Г®ГІ
 class System;
 
 class Input
 {
 public:
 
-	virtual bool isKeyPressed			(const sf::Keyboard::Key& code);												// была ли нажата кнопка мыши?
+	virtual bool isKeyPressed			(const sf::Keyboard::Key& code);												// Р±С‹Р»Р° Р»Рё РЅР°Р¶Р°С‚Р° РєРЅРѕРїРєР° РјС‹С€Рё?
 
-	virtual bool isKeyReleased			(const sf::Keyboard::Key& code);												// была ли отжата кнопка клавиатуры
+	virtual bool isKeyReleased			(const sf::Keyboard::Key& code);												// Р±С‹Р»Р° Р»Рё РѕС‚Р¶Р°С‚Р° РєРЅРѕРїРєР° РєР»Р°РІРёР°С‚СѓСЂС‹
 
-	virtual bool isMousePressed			(const sf::Mouse::Button& code);												// была ли зажата кнопка мыши?
+	virtual bool isMousePressed			(const sf::Mouse::Button& code);												// Р±С‹Р»Р° Р»Рё Р·Р°Р¶Р°С‚Р° РєРЅРѕРїРєР° РјС‹С€Рё?
 
-	virtual bool isMouseReleased		(const sf::Mouse::Button& code);												// была ли отжата кнопка мыши
+	virtual bool isMouseReleased		(const sf::Mouse::Button& code);												// Р±С‹Р»Р° Р»Рё РѕС‚Р¶Р°С‚Р° РєРЅРѕРїРєР° РјС‹С€Рё
 
-	virtual bool isMouseWheelUp			(const sf::Mouse::Wheel code);													// было ли нажато(прокручено) колесико мышки?
+	virtual bool isMouseWheelUp			(const sf::Mouse::Wheel code);													// Р±С‹Р»Рѕ Р»Рё РЅР°Р¶Р°С‚Рѕ(РїСЂРѕРєСЂСѓС‡РµРЅРѕ) РєРѕР»РµСЃРёРєРѕ РјС‹С€РєРё?
 
-	virtual bool isMouseDoubleReleased	(const sf::Mouse::Button& code);												// двойной клик
+	virtual bool isMouseDoubleReleased	(const sf::Mouse::Button& code);												// РґРІРѕР№РЅРѕР№ РєР»РёРє
 };
 

@@ -1,38 +1,38 @@
-#include "stdafx.h"
+ï»¿#include "stdafx.h"
 #include "MainMenuState.h"
-
-void MainMenuState::initView()				// óñòàíîâêà êàìåðû âèäà
+// Ã®Ã²
+void MainMenuState::initView()				// ÑƒÑÑ‚Ð°Ð½Ð¾Ð²ÐºÐ° ÐºÐ°Ð¼ÐµÑ€Ñ‹ Ð²Ð¸Ð´Ð°
 {
 	S::view.setSize(sf::Vector2f(this->stateData->graphicSettings->resolution.width, this->stateData->graphicSettings->resolution.height));
 	S::view.setCenter(sf::Vector2f(this->stateData->graphicSettings->resolution.width / 2.f, this->stateData->graphicSettings->resolution.height / 2.f));
 }
 
-void MainMenuState::initVariables()			// èíèöèàëèçàöèÿ ðàçëè÷íûõ âåùåé
+void MainMenuState::initVariables()			// Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ Ñ€Ð°Ð·Ð»Ð¸Ñ‡Ð½Ñ‹Ñ… Ð²ÐµÑ‰ÐµÐ¹
 {
-	this->fpsText = S::ñreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
+	this->fpsText = S::ÑreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
-	version_text = S::ñreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
+	version_text = S::ÑreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
 }
 
-void MainMenuState::initGUI()				//èíèöèàëèçàöèÿ GUI
+void MainMenuState::initGUI()				//Ð¸Ð½Ð¸Ñ†Ð¸Ð°Ð»Ð¸Ð·Ð°Ñ†Ð¸Ñ GUI
 {
-	this->buttons["GAME"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 150, 100, 50, L"Èãðà",12, S::fonts._font);
-	this->buttons["SETTINGS"]	= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 100, 100, 50, L"Íàñòðîéêè", 12, S::fonts._font);
-	this->buttons["EXIT"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 50, 100, 50, L"Âûõîä", 12, S::fonts._font);
+	this->buttons["GAME"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 150, 100, 50, L"Ð˜Ð³Ñ€Ð°",12, S::fonts._font);
+	this->buttons["SETTINGS"]	= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 100, 100, 50, L"ÐÐ°ÑÑ‚Ñ€Ð¾Ð¹ÐºÐ¸", 12, S::fonts._font);
+	this->buttons["EXIT"]		= new Button((this->window->getSize().x / 2) - 50, (this->window->getSize().y / 2) - 50, 100, 50, L"Ð’Ñ‹Ñ…Ð¾Ð´", 12, S::fonts._font);
 }
 
-void MainMenuState::updateGUI()				// îáâíîëåíèå GUI
+void MainMenuState::updateGUI()				// Ð¾Ð±Ð²Ð½Ð¾Ð»ÐµÐ½Ð¸Ðµ GUI
 {
-	for (auto& it : this->buttons)			// îáíîâëÿåì êíîïêó
+	for (auto& it : this->buttons)			// Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ ÐºÐ½Ð¾Ð¿ÐºÑƒ
 	{
 		it.second->update(S::mousePosWindow);
 	}
 	if (this->buttons["GAME"]->isWidgetPressed()) {	this->states->push(new GameState(this->stateData)); }
 	if (this->buttons["SETTINGS"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(0); S::audio.sounds.playSound();*/	this->states->push(new SettingsState(this->stateData));}
-	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/		this->endState(); cout << "Debug:: Âû âûøëè èç ãëàâíîãî ìåíþ" << endl;}
+	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/		this->endState(); cout << "Debug:: Ð’Ñ‹ Ð²Ñ‹ÑˆÐ»Ð¸ Ð¸Ð· Ð³Ð»Ð°Ð²Ð½Ð¾Ð³Ð¾ Ð¼ÐµÐ½ÑŽ" << endl;}
 }
 
-void MainMenuState::renderGUI(sf::RenderTarget& target)		//ðèñóåì êíîïêè
+void MainMenuState::renderGUI(sf::RenderTarget& target)		//Ñ€Ð¸ÑÑƒÐµÐ¼ ÐºÐ½Ð¾Ð¿ÐºÐ¸
 {
 	for (auto& it : this->buttons)
 	{
@@ -43,10 +43,10 @@ void MainMenuState::renderGUI(sf::RenderTarget& target)		//ðèñóåì êíîïêè
 MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)
 {
-	this->initView();					// âèä
-	this->initVariables();				// ïåðåìåííûå
-	this->initGUI();					// èíòåðôåéñ
-	this->updateEvents();				// ðàçîâûé âûçîâ îáíîâëåíèÿ ñîáûòèé äëÿ êîððåêòíîãî îòîáðàæåíèÿ êíîïîê
+	this->initView();					// Ð²Ð¸Ð´
+	this->initVariables();				// Ð¿ÐµÑ€ÐµÐ¼ÐµÐ½Ð½Ñ‹Ðµ
+	this->initGUI();					// Ð¸Ð½Ñ‚ÐµÑ€Ñ„ÐµÐ¹Ñ
+	this->updateEvents();				// Ñ€Ð°Ð·Ð¾Ð²Ñ‹Ð¹ Ð²Ñ‹Ð·Ð¾Ð² Ð¾Ð±Ð½Ð¾Ð²Ð»ÐµÐ½Ð¸Ñ ÑÐ¾Ð±Ñ‹Ñ‚Ð¸Ð¹ Ð´Ð»Ñ ÐºÐ¾Ñ€Ñ€ÐµÐºÑ‚Ð½Ð¾Ð³Ð¾ Ð¾Ñ‚Ð¾Ð±Ñ€Ð°Ð¶ÐµÐ½Ð¸Ñ ÐºÐ½Ð¾Ð¿Ð¾Ðº
 }
 
 MainMenuState::~MainMenuState()
@@ -63,19 +63,19 @@ void MainMenuState::updateEvents()
 	this->updateGUI();
 }
 
-void MainMenuState::update(const float& dtime)			//îáíîâëÿåì âñå
+void MainMenuState::update(const float& dtime)			//Ð¾Ð±Ð½Ð¾Ð²Ð»ÑÐµÐ¼ Ð²ÑÐµ
 {
 	this->updateMousePositions();
 	this->updateFPS();
 }
 
-void MainMenuState::render(sf::RenderTarget* target)							//ðèñóåì âñå
+void MainMenuState::render(sf::RenderTarget* target)							//Ñ€Ð¸ÑÑƒÐµÐ¼ Ð²ÑÐµ
 {
 	if (!target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
 	this->renderGUI(*target);
 	target->draw(this->fpsText);												// fps
-	target->draw(this->version_text);											// âåðñèÿ
-	target->draw(this->mouseCordsText);											// êîîðäèíàòû
+	target->draw(this->version_text);											// Ð²ÐµÑ€ÑÐ¸Ñ
+	target->draw(this->mouseCordsText);											// ÐºÐ¾Ð¾Ñ€Ð´Ð¸Ð½Ð°Ñ‚Ñ‹
 }

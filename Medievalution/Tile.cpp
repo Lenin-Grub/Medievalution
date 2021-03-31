@@ -1,6 +1,6 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Tile.h"
-
+// Г®ГІ
 Tile::Tile(float x, float y, float tilesize, int tileType)
 {
 	this->tile.setPosition(v2f(x, y));
@@ -9,24 +9,24 @@ Tile::Tile(float x, float y, float tilesize, int tileType)
 	//cout << this->getTileType();
 		switch (this->tileType)
 {
-case TILE_NONE:										//ничего
+case TILE_NONE:										//РЅРёС‡РµРіРѕ
 	break;
-case TILE_WATER:									//вода
+case TILE_WATER:									//РІРѕРґР°
 	tile.setTexture(&S::res.textureResources.useTexture("WATER"));
 	break;
-case TILE_SAND:										// песок
+case TILE_SAND:										// РїРµСЃРѕРє
 	tile.setTexture(&S::res.textureResources.useTexture("SAND"));
 	break;
-case TILE_GROUND:									// земля
+case TILE_GROUND:									// Р·РµРјР»СЏ
 	tile.setTexture(&S::res.textureResources.useTexture("DIRT"));
 	break;
-case TILE_GRASS:									// трава
+case TILE_GRASS:									// С‚СЂР°РІР°
 	tile.setTexture(&S::res.textureResources.useTexture("GRASS"));
 	break;
-case TILE_ROCK:										// трава
+case TILE_ROCK:										// С‚СЂР°РІР°
 	tile.setTexture(&S::res.textureResources.useTexture("ROCK"));
 	break;
-default:											// дефолтный
+default:											// РґРµС„РѕР»С‚РЅС‹Р№
 	std::cerr << "tile type not found" << endl;
 	break;
 }
@@ -77,17 +77,17 @@ void Tile::setTileTexture(sf::Texture& texture)
 
 void Tile::initNeighbours()
 {
-	// думаем что делать с соседями
+	// РґСѓРјР°РµРј С‡С‚Рѕ РґРµР»Р°С‚СЊ СЃ СЃРѕСЃРµРґСЏРјРё
 }
 
 void Tile::updateNeighbours()
 {
-//	 обновляем реакцию на соседей
+//	 РѕР±РЅРѕРІР»СЏРµРј СЂРµР°РєС†РёСЋ РЅР° СЃРѕСЃРµРґРµР№
 }
 
 void Tile::update()
 {
-	 //обновляем логику карты
+	 //РѕР±РЅРѕРІР»СЏРµРј Р»РѕРіРёРєСѓ РєР°СЂС‚С‹
 }
 
 void Tile::render(sf::RenderTarget& target)

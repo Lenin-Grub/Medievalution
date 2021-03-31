@@ -1,19 +1,19 @@
-#pragma once
+п»ї#pragma once
 #include "System.h"
-
+// Г®ГІ
 class GraphicSettings
 {
 public:
 	GraphicSettings();
 
-	std::string title;														// название программы
-	sf::VideoMode resolution;												// расширение экрана
-	bool fullscrean;														// полный экран ?
-	bool vertycalSync;														// вертикальная синхронизация
-	short unsigned fps_limit;												// лимит фпс
-	sf::ContextSettings contextSettings;									// настройки
-	std::vector<sf::VideoMode> videoModes;									// видео режимы
+	std::string title;														// РЅР°Р·РІР°РЅРёРµ РїСЂРѕРіСЂР°РјРјС‹
+	sf::VideoMode resolution;												// СЂР°СЃС€РёСЂРµРЅРёРµ СЌРєСЂР°РЅР°
+	bool fullscrean;														// РїРѕР»РЅС‹Р№ СЌРєСЂР°РЅ ?
+	bool vertycalSync;														// РІРµСЂС‚РёРєР°Р»СЊРЅР°СЏ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЏ
+	short unsigned fps_limit;												// Р»РёРјРёС‚ С„РїСЃ
+	sf::ContextSettings contextSettings;									// РЅР°СЃС‚СЂРѕР№РєРё
+	std::vector<sf::VideoMode> videoModes;									// РІРёРґРµРѕ СЂРµР¶РёРјС‹
 
-	void saveToFile(const std::string path);								// сохранине в файл
-	void loadFromFIle(const std::string path);								// загрузка из файла
+	void saveToFile(const std::string path);								// СЃРѕС…СЂР°РЅРёРЅРµ РІ С„Р°Р№Р»
+	void loadFromFIle(const std::string path);								// Р·Р°РіСЂСѓР·РєР° РёР· С„Р°Р№Р»Р°
 };

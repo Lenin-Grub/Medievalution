@@ -29,4 +29,4 @@ enum connection : unsigned int	// соседи тайлов
 	north_east	= 12,
 	sout_west	= 14,
 	sout_east	= 16
-};// îò
+};

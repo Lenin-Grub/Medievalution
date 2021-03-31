@@ -1,7 +1,7 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Input.h"
 #include "System.h"
-
+// îò
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 {
 	if (S::sfmlEvent.type == sf::Event::KeyPressed)

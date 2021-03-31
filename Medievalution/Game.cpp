@@ -1,119 +1,119 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Game.h"
-
-void Game::initVariables()                                                          // инициализируем переменные
+// Г®ГІ
+void Game::initVariables()                                                          // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ
 {
-    this->window = NULL;                                                            // окно приложения NULL
-    S::dtime = 0.00f;                                                               // дельта времени 0.00f
+    this->window = NULL;                                                            // РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ NULL
+    S::dtime = 0.00f;                                                               // РґРµР»СЊС‚Р° РІСЂРµРјРµРЅРё 0.00f
 }
 
-void Game::initGraphicSettings()                                                    // инициализируем настройки графики
+void Game::initGraphicSettings()                                                    // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РЅР°СЃС‚СЂРѕР№РєРё РіСЂР°С„РёРєРё
 {
     this->graphicSettings.loadFromFIle("Config/graphic_settings.ini");
 }
 
-void Game::initWindow()                                                             // инициализируем окно приложения
+void Game::initWindow()                                                             // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ
 {
-    // если окно в режиме "во весь экран", то устанавливаем след. настройки
+    // РµСЃР»Рё РѕРєРЅРѕ РІ СЂРµР¶РёРјРµ "РІРѕ РІРµСЃСЊ СЌРєСЂР°РЅ", С‚Рѕ СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»РµРґ. РЅР°СЃС‚СЂРѕР№РєРё
     if (this->graphicSettings.fullscrean)
         this->window = std::make_unique<sf::RenderWindow>
                                             (this->graphicSettings.resolution,
                                             this->graphicSettings.title, sf::Style::Fullscreen,
                                             this->graphicSettings.contextSettings);
-   // если окнов оконном режиме, устанавливаем след. настройки
+   // РµСЃР»Рё РѕРєРЅРѕРІ РѕРєРѕРЅРЅРѕРј СЂРµР¶РёРјРµ, СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј СЃР»РµРґ. РЅР°СЃС‚СЂРѕР№РєРё
     else
         this->window = std::make_unique<sf::RenderWindow>   
                                             (this->graphicSettings.resolution,
                                             this->graphicSettings.title, sf::Style::Close,
                                             this->graphicSettings.contextSettings);
     
-    this->window->setFramerateLimit         (this->graphicSettings.fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
-    this->window->setVerticalSyncEnabled    (this->graphicSettings.vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
+    this->window->setFramerateLimit         (this->graphicSettings.fps_limit);      // РѕРіСЂР°РЅРёС‡РёРІР°РµРј Р»РёРјРёС‚ fps, РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ 120 fps
+    this->window->setVerticalSyncEnabled    (this->graphicSettings.vertycalSync);   // СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РІРµСЂС‚РёРєР°Р»СЊРЅСѓСЋ СЃРёРЅС…СЂРѕРЅРёР·Р°С†РёСЋ, РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ РІС‹РєР»
 }
 
-void Game::initStateData()                                                          // инициализируем буфер стейтов
+void Game::initStateData()                                                          // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј Р±СѓС„РµСЂ СЃС‚РµР№С‚РѕРІ
 {
-    this->stateData.window = this->window;                                          // передаем данные об окне в буфер
-    this->stateData.graphicSettings = &this->graphicSettings;                       // передаем данные о графикие
-    this->stateData.states = &this->states;                                         // передаем данные о стейтах
+    this->stateData.window = this->window;                                          // РїРµСЂРµРґР°РµРј РґР°РЅРЅС‹Рµ РѕР± РѕРєРЅРµ РІ Р±СѓС„РµСЂ
+    this->stateData.graphicSettings = &this->graphicSettings;                       // РїРµСЂРµРґР°РµРј РґР°РЅРЅС‹Рµ Рѕ РіСЂР°С„РёРєРёРµ
+    this->stateData.states = &this->states;                                         // РїРµСЂРµРґР°РµРј РґР°РЅРЅС‹Рµ Рѕ СЃС‚РµР№С‚Р°С…
 }
 
-void Game::initStates()                                                             // инициализируем стартовый стейт
+void Game::initStates()                                                             // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј СЃС‚Р°СЂС‚РѕРІС‹Р№ СЃС‚РµР№С‚
 {
-    this->states.push(new MainMenuState(&this->stateData));                         // создаем стартовый стейт приложения "Главное меню"
-    cout << "Debug:: Вы зашли в главное меню" << endl;
+    this->states.push(new MainMenuState(&this->stateData));                         // СЃРѕР·РґР°РµРј СЃС‚Р°СЂС‚РѕРІС‹Р№ СЃС‚РµР№С‚ РїСЂРёР»РѕР¶РµРЅРёСЏ "Р“Р»Р°РІРЅРѕРµ РјРµРЅСЋ"
+    cout << "Debug:: Р’С‹ Р·Р°С€Р»Рё РІ РіР»Р°РІРЅРѕРµ РјРµРЅСЋ" << endl;
 }
 
 Game::Game()
 {
-    initVariables();                                                                // инициализируем переменные
-    initGraphicSettings();                                                          // инициализируем настройки графики
-    initWindow();                                                                   // инициализируем окно приложение
-    initStateData();                                                                // инициализируем буфер стейтов
-    initStates();                                                                   // инициализируем стейты
+    initVariables();                                                                // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РїРµСЂРµРјРµРЅРЅС‹Рµ
+    initGraphicSettings();                                                          // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РЅР°СЃС‚СЂРѕР№РєРё РіСЂР°С„РёРєРё
+    initWindow();                                                                   // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёРµ
+    initStateData();                                                                // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј Р±СѓС„РµСЂ СЃС‚РµР№С‚РѕРІ
+    initStates();                                                                   // РёРЅРёС†РёР°Р»РёР·РёСЂСѓРµРј СЃС‚РµР№С‚С‹
 }
 
 Game::~Game() {}
 
-void Game::endApplication()                                                         // тестовая проверка завершения стейта
+void Game::endApplication()                                                         // С‚РµСЃС‚РѕРІР°СЏ РїСЂРѕРІРµСЂРєР° Р·Р°РІРµСЂС€РµРЅРёСЏ СЃС‚РµР№С‚Р°
 {
-    cout << "Debug:: вы вышли из приложения" << endl;
+    cout << "Debug:: РІС‹ РІС‹С€Р»Рё РёР· РїСЂРёР»РѕР¶РµРЅРёСЏ" << endl;
 }
 
-void Game::updateDeltaTime()                                                        // обновляем дельту времени
+void Game::updateDeltaTime()                                                        // РѕР±РЅРѕРІР»СЏРµРј РґРµР»СЊС‚Сѓ РІСЂРµРјРµРЅРё
 {
-    S::dtime = this->m_clock.restart().asMilliseconds();                            // обновляем как милисекунды
+    S::dtime = this->m_clock.restart().asMilliseconds();                            // РѕР±РЅРѕРІР»СЏРµРј РєР°Рє РјРёР»РёСЃРµРєСѓРЅРґС‹
 }
 
-void Game::updateSFMLevents()                                                        // обвноялем события SFML
+void Game::updateSFMLevents()                                                        // РѕР±РІРЅРѕСЏР»РµРј СЃРѕР±С‹С‚РёСЏ SFML
 {
-    while (this->window->pollEvent(S::sfmlEvent))                                    // пока крутится окно
+    while (this->window->pollEvent(S::sfmlEvent))                                    // РїРѕРєР° РєСЂСѓС‚РёС‚СЃСЏ РѕРєРЅРѕ
     {
-		if (S::sfmlEvent.type == sf::Event::Closed)                                  // если событие закрыть окно
-			this->window->close();                                                   // закрываем окно
-		if (!this->states.empty())                                                   // если в стеке есть стейты
+		if (S::sfmlEvent.type == sf::Event::Closed)                                  // РµСЃР»Рё СЃРѕР±С‹С‚РёРµ Р·Р°РєСЂС‹С‚СЊ РѕРєРЅРѕ
+			this->window->close();                                                   // Р·Р°РєСЂС‹РІР°РµРј РѕРєРЅРѕ
+		if (!this->states.empty())                                                   // РµСЃР»Рё РІ СЃС‚РµРєРµ РµСЃС‚СЊ СЃС‚РµР№С‚С‹
 		{
-			this->states.top()->updateEvents();                                      // обновляем события sfml в активном стейте
+			this->states.top()->updateEvents();                                      // РѕР±РЅРѕРІР»СЏРµРј СЃРѕР±С‹С‚РёСЏ sfml РІ Р°РєС‚РёРІРЅРѕРј СЃС‚РµР№С‚Рµ
 		}
     }
 }
 
 void Game::update()
 {
-    updateSFMLevents();                                                             // обновляем события sfml
-    if (!this->states.empty())                                                      // если в стеке есть стейты
+    updateSFMLevents();                                                             // РѕР±РЅРѕРІР»СЏРµРј СЃРѕР±С‹С‚РёСЏ sfml
+    if (!this->states.empty())                                                      // РµСЃР»Рё РІ СЃС‚РµРєРµ РµСЃС‚СЊ СЃС‚РµР№С‚С‹
     {
-        if (this->window->hasFocus()) {                                             // если окно в фокусе
-            this->states.top()->update(S::dtime);                                   // обновляем логику активного стейта
-            if (this->states.top()->getQuit())                                      // если выходим из активного стейта
+        if (this->window->hasFocus()) {                                             // РµСЃР»Рё РѕРєРЅРѕ РІ С„РѕРєСѓСЃРµ
+            this->states.top()->update(S::dtime);                                   // РѕР±РЅРѕРІР»СЏРµРј Р»РѕРіРёРєСѓ Р°РєС‚РёРІРЅРѕРіРѕ СЃС‚РµР№С‚Р°
+            if (this->states.top()->getQuit())                                      // РµСЃР»Рё РІС‹С…РѕРґРёРј РёР· Р°РєС‚РёРІРЅРѕРіРѕ СЃС‚РµР№С‚Р°
             {
-                this->states.top()->endState();                                     // завершаем активный стейт в стеке
-                delete this->states.top();                                          // очичаем от стейта память
-                this->states.pop();                                                 // предпоследний стейт становится активным
+                this->states.top()->endState();                                     // Р·Р°РІРµСЂС€Р°РµРј Р°РєС‚РёРІРЅС‹Р№ СЃС‚РµР№С‚ РІ СЃС‚РµРєРµ
+                delete this->states.top();                                          // РѕС‡РёС‡Р°РµРј РѕС‚ СЃС‚РµР№С‚Р° РїР°РјСЏС‚СЊ
+                this->states.pop();                                                 // РїСЂРµРґРїРѕСЃР»РµРґРЅРёР№ СЃС‚РµР№С‚ СЃС‚Р°РЅРѕРІРёС‚СЃСЏ Р°РєС‚РёРІРЅС‹Рј
             }
         }
     }
     else
     {
-        this->endApplication();                                                     // вывод проверки на закрытие окна
-        this->window->close();                                                      // закрываем окно приложения
+        this->endApplication();                                                     // РІС‹РІРѕРґ РїСЂРѕРІРµСЂРєРё РЅР° Р·Р°РєСЂС‹С‚РёРµ РѕРєРЅР°
+        this->window->close();                                                      // Р·Р°РєСЂС‹РІР°РµРј РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ
     }
 }
 
-void Game::render()                                                                  // отрисовка
+void Game::render()                                                                  // РѕС‚СЂРёСЃРѕРІРєР°
 {
-    this->window->clear(sf::Color(63, 72, 204));                                     // очистка экрана в синеватый цвет (63,72,204)
-    if (!this->states.empty())                                                       // если в стеке есть стейты
-        this->states.top()->render();                                                // отрисовка активного стейта
-    this->window->display();                                                         // выовд на экран
+    this->window->clear(sf::Color(63, 72, 204));                                     // РѕС‡РёСЃС‚РєР° СЌРєСЂР°РЅР° РІ СЃРёРЅРµРІР°С‚С‹Р№ С†РІРµС‚ (63,72,204)
+    if (!this->states.empty())                                                       // РµСЃР»Рё РІ СЃС‚РµРєРµ РµСЃС‚СЊ СЃС‚РµР№С‚С‹
+        this->states.top()->render();                                                // РѕС‚СЂРёСЃРѕРІРєР° Р°РєС‚РёРІРЅРѕРіРѕ СЃС‚РµР№С‚Р°
+    this->window->display();                                                         // РІС‹РѕРІРґ РЅР° СЌРєСЂР°РЅ
 }
 
-void Game::run()                                                                     // запуск приложения
+void Game::run()                                                                     // Р·Р°РїСѓСЃРє РїСЂРёР»РѕР¶РµРЅРёСЏ
 {
-    while (this->window->isOpen())                                                   // пока окно приложения открыто
+    while (this->window->isOpen())                                                   // РїРѕРєР° РѕРєРЅРѕ РїСЂРёР»РѕР¶РµРЅРёСЏ РѕС‚РєСЂС‹С‚Рѕ
     {
-        updateDeltaTime();                                                           // обновление дельты времени
-        update();                                                                    // обновление логики
-        render();                                                                    // отрисовка
+        updateDeltaTime();                                                           // РѕР±РЅРѕРІР»РµРЅРёРµ РґРµР»СЊС‚С‹ РІСЂРµРјРµРЅРё
+        update();                                                                    // РѕР±РЅРѕРІР»РµРЅРёРµ Р»РѕРіРёРєРё
+        render();                                                                    // РѕС‚СЂРёСЃРѕРІРєР°
     }
 }

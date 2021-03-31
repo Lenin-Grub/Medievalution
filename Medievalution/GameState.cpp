@@ -1,16 +1,16 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "GameState.h"
-
-void GameState::initView()				// установка камеры вида
+// Г®ГІ
+void GameState::initView()				// СѓСЃС‚Р°РЅРѕРІРєР° РєР°РјРµСЂС‹ РІРёРґР°
 {
 	S::view.setSize(sf::Vector2f(this->stateData->graphicSettings->resolution.width, this->stateData->graphicSettings->resolution.height));
 	S::view.setCenter(sf::Vector2f(this->stateData->graphicSettings->resolution.width / 2.f, this->stateData->graphicSettings->resolution.height / 2.f));
 }
 
-void GameState::initVariables()			// инициализация различных вещей
+void GameState::initVariables()			// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЂР°Р·Р»РёС‡РЅС‹С… РІРµС‰РµР№
 {
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
+	this->fpsText = S::СЃreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	map.reset(new Map(S::gridSize, S::mapSize, S::mapSize));
@@ -21,22 +21,22 @@ void GameState::initEntities()
 {
 }
 
-void GameState::initGUI()				//инициализация GUI
+void GameState::initGUI()				//РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ GUI
 {
 	this->buttons["EXIT"] =		new Button(this->window->getSize().x - 60, 10, 50, 50,								S::res.textureResources.useTexture("DOOR_EXIT"));
 	this->buttons["BUILD"] =	new Button(this->window->getSize().x - 60, this->window->getSize().y - 110, 50, 50, S::res.textureResources.useTexture("DIG_DUG"));
 	this->buttons["DESTROY"] =	new Button(this->window->getSize().x - 60, this->window->getSize().y - 60, 50, 50,	S::res.textureResources.useTexture("MINING"));
 }
 
-void GameState::updateGUI()				// обвноление GUI
+void GameState::updateGUI()				// РѕР±РІРЅРѕР»РµРЅРёРµ GUI
 {
-	for (auto& it : this->buttons)		// обновляем кнопку
+	for (auto& it : this->buttons)		// РѕР±РЅРѕРІР»СЏРµРј РєРЅРѕРїРєСѓ
 	{
 		it.second->update(S::mousePosWindow);
 	}
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	if (this->buttons["EXIT"]->isWidgetPressed()) {
-		this->endState(); cout << "Debug:: Вы вышли из игры" << endl;
+		this->endState(); cout << "Debug:: Р’С‹ РІС‹С€Р»Рё РёР· РёРіСЂС‹" << endl;
 	}
 	if (this->buttons["BUILD"]->isWidgetPressed()) {
 	}
@@ -54,7 +54,7 @@ void GameState::updateGUI()				// обвноление GUI
 	else if (S::input.isKeyReleased(Key::Num5))
 		type = 5;
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))							//добавляем и разрушаем тайлы на карте
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))							//РґРѕР±Р°РІР»СЏРµРј Рё СЂР°Р·СЂСѓС€Р°РµРј С‚Р°Р№Р»С‹ РЅР° РєР°СЂС‚Рµ
 	{
 		map->addTile(S::mousePosGrid.x, S::mousePosGrid.y,0,type);
 	}
@@ -64,7 +64,7 @@ void GameState::updateGUI()				// обвноление GUI
 	}
 }
 
-void GameState::renderGUI(sf::RenderTarget& target)								//рисуем кнопки
+void GameState::renderGUI(sf::RenderTarget& target)								//СЂРёСЃСѓРµРј РєРЅРѕРїРєРё
 {
 	for (auto& it : this->buttons)
 	{
@@ -86,13 +86,13 @@ void GameState::renderGUI(sf::RenderTarget& target)								//рисуем кнопки
 
 void GameState::updateView(const float& dtime)
 {
-	//движение камеры WASD
+	//РґРІРёР¶РµРЅРёРµ РєР°РјРµСЂС‹ WASD
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {S::view.move(-10 * dtime * 0.1f, 0); }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {S::view.move(10 * dtime * 0.1f, 0); }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {S::view.move(0, -10 * dtime * 0.1f); }
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {S::view.move(0, 10 * dtime * 0.1f); }
-	//движение камеры мышкой у края экрана
-	if (S::sfmlEvent.type != sf::Event::MouseLeft) // если курсор не покинул пределы окна
+	//РґРІРёР¶РµРЅРёРµ РєР°РјРµСЂС‹ РјС‹С€РєРѕР№ Сѓ РєСЂР°СЏ СЌРєСЂР°РЅР°
+	if (S::sfmlEvent.type != sf::Event::MouseLeft) // РµСЃР»Рё РєСѓСЂСЃРѕСЂ РЅРµ РїРѕРєРёРЅСѓР» РїСЂРµРґРµР»С‹ РѕРєРЅР°
 	{
 		if (S::mousePosWindow.x < 3) { S::view.move(-10 * dtime * 0.1f, 0); }
 		if (S::mousePosWindow.x > this->window->getSize().x - 3) { S::view.move(10 * dtime * 0.1f, 0); }
@@ -104,12 +104,12 @@ void GameState::updateView(const float& dtime)
 GameState::GameState(StateData* state_data)
 	:State(state_data)
 {
-	cout << "Debug:: Вы зашли в меню настроек" << endl;
-	this->initView();					// вид
-	this->initVariables();				// переменные
-	this->initEntities();				// сущности
-	this->initGUI();					// интерфейс
-	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
+	cout << "Debug:: Р’С‹ Р·Р°С€Р»Рё РІ РјРµРЅСЋ РЅР°СЃС‚СЂРѕРµРє" << endl;
+	this->initView();					// РІРёРґ
+	this->initVariables();				// РїРµСЂРµРјРµРЅРЅС‹Рµ
+	this->initEntities();				// СЃСѓС‰РЅРѕСЃС‚Рё
+	this->initGUI();					// РёРЅС‚РµСЂС„РµР№СЃ
+	this->updateEvents();				// СЂР°Р·РѕРІС‹Р№ РІС‹Р·РѕРІ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёР№ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРЅРѕРїРѕРє
 }
 
 GameState::~GameState()
@@ -124,7 +124,7 @@ GameState::~GameState()
 void GameState::updateEvents()
 {
 	this->updateGUI();
-	//зум камеры
+	//Р·СѓРј РєР°РјРµСЂС‹
 	if (S::sfmlEvent.type == sf::Event::MouseWheelScrolled)
 	{
 		if (S::sfmlEvent.mouseWheelScroll.delta > 0)
@@ -140,27 +140,27 @@ void GameState::updateEvents()
 	}
 }
 
-void GameState::update(const float& dtime)									//обновляем все
+void GameState::update(const float& dtime)									//РѕР±РЅРѕРІР»СЏРµРј РІСЃРµ
 {
 	this->updateMousePositions();
 	this->updateFPS();
 	this->updateView(dtime);
 }
 
-void GameState::render(sf::RenderTarget* target)							//рисуем все
+void GameState::render(sf::RenderTarget* target)							//СЂРёСЃСѓРµРј РІСЃРµ
 {
 	if (!target)
 		target = this->window.get();
 	//target->setView(S::view);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	//рисуем динамечсеие объекты
+	//СЂРёСЃСѓРµРј РґРёРЅР°РјРµС‡СЃРµРёРµ РѕР±СЉРµРєС‚С‹
 	map->render(*target);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	//рисуем статические объекты после установки дефолтной камеры (gui и тд)
+	//СЂРёСЃСѓРµРј СЃС‚Р°С‚РёС‡РµСЃРєРёРµ РѕР±СЉРµРєС‚С‹ РїРѕСЃР»Рµ СѓСЃС‚Р°РЅРѕРІРєРё РґРµС„РѕР»С‚РЅРѕР№ РєР°РјРµСЂС‹ (gui Рё С‚Рґ)
 	target->setView(this->window->getDefaultView());
 	this->renderGUI(*target);
 	target->draw(mouseText);
 	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
-	//возвращаем камеру вида игры
+	//РІРѕР·РІСЂР°С‰Р°РµРј РєР°РјРµСЂСѓ РІРёРґР° РёРіСЂС‹
 	target->setView(S::view);
 }

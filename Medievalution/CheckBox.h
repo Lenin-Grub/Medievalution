@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include "AbstracWidget.h"
 #include "Button.h"
-
+// Г®ГІ
 class CheckBox :
 	public AbstracWidget
 {
@@ -15,25 +15,25 @@ public:
 	};
     virtual ~CheckBox();
 
-	const bool isWidgetPressed() override;															// нажата ли кнопка?
+	const bool isWidgetPressed() override;															// РЅР°Р¶Р°С‚Р° Р»Рё РєРЅРѕРїРєР°?
 
-	const int getActive() const;														// возвращает активна ли кнопка
-	void setActive(bool isActive, sf::Texture& texture);											// устанавливает кнопку активной;
+	const int getActive() const;														// РІРѕР·РІСЂР°С‰Р°РµС‚ Р°РєС‚РёРІРЅР° Р»Рё РєРЅРѕРїРєР°
+	void setActive(bool isActive, sf::Texture& texture);											// СѓСЃС‚Р°РЅР°РІР»РёРІР°РµС‚ РєРЅРѕРїРєСѓ Р°РєС‚РёРІРЅРѕР№;
 
-	void update(const sf::Vector2i& mousePosWindow)	override;										// обновление
-	void render(sf::RenderTarget& target) override;													// отрисовка
+	void update(const sf::Vector2i& mousePosWindow)	override;										// РѕР±РЅРѕРІР»РµРЅРёРµ
+	void render(sf::RenderTarget& target) override;													// РѕС‚СЂРёСЃРѕРІРєР°
     
 private:
 	short unsigned buttonState;
 
-	bool isActive;							// активен ли список
+	bool isActive;							// Р°РєС‚РёРІРµРЅ Р»Рё СЃРїРёСЃРѕРє
 
-	sf::Color idleColor;					// цвет в состоянии "бездельник"
-	sf::Color hoverColor;					// цвет в состоянии "готово к нажатию"
-	sf::Color activeColor;					// цвет в состоянии "нажато"
+	sf::Color idleColor;					// С†РІРµС‚ РІ СЃРѕСЃС‚РѕСЏРЅРёРё "Р±РµР·РґРµР»СЊРЅРёРє"
+	sf::Color hoverColor;					// С†РІРµС‚ РІ СЃРѕСЃС‚РѕСЏРЅРёРё "РіРѕС‚РѕРІРѕ Рє РЅР°Р¶Р°С‚РёСЋ"
+	sf::Color activeColor;					// С†РІРµС‚ РІ СЃРѕСЃС‚РѕСЏРЅРёРё "РЅР°Р¶Р°С‚Рѕ"
 
-	sf::Color outLineIdleColor;				// обвокдка в состоянии "бездельник"
-	sf::Color outLineHoverColor;			// обвокдка в состоянии "готово к нажатию"
-	sf::Color outLineActiveColor;			// обвокдка в состоянии "нажато"
+	sf::Color outLineIdleColor;				// РѕР±РІРѕРєРґРєР° РІ СЃРѕСЃС‚РѕСЏРЅРёРё "Р±РµР·РґРµР»СЊРЅРёРє"
+	sf::Color outLineHoverColor;			// РѕР±РІРѕРєРґРєР° РІ СЃРѕСЃС‚РѕСЏРЅРёРё "РіРѕС‚РѕРІРѕ Рє РЅР°Р¶Р°С‚РёСЋ"
+	sf::Color outLineActiveColor;			// РѕР±РІРѕРєРґРєР° РІ СЃРѕСЃС‚РѕСЏРЅРёРё "РЅР°Р¶Р°С‚Рѕ"
 };
 

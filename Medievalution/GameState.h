@@ -1,40 +1,40 @@
-#pragma once
+п»ї#pragma once
 #include "State.h"
 #include "Button.h"
 #include "Map.h"
-
+// Г®ГІ
 
 
 class GameState :
     public State
 {
 private:
-	sf::Text mouseText;;												// координаты мыши
-	std::stringstream cords;											// координаты мыши вывод
+	sf::Text mouseText;;												// РєРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€Рё
+	std::stringstream cords;											// РєРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€Рё РІС‹РІРѕРґ
 
 	int type = 1;
 
-	bool isBuild = false;												// разрешено ли строительство
-	bool isBuldoze = false;												// разрешено ил разрушение
+	bool isBuild = false;												// СЂР°Р·СЂРµС€РµРЅРѕ Р»Рё СЃС‚СЂРѕРёС‚РµР»СЊСЃС‚РІРѕ
+	bool isBuldoze = false;												// СЂР°Р·СЂРµС€РµРЅРѕ РёР» СЂР°Р·СЂСѓС€РµРЅРёРµ
 
-	std::map<std::string, Button*> buttons;								// кнопки
-	std::shared_ptr	<Map> map;											// карта
+	std::map<std::string, Button*> buttons;								// РєРЅРѕРїРєРё
+	std::shared_ptr	<Map> map;											// РєР°СЂС‚Р°
 
-	void initView();													// инициализация камеры вида
-	void initVariables();												// инициализация чего-либо
-	void initEntities();												// инициализация сущностей
+	void initView();													// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР°РјРµСЂС‹ РІРёРґР°
+	void initVariables();												// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С‡РµРіРѕ-Р»РёР±Рѕ
+	void initEntities();												// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃСѓС‰РЅРѕСЃС‚РµР№
 
-	void initGUI();														// инизициализация кнопок
-	void updateGUI();													// обновление кнопок
-	void renderGUI(sf::RenderTarget& target);							// рендер кнопок
+	void initGUI();														// РёРЅРёР·РёС†РёР°Р»РёР·Р°С†РёСЏ РєРЅРѕРїРѕРє
+	void updateGUI();													// РѕР±РЅРѕРІР»РµРЅРёРµ РєРЅРѕРїРѕРє
+	void renderGUI(sf::RenderTarget& target);							// СЂРµРЅРґРµСЂ РєРЅРѕРїРѕРє
 
-	void updateView(const float& dtime);								// обновление камеры вида
+	void updateView(const float& dtime);								// РѕР±РЅРѕРІР»РµРЅРёРµ РєР°РјРµСЂС‹ РІРёРґР°
 
 public:
 	GameState(StateData* state_data);
 	virtual ~GameState();
 
 	void updateEvents();
-	void update(const float& dtime);									// обновление
-	void render(sf::RenderTarget* target = NULL);						// рендер
+	void update(const float& dtime);									// РѕР±РЅРѕРІР»РµРЅРёРµ
+	void render(sf::RenderTarget* target = NULL);						// СЂРµРЅРґРµСЂ
 };

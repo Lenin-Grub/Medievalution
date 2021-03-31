@@ -1,5 +1,5 @@
-#pragma once
-
+﻿#pragma once
+// îò
 namespace sf
 {
     class Font;

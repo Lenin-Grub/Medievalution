@@ -1,6 +1,6 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "CheckBox.h"
-
+// Г®ГІ
 CheckBox::~CheckBox()
 {
 }
@@ -25,11 +25,11 @@ void CheckBox::setActive(bool isActive, sf::Texture& texture)
 
 void CheckBox::update(const sf::Vector2i& mousePosWindow)
 {
-		if (this->shape.getGlobalBounds().contains(static_cast <sf::Vector2f> (mousePosWindow)) && (S::input.isMouseReleased(sf::Mouse::Left)))	// проверяем попали ли мышью по кнопке
+		if (this->shape.getGlobalBounds().contains(static_cast <sf::Vector2f> (mousePosWindow)) && (S::input.isMouseReleased(sf::Mouse::Left)))	// РїСЂРѕРІРµСЂСЏРµРј РїРѕРїР°Р»Рё Р»Рё РјС‹С€СЊСЋ РїРѕ РєРЅРѕРїРєРµ
 		{
 			if (this->isActive == false)
 			{
-				this->buttonState = WIDGET_IDLE;													// кнопка нажата
+				this->buttonState = WIDGET_IDLE;													// РєРЅРѕРїРєР° РЅР°Р¶Р°С‚Р°
 				this->isActive =!this->isActive;
 				cout << "idle " << this->getActive() << endl;
 			}
@@ -42,17 +42,17 @@ void CheckBox::update(const sf::Vector2i& mousePosWindow)
 		}
 
 
-	switch (this->buttonState)																	// проверка состояний кнопок
+	switch (this->buttonState)																	// РїСЂРѕРІРµСЂРєР° СЃРѕСЃС‚РѕСЏРЅРёР№ РєРЅРѕРїРѕРє
 	{
-	case WIDGET_IDLE:																			// кнопка-бездельник
+	case WIDGET_IDLE:																			// РєРЅРѕРїРєР°-Р±РµР·РґРµР»СЊРЅРёРє
 		this->shape.setFillColor(sf::Color::Green);
 		this->shape.setTexture(&S::res.textureResources.useTexture("THUMB_UP"));
 		break;
-	case WIDGET_ACTIVE:																			// кнопка нажата
+	case WIDGET_ACTIVE:																			// РєРЅРѕРїРєР° РЅР°Р¶Р°С‚Р°
 		this->shape.setFillColor(sf::Color::Red);
 		this->shape.setTexture(&S::res.textureResources.useTexture("THUMB_DOWN"));
 		break;
-	default:																					// если что-то пошло не так
+	default:																					// РµСЃР»Рё С‡С‚Рѕ-С‚Рѕ РїРѕС€Р»Рѕ РЅРµ С‚Р°Рє
 		this->shape.setFillColor(Color::Red);
 		break;
 	}

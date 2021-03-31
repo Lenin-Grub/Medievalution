@@ -1,5 +1,5 @@
-#pragma once
-
+п»ї#pragma once
+// Г®ГІ
 
 class Entity
 {
@@ -7,13 +7,13 @@ public:
 	Entity();
 	virtual ~Entity();
 
-	void addComponent();													// добавить компонент
-	void getComponent();													// получить компонент
-	void hasCompinent();													// есть ли компонент
+	void addComponent();													// РґРѕР±Р°РІРёС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚
+	void getComponent();													// РїРѕР»СѓС‡РёС‚СЊ РєРѕРјРїРѕРЅРµРЅС‚
+	void hasCompinent();													// РµСЃС‚СЊ Р»Рё РєРѕРјРїРѕРЅРµРЅС‚
 	
-	void initEntity();														// инициализация сущности
-	void updateEntity();													// обновление сущности
-	void renderEntity();													// отрисовка сущности
+	void initEntity();														// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃСѓС‰РЅРѕСЃС‚Рё
+	void updateEntity();													// РѕР±РЅРѕРІР»РµРЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё
+	void renderEntity();													// РѕС‚СЂРёСЃРѕРІРєР° СЃСѓС‰РЅРѕСЃС‚Рё
 
 private:
 };

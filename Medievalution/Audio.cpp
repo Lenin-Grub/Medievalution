@@ -1,6 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Audio.h"
-
+// îò
 sf::SoundBuffer& Sounds::useSound(const std::string& sound)
 {
 	return this->sounds.at(sound);

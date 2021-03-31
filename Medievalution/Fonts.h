@@ -1,12 +1,12 @@
-#pragma once
+п»ї#pragma once
 #include "Define.h"
-
-struct Fonts																	//шрифты
+// Г®ГІ
+struct Fonts																	//С€СЂРёС„С‚С‹
 {
-	sf::Font _font;																// Переменные типа шрифт, которые передают в текст в качестве аргумента
+	sf::Font _font;																// РџРµСЂРµРјРµРЅРЅС‹Рµ С‚РёРїР° С€СЂРёС„С‚, РєРѕС‚РѕСЂС‹Рµ РїРµСЂРµРґР°СЋС‚ РІ С‚РµРєСЃС‚ РІ РєР°С‡РµСЃС‚РІРµ Р°СЂРіСѓРјРµРЅС‚Р°
 
 
-	Fonts()																		//загрузка шрифта
+	Fonts()																		//Р·Р°РіСЂСѓР·РєР° С€СЂРёС„С‚Р°
 	{
 		if (!_font.loadFromFile("Resourses/Fonts/OpenSans-Semibold.ttf"))
 			cout << "ERROR: font not found!" << endl;

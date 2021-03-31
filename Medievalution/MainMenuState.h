@@ -1,32 +1,32 @@
-#pragma once
+п»ї#pragma once
 #include "State.h"
 #include "GraphicSettings.h"
 #include "Button.h"
 #include "GameState.h"
 #include "SettingsState.h"
-
+// Г®ГІ
 class MainMenuState :
 	public State
 {
 private:
-	sf::Text version_text;												// текст версии
-	sf::Text mouseCordsText;											// координаты мыши
-	std::stringstream cords;											// координаты мыши вывод
+	sf::Text version_text;												// С‚РµРєСЃС‚ РІРµСЂСЃРёРё
+	sf::Text mouseCordsText;											// РєРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€Рё
+	std::stringstream cords;											// РєРѕРѕСЂРґРёРЅР°С‚С‹ РјС‹С€Рё РІС‹РІРѕРґ
 
-	std::map<std::string, Button*> buttons;								// кнопки
+	std::map<std::string, Button*> buttons;								// РєРЅРѕРїРєРё
 
-	void initView();													// инициализация камеры вида
-	void initVariables();												//инициализация чего-либо
+	void initView();													// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР°РјРµСЂС‹ РІРёРґР°
+	void initVariables();												//РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ С‡РµРіРѕ-Р»РёР±Рѕ
 
-	void initGUI();														// инизициализация кнопок
-	void updateGUI();													// обновление кнопок
-	void renderGUI(sf::RenderTarget& target);							// рендер кнопок
+	void initGUI();														// РёРЅРёР·РёС†РёР°Р»РёР·Р°С†РёСЏ РєРЅРѕРїРѕРє
+	void updateGUI();													// РѕР±РЅРѕРІР»РµРЅРёРµ РєРЅРѕРїРѕРє
+	void renderGUI(sf::RenderTarget& target);							// СЂРµРЅРґРµСЂ РєРЅРѕРїРѕРє
 
 public:
 	MainMenuState(StateData* state_data);
 	virtual ~MainMenuState();
 
 	void updateEvents();
-	void update(const float& dtime);									// обновление
-	void render(sf::RenderTarget* target = NULL);						// рендер
+	void update(const float& dtime);									// РѕР±РЅРѕРІР»РµРЅРёРµ
+	void render(sf::RenderTarget* target = NULL);						// СЂРµРЅРґРµСЂ
 };

@@ -1,6 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "State.h"
-
+// îò
 State::State(StateData* state_data)
 {
 	this->stateData = state_data;
