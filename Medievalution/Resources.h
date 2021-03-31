@@ -1,12 +1,12 @@
-#pragma once
+п»ї#pragma once
 #include "Textures.h"
 #include "Audio.h"
-
-class Resources									// буферный класс для удобной загрузки сюда ресурсов
+// Г®ГІ
+class Resources									// Р±СѓС„РµСЂРЅС‹Р№ РєР»Р°СЃСЃ РґР»СЏ СѓРґРѕР±РЅРѕР№ Р·Р°РіСЂСѓР·РєРё СЃСЋРґР° СЂРµСЃСѓСЂСЃРѕРІ
 {
 public:
-	Textures textureResources;					// текстуры
-	Sounds	 soundResources;					// звки
+	Textures textureResources;					// С‚РµРєСЃС‚СѓСЂС‹
+	Sounds	 soundResources;					// Р·РІРєРё
 
 	Resources();
 	virtual ~Resources();

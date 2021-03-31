@@ -1,41 +1,41 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "SettingsState.h"
-
-void SettingsState::initView()				// установка камеры вида
+// Г®ГІ
+void SettingsState::initView()				// СѓСЃС‚Р°РЅРѕРІРєР° РєР°РјРµСЂС‹ РІРёРґР°
 {
 	S::view.setSize(sf::Vector2f(this->stateData->graphicSettings->resolution.width, this->stateData->graphicSettings->resolution.height));
 	S::view.setCenter(sf::Vector2f(this->stateData->graphicSettings->resolution.width / 2.f, this->stateData->graphicSettings->resolution.height / 2.f));
 }
 
-void SettingsState::initVariables()			// инициализация различных вещей
+void SettingsState::initVariables()			// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЂР°Р·Р»РёС‡РЅС‹С… РІРµС‰РµР№
 {
 	//fps
-	this->fpsText = S::сreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
+	this->fpsText = S::СЃreateText(v2f(), 16, "FPS: " + to_string(fps_counter), S::fonts._font, sf::Color::Black);
 	this->fpsText.setPosition(v2f(this->fpsText.getGlobalBounds().width + 160, this->fpsText.getGlobalBounds().height / 2));
-	//версия
-	version_text = S::сreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
+	//РІРµСЂСЃРёСЏ
+	version_text = S::СЃreateText(v2f(this->window->getSize().x - 100, this->window->getSize().y - 35), 14, "prototype\n18.03.2021", S::fonts._font, Color(255, 255, 255, 100));
 }
 
-void SettingsState::initGUI()				//инициализация GUI
+void SettingsState::initGUI()				//РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ GUI
 {
-	this->buttons["APPLAY"] = new Button(this->window->getSize().x - 110, this->window->getSize().y - 110, 100, 50, L"Принять", 12, S::fonts._font);
-	this->buttons["EXIT"] = new Button(this->window->getSize().x - 110, this->window->getSize().y- 60, 100, 50, L"Выход", 12, S::fonts._font);
+	this->buttons["APPLAY"] = new Button(this->window->getSize().x - 110, this->window->getSize().y - 110, 100, 50, L"РџСЂРёРЅСЏС‚СЊ", 12, S::fonts._font);
+	this->buttons["EXIT"] = new Button(this->window->getSize().x - 110, this->window->getSize().y- 60, 100, 50, L"Р’С‹С…РѕРґ", 12, S::fonts._font);
 
 	this->checkboxs["test"] = new CheckBox(this->window->getSize().x/2,this->window->getSize().y/2,50,50, S::res.textureResources.useTexture("THUMB_DOWN"));
 }
 
-void SettingsState::updateGUI()				// обвноление GUI
+void SettingsState::updateGUI()				// РѕР±РІРЅРѕР»РµРЅРёРµ GUI
 {
-	for (auto& it : this->buttons)			// обновляем кнопку
+	for (auto& it : this->buttons)			// РѕР±РЅРѕРІР»СЏРµРј РєРЅРѕРїРєСѓ
 	{
 		it.second->update(S::mousePosWindow);
 	}
-	if (this->buttons["APPLAY"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(0); S::audio.sounds.playSound();*/ cout<<"Debug:: Настройки изменены"<<endl; }
-	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/ this->endState(); cout << "Debug:: Вы вышли из меню настроек" << endl; }
+	if (this->buttons["APPLAY"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(0); S::audio.sounds.playSound();*/ cout<<"Debug:: РќР°СЃС‚СЂРѕР№РєРё РёР·РјРµРЅРµРЅС‹"<<endl; }
+	if (this->buttons["EXIT"]->isWidgetPressed()) { /*S::audio.sounds.setSounds(1); S::audio.sounds.playSound();*/ this->endState(); cout << "Debug:: Р’С‹ РІС‹С€Р»Рё РёР· РјРµРЅСЋ РЅР°СЃС‚СЂРѕРµРє" << endl; }
 	this->checkboxs["test"]->update(S::mousePosWindow);
 }
 
-void SettingsState::renderGUI(sf::RenderTarget& target)		//рисуем кнопки
+void SettingsState::renderGUI(sf::RenderTarget& target)		//СЂРёСЃСѓРµРј РєРЅРѕРїРєРё
 {
 	for (auto& it : this->buttons)
 	{
@@ -47,11 +47,11 @@ void SettingsState::renderGUI(sf::RenderTarget& target)		//рисуем кнопки
 SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {
-	cout << "Debug:: Вы зашли в меню настроек" << endl;
-	this->initView();					// вид
-	this->initVariables();				// переменные
-	this->initGUI();					// интерфейс
-	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
+	cout << "Debug:: Р’С‹ Р·Р°С€Р»Рё РІ РјРµРЅСЋ РЅР°СЃС‚СЂРѕРµРє" << endl;
+	this->initView();					// РІРёРґ
+	this->initVariables();				// РїРµСЂРµРјРµРЅРЅС‹Рµ
+	this->initGUI();					// РёРЅС‚РµСЂС„РµР№СЃ
+	this->updateEvents();				// СЂР°Р·РѕРІС‹Р№ РІС‹Р·РѕРІ РѕР±РЅРѕРІР»РµРЅРёСЏ СЃРѕР±С‹С‚РёР№ РґР»СЏ РєРѕСЂСЂРµРєС‚РЅРѕРіРѕ РѕС‚РѕР±СЂР°Р¶РµРЅРёСЏ РєРЅРѕРїРѕРє
 }
 
 SettingsState::~SettingsState()
@@ -64,21 +64,21 @@ void SettingsState::updateEvents()
 	this->updateGUI();
 }
 
-void SettingsState::update(const float& dtime)									//обновляем все
+void SettingsState::update(const float& dtime)									//РѕР±РЅРѕРІР»СЏРµРј РІСЃРµ
 {
 	this->updateMousePositions();
 	this->updateFPS();
 }
 
-void SettingsState::render(sf::RenderTarget* target)							//рисуем все
+void SettingsState::render(sf::RenderTarget* target)							//СЂРёСЃСѓРµРј РІСЃРµ
 {
 	if (!target)
 		target = this->window.get();
 
-	target->setView(S::view);													// установлена камера вида
+	target->setView(S::view);													// СѓСЃС‚Р°РЅРѕРІР»РµРЅР° РєР°РјРµСЂР° РІРёРґР°
 	this->renderGUI(*target);
 	target->draw(this->fpsText);												// fps
-	target->draw(this->version_text);											// версия
+	target->draw(this->version_text);											// РІРµСЂСЃРёСЏ
 
-	target->draw(this->mouseCordsText);											// координаты
+	target->draw(this->mouseCordsText);											// РєРѕРѕСЂРґРёРЅР°С‚С‹
 }

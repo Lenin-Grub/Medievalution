@@ -1,5 +1,5 @@
-#pragma once
-
+п»ї#pragma once
+// Г®ГІ
 
 class EntityManager
 {
@@ -7,14 +7,14 @@ public:
 	EntityManager();
 	virtual ~EntityManager();
 
-	void addEntity();															// добавить сущность
-	void findEntity();															// найти сущность
-	void findEachEntties();														// найти каждую сущность
-	void destroyEntity();														// уничтожить сущность
+	void addEntity();															// РґРѕР±Р°РІРёС‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ
+	void findEntity();															// РЅР°Р№С‚Рё СЃСѓС‰РЅРѕСЃС‚СЊ
+	void findEachEntties();														// РЅР°Р№С‚Рё РєР°Р¶РґСѓСЋ СЃСѓС‰РЅРѕСЃС‚СЊ
+	void destroyEntity();														// СѓРЅРёС‡С‚РѕР¶РёС‚СЊ СЃСѓС‰РЅРѕСЃС‚СЊ
 
-	void initEntity();															// инициализация сущности
-	void updateEntity();														// обновление сущности
-	void renderEntity();														// отрисовка сущности
+	void initEntity();															// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ СЃСѓС‰РЅРѕСЃС‚Рё
+	void updateEntity();														// РѕР±РЅРѕРІР»РµРЅРёРµ СЃСѓС‰РЅРѕСЃС‚Рё
+	void renderEntity();														// РѕС‚СЂРёСЃРѕРІРєР° СЃСѓС‰РЅРѕСЃС‚Рё
 
 private:
 };

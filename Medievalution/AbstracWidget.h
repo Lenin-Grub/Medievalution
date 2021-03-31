@@ -1,7 +1,7 @@
-#pragma once
+п»ї#pragma once
 #include "System.h"
 #include "Enums.h"
-
+// Г®ГІ
 class AbstracWidget :
 	public S
 {
@@ -11,8 +11,8 @@ public:
 	AbstracWidget(const Shape& shape) {};
 	virtual ~AbstracWidget() = default;
 
-	virtual const bool isWidgetPressed() { return false; };												// проверка на нажатие
+	virtual const bool isWidgetPressed() { return false; };												// РїСЂРѕРІРµСЂРєР° РЅР° РЅР°Р¶Р°С‚РёРµ
 
-	virtual void update(const sf::Vector2i& mousePosWindow) {};								// обновление
-	virtual void render(sf::RenderTarget& target) { target.draw(shape); }					// отрисовка
+	virtual void update(const sf::Vector2i& mousePosWindow) {};								// РѕР±РЅРѕРІР»РµРЅРёРµ
+	virtual void render(sf::RenderTarget& target) { target.draw(shape); }					// РѕС‚СЂРёСЃРѕРІРєР°
 };

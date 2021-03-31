@@ -1,6 +1,6 @@
-#pragma once
+п»ї#pragma once
 #include "stdafx.h"
-
+// Г®ГІ
 
 #define PI  3.141590					
 #define DEG 57.29582
@@ -28,12 +28,12 @@ using std::ifstream;
 using std::ofstream;
 using std::thread;
 
-typedef unsigned int uint;					// размер
+typedef unsigned int uint;					// СЂР°Р·РјРµСЂ
 typedef sf::Vector2i v2i;					// v2i
 typedef sf::Vector2f v2f;					// v2f
 typedef sf::Vector2u v2u;					// v2u
-typedef sf::Keyboard Key;					// клавиша
-typedef sf::RectangleShape Shape;			// фигура
-typedef sf::Texture Img;					// изображение
-typedef sf::Color Color;					// цвет
-typedef sf::Sound Sound;					// звук
+typedef sf::Keyboard Key;					// РєР»Р°РІРёС€Р°
+typedef sf::RectangleShape Shape;			// С„РёРіСѓСЂР°
+typedef sf::Texture Img;					// РёР·РѕР±СЂР°Р¶РµРЅРёРµ
+typedef sf::Color Color;					// С†РІРµС‚
+typedef sf::Sound Sound;					// Р·РІСѓРє

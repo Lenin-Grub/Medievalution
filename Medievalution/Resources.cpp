@@ -1,37 +1,37 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Resources.h"
-
+// Г®ГІ
 Resources::Resources()
 {
 	// textureResources.loadTexture("NAME",	"Icons/----");
 
-	//иконки
-	textureResources.loadTexture("DOOR_EXIT",	"Icons/exit-door.png");						// иконка выхода
-	textureResources.loadTexture("DOOR_ENTER",	"Icons/entry-door.png");					// иконка входа
-	textureResources.loadTexture("DIG_DUG",		"Icons/dig-dug.png");						// копать
-	textureResources.loadTexture("MINING",		"Icons/mining.png");						// шахта
-	textureResources.loadTexture("THUMB_DOWN",	"Icons/thumb-down.png");					// палец вниз
-	textureResources.loadTexture("THUMB_UP",	"Icons/thumb-up.png");						// палец вверх
-	textureResources.loadTexture("PAUSE",		"Icons/pause-button.png");					// пауза
-	textureResources.loadTexture("PLAY",		"Icons/play-button.png");					// продолжить
+	//РёРєРѕРЅРєРё
+	textureResources.loadTexture("DOOR_EXIT",	"Icons/exit-door.png");						// РёРєРѕРЅРєР° РІС‹С…РѕРґР°
+	textureResources.loadTexture("DOOR_ENTER",	"Icons/entry-door.png");					// РёРєРѕРЅРєР° РІС…РѕРґР°
+	textureResources.loadTexture("DIG_DUG",		"Icons/dig-dug.png");						// РєРѕРїР°С‚СЊ
+	textureResources.loadTexture("MINING",		"Icons/mining.png");						// С€Р°С…С‚Р°
+	textureResources.loadTexture("THUMB_DOWN",	"Icons/thumb-down.png");					// РїР°Р»РµС† РІРЅРёР·
+	textureResources.loadTexture("THUMB_UP",	"Icons/thumb-up.png");						// РїР°Р»РµС† РІРІРµСЂС…
+	textureResources.loadTexture("PAUSE",		"Icons/pause-button.png");					// РїР°СѓР·Р°
+	textureResources.loadTexture("PLAY",		"Icons/play-button.png");					// РїСЂРѕРґРѕР»Р¶РёС‚СЊ
 	
 	// textureResources.loadTexture("NAME",	"Tiles/----");
-	//тайлы		 
-	textureResources.loadTexture("WATER",		"Tiles/terrain0.png");						// вода
-	textureResources.loadTexture("SAND",		"Tiles/terrain1.png");						// песок
-	textureResources.loadTexture("DIRT",		"Tiles/terrain2.png");						// грязь
-	textureResources.loadTexture("GRASS",		"Tiles/terrain3.png");						// трава
-	textureResources.loadTexture("ROCK",		"Tiles/terrain4.png");						// скала
+	//С‚Р°Р№Р»С‹		 
+	textureResources.loadTexture("WATER",		"Tiles/terrain0.png");						// РІРѕРґР°
+	textureResources.loadTexture("SAND",		"Tiles/terrain1.png");						// РїРµСЃРѕРє
+	textureResources.loadTexture("DIRT",		"Tiles/terrain2.png");						// РіСЂСЏР·СЊ
+	textureResources.loadTexture("GRASS",		"Tiles/terrain3.png");						// С‚СЂР°РІР°
+	textureResources.loadTexture("ROCK",		"Tiles/terrain4.png");						// СЃРєР°Р»Р°
 
 	/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
 	
 	// soundResources.loadTexture("NAME",	"-----.wav");
-	// звуки
+	// Р·РІСѓРєРё
 
-	soundResources.loadSound("SOUND_CLICK",		"button_click_sound.wav");					// звук клик
-	soundResources.loadSound("SOUND_DESTROY",	"destroy_sound.wav");						// звук разрушения
-	soundResources.loadSound("SOUND_DIG",		"dig_sound.wav");							// звук копания
-	soundResources.loadSound("SOUND_EXIT",		"exit_sound.wav");							// звук закрытия двери
+	soundResources.loadSound("SOUND_CLICK",		"button_click_sound.wav");					// Р·РІСѓРє РєР»РёРє
+	soundResources.loadSound("SOUND_DESTROY",	"destroy_sound.wav");						// Р·РІСѓРє СЂР°Р·СЂСѓС€РµРЅРёСЏ
+	soundResources.loadSound("SOUND_DIG",		"dig_sound.wav");							// Р·РІСѓРє РєРѕРїР°РЅРёСЏ
+	soundResources.loadSound("SOUND_EXIT",		"exit_sound.wav");							// Р·РІСѓРє Р·Р°РєСЂС‹С‚РёСЏ РґРІРµСЂРё
 }				 
 
 Resources::~Resources()

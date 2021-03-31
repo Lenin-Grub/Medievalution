@@ -1,22 +1,22 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "System.h"
+// Г®ГІ
+sf::Event				S::sfmlEvent;					// СЃРѕР±С‹С‚РёСЏ sfml
+sf::View				S::view;						// РєР°РјРµСЂР° РІРёРґР°
+float					S::dtime;						// РІСЂРµРјСЏ
 
-sf::Event				S::sfmlEvent;					// события sfml
-sf::View				S::view;						// камера вида
-float					S::dtime;						// время
+Fonts					S::fonts;						// С€СЂРёС„С‚С‹
+Resources				S::res;							// СЂРµСЃСѓСЂСЃС‹ РёРіСЂС‹ (С‚РµРєСЃС‚СѓСЂС‹, Р·РІСѓРєРё, РјСѓР·С‹РєР°, С€СЂРёС„С‚С‹)
+Input					S::input;						// РЅР°Р¶Р°С‚РёСЏ РёРіСЂРѕРєР°
+sfe::RichText			S::rText;						// С†РІРµС‚РЅРѕР№ С‚РµРєСЃС‚
 
-Fonts					S::fonts;						// шрифты
-Resources				S::res;							// ресурсы игры (текстуры, звуки, музыка, шрифты)
-Input					S::input;						// нажатия игрока
-sfe::RichText			S::rText;						// цветной текст
+unsigned short int		S::gridSize = 32;				// СЂР°Р·РјРµСЂ СЃРµС‚РєРё РєР°СЂС‚С‹
+unsigned short int		S::mapSize = 50;				// СЂР°Р·РјРµСЂ РєР°СЂС‚С‹
 
-unsigned short int		S::gridSize = 32;				// размер сетки карты
-unsigned short int		S::mapSize = 50;				// размер карты
-
-sf::Vector2i			S::mousePosScreen;				// глобальное положение мыши на мониторе
-sf::Vector2i			S::mousePosWindow;				// положение мыши относительно окна приложения
-sf::Vector2f			S::mousePosView;				// положение мыши относительно камеры вида
-sf::Vector2u			S::mousePosGrid;				// положение мыши относительно сетки карты
+sf::Vector2i			S::mousePosScreen;				// РіР»РѕР±Р°Р»СЊРЅРѕРµ РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РЅР° РјРѕРЅРёС‚РѕСЂРµ
+sf::Vector2i			S::mousePosWindow;				// РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РѕРєРЅР° РїСЂРёР»РѕР¶РµРЅРёСЏ
+sf::Vector2f			S::mousePosView;				// РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РєР°РјРµСЂС‹ РІРёРґР°
+sf::Vector2u			S::mousePosGrid;				// РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СЃРµС‚РєРё РєР°СЂС‚С‹
 
 System::System()
 {

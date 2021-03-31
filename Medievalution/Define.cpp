@@ -1,26 +1,26 @@
-#include "stdafx.h"
+п»ї#include "stdafx.h"
 #include "Define.h"
+// Г®ГІ
 
-
-//перегрузка вывода v2f
+//РїРµСЂРµРіСЂСѓР·РєР° РІС‹РІРѕРґР° v2f
 std::ostream& operator << (std::ostream& out, const sf::Vector2f& p)
 {
 	out << "X: " << p.x << " | Y: " << p.y;
 	return out;
 }
-//перегрузка вывода v2i
+//РїРµСЂРµРіСЂСѓР·РєР° РІС‹РІРѕРґР° v2i
 std::ostream& operator << (std::ostream& out, const sf::Vector2i& p)
 {
 	out << "X: " << p.x << " | Y: " << p.y;
 	return out;
 }
-//перегрузка вывода v2u
+//РїРµСЂРµРіСЂСѓР·РєР° РІС‹РІРѕРґР° v2u
 std::ostream& operator << (std::ostream& out, const sf::Vector2u& p)
 {
 	out << "X: " << p.x << " | Y: " << p.y;
 	return out;
 }
-//перегрузка вывода объекта shape (координаты, размер, цвет RGB)
+//РїРµСЂРµРіСЂСѓР·РєР° РІС‹РІРѕРґР° РѕР±СЉРµРєС‚Р° shape (РєРѕРѕСЂРґРёРЅР°С‚С‹, СЂР°Р·РјРµСЂ, С†РІРµС‚ RGB)
 std::ostream& operator << (std::ostream& out, const Shape& s)
 {
 	out << "Position: " << s.getPosition() << std::endl;

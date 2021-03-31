@@ -1,6 +1,6 @@
-#pragma once
+﻿#pragma once
 #include "Define.h"
-
+// îò
 
 class Sounds
 {

@@ -1,16 +1,16 @@
-#pragma once
+п»ї#pragma once
 #include "Fonts.h"
 #include "Audio.h"
 #include "Resources.h"
 #include "Input.h"
 #include "RichText.h"
-
+// Г®ГІ
 class System
 {
 public:
 	/**************************************/
-	/*создание объекта Shape и перегрузки*/
-	static const Shape сreateShape(sf::Vector2f pos, sf::Vector2f siz, sf::Texture& png)						//v2f x.y, размер, текстура
+	/*СЃРѕР·РґР°РЅРёРµ РѕР±СЉРµРєС‚Р° Shape Рё РїРµСЂРµРіСЂСѓР·РєРё*/
+	static const Shape СЃreateShape(sf::Vector2f pos, sf::Vector2f siz, sf::Texture& png)						//v2f x.y, СЂР°Р·РјРµСЂ, С‚РµРєСЃС‚СѓСЂР°
 	{
 		Shape shp;
 		shp.setOrigin(siz / 2.f);
@@ -20,7 +20,7 @@ public:
 		return shp;
 	}
 
-	static const Shape сreateShape(sf::Vector2f pos, sf::Vector2f siz)											//v2f x.y, рамзер
+	static const Shape СЃreateShape(sf::Vector2f pos, sf::Vector2f siz)											//v2f x.y, СЂР°РјР·РµСЂ
 	{
 		Shape shp;
 		shp.setOrigin(siz / 2.f);
@@ -29,7 +29,7 @@ public:
 		return shp;
 	}
 
-	static const Shape сreateShape(sf::Vector2f pos, sf::Vector2f siz, sf::Color color)							//v2f x.y, размер, цвет
+	static const Shape СЃreateShape(sf::Vector2f pos, sf::Vector2f siz, sf::Color color)							//v2f x.y, СЂР°Р·РјРµСЂ, С†РІРµС‚
 	{
 		Shape shp;
 		shp.setSize(siz);
@@ -39,8 +39,8 @@ public:
 		return shp;
 	}
 
-	static const Shape сreateShape(sf::Vector2f pos, sf::Vector2f siz, float out_siz,
-		sf::Color color = sf::Color::White, sf::Color out_color = sf::Color::White)	//v2f x.y, размер, толщина обводки, цвет, цвет обводки(белый по-умолчанию)
+	static const Shape СЃreateShape(sf::Vector2f pos, sf::Vector2f siz, float out_siz,
+		sf::Color color = sf::Color::White, sf::Color out_color = sf::Color::White)	//v2f x.y, СЂР°Р·РјРµСЂ, С‚РѕР»С‰РёРЅР° РѕР±РІРѕРґРєРё, С†РІРµС‚, С†РІРµС‚ РѕР±РІРѕРґРєРё(Р±РµР»С‹Р№ РїРѕ-СѓРјРѕР»С‡Р°РЅРёСЋ)
 	{
 		Shape shp;
 		shp.setSize(siz);
@@ -53,8 +53,8 @@ public:
 	}
 
 	/********************************************************/
-	/*создание текста (позиция, размер, текст, шрифт, цвет)*/
-	static const sf::Text сreateText(v2f pos, uint siz, sf::String str, sf::Font& font, Color col)				//v2f x.y, размер, текст, шрифт, цвет
+	/*СЃРѕР·РґР°РЅРёРµ С‚РµРєСЃС‚Р° (РїРѕР·РёС†РёСЏ, СЂР°Р·РјРµСЂ, С‚РµРєСЃС‚, С€СЂРёС„С‚, С†РІРµС‚)*/
+	static const sf::Text СЃreateText(v2f pos, uint siz, sf::String str, sf::Font& font, Color col)				//v2f x.y, СЂР°Р·РјРµСЂ, С‚РµРєСЃС‚, С€СЂРёС„С‚, С†РІРµС‚
 	{
 		sf::Text text;
 		text.setFont(font);
@@ -66,39 +66,39 @@ public:
 		return text;
 	}
 
-	static void сenteringText(sf::Text& text)		//центрирование текста , использовать после инициализации текста в строке
+	static void СЃenteringText(sf::Text& text)		//С†РµРЅС‚СЂРёСЂРѕРІР°РЅРёРµ С‚РµРєСЃС‚Р° , РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РїРѕСЃР»Рµ РёРЅРёС†РёР°Р»РёР·Р°С†РёРё С‚РµРєСЃС‚Р° РІ СЃС‚СЂРѕРєРµ
 	{
 		text.setOrigin(text.getGlobalBounds().width / 2.f, text.getGlobalBounds().height / 1.5f);
 	}
 
 	/********************************************************/
-	static const sf::FloatRect getFieldofView()						//возвращает поле видимости камеры
+	static const sf::FloatRect getFieldofView()						//РІРѕР·РІСЂР°С‰Р°РµС‚ РїРѕР»Рµ РІРёРґРёРјРѕСЃС‚Рё РєР°РјРµСЂС‹
 	{
 		return sf::FloatRect(
-			view.getCenter().x - (view.getCenter().x / 2),			//верхний левый угол по х
-			view.getCenter().y - (view.getCenter().y / 2),			//верхний левый угол по у
-			view.getSize().x, view.getSize().y						//нижний правый угол по x,y
+			view.getCenter().x - (view.getCenter().x / 2),			//РІРµСЂС…РЅРёР№ Р»РµРІС‹Р№ СѓРіРѕР» РїРѕ С…
+			view.getCenter().y - (view.getCenter().y / 2),			//РІРµСЂС…РЅРёР№ Р»РµРІС‹Р№ СѓРіРѕР» РїРѕ Сѓ
+			view.getSize().x, view.getSize().y						//РЅРёР¶РЅРёР№ РїСЂР°РІС‹Р№ СѓРіРѕР» РїРѕ x,y
 		);
 	}
 
 
 public:
-	static sf::Event sfmlEvent;						// события sfml
-	static sf::View view;							// камера вида
-	static float dtime;								// время
+	static sf::Event sfmlEvent;						// СЃРѕР±С‹С‚РёСЏ sfml
+	static sf::View view;							// РєР°РјРµСЂР° РІРёРґР°
+	static float dtime;								// РІСЂРµРјСЏ
 
-	static Fonts fonts;								// шрифты
-	static Resources res;							// ресурсы
-	static Input input;								// нажатия
-	static sfe::RichText rText;						// цветной текст
+	static Fonts fonts;								// С€СЂРёС„С‚С‹
+	static Resources res;							// СЂРµСЃСѓСЂСЃС‹
+	static Input input;								// РЅР°Р¶Р°С‚РёСЏ
+	static sfe::RichText rText;						// С†РІРµС‚РЅРѕР№ С‚РµРєСЃС‚
 
-	static unsigned short int gridSize;				// размер сетки карты
-	static unsigned short int mapSize;				// размер карты
+	static unsigned short int gridSize;				// СЂР°Р·РјРµСЂ СЃРµС‚РєРё РєР°СЂС‚С‹
+	static unsigned short int mapSize;				// СЂР°Р·РјРµСЂ РєР°СЂС‚С‹
 
-	static sf::Vector2i mousePosScreen;				// глобальное положение мыши на мониторе
-	static sf::Vector2i mousePosWindow;				// положение мыши относительно окна приложения
-	static sf::Vector2f mousePosView;				// положение мыши относительно камеры вида
-	static sf::Vector2u mousePosGrid;				// полоэение мыши относительно сетки карты
+	static sf::Vector2i mousePosScreen;				// РіР»РѕР±Р°Р»СЊРЅРѕРµ РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РЅР° РјРѕРЅРёС‚РѕСЂРµ
+	static sf::Vector2i mousePosWindow;				// РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РѕРєРЅР° РїСЂРёР»РѕР¶РµРЅРёСЏ
+	static sf::Vector2f mousePosView;				// РїРѕР»РѕР¶РµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ РєР°РјРµСЂС‹ РІРёРґР°
+	static sf::Vector2u mousePosGrid;				// РїРѕР»РѕСЌРµРЅРёРµ РјС‹С€Рё РѕС‚РЅРѕСЃРёС‚РµР»СЊРЅРѕ СЃРµС‚РєРё РєР°СЂС‚С‹
 
 	System();
 };

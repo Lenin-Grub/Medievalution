@@ -1,34 +1,34 @@
-#pragma once
+п»ї#pragma once
 #include "Tile.h"
-
+// Г®ГІ
 class Map
 {
 public:
 	Map(float gridSize, unsigned width, unsigned height);
 	virtual ~Map();
 
-	void initMap();																							// инициализация карты
+	void initMap();																							// РёРЅРёС†РёР°Р»РёР·Р°С†РёСЏ РєР°СЂС‚С‹
 
 	//template <typename T>
 	//void newTile(T);
 
-	const int getTileType() const;																			// получить тип тайла
-	void setTileType(int tileType);																			// установить тип тайла
+	const int getTileType() const;																			// РїРѕР»СѓС‡РёС‚СЊ С‚РёРї С‚Р°Р№Р»Р°
+	void setTileType(int tileType);																			// СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С‚РёРї С‚Р°Р№Р»Р°
 
-	void addTile(const unsigned x, const unsigned y, const unsigned z, int tileType);						// добавить тайл
-	void removeTile(const unsigned x, const unsigned y, const unsigned z);									// удалить тайл
+	void addTile(const unsigned x, const unsigned y, const unsigned z, int tileType);						// РґРѕР±Р°РІРёС‚СЊ С‚Р°Р№Р»
+	void removeTile(const unsigned x, const unsigned y, const unsigned z);									// СѓРґР°Р»РёС‚СЊ С‚Р°Р№Р»
 
-	void update();																							// обновление карты
-	void render(sf::RenderTarget& target);																	// отрисовка карты
+	void update();																							// РѕР±РЅРѕРІР»РµРЅРёРµ РєР°СЂС‚С‹
+	void render(sf::RenderTarget& target);																	// РѕС‚СЂРёСЃРѕРІРєР° РєР°СЂС‚С‹
 protected:
-	int tileType;																							// тип тайла
+	int tileType;																							// С‚РёРї С‚Р°Р№Р»Р°
 //	std::vector<Tile> tile;
 private:
-	v2u maxSize;																							// карта размера
-	std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> map;										// карта (x,y,tile)
-	int gridSizeF;																							// размер сетки float
-	unsigned gridSizeU;																						// размер сетки unsigned
-	int layer = 1;																							// текущий слой
+	v2u maxSize;																							// РєР°СЂС‚Р° СЂР°Р·РјРµСЂР°
+	std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> map;										// РєР°СЂС‚Р° (x,y,tile)
+	int gridSizeF;																							// СЂР°Р·РјРµСЂ СЃРµС‚РєРё float
+	unsigned gridSizeU;																						// СЂР°Р·РјРµСЂ СЃРµС‚РєРё unsigned
+	int layer = 1;																							// С‚РµРєСѓС‰РёР№ СЃР»РѕР№
 
 	float x;
 	float y;

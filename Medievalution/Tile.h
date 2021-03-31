@@ -1,37 +1,37 @@
-#pragma once
+п»ї#pragma once
 #include "System.h"
 #include "Enums.h"
-
+// Г®ГІ
 
 class Tile
 {
 public:
 	Tile() {};
-	Tile(float x, float y, float tilesize, int tileType);											// pos (x,y),размер тайла, тип тайла
+	Tile(float x, float y, float tilesize, int tileType);											// pos (x,y),СЂР°Р·РјРµСЂ С‚Р°Р№Р»Р°, С‚РёРї С‚Р°Р№Р»Р°
 	virtual ~Tile() {};
 
-	virtual void newTile(float x, float y, float tilesize, int tileType);		// новый тайл
+	virtual void newTile(float x, float y, float tilesize, int tileType);		// РЅРѕРІС‹Р№ С‚Р°Р№Р»
 
-	virtual void		setTileSize(v2f size);														// установить размер тайла
-	const sf::Vector2f	getTileSize();																// вернуть размер тайла
+	virtual void		setTileSize(v2f size);														// СѓСЃС‚Р°РЅРѕРІРёС‚СЊ СЂР°Р·РјРµСЂ С‚Р°Р№Р»Р°
+	const sf::Vector2f	getTileSize();																// РІРµСЂРЅСѓС‚СЊ СЂР°Р·РјРµСЂ С‚Р°Р№Р»Р°
 
-	virtual void		setTilePosition(v2f pos);													// утсновить позицию тайла
-	const sf::Vector2f	getTilePosition() const;													// вернуть позицию тайла
+	virtual void		setTilePosition(v2f pos);													// СѓС‚СЃРЅРѕРІРёС‚СЊ РїРѕР·РёС†РёСЋ С‚Р°Р№Р»Р°
+	const sf::Vector2f	getTilePosition() const;													// РІРµСЂРЅСѓС‚СЊ РїРѕР·РёС†РёСЋ С‚Р°Р№Р»Р°
 
-	virtual void		setTileType(int tileType);													// утсновить тип тайла
-	const int			getTileType() const;														// вернуть тип тайла
+	virtual void		setTileType(int tileType);													// СѓС‚СЃРЅРѕРІРёС‚СЊ С‚РёРї С‚Р°Р№Р»Р°
+	const int			getTileType() const;														// РІРµСЂРЅСѓС‚СЊ С‚РёРї С‚Р°Р№Р»Р°
 
-	virtual void		setTileTexture(sf::Texture& texture);										// установить текстуру тайла
+	virtual void		setTileTexture(sf::Texture& texture);										// СѓСЃС‚Р°РЅРѕРІРёС‚СЊ С‚РµРєСЃС‚СѓСЂСѓ С‚Р°Р№Р»Р°
 
-	virtual void		initNeighbours();															// устанавливаем как регировать на соседей
-	virtual void		updateNeighbours();															// обновить соседей
+	virtual void		initNeighbours();															// СѓСЃС‚Р°РЅР°РІР»РёРІР°РµРј РєР°Рє СЂРµРіРёСЂРѕРІР°С‚СЊ РЅР° СЃРѕСЃРµРґРµР№
+	virtual void		updateNeighbours();															// РѕР±РЅРѕРІРёС‚СЊ СЃРѕСЃРµРґРµР№
 
-	virtual void		update();																	// обновить
-	virtual void		render(sf::RenderTarget& target);											// рендер
-	int tileType;																					// тип тайла
+	virtual void		update();																	// РѕР±РЅРѕРІРёС‚СЊ
+	virtual void		render(sf::RenderTarget& target);											// СЂРµРЅРґРµСЂ
+	int tileType;																					// С‚РёРї С‚Р°Р№Р»Р°
 
 protected:
 private:
-	sf::RectangleShape tile;																		// тайл
+	sf::RectangleShape tile;																		// С‚Р°Р№Р»
 };
 

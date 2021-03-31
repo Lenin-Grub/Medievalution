@@ -1,6 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "RichText.h"
-
+// îò
 namespace sfe
 {
 

@@ -1,6 +1,6 @@
-#include "stdafx.h"
+﻿#include "stdafx.h"
 #include "Map.h"
-
+// îò
 Map::Map(float gridSize, unsigned width, unsigned height)
 {
 	this->maxSize.x = width;
