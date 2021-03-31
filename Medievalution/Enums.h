@@ -1,16 +1,16 @@
-#pragma once
+п»ї#pragma once
 
-enum widget_states				// состояния виджетов
+enum widget_states				// СЃРѕСЃС‚РѕСЏРЅРёСЏ РІРёРґР¶РµС‚РѕРІ
 {
-	WIDGET_IDLE = 0,			// кнопка без действия	"бездельник"
-	WIDGET_ACTIVE,				// нажатая кнопка		"нажато"
-	WIDGET_HOVER,				// мышь над кнопкой		"готово к нажатию"
-	WIDGET_DISABLED,			// мышь не активна		"не доступна для нажатия"
+	WIDGET_IDLE = 0,			// РєРЅРѕРїРєР° Р±РµР· РґРµР№СЃС‚РІРёСЏ	"Р±РµР·РґРµР»СЊРЅРёРє"
+	WIDGET_ACTIVE,				// РЅР°Р¶Р°С‚Р°СЏ РєРЅРѕРїРєР°		"РЅР°Р¶Р°С‚Рѕ"
+	WIDGET_HOVER,				// РјС‹С€СЊ РЅР°Рґ РєРЅРѕРїРєРѕР№		"РіРѕС‚РѕРІРѕ Рє РЅР°Р¶Р°С‚РёСЋ"
+	WIDGET_DISABLED,			// РјС‹С€СЊ РЅРµ Р°РєС‚РёРІРЅР°		"РЅРµ РґРѕСЃС‚СѓРїРЅР° РґР»СЏ РЅР°Р¶Р°С‚РёСЏ"
 };
 
-enum tile_type					// тип тайла
+enum tile_type					// С‚РёРї С‚Р°Р№Р»Р°
 {
-	TILE_NONE	= 0,			// пустой тайл
+	TILE_NONE	= 0,			// РїСѓСЃС‚РѕР№ С‚Р°Р№Р»
 	TILE_WATER	= 1,					
 	TILE_SAND	= 2,					
 	TILE_GROUND	= 3,				
@@ -18,7 +18,7 @@ enum tile_type					// тип тайла
 	TILE_ROCK	= 5,					
 };
 
-enum connection : unsigned int	// соседи тайлов
+enum connection : unsigned int	// СЃРѕСЃРµРґРё С‚Р°Р№Р»РѕРІ
 {
 	center		= 0,
 	north		= 2,
@@ -29,4 +29,4 @@ enum connection : unsigned int	// соседи тайлов
 	north_east	= 12,
 	sout_west	= 14,
 	sout_east	= 16
-};
+};// Г®ГІ
