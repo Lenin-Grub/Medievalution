@@ -9,8 +9,7 @@ class GameState :
     public State
 {
 private:
-	sf::Text version_text;												// текст версии
-	sf::Text mouseCordsText;											// координаты мыши
+	sf::Text mouseText;;												// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
 
 	int type = 1;

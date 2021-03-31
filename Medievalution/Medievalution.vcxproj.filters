@@ -58,12 +58,6 @@
     <Filter Include="GUI\Widgets\CheckBox">
       <UniqueIdentifier>{f810844d-4951-4fcd-8776-3717be84e536}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Components">
-      <UniqueIdentifier>{893f44ec-4baa-484d-8dbc-39cb04498c1c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Entity">
-      <UniqueIdentifier>{8775ff55-cfc8-4040-acc1-d8bc6caf8db8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Core">
       <UniqueIdentifier>{3d72091b-6196-400e-a3c8-e25878d600ee}</UniqueIdentifier>
     </Filter>
@@ -78,6 +72,18 @@
     </Filter>
     <Filter Include="Game\Camera">
       <UniqueIdentifier>{ac91e7cd-9b6a-479e-adbd-25a893caec58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS">
+      <UniqueIdentifier>{11e0f8fe-e4e0-47f0-9db8-589384384927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Components">
+      <UniqueIdentifier>{893f44ec-4baa-484d-8dbc-39cb04498c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Systems">
+      <UniqueIdentifier>{4b52663b-38cf-46c6-a35a-7f9cfeb5128f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ECS\Entities">
+      <UniqueIdentifier>{8775ff55-cfc8-4040-acc1-d8bc6caf8db8}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -111,18 +117,6 @@
     <ClCompile Include="System.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="EntityManager.cpp">
-      <Filter>Entity</Filter>
-    </ClCompile>
-    <ClCompile Include="Component.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
-    <ClCompile Include="TransformComponent.cpp">
-      <Filter>Components</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
@@ -146,6 +140,12 @@
     </ClCompile>
     <ClCompile Include="Tile.cpp">
       <Filter>World\Tile</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>ECS\Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="EntityManager.cpp">
+      <Filter>ECS\Entities</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -197,20 +197,8 @@
     <ClInclude Include="Enums.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
-      <Filter>Components</Filter>
-    </ClInclude>
-    <ClInclude Include="Entity.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
-    <ClInclude Include="EntityManager.h">
-      <Filter>Entity</Filter>
-    </ClInclude>
     <ClInclude Include="resource.h">
       <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="TransformComponent.h">
-      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Input.h">
       <Filter>Core</Filter>
@@ -226,6 +214,15 @@
     </ClInclude>
     <ClInclude Include="RichText.h">
       <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Entity.h">
+      <Filter>ECS\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="EntityManager.h">
+      <Filter>ECS\Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>ECS\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

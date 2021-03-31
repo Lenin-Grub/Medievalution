@@ -1,7 +1,6 @@
 #pragma once
 #include "GraphicSettings.h"
 #include "System.h"
-#include "EntityManager.h"
 
 class GraphicSettings;
 class State;
@@ -33,8 +32,6 @@ protected:
 	sf::Text fpsText;													// вывод текста fps
 
 public:
-	EntityManager _entityManager;										// управление игровыми сущностями (игрок, враги и тд)
-
 	State(StateData* state_data);
 	virtual ~State();
 
@@ -42,8 +39,9 @@ public:
 	void endState();													// выход из состояния
 
 	virtual void updateMousePositions(sf::View* view = NULL);			// обновляем позиции мыши
-	virtual void updateEvents() = 0;									// обновляем события sfml
 	virtual void updateFPS();											// обновляем fps
+
+	virtual void updateEvents() = 0;									// обновляем события sfml
 	virtual void update(const float& dtime) = 0;						// обновление всей логики
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;		// отрисовка на экран
 };

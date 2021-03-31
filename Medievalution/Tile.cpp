@@ -6,42 +6,38 @@ Tile::Tile(float x, float y, float tilesize, int tileType)
 	this->tile.setPosition(v2f(x, y));
 	this->tile.setSize(v2f(tilesize, tilesize));
 	this->setTileType(tileType);
-	switch (this->tileType)
-	{
-	case TILE_NONE:										//ничего
-		break;
-	case TILE_WATER:									//вода
-		this->tile.setTexture(&S::res.textureResources.useTexture("WATER"));
-		break;
-	case TILE_SAND:										// песок
-
-		this->tile.setTexture(&S::res.textureResources.useTexture("SAND"));
-		break;
-	case TILE_GROUND:									// земля
-
-		this->tile.setTexture(&S::res.textureResources.useTexture("DIRT"));
-		break;
-	case TILE_GRASS:									// трава
-
-		this->tile.setTexture(&S::res.textureResources.useTexture("GRASS"));
-		break;
-	case TILE_ROCK:										// трава
-
-		this->tile.setTexture(&S::res.textureResources.useTexture("ROCK"));
-		break;
-	default:											// дефолтный
-		std::cerr << "tile type not found" << endl;
-		break;
-	}
-	cout << this->getTileType();
+	//cout << this->getTileType();
+		switch (this->tileType)
+{
+case TILE_NONE:										//ничего
+	break;
+case TILE_WATER:									//вода
+	tile.setTexture(&S::res.textureResources.useTexture("WATER"));
+	break;
+case TILE_SAND:										// песок
+	tile.setTexture(&S::res.textureResources.useTexture("SAND"));
+	break;
+case TILE_GROUND:									// земля
+	tile.setTexture(&S::res.textureResources.useTexture("DIRT"));
+	break;
+case TILE_GRASS:									// трава
+	tile.setTexture(&S::res.textureResources.useTexture("GRASS"));
+	break;
+case TILE_ROCK:										// трава
+	tile.setTexture(&S::res.textureResources.useTexture("ROCK"));
+	break;
+default:											// дефолтный
+	std::cerr << "tile type not found" << endl;
+	break;
+}
 }
 
-void Tile::newTile(float x, float y, float tilesize,  int tileType, sf::Texture& texture)
+void Tile::newTile(float x, float y, float tilesize,  int tileType)
 {
 	this->tileType = tileType;
 	this->tile.setPosition(v2f(x, y));
 	this->tile.setSize(v2f(tilesize, tilesize));
-	this->setTileTexture(texture);
+//	this->setTileTexture(texture);
 }
 
 void Tile::setTileSize(v2f size)
@@ -69,7 +65,7 @@ void Tile::setTileType(int tileType)
 	this->tileType = tileType;
 }
 
-const short unsigned int Tile::getTileType() const
+const int Tile::getTileType() const
 {
 	return this->tileType;
 }

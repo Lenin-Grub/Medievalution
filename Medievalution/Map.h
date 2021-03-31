@@ -7,6 +7,11 @@ public:
 	Map(float gridSize, unsigned width, unsigned height);
 	virtual ~Map();
 
+	void initMap();																							// инициализация карты
+
+	//template <typename T>
+	//void newTile(T);
+
 	const int getTileType() const;																			// получить тип тайла
 	void setTileType(int tileType);																			// установить тип тайла
 
@@ -15,11 +20,9 @@ public:
 
 	void update();																							// обновление карты
 	void render(sf::RenderTarget& target);																	// отрисовка карты
-
 protected:
 	int tileType;																							// тип тайла
-	//Tile tile;
-
+//	std::vector<Tile> tile;
 private:
 	v2u maxSize;																							// карта размера
 	std::vector<std::vector<std::vector<std::shared_ptr<Tile>>>> map;										// карта (x,y,tile)

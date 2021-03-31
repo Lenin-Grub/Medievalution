@@ -1,24 +1,21 @@
 #pragma once
-#include "Entity.h"
 
-class Entity;
 
 class EntityManager
 {
 public:
+	EntityManager();
+	virtual ~EntityManager();
 
-	using Entities = std::list<std::shared_ptr<Entity>>;// список сущеностей
+	void addEntity();															// добавить сущность
+	void findEntity();															// найти сущность
+	void findEachEntties();														// найти каждую сущность
+	void destroyEntity();														// уничтожить сущность
 
-	EntityManager() = default;
-	~EntityManager() = default;
-
-	std::shared_ptr<Entity> addEntity();				// добавить сущность
-
-	void init();										// инициализация
-	void update();										// обновление
-	void render();										// рендер
+	void initEntity();															// инициализация сущности
+	void updateEntity();														// обновление сущности
+	void renderEntity();														// отрисовка сущности
 
 private:
-	Entities _entities;									// список сущностей
 };
 

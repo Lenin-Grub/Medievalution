@@ -10,7 +10,7 @@ enum widget_states				// состояния виджетов
 
 enum tile_type					// тип тайла
 {
-	TILE_NONE	= 0,				// пустой тайл
+	TILE_NONE	= 0,			// пустой тайл
 	TILE_WATER	= 1,					
 	TILE_SAND	= 2,					
 	TILE_GROUND	= 3,				
