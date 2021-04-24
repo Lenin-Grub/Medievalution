@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "GraphicSettings.h"
 #include "System.h"
+
 // îò
 class GraphicSettings;
 class State;
@@ -32,6 +33,7 @@ protected:
 	sf::Text fpsText;													// вывод текста fps
 
 public:
+
 	State(StateData* state_data);
 	virtual ~State();
 

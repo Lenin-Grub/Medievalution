@@ -2,6 +2,8 @@
 #include "State.h"
 #include "Button.h"
 #include "CheckBox.h"
+#include "ECS.h"
+
 // îò
 class SettingsState :
     public State
@@ -10,10 +12,11 @@ private:
 	sf::Text version_text;												// текст версии
 	sf::Text mouseCordsText;											// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
-	
 
 	std::map <std::string, Button*> buttons;							// кнопки
 	std::map <std::string, CheckBox*> checkboxs;
+
+	ECS ecs;
 
 	void initView();													// инициализация камеры вида
 	void initVariables();												//инициализация чего-либо

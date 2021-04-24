@@ -1,5 +1,7 @@
 ﻿#include "stdafx.h"
 #include "SettingsState.h"
+#include "PositionComponent.h"
+#include "TransfromSystem.h"
 // îò
 void SettingsState::initView()				// установка камеры вида
 {
@@ -52,6 +54,12 @@ SettingsState::SettingsState(StateData* state_data)
 	this->initVariables();				// переменные
 	this->initGUI();					// интерфейс
 	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
+
+	ecs.addEntity()->addComponent<PositionComponent>("name");
+	ecs.initEntities();
+	
+	ecs.addSystem<TransfromSystem>();
+	ecs.initSystems();
 }
 
 SettingsState::~SettingsState()
@@ -68,6 +76,7 @@ void SettingsState::update(const float& dtime)									//обновляем вс
 {
 	this->updateMousePositions();
 	this->updateFPS();
+	ecs.updateSystems();
 }
 
 void SettingsState::render(sf::RenderTarget* target)							//рисуем все
