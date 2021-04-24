@@ -157,9 +157,10 @@
   <ItemGroup>
     <ClCompile Include="Audio.cpp" />
     <ClCompile Include="CheckBox.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="Define.cpp" />
+    <ClCompile Include="ECS.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="EntityManager.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="GraphicSettings.cpp" />
@@ -167,6 +168,7 @@
     <ClCompile Include="MainMenuState.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="Map.cpp" />
+    <ClCompile Include="PositionComponent.cpp" />
     <ClCompile Include="RichText.cpp" />
     <ClCompile Include="Resources.cpp" />
     <ClCompile Include="SettingsState.cpp" />
@@ -178,8 +180,10 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="System.cpp" />
+    <ClCompile Include="SystemBase.cpp" />
     <ClCompile Include="Textures.cpp" />
     <ClCompile Include="Tile.cpp" />
+    <ClCompile Include="TransfromSystem.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AbstracWidget.h" />
@@ -188,8 +192,8 @@
     <ClInclude Include="CheckBox.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Define.h" />
+    <ClInclude Include="ECS.h" />
     <ClInclude Include="Entity.h" />
-    <ClInclude Include="EntityManager.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="Fonts.h" />
     <ClInclude Include="Game.h" />
@@ -198,6 +202,7 @@
     <ClInclude Include="Input.h" />
     <ClInclude Include="MainMenuState.h" />
     <ClInclude Include="Map.h" />
+    <ClInclude Include="PositionComponent.h" />
     <ClInclude Include="RichText.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Resources.h" />
@@ -205,8 +210,10 @@
     <ClInclude Include="State.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="System.h" />
+    <ClInclude Include="SystemBase.h" />
     <ClInclude Include="Textures.h" />
     <ClInclude Include="Tile.h" />
+    <ClInclude Include="TransfromSystem.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Medievalution.rc" />

@@ -1,6 +1,7 @@
 ﻿#include "stdafx.h"
 #include "GameState.h"
 // îò
+
 void GameState::initView()				// установка камеры вида
 {
 	S::view.setSize(sf::Vector2f(this->stateData->graphicSettings->resolution.width, this->stateData->graphicSettings->resolution.height));
@@ -144,7 +145,6 @@ void GameState::update(const float& dtime)									//обновляем все
 {
 	this->updateMousePositions();
 	this->updateFPS();
-	this->updateView(dtime);
 }
 
 void GameState::render(sf::RenderTarget* target)							//рисуем все
