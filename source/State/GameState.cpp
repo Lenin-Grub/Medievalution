@@ -60,7 +60,6 @@ void GameState::updateImGui()
 
 	ImGui::TextColored(ImVec4(1, 1, 1, 0.5),"This is world map\n" "Use WSAD to move\n" "Use mouse wheel to scroll and zooming");
 	ImGui::Separator();
-	//ImGui::Text("FPS: %d", io.Framerate);
 	ImGui::TextColored(ImVec4(1,1,0,1),"Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	if (ImGui::IsMousePosValid())
 		ImGui::Text("Mouse Window Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);

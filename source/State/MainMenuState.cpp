@@ -29,16 +29,11 @@ void MainMenuState::updateImGui()
 	if (ImGui::Button("Game", ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new GameState(stateData));
-		//StateManager::addState(new GameState(stateData));
-		//states->push_back(new GameState(stateData));
-//		LOG_INFO("Count of state {}", states->size());
 	}
 
 	if (ImGui::Button("Settings", ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new SettingsState(stateData));
-//		states->push_back(new SettingsState(stateData));
-//		LOG_INFO("Count of state {}", states->size());
 	}
 
 	if (ImGui::Button("Exit", ImVec2(120, 0)))
@@ -49,7 +44,6 @@ void MainMenuState::updateImGui()
 
 
 	ImGuiIO& io = ImGui::GetIO();
-//	io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 13.0f, NULL, io.Fonts->GetGlyphRangesCyrillic());
 	ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
 	ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);

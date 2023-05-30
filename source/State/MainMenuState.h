@@ -1,8 +1,4 @@
 ﻿#pragma once
-//#include "../State/State.h"
-//#include "../Settings/WindowSettings.h"
-//#include "../State/GameState.h"
-//#include "../State/SettingsState.h"
 #include "StateManager.h"
 
 

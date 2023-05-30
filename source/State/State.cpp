@@ -11,9 +11,9 @@ State::State(StateData* state_data)
 	this->quit = false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// деструктор класса State
-State::~State() {}
+State::~State()
+{
+}
 
 //------------------------------------------------------------------------------------------------------------------------
 // проверка вышли ли из программы
@@ -36,4 +36,12 @@ void State::updateMousePositions(sf::View* view)
 	core::mousePosScreen = sf::Mouse::getPosition();																		
 	core::mousePosWindow = sf::Mouse::getPosition(*this->window);															
 	core::mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));							
+}
+
+StateData::StateData()
+{
+}
+
+StateData::~StateData()
+{
 }

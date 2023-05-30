@@ -12,8 +12,6 @@ private:
 	sf::Text mouseCordsText;											// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
 	int item_current = 0;
-	//int music_volume = 100;
-	//int sound_volume = 100;
 	bool play_music = true;
 	bool play_sound = true;
 //------------------------------------------------------------------------------------------------------------------------

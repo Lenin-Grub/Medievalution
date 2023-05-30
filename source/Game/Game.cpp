@@ -87,16 +87,16 @@ void Game::updateDeltaTime()
 // обвноялем события SFML
 void Game::updateSFMLevents()                                                        
 {
-    while (this->window->pollEvent(core::sfmlEvent))                                    // пока крутится окно
+    while (this->window->pollEvent(core::sfmlEvent))                                 // пока крутится окно
     {
 		ImGui::SFML::ProcessEvent(*window,core::sfmlEvent);
-		if (core::sfmlEvent.type == sf::Event::Closed)                                  // если событие закрыть окно
+		if (core::sfmlEvent.type == sf::Event::Closed)                               // если событие закрыть окно
 		{
 			this->window->close();                                                   // закрываем окно
 		}
-		if (!StateManager::getInstance().states.empty())                                                   // если в стеке есть стейты
+		if (!StateManager::getInstance().states.empty())                             // если в стеке есть стейты
 		{
-            StateManager::getInstance().states.back()->updateEvents();                                      // обновляем события sfml в активном стейте
+            StateManager::getInstance().states.back()->updateEvents();               // обновляем события sfml в активном стейте
 		}
     }
 }
@@ -142,9 +142,9 @@ void Game::update()
 void Game::render()                                                                 
 {
     this->window->clear(sf::Color(63, 72, 204));                                    // очистка экрана в синеватый цвет (63,72,204)
-	if (!StateManager::getInstance().states.empty())														// если в стеке есть стейты
+	if (!StateManager::getInstance().states.empty())								// если в стеке есть стейты
 	{
-        StateManager::getInstance().states.back()->render();												// отрисовка активного стейта
+        StateManager::getInstance().states.back()->render();						// отрисовка активного стейта
 	}
 	ImGui::SFML::Render(*window);
     this->window->display();														// выовд на экран

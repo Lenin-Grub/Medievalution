@@ -10,7 +10,8 @@ class State;
 class StateData															
 {
 public:
-	StateData() {};
+	StateData();
+	virtual ~StateData();
 
 	WindowSettings* graphicSettings;									// настройки окна приложения (размер, оконный режим и тд)
 	std::list<State*>* states;
