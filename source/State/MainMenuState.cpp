@@ -26,17 +26,17 @@ void MainMenuState::updateImGui()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	if (ImGui::Button("Game", ImVec2(120, 0)))
+	if (ImGui::Button(u8"Игра", ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new GameState(stateData));
 	}
 
-	if (ImGui::Button("Settings", ImVec2(120, 0)))
+	if (ImGui::Button(u8"Настройки", ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new SettingsState(stateData));
 	}
 
-	if (ImGui::Button("Exit", ImVec2(120, 0)))
+	if (ImGui::Button(u8"Выход", ImVec2(120, 0)))
 	{
 		endState();
 	}

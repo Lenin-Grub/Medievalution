@@ -46,7 +46,7 @@ void GameState::updateImGui()
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::ShowDemoWindow();
 	ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
-	if (ImGui::Button("Exit##toMainMenu"))
+	if (ImGui::Button(u8"Выход##toMainMenu"))
 	{
 		endState();
 	}
@@ -58,7 +58,7 @@ void GameState::updateImGui()
 	ImGui::SetNextWindowBgAlpha(0.55f); // Transparent background
 	ImGui::Begin("T", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
 
-	ImGui::TextColored(ImVec4(1, 1, 1, 0.5),"This is world map\n" "Use WSAD to move\n" "Use mouse wheel to scroll and zooming");
+	ImGui::TextColored(ImVec4(1, 1, 1, 0.5),u8"Это карта мира\n" "Используй WSAD для навигации\n" "Используй колесико для масштабирования\n" "Это окошко можно передвинуть ЛКМ");
 	ImGui::Separator();
 	ImGui::TextColored(ImVec4(1,1,0,1),"Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	if (ImGui::IsMousePosValid())
@@ -69,7 +69,7 @@ void GameState::updateImGui()
 	ImGui::Text("Province name: %s" , chr);
 	ImGui::Text("Province id: %d", _map.getProvinceID());
 	ImGui::Separator();
-	ImGui::SliderFloat("transperency", &_map.transperency,0.0f,1.0f);
+	ImGui::SliderFloat(u8"Прозрачность", &_map.transperency,0.0f,1.0f);
 	ImGui::End();
 }
 

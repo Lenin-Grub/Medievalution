@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Settings/WindowSettings.h"
 #include "../Core/Core.h"
+#include "../Resource/Font.h"
 
 //------------------------------------------------------------------------------------------------------------------------
 class WindowSettings;

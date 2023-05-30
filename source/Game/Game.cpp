@@ -55,6 +55,15 @@ void Game::initStates()
 {
     StateManager::getInstance().init();
 	ImGui::SFML::Init(*window);
+
+    //установка дефолтного шрифта в ImGui
+    // to do перенсти в отдельное место
+    ImGuiIO& io = ImGui::GetIO();
+    ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",20.f,NULL,io.Fonts->GetGlyphRangesCyrillic());
+    ImGui::SFML::UpdateFontTexture();
+    ImFont* font = io.Fonts->Fonts[1];
+    io.FontDefault = font;
+
     LOG_INFO ("Game started successful");
 }
 

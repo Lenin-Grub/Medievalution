@@ -122,7 +122,8 @@ void SettingsState::updateImGui()
 		int i = 1;
 		ImGui::SliderInt("Camera speed", &stateData->graphicSettings->camera_speed, 1, 100, "%d%%");
 	}
-
+	ImGui::Separator();
+	
 	if (ImGui::Button("Apllay"))
 		ImGui::OpenPopup("Applay?");
 
