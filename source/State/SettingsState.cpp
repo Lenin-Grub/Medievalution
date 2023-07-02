@@ -157,7 +157,7 @@ void SettingsState::updateImGui()
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
 			LOG_INFO("Settings changed");
-			this->stateData->graphicSettings->saveToFile("config/graphic_settings.ini");
+			this->stateData->graphicSettings->saveToFile("config/settings.json");
 			ImGui::CloseCurrentPopup(); 
 		}
 		ImGui::SetItemDefaultFocus();
