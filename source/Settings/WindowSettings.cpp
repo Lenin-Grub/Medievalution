@@ -5,15 +5,17 @@
 // если graphic_settings.ini не обнаружено, то будут приняты эти настройки
 WindowSettings::WindowSettings()																
 {
-	this->title = "Unitiolized";
-	this->resolution = sf::VideoMode::getDesktopMode();
-	this->fullscrean = false;
-	this->vertycalSync = false;
-	this->fps_limit = 0;
-	this->contextSettings.antialiasingLevel = 0;
-	this->videoModes = sf::VideoMode::getFullscreenModes();
-	this->music_volume = 100;
-	this->camera_speed = 1;
+	title = "Unitiolized";
+	resolution = sf::VideoMode::getDesktopMode();
+	fullscrean = false;
+	vertycalSync = false;
+	fps_limit = 0;
+	contextSettings.antialiasingLevel = 0;
+	videoModes = sf::VideoMode::getFullscreenModes();
+	music_volume = 100;
+	camera_speed = 1;
+	zoom_speed = 0;
+	language = "rus";
 	LOG_WARN("Window settings not found. Used default settings");
 }
 
@@ -21,31 +23,24 @@ WindowSettings::WindowSettings()
 // сохранение в /Config/graphic_settings.ini файл
 bool WindowSettings::saveToFile(const std::string path)
 {
-
-	json j{};
-	j["title"] = title;
-	j["resolution"] = resolution.width, resolution.height;
-	j["fullscrean"] = fullscrean;
-	j["fps_limit"] = fps_limit;
-	j["vertycalSync"] = contextSettings.antialiasingLevel;
-	j["music_volume"] = music_volume;
-	j["camera_speed"] = camera_speed;
-	auto s = j.dump();
-	std::cout << s << std::endl;
-
+	nlohmann::ordered_json j;
+	std::ofstream file("config/settings.json");
 	std::ofstream ofs(path);
 	if (ofs.is_open())
 	{
-		ofs << this->title << std::endl;														// название программы
-		ofs << this->resolution.width << " " << this->resolution.height << std::endl;			// расширение экрана. Первое значение ширина, второе-высота, между ними проебел, пример 1200 980
-		ofs << this->fullscrean << std::endl;													// полный экран или оконный режим?
-		ofs << this->fps_limit << std::endl;													// ограничение fps, по-умолчанию 120
-		ofs << this->vertycalSync << std::endl;													// вертикальная синхронизация, по-умолчанию выкл
-		ofs << this->contextSettings.antialiasingLevel << std::endl;							// антиалиасинг (сглаживание), по-умолчанию выкл
-		ofs << this->music_volume << std::endl;
-		ofs << this->camera_speed << std::endl;
+		//to do json ругается на синхронизацию, т.к. она int, а требуется bool
+		//j["vertycalSync"] = contextSettings.antialiasingLevel;
+		j["title"] = title;
+		j["resolution"] = { {"x" , resolution.width}, {"y",resolution.height} };
+		j["fullscrean"] = fullscrean;
+		j["fps_limit"] = fps_limit;
+		j["music_volume"] = music_volume;
+		j["camera_speed"] = camera_speed;
+		j["zoom_speed"] = zoom_speed;
+		j["language"] = language;
+		file << std::setw(4) << j;
 		ofs.close();
-		LOG_INFO ("Window settings saved successfully");
+		LOG_INFO("Window settings saved successfully");
 		return true;
 	}
 	return false;
@@ -55,18 +50,24 @@ bool WindowSettings::saveToFile(const std::string path)
 // загрузка из файла /Config/graphic_settings.ini
 bool WindowSettings::loadFromFIle(const std::string path)										
 {
+	nlohmann::json j;
 	std::ifstream ifs(path);
+	j = nlohmann::json::parse(ifs);
+	
 
 	if (ifs.is_open())
 	{
-		std::getline(ifs, this->title);															// название программы
-		ifs >> this->resolution.width >> this->resolution.height;								// расширение экрана. Первое значение ширина, второе-высота, между ними проебел, пример 1200 980
-		ifs >> this->fullscrean;																// полный экран или оконный режим?
-		ifs >> this->fps_limit;																	// ограничение fps, по-умолчанию 120
-		ifs >> this->vertycalSync;																// вертикальная синхронизация, по-умолчанию выкл
-		ifs >> this->contextSettings.antialiasingLevel;											// антиалиасинг (сглаживание), по-умолчанию выкл
-		ifs >> this->music_volume;
-		ifs >> this->camera_speed;
+		//to do json ругается на синхронизацию, т.к. она int, а требуется bool
+		//j["vertycalSync"].get_to(vertycalSync);
+		j["title"].get_to(title);
+		j["resolution"]["x"].get_to(resolution.width);
+		j["resolution"]["y"].get_to(resolution.height);
+		j["fullscrean"].get_to(fullscrean);
+		j["fps_limit"].get_to(fps_limit);
+		j["music_volume"].get_to(music_volume);
+		j["camera_speed"].get_to(camera_speed);
+		j["zoom_speed"].get_to(zoom_speed);
+		j["language"].get_to(language);
 		ifs.close();
 		LOG_INFO("Window settings loaded successfully");
 		return true;

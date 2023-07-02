@@ -19,17 +19,20 @@ public:
 	int fps_limit;															// лимит фпс
 	sf::ContextSettings contextSettings;									// настройки
 	std::vector<sf::VideoMode> videoModes;									// видео режимы
+	json j;
 
 //------------------------------------------------------------------------------------------------------------------------
 public:
 	int music_volume = 0;
 	int sound_volume = 0;
 	int camera_speed = 1;
-	int zoom_speed = 1;
+	float zoom_speed = 0;
 
 	bool is_sound_play = false;
 	bool is_music_play = false;
 
-	json j;
+	std::string language;
+
+	//json j;
 };
 //------------------------------------------------------------------------------------------------------------------------

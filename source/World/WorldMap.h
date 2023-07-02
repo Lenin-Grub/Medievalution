@@ -27,8 +27,6 @@ private:
 	void loadProvincesMap();		
 	void loadMapData();				
 	void initProvinceData();		
-	void pickColor();	// возвращает цвет под курсором и запоминает его при нажатии лкм,
-	void fillColor();	// выполняет заливку области на назначенный цвет
 	bool isMouseOnMap();			
 	sf::Color getColorUnderCursor();
 //------------------------------------------------------------------------------------------------------------------------

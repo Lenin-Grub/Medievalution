@@ -10,8 +10,6 @@ sf::Clock				core::clock;
 std::unique_ptr<sf::Music> core::music;						// музыка
 float					core::dtime;						// время
 
-//Input					S::input;							// нажатия игрока
-
 sf::Vector2i			core::mousePosScreen;				// глобальное положение мыши на мониторе
 sf::Vector2i			core::mousePosWindow;				// положение мыши относительно окна приложения
 sf::Vector2f			core::mousePosView;					// положение мыши относительно камеры вида

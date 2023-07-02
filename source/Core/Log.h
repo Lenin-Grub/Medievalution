@@ -2,8 +2,7 @@
 
 #include <spdlog/spdlog.h>
 
-
-namespace SimpleEngine {
+namespace LogInfo {
 
 #ifdef NDEBUG
 

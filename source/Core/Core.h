@@ -8,9 +8,8 @@ public:
 	static sf::Event sfmlEvent;						// события sfml
 	static sf::View view;							// камера вида
 	static sf::Clock clock;							// часыs
-	static std::unique_ptr<sf::Music> music;							// музыка
+	static std::unique_ptr<sf::Music> music;		// музыка
 	static float dtime;								// время
-	//static Input input;								// нажатия
 
 	static sf::Vector2i mousePosScreen;				// глобальное положение мыши на мониторе
 	static sf::Vector2i mousePosWindow;				// положение мыши относительно окна приложения

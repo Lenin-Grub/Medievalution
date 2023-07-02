@@ -10,9 +10,9 @@ class MainMenuState :
 private:
 	sf::Text mouseCordsText;											// координаты мыши
 	std::stringstream cords;											// координаты мыши вывод
-	json j;
-	sf::Texture sp;
-
+	sf::Texture language_rus,language_eng;
+	sf::Sprite sprite;
+	std::ifstream i;
 //------------------------------------------------------------------------------------------------------------------------
 public:
 	MainMenuState(StateData* state_data);

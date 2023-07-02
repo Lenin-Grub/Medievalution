@@ -30,9 +30,11 @@ void SettingsState::updateImGui()
 
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::Begin("Settings##", nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	std::string str = stateData->graphicSettings->j.at("T_settings");
+	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	if (ImGui::BeginCombo("Resolution", *resolution))
+	str = stateData->graphicSettings->j.at("T_resolution");
+	if (ImGui::BeginCombo(str.c_str(), *resolution))
 	{
 		if (ImGui::Button(resolution[0], ImVec2(120, 0)))
 		{
@@ -62,7 +64,8 @@ void SettingsState::updateImGui()
 		ImGui::EndCombo();
 	}
 
-	if (ImGui::Checkbox("Full Window", &this->stateData->graphicSettings->fullscrean))
+	str = stateData->graphicSettings->j.at("T_full_window");
+	if (ImGui::Checkbox(str.c_str(), &this->stateData->graphicSettings->fullscrean))
 	{
 		this->stateData->graphicSettings->fullscrean;
 	}
@@ -70,11 +73,14 @@ void SettingsState::updateImGui()
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		ImGui::SetTooltip("Set windowed mode\nOr set full resolution mode");
+
+		str = stateData->graphicSettings->j.at("T_full_window_tooltip");
+		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	if (ImGui::Checkbox("Vertycal sinhronization", &this->stateData->graphicSettings->vertycalSync))
+	str = stateData->graphicSettings->j.at("T_vertychal_sync");
+	if (ImGui::Checkbox(str.c_str(), &this->stateData->graphicSettings->vertycalSync))
 	{
 		this->stateData->graphicSettings->vertycalSync;
 	}
@@ -82,59 +88,73 @@ void SettingsState::updateImGui()
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		ImGui::SetTooltip("Set vertycal sinhronization\nIs off by default");
+		str = stateData->graphicSettings->j.at("T_vertychal_sync_tooltip");
+		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	ImGui::InputInt("FPS limit", &this->stateData->graphicSettings->fps_limit, 0,1);
+	str = stateData->graphicSettings->j.at("T_fps_limit");
+	ImGui::InputInt(str.c_str(), &this->stateData->graphicSettings->fps_limit, 0,1);
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		ImGui::SetTooltip("Set fps to 0 for unlimited fps \nOr set any other value");
+		str = stateData->graphicSettings->j.at("T_fps_tooltip");
+		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
 	ImGui::Separator();
 	{
-		ImGui::SliderInt("Sound Volume", &stateData->graphicSettings->sound_volume, 0, 100, "%d%%");
+		str = stateData->graphicSettings->j.at("T_sound_volume");
+		ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->sound_volume, 0, 100, "%d%%");
 	}
 	ImGui::SameLine();
 	{
-		ImGui::Checkbox("Sound", &play_sound);
+		str = stateData->graphicSettings->j.at("T_sound");
+		ImGui::Checkbox(str.c_str(), &play_sound);
 	}
 
-	if (ImGui::SliderInt("Music Volume", &stateData->graphicSettings->music_volume, 0, 100, "%d%%"))
+	str = stateData->graphicSettings->j.at("T_music_volume");
+	if (ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->music_volume, 0, 100, "%d%%"))
 	{
 		core::music->setVolume(stateData->graphicSettings->music_volume);
 	}
 
 	ImGui::SameLine();
 	{
-		ImGui::Checkbox("Music", &play_music);
+		str = stateData->graphicSettings->j.at("T_music");
+		ImGui::Checkbox(str.c_str(), &play_music);
 	}
 	ImGui::Separator();
 	{
-		int i = 1;
-		ImGui::SliderInt("Zoom speed", &i, 1, 100, "%d%%");
+		str = stateData->graphicSettings->j.at("T_zoom_speed");
+		ImGui::SliderFloat(str.c_str(),&stateData->graphicSettings->zoom_speed, 0, 1,"%.1f");
 	}
 	{
-		int i = 1;
-		ImGui::SliderInt("Camera speed", &stateData->graphicSettings->camera_speed, 1, 100, "%d%%");
+		str = stateData->graphicSettings->j.at("T_camera_speed");
+		ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->camera_speed, 1, 100, "%d%%");
 	}
 	ImGui::Separator();
 	
-	if (ImGui::Button("Apllay"))
-		ImGui::OpenPopup("Applay?");
+	str = stateData->graphicSettings->j.at("T_applay");
+	if (ImGui::Button(str.c_str()))
+	{
+		str = stateData->graphicSettings->j.at("T_applay");
+		ImGui::OpenPopup(str.c_str());
+	}
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	if (ImGui::BeginPopupModal("Applay?", NULL, ImGuiWindowFlags_AlwaysAutoResize))
+	str = stateData->graphicSettings->j.at("T_applay");
+	if (ImGui::BeginPopupModal(str.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("You changed game settings.\n" "All unsaving settings will be lost.\n""Save it?\n\n");
+		str = stateData->graphicSettings->j.at("T_changed_game_settings");
+		ImGui::Text(str.c_str());
 		ImGui::Separator();
 
-		if (ImGui::Button("OK", ImVec2(120, 0))) 
+		str = stateData->graphicSettings->j.at("T_yes");
+		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
 			LOG_INFO("Settings changed");
 			this->stateData->graphicSettings->saveToFile("config/graphic_settings.ini");
@@ -142,11 +162,13 @@ void SettingsState::updateImGui()
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		if (ImGui::Button("Cancel", ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
+		str = stateData->graphicSettings->j.at("T_cancel");
+		if (ImGui::Button(str.c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
 		ImGui::EndPopup();
 	}
 	ImGui::SameLine();
-	if (ImGui::Button("Exit##"))
+	str = stateData->graphicSettings->j.at("T_exit");
+	if (ImGui::Button(str.c_str()))
 	{
 		StateManager::getInstance().endState();
 		//endState();

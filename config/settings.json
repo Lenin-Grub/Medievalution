@@ -1,0 +1,14 @@
+{
+    "title": "Medievalution",
+    "resolution": {
+        "x": 1920,
+        "y": 1080
+    },
+    "fullscrean": false,
+    "fps_limit": 30,
+    "vertycalSync": false,
+    "music_volume": 10,
+    "camera_speed": 1,
+    "zoom_speed": 0.0,
+    "language": "rus"
+}

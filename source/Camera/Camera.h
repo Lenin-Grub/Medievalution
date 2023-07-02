@@ -11,7 +11,7 @@ public:
 	void updateView(const float& dtime);							// обновление камеры
 
 	void move(const float& dtime);									// движение камеры
-	void scroll();													// прокрутка камеры(приближение\удаление)
+	void zoom();													// прокрутка камеры(приближение\удаление)
 private:
 	WindowSettings settings;
 	int max_zoom = 1500;

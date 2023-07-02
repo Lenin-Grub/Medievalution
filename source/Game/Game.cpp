@@ -16,7 +16,7 @@ void Game::initVariables()
 // инициализируем настройки графики
 void Game::initGraphicSettings()
 {
-    this->graphicSettings.loadFromFIle("config/graphic_settings.ini");
+    this->graphicSettings.loadFromFIle("config/settings.json");
 }
 
 //------------------------------------------------------------------------------------------------------------------------
