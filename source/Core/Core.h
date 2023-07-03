@@ -19,6 +19,6 @@ public:
 };
 //------------------------------------------------------------------------------------------------------------------------
 typedef Core core;
-typedef sf::Vector2i v2i;					// v2i
-typedef sf::Vector2f v2f;					// v2f
-typedef sf::Vector2u v2u;					// v2u
+typedef sf::Vector2i vec2i;					// v2i
+typedef sf::Vector2f vec2f;					// v2f
+typedef sf::Vector2u vec2u;					// v2u

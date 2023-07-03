@@ -13,6 +13,10 @@ public:
 
 	std::string getStringByKey(std::string key);
 private:
+    Localisation() {}
+    Localisation(const Localisation& root) = delete;
+    Localisation& operator=(const Localisation&) = delete;
+private:
 	nlohmann::json eng {
         {"T_applay", "true"},
         {"T_camera_speed" , "Camera speed"},
