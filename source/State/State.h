@@ -7,13 +7,12 @@ class WindowSettings;
 class State;
 //------------------------------------------------------------------------------------------------------------------------
 // буферный класс для передачи инфы между стейтами
-class StateData															
+class StateData
 {
 public:
-	StateData();
-	virtual ~StateData();
+	StateData() = default;
+	virtual ~StateData() = default;
 
-	//WindowSettings* windowSettings;									// настройки окна приложения (размер, оконный режим и тд)
 	std::list<State*>* states;
 	std::shared_ptr <sf::RenderWindow> window;
 };

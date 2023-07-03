@@ -17,7 +17,6 @@ void Game::initVariables()
 void Game::initGraphicSettings()
 {
     WindowSettings::getInstance().loadFromFIle("config/settings.json");
-   // this->graphicSettings.loadFromFIle("config/settings.json");
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -46,8 +45,7 @@ void Game::initWindow()
 void Game::initStateData()                                                         
 {
      StateManager::getInstance().stateData.window = window;
-    // StateManager::getInstance().stateData.windowSettings = &graphicSettings;                       // передаем данные о графикие
-     StateManager::getInstance().stateData.states = &StateManager::getInstance().states;             // передаем данные о стейтах
+   //  StateManager::getInstance().stateData.states = &StateManager::getInstance().states;             // передаем данные о стейтах
 }
 
 //------------------------------------------------------------------------------------------------------------------------

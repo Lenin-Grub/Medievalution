@@ -37,11 +37,3 @@ void State::updateMousePositions(sf::View* view)
 	core::mousePosWindow = sf::Mouse::getPosition(*this->window);															
 	core::mousePosView = this->window->mapPixelToCoords(sf::Mouse::getPosition(*this->window));							
 }
-
-StateData::StateData()
-{
-}
-
-StateData::~StateData()
-{
-}

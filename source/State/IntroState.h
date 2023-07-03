@@ -12,7 +12,6 @@ private:
 	sf::Shader shader;
 	sf::RectangleShape shape;
 	sf::Sprite spr;
-	//sf::Texture texture;
 private:
 	void initEntities();												// инициализация сущностей
 	void renderGUI(sf::RenderTarget& target);							// рендер кнопок

@@ -8,7 +8,7 @@ MainMenuState::MainMenuState(StateData* state_data)
 {
 	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
 	core::music->setVolume(WindowSettings::getInstance().music_volume);
-	LOG_INFO("Main menu constructor not finished. Count of state {}", StateManager::getInstance().states.size());
+
 	language_rus.loadFromFile("resources/Flags/rus.png");
 	language_eng.loadFromFile("resources/Flags/eng.png");
 	
@@ -42,18 +42,16 @@ void MainMenuState::updateImGui()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	std::string str = WindowSettings::getInstance().localisation.at("T_new_game");
-	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new GameState(stateData));
 	}
-	str = WindowSettings::getInstance().localisation.at("T_settings");
-	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new SettingsState(stateData));
 	}
-	str = WindowSettings::getInstance().localisation.at("T_exit");
-	if (ImGui::Button(str.data(), ImVec2(120, 0)))
+
+	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
 	{
 		endState();
 	}

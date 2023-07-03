@@ -30,7 +30,7 @@ public:
 	virtual ~GameState();
 
 	void updateEvents() override;												// обновление событий
-	void updateImGui() override;													// обновление IMGUI
+	void updateImGui() override;												// обновление IMGUI
 	void update(const float& dtime) override;									// обновление
 	void render(sf::RenderTarget* target = nullptr) override;					// рендер
 };
