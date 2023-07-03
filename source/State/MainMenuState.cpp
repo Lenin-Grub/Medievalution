@@ -7,22 +7,22 @@ MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)
 {
 	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
-	core::music->setVolume(stateData->graphicSettings->music_volume);
+	core::music->setVolume(WindowSettings::getInstance().music_volume);
 	LOG_INFO("Main menu constructor not finished. Count of state {}", StateManager::getInstance().states.size());
 	language_rus.loadFromFile("resources/Flags/rus.png");
 	language_eng.loadFromFile("resources/Flags/eng.png");
 	
-	if (stateData->graphicSettings->language == "rus")
+	if (WindowSettings::getInstance().language == "rus")
 	{
 		i.open("translation/rus.json");
-		i >> stateData->graphicSettings->j;
+		i >> WindowSettings::getInstance().j;
 		sprite.setTexture(language_rus);
 
 	}
-	if (stateData->graphicSettings->language == "eng")
+	if (WindowSettings::getInstance().language == "eng")
 	{
 		i.open("translation/eng.json");
-		i >> stateData->graphicSettings->j;
+		i >> WindowSettings::getInstance().j;
 		sprite.setTexture(language_eng);
 	}
 }
@@ -42,12 +42,12 @@ void MainMenuState::updateImGui()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	std::string str = stateData->graphicSettings->j.at("T_new_game");
+	std::string str = WindowSettings::getInstance().j.at("T_new_game");
 	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new GameState(stateData));
 	}
-	str = stateData->graphicSettings->j.at("T_settings");
+	str = WindowSettings::getInstance().j.at("T_settings");
 	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new SettingsState(stateData));
@@ -68,7 +68,7 @@ void MainMenuState::updateImGui()
 	
 	*/
 
-	str = stateData->graphicSettings->j.at("T_exit");
+	str = WindowSettings::getInstance().j.at("T_exit");
 	if (ImGui::Button(str.data(), ImVec2(120, 0)))
 	{
 		endState();
@@ -79,8 +79,8 @@ void MainMenuState::updateImGui()
 	if (ImGui::ArrowButton("##left", ImGuiDir_Left)) 
 	{
 		sprite.setTexture(language_rus);
-		stateData->graphicSettings->language = "rus";
-		stateData->graphicSettings->saveToFile("config/graphic_settings.ini");
+		 WindowSettings::getInstance().language = "rus";
+		 WindowSettings::getInstance().saveToFile("config/graphic_settings.ini");
 
 	}
 
@@ -89,8 +89,8 @@ void MainMenuState::updateImGui()
 	if (ImGui::ArrowButton("##right", ImGuiDir_Right))
 	{
 		sprite.setTexture(language_eng);
-		stateData->graphicSettings->language = "eng";
-		stateData->graphicSettings->saveToFile("config/graphic_settings.ini");
+		WindowSettings::getInstance().language = "eng";
+		WindowSettings::getInstance().saveToFile("config/graphic_settings.ini");
 	}
 	ImGui::Image(sprite, sf::Vector2f(120, 78));
 	ImGui::End();

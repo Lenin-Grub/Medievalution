@@ -7,9 +7,19 @@ using json = nlohmann::json;
 class WindowSettings
 {
 public:
-	WindowSettings();
+	static WindowSettings& getInstance()
+	{
+		static WindowSettings single_instance;
+		return single_instance;
+	}
+
 	bool saveToFile(const std::string path);								// сохранине в файл
 	bool loadFromFIle(const std::string path);								// загрузка из файла
+private:
+	WindowSettings();
+	WindowSettings(const WindowSettings& root) = delete;
+	WindowSettings& operator=(const WindowSettings&) = delete;
+
 //------------------------------------------------------------------------------------------------------------------------
 public:
 	std::string title;														// название программы
@@ -32,7 +42,5 @@ public:
 	bool is_music_play = false;
 
 	std::string language;
-
-	//json j;
 };
 //------------------------------------------------------------------------------------------------------------------------

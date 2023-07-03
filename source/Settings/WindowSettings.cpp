@@ -1,8 +1,8 @@
 ﻿#include "../stdafx.h"
 #include "WindowSettings.h"
-//#include <../../../source/Json/json.hpp>
+
 //------------------------------------------------------------------------------------------------------------------------
-// если graphic_settings.ini не обнаружено, то будут приняты эти настройки
+// если settings.json не обнаружено, то будут приняты эти настройки
 WindowSettings::WindowSettings()																
 {
 	title = "Unitiolized";
@@ -16,7 +16,7 @@ WindowSettings::WindowSettings()
 	camera_speed = 1;
 	zoom_speed = 0;
 	language = "rus";
-	LOG_WARN("Window settings not found. Used default settings");
+	LOG_WARN("Window settings not loaded. Used default settings");
 }
 
 //------------------------------------------------------------------------------------------------------------------------

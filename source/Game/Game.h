@@ -11,7 +11,7 @@ class Game
 {
 //------------------------------------------------------------------------------------------------------------------------
 private:
-	WindowSettings graphicSettings;					// настройки графики
+	//WindowSettings graphicSettings;					// настройки графики
 	sf::Clock m_clock;								// время
 	std::shared_ptr <sf::RenderWindow> window;		// окно
 	sf::Music music;

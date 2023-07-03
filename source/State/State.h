@@ -13,7 +13,7 @@ public:
 	StateData();
 	virtual ~StateData();
 
-	WindowSettings* graphicSettings;									// настройки окна приложения (размер, оконный режим и тд)
+	//WindowSettings* windowSettings;									// настройки окна приложения (размер, оконный режим и тд)
 	std::list<State*>* states;
 	std::shared_ptr <sf::RenderWindow> window;
 };

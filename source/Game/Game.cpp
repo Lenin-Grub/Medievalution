@@ -16,7 +16,8 @@ void Game::initVariables()
 // инициализируем настройки графики
 void Game::initGraphicSettings()
 {
-    this->graphicSettings.loadFromFIle("config/settings.json");
+    WindowSettings::getInstance().loadFromFIle("config/settings.json");
+   // this->graphicSettings.loadFromFIle("config/settings.json");
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -24,20 +25,20 @@ void Game::initGraphicSettings()
 void Game::initWindow()                                                             
 {
     // если окно в режиме "во весь экран", то устанавливаем след. настройки
-    if (this->graphicSettings.fullscrean)
+    if (WindowSettings::getInstance().fullscrean)
         this->window = std::make_unique<sf::RenderWindow>
-                                            (this->graphicSettings.resolution,
-                                            this->graphicSettings.title, sf::Style::Fullscreen,
-                                            this->graphicSettings.contextSettings);
+                                            (   WindowSettings::getInstance().resolution,
+                                                WindowSettings::getInstance().title, sf::Style::Fullscreen,
+                                                WindowSettings::getInstance().contextSettings);
    // если окнов оконном режиме, устанавливаем след. настройки
     else
         this->window = std::make_unique<sf::RenderWindow>   
-                                            (this->graphicSettings.resolution,
-                                            this->graphicSettings.title, sf::Style::Close,
-                                            this->graphicSettings.contextSettings);
+                                            (    WindowSettings::getInstance().resolution,
+                                                 WindowSettings::getInstance().title, sf::Style::Close,
+                                                 WindowSettings::getInstance().contextSettings);
     
-    this->window->setFramerateLimit         (this->graphicSettings.fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
-    this->window->setVerticalSyncEnabled    (this->graphicSettings.vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
+    this->window->setFramerateLimit         (WindowSettings::getInstance().fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
+    this->window->setVerticalSyncEnabled    (WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +46,7 @@ void Game::initWindow()
 void Game::initStateData()                                                         
 {
      StateManager::getInstance().stateData.window = window;
-     StateManager::getInstance().stateData.graphicSettings = &graphicSettings;                       // передаем данные о графикие
+    // StateManager::getInstance().stateData.windowSettings = &graphicSettings;                       // передаем данные о графикие
      StateManager::getInstance().stateData.states = &StateManager::getInstance().states;             // передаем данные о стейтах
 }
 

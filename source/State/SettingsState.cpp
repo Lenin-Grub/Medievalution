@@ -30,148 +30,147 @@ void SettingsState::updateImGui()
 
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	std::string str = stateData->graphicSettings->j.at("T_settings");
+	std::string str = WindowSettings::getInstance().j.at("T_settings");
 	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	str = stateData->graphicSettings->j.at("T_resolution");
+	str = WindowSettings::getInstance().j.at("T_resolution");
 	if (ImGui::BeginCombo(str.c_str(), *resolution))
 	{
 		if (ImGui::Button(resolution[0], ImVec2(120, 0)))
 		{
-			stateData->graphicSettings->resolution.width = 1920;
-			stateData->graphicSettings->resolution.height = 1080;
+			WindowSettings::getInstance().resolution.width = 1920;
+			WindowSettings::getInstance().resolution.height = 1080;
 		}
 		if (ImGui::Button(resolution[1], ImVec2(120, 0)))
 		{
-			stateData->graphicSettings->resolution.width = 1280;
-			stateData->graphicSettings->resolution.height = 720;
+			 WindowSettings::getInstance().resolution.width = 1280;
+			 WindowSettings::getInstance().resolution.height = 720;
 		}
 		if (ImGui::Button(resolution[2], ImVec2(120, 0)))
 		{
-			stateData->graphicSettings->resolution.width = 1024;
-			stateData->graphicSettings->resolution.height = 768;
+			 WindowSettings::getInstance().resolution.width = 1024;
+			 WindowSettings::getInstance().resolution.height = 768;
 		}
 		if (ImGui::Button(resolution[3], ImVec2(120, 0)))
 		{
-			stateData->graphicSettings->resolution.width = 800;
-			stateData->graphicSettings->resolution.height = 600;
+			 WindowSettings::getInstance().resolution.width = 800;
+			 WindowSettings::getInstance().resolution.height = 600;
 		}
 		if (ImGui::Button(resolution[4], ImVec2(120, 0)))
 		{
-			stateData->graphicSettings->resolution.width = 640;
-			stateData->graphicSettings->resolution.height = 480;
+			 WindowSettings::getInstance().resolution.width = 640;
+			 WindowSettings::getInstance().resolution.height = 480;
 		}
 		ImGui::EndCombo();
 	}
 
-	str = stateData->graphicSettings->j.at("T_full_window");
-	if (ImGui::Checkbox(str.c_str(), &this->stateData->graphicSettings->fullscrean))
+	str = WindowSettings::getInstance().j.at("T_full_window");
+	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().fullscrean))
 	{
-		this->stateData->graphicSettings->fullscrean;
+		WindowSettings::getInstance().fullscrean;
 	}
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
 
-		str = stateData->graphicSettings->j.at("T_full_window_tooltip");
+		str = WindowSettings::getInstance().j.at("T_full_window_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = stateData->graphicSettings->j.at("T_vertychal_sync");
-	if (ImGui::Checkbox(str.c_str(), &this->stateData->graphicSettings->vertycalSync))
+	str = WindowSettings::getInstance().j.at("T_vertychal_sync");
+	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycalSync))
 	{
-		this->stateData->graphicSettings->vertycalSync;
+		WindowSettings::getInstance().vertycalSync;
 	}
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = stateData->graphicSettings->j.at("T_vertychal_sync_tooltip");
+		str = WindowSettings::getInstance().j.at("T_vertychal_sync_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = stateData->graphicSettings->j.at("T_fps_limit");
-	ImGui::InputInt(str.c_str(), &this->stateData->graphicSettings->fps_limit, 0,1);
+	str = WindowSettings::getInstance().j.at("T_fps_limit");
+	ImGui::InputInt(str.c_str(), &WindowSettings::getInstance().fps_limit, 0,1);
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = stateData->graphicSettings->j.at("T_fps_tooltip");
+		str = WindowSettings::getInstance().j.at("T_fps_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
 	ImGui::Separator();
 	{
-		str = stateData->graphicSettings->j.at("T_sound_volume");
-		ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->sound_volume, 0, 100, "%d%%");
+		str = WindowSettings::getInstance().j.at("T_sound_volume");
+		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
 	}
 	ImGui::SameLine();
 	{
-		str = stateData->graphicSettings->j.at("T_sound");
+		str = WindowSettings::getInstance().j.at("T_sound");
 		ImGui::Checkbox(str.c_str(), &play_sound);
 	}
 
-	str = stateData->graphicSettings->j.at("T_music_volume");
-	if (ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->music_volume, 0, 100, "%d%%"))
+	str = WindowSettings::getInstance().j.at("T_music_volume");
+	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
-		core::music->setVolume(stateData->graphicSettings->music_volume);
+		core::music->setVolume(WindowSettings::getInstance().music_volume);
 	}
 
 	ImGui::SameLine();
 	{
-		str = stateData->graphicSettings->j.at("T_music");
+		str = WindowSettings::getInstance().j.at("T_music");
 		ImGui::Checkbox(str.c_str(), &play_music);
 	}
 	ImGui::Separator();
 	{
-		str = stateData->graphicSettings->j.at("T_zoom_speed");
-		ImGui::SliderFloat(str.c_str(),&stateData->graphicSettings->zoom_speed, 0, 1,"%.1f");
+		str = WindowSettings::getInstance().j.at("T_zoom_speed");
+		ImGui::SliderFloat(str.c_str(),&WindowSettings::getInstance().zoom_speed, 0, 1,"%.1f");
 	}
 	{
-		str = stateData->graphicSettings->j.at("T_camera_speed");
-		ImGui::SliderInt(str.c_str(), &stateData->graphicSettings->camera_speed, 1, 100, "%d%%");
+		str = WindowSettings::getInstance().j.at("T_camera_speed");
+		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().camera_speed, 1, 100, "%d%%");
 	}
 	ImGui::Separator();
 	
-	str = stateData->graphicSettings->j.at("T_applay");
+	str = WindowSettings::getInstance().j.at("T_applay");
 	if (ImGui::Button(str.c_str()))
 	{
-		str = stateData->graphicSettings->j.at("T_applay");
+		str = WindowSettings::getInstance().j.at("T_applay");
 		ImGui::OpenPopup(str.c_str());
 	}
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	str = stateData->graphicSettings->j.at("T_applay");
+	str = WindowSettings::getInstance().j.at("T_applay");
 	if (ImGui::BeginPopupModal(str.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		str = stateData->graphicSettings->j.at("T_changed_game_settings");
+		str = WindowSettings::getInstance().j.at("T_changed_game_settings");
 		ImGui::Text(str.c_str());
 		ImGui::Separator();
 
-		str = stateData->graphicSettings->j.at("T_yes");
+		str = WindowSettings::getInstance().j.at("T_yes");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
 			LOG_INFO("Settings changed");
-			this->stateData->graphicSettings->saveToFile("config/settings.json");
+			WindowSettings::getInstance().saveToFile("config/settings.json");
 			ImGui::CloseCurrentPopup(); 
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		str = stateData->graphicSettings->j.at("T_cancel");
+		str = WindowSettings::getInstance().j.at("T_cancel");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
 		ImGui::EndPopup();
 	}
 	ImGui::SameLine();
-	str = stateData->graphicSettings->j.at("T_exit");
+	str = WindowSettings::getInstance().j.at("T_exit");
 	if (ImGui::Button(str.c_str()))
 	{
 		StateManager::getInstance().endState();
-		//endState();
 	}
 	ImGui::End();
 

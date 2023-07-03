@@ -13,7 +13,7 @@ public:
 	void move(const float& dtime);									// движение камеры
 	void zoom();													// прокрутка камеры(приближение\удаление)
 private:
-	WindowSettings settings;
+	//WindowSettings settings;
 	int max_zoom = 1500;
 	int min_zoom = 100;
 };
