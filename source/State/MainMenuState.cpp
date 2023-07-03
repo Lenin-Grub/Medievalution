@@ -15,14 +15,14 @@ MainMenuState::MainMenuState(StateData* state_data)
 	if (WindowSettings::getInstance().language == "rus")
 	{
 		i.open("translation/rus.json");
-		i >> WindowSettings::getInstance().j;
+		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_rus);
 
 	}
 	if (WindowSettings::getInstance().language == "eng")
 	{
 		i.open("translation/eng.json");
-		i >> WindowSettings::getInstance().j;
+		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_eng);
 	}
 }
@@ -42,33 +42,17 @@ void MainMenuState::updateImGui()
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
-	std::string str = WindowSettings::getInstance().j.at("T_new_game");
+	std::string str = WindowSettings::getInstance().localisation.at("T_new_game");
 	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new GameState(stateData));
 	}
-	str = WindowSettings::getInstance().j.at("T_settings");
+	str = WindowSettings::getInstance().localisation.at("T_settings");
 	if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 	{
 		StateManager::getInstance().addState(new SettingsState(stateData));
 	}
-
-	// to do пример того как можно сделать локализацию
-	/*
-		файл json слева ключ, справа перевод
-		в классе который отвечает за загрузку при выборе языка загружаются разные файлы
-		languages - файл в котором прописаны языки (eng, ru, fr)
-		ru - русский язык
-		eng - английский язык
-
-		пример ключа и перевода
-		const char T_KEY_exit = u8 "Выход"
-		const char T_KEY_game = u8 "Игра"
-		const char T_KEY_settings = u8 "Настройки"
-	
-	*/
-
-	str = WindowSettings::getInstance().j.at("T_exit");
+	str = WindowSettings::getInstance().localisation.at("T_exit");
 	if (ImGui::Button(str.data(), ImVec2(120, 0)))
 	{
 		endState();

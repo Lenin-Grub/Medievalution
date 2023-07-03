@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Core/Core.h"
 #include "../Json/json.hpp"
+#include "../Localisation/Localisation.hpp"
 using json = nlohmann::json;
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ public:
 	int fps_limit;															// лимит фпс
 	sf::ContextSettings contextSettings;									// настройки
 	std::vector<sf::VideoMode> videoModes;									// видео режимы
-	json j;
+	json localisation;
 
 //------------------------------------------------------------------------------------------------------------------------
 public:

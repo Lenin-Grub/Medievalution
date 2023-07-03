@@ -67,9 +67,9 @@ void GameState::updateImGui()
 		ImGui::Text("Mouse Position: <invalid>");
 	ImGui::Text("Mouse View Position: (%.1f,%.1f)",core::mousePosView.x, core::mousePosView.y);
 	ImGui::Text("Province name: %s" , chr);
-	ImGui::Text("Province id: %d", _map.getProvinceID());
+	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_id").c_str(), _map.getProvinceID());
 	ImGui::Separator();
-	ImGui::SliderFloat(u8"Прозрачность", &_map.transperency,0.0f,1.0f);
+	ImGui::SliderFloat(Localisation::getInstance().getStringByKey("T_transperecny").c_str(), &_map.transperency, 0.0f, 1.0f);
 	ImGui::End();
 }
 
