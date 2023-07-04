@@ -38,6 +38,9 @@ void Game::initWindow()
     
     this->window->setFramerateLimit         (WindowSettings::getInstance().fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
     this->window->setVerticalSyncEnabled    (WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
+    sf::Image i;
+    i.loadFromFile("resources/Icons/icon.png");
+   this->window->setIcon(32, 32, i.getPixelsPtr());
 }
 
 //------------------------------------------------------------------------------------------------------------------------
