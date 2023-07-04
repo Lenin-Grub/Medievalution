@@ -9,11 +9,11 @@ class SettingsState :
 	public State
 {
 private:
-	sf::Text mouseCordsText;											// координаты мыши
-	std::stringstream cords;											// координаты мыши вывод
 	int item_current = 0;
 	bool play_music = true;
 	bool play_sound = true;
+	sf::Texture background;
+	sf::RectangleShape sh;
 //------------------------------------------------------------------------------------------------------------------------
 public:
 	SettingsState(StateData* state_data);

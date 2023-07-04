@@ -25,6 +25,9 @@ MainMenuState::MainMenuState(StateData* state_data)
 		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_eng);
 	}
+	background.loadFromFile("resources/zastavka_igra_petrovicha2.jpg");
+	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	sh.setTexture(&background);
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -40,7 +43,7 @@ void MainMenuState::updateImGui()
 {
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+	ImGui::Begin("Main Menu",nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize /*| ImGuiWindowFlags_NoMove*/);
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
@@ -100,6 +103,7 @@ void MainMenuState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
+	target->draw(sh);
 
 }
 //------------------------------------------------------------------------------------------------------------------------

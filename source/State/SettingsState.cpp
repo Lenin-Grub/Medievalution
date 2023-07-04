@@ -7,6 +7,9 @@ SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {
 	this->updateEvents();
+	background.loadFromFile("resources/background.jpg");
+	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	sh.setTexture(&background);
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -194,8 +197,7 @@ void SettingsState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window.get();
-	target->setView(core::view);													// установлена камера вида
-	target->draw(this->mouseCordsText);											// координаты
-
+	target->setView(this->window->getDefaultView());
+	target->draw(sh);																// координаты
 }
 //------------------------------------------------------------------------------------------------------------------------
