@@ -50,7 +50,6 @@ void Game::initWindow()
 void Game::initStateData()                                                         
 {
      StateManager::getInstance().stateData.window = window;
-   //  StateManager::getInstance().stateData.states = &StateManager::getInstance().states;             // передаем данные о стейтах
 }
 
 //------------------------------------------------------------------------------------------------------------------------

@@ -3,6 +3,7 @@
 
 //------------------------------------------------------------------------------------------------------------------------
 
+
 void StateManager::removeFirstState()
 {
 	if (states.size() > 1)
@@ -62,7 +63,5 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	//StateManager::getInstance().addState(new IntroState(&StateManager::getInstance().stateData));
-	StateManager::getInstance().addState(new MainMenuState(&StateManager::getInstance().stateData));
-	// если я удаляю первый стейт и остается только 1 стейт, я должен сделать его первым
+	StateManager::getInstance().addState(new MainMenuState(&stateData));
 }

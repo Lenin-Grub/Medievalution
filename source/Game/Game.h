@@ -1,9 +1,5 @@
 ﻿#pragma once
-#include "../State/MainMenuState.h"
-#include "../State/GameState.h"
-#include "../State/SettingsState.h"
-#include "../State/IntroState.h"
-
+#include "../State/StateManager.h"
 
 //------------------------------------------------------------------------------------------------------------------------
 // Основной класс игра, отвечающий за запуск,закрытие, обновление игры

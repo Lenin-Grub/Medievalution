@@ -82,7 +82,7 @@ void GameState::update(const float& dtime)
 }
 
 //------------------------------------------------------------------------------------------------------------------------
-//рисуем все
+//отрисовка сцены
 void GameState::render(sf::RenderTarget* target)							
 {
 	if (!target)

@@ -1,9 +1,7 @@
 ﻿#pragma once
-#include "../State/State.h"
 #include "../World/WorldMap.h"
 #include "../Camera/Camera.h"
-#include "../State/MainMenuState.h"
-#include "../State/SettingsState.h"
+#include "StateManager.h"
 
 //------------------------------------------------------------------------------------------------------------------------
 // основной стейт игры

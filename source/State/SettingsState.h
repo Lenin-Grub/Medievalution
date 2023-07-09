@@ -1,7 +1,5 @@
 ﻿#pragma once
-#include "State.h"
-#include "MainMenuState.h"
-#include "GameState.h"
+#include "StateManager.h"
 
 //------------------------------------------------------------------------------------------------------------------------
 // стейт Настроек игры

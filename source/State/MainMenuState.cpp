@@ -25,7 +25,7 @@ MainMenuState::MainMenuState(StateData* state_data)
 		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_eng);
 	}
-	background.loadFromFile("resources/zastavka_igra_petrovicha2.jpg");
+	background.loadFromFile("resources/background.jpg");
 	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	sh.setTexture(&background);
 }

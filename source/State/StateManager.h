@@ -17,23 +17,10 @@ public:
 	template <class T>
 	void addState(T state);
 	void removeFirstState();						// удалить первый стейт
-	void removeLastState();
 	void removeCurrentState();						// удалить текущий стейт
 	void removePrevState();							// удалить предыдущий стейт
-	void removeNextState();
-	void removeAllStates();
-
 	void endState();								// выйти из стейта
-	void changeState();								// from X to Y
-
-	void getCurrentState();
-	void getPrevState();
-	void getNextState();
-	void getFirstState();
-	void getLastState();
-
 	void init();
-	void update();
 
 //------------------------------------------------------------------------------------------------------------------------
 public:
