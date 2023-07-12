@@ -20,5 +20,6 @@
   "T_yes": "Yes",
   "T_zoom_speed": "Zoom speed",
   "T_transperecny": "Transperency",
-  "T_Province_id": "Province id: %d"
+  "T_Province_id": "Province id: %d",
+  "T_Province_name": "Province_name: %s"
 }

@@ -20,5 +20,6 @@
 	"T_yes": "Да",
 	"T_cancel": "Отменить",
 	"T_transperecny": "Прозрачность",
-	"T_Province_id": "ID провинции: %d"
+	"T_Province_id": "ID провинции: %d",
+	"T_Province_name": "Название провинции: %s"
 }
