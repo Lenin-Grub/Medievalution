@@ -2,7 +2,11 @@
 #include "StateManager.h"
 
 //------------------------------------------------------------------------------------------------------------------------
-
+void StateManager::addState(State* state)
+{
+	states.push_back(state);
+	LOG_INFO("State added. Count of state {}", states.size());
+}
 
 void StateManager::removeFirstState()
 {

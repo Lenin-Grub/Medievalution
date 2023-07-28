@@ -13,9 +13,8 @@ public:
 		static StateManager single_instance;
 		return single_instance;
 	}
-		
-	template <class T>
-	void addState(T state);
+
+	void addState(State* state);
 	void removeFirstState();						// удалить первый стейт
 	void removeCurrentState();						// удалить текущий стейт
 	void removePrevState();							// удалить предыдущий стейт
@@ -35,10 +34,3 @@ private:
 };
 
 //------------------------------------------------------------------------------------------------------------------------
-
-template<class T>
-inline void StateManager::addState(T state)
-{
-	states.push_back(state);
-	LOG_INFO("State added. Count of state {}", states.size());
-}
