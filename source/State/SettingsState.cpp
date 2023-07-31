@@ -10,6 +10,9 @@ SettingsState::SettingsState(StateData* state_data)
 	background.loadFromFile("resources/background.jpg");
 	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	sh.setTexture(&background);
+
+	//TODO
+	video_modes = sf::VideoMode::getFullscreenModes();
 }
 
 //------------------------------------------------------------------------------------------------------------------------
@@ -22,6 +25,11 @@ SettingsState::~SettingsState()
 // обновление событий
 void SettingsState::updateEvents()
 {
+	if (core::sfmlEvent.type == sf::Event::KeyReleased && core::sfmlEvent.key.code == sf::Keyboard::D)
+	{
+
+		std::cout << "event work correct" << "\n";
+	}
 }
 
 //------------------------------------------------------------------------------------------------------------------------

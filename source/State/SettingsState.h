@@ -12,6 +12,9 @@ private:
 	bool play_sound = true;
 	sf::Texture background;
 	sf::RectangleShape sh;
+
+	std::vector<sf::VideoMode> video_modes;
+	char resolution[];
 //------------------------------------------------------------------------------------------------------------------------
 public:
 	SettingsState(StateData* state_data);

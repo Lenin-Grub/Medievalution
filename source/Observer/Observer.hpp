@@ -1,11 +1,11 @@
-#include "../Core/Core.h"
+#pragma once
 
 class Observer
 {
 public:
 	virtual ~Observer() = default;
 
-	virtual void update() = 0;
+	virtual void updateObserver() = 0;
 private:
 
 };
