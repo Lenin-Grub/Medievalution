@@ -1,7 +1,6 @@
 #include "../stdafx.h"
 #include "StateManager.h"
 
-//------------------------------------------------------------------------------------------------------------------------
 void StateManager::addState(State* state)
 {
 	states.push_back(state);
@@ -22,8 +21,6 @@ void StateManager::removeFirstState()
 	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-
 void StateManager::removeCurrentState()
 {
 	if (states.size() > 1)
@@ -37,8 +34,6 @@ void StateManager::removeCurrentState()
 		LOG_ERROR("You cant delete current state, because you have only 1 state in list");
 	}
 }
-
-//------------------------------------------------------------------------------------------------------------------------
 
 void StateManager::removePrevState()
 {
@@ -54,8 +49,6 @@ void StateManager::removePrevState()
 	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-
 void StateManager::endState()
 {
 	if (!states.empty())
@@ -67,5 +60,15 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	StateManager::getInstance().addState(new MainMenuState(&stateData));
+ StateManager::getInstance().addState(new MainMenuState(&stateData));
+}
+
+void StateManager::updateObserver()
+{
+	LOG_INFO("observer update");
+	states.back();
+	MainMenuState(&stateData).addObserver(*this);
+	MainMenuState(&stateData).notifyObservers();
+
+
 }

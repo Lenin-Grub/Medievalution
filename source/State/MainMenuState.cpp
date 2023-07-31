@@ -2,7 +2,26 @@
 #include "../stdafx.h"
 #include "MainMenuState.h"
 
-//------------------------------------------------------------------------------------------------------------------------
+void MainMenuState::addObserver(Observer& observer)
+{
+	observer_list.push_back(&observer);
+	LOG_INFO("Main Menu observer added");
+}
+
+void MainMenuState::removeObserver(Observer& observer)
+{
+	observer_list.remove(&observer);
+}
+
+void MainMenuState::notifyObservers()
+{
+	LOG_INFO("Main Menu observer notifyed");
+	for (auto o : observer_list)
+	{
+		o->updateObserver();
+	}
+}
+
 MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)
 {
@@ -30,15 +49,14 @@ MainMenuState::MainMenuState(StateData* state_data)
 	sh.setTexture(&background);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-MainMenuState::~MainMenuState(){}
+MainMenuState::~MainMenuState()
+{
+}
 
-//------------------------------------------------------------------------------------------------------------------------
 void MainMenuState::updateEvents()
 {
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void MainMenuState::updateImGui()
 {
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
@@ -89,15 +107,11 @@ void MainMenuState::updateImGui()
 	ImGui::End();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-//обновляем все
 void MainMenuState::update(const float& dtime)			
 {
 	this->updateMousePositions();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-//рисуем все
 void MainMenuState::render(sf::RenderTarget* target)							
 { 
 	if (!target)
@@ -106,4 +120,3 @@ void MainMenuState::render(sf::RenderTarget* target)
 	target->draw(sh);
 
 }
-//------------------------------------------------------------------------------------------------------------------------

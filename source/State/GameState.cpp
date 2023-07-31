@@ -1,45 +1,50 @@
 ﻿#include "../stdafx.h"
 #include "GameState.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализация сущностей
 void GameState::initEntities()
 {
 	_map.init();
 }
 
-
-//------------------------------------------------------------------------------------------------------------------------
-//рисуем кнопки
 void GameState::renderGUI(sf::RenderTarget& target)								
 {
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// конструктор
+void GameState::addObserver(Observer& observer)
+{
+	observer_list.push_back(&observer);
+}
+
+void GameState::removeObserver(Observer& observer)
+{
+	observer_list.remove(&observer);
+}
+
+void GameState::notifyObservers()
+{
+	for (auto o : observer_list)
+	{
+		o->updateObserver();
+	}
+}
+
 GameState::GameState(StateData* state_data)
 	:State(state_data)
 {
 	camera.initView();
-	initEntities();				// сущности
-	updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
+	initEntities();
+	updateEvents();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// деструктор
 GameState::~GameState()
 {
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обвновление событий
 void GameState::updateEvents()
 {
 	camera.zoom();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление IMGUI
 void GameState::updateImGui()
 {
 	ImGuiIO& io = ImGui::GetIO();
@@ -54,7 +59,7 @@ void GameState::updateImGui()
 	std::string str = _map.getProvinceName();
 	char* chr = const_cast<char*>(str.c_str());
 
-	ImGui::SetNextWindowBgAlpha(0.55f); // Transparent background
+	ImGui::SetNextWindowBgAlpha(0.55f);
 	ImGui::Begin("T", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
 
 	ImGui::TextColored(ImVec4(1, 1, 1, 0.5),u8"Это карта мира\n" "Используй WSAD для навигации\n" "Используй колесико для масштабирования\n" "Это окошко можно передвинуть ЛКМ");
@@ -72,8 +77,6 @@ void GameState::updateImGui()
 	ImGui::End();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление всей логики
 void GameState::update(const float& dtime)
 {
 	updateMousePositions();
@@ -81,26 +84,23 @@ void GameState::update(const float& dtime)
 	_map.update();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-//отрисовка сцены
 void GameState::render(sf::RenderTarget* target)							
 {
 	if (!target)
 		target = this->window.get();
 	target->setView(core::view);
-//------------------------------------------------------------------------------------------------------------------------
-//	рисуем динамечсеие объекты
-//------------------------------------------------------------------------------------------------------------------------
+
+//	рисуем динамечские объекты
+
 	_map.draw(*target,sf::RenderStates::Default);
-//------------------------------------------------------------------------------------------------------------------------
+
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
-//------------------------------------------------------------------------------------------------------------------------
+
 	target->setView(this->window->getDefaultView());
 	this->renderGUI(*target);
-//------------------------------------------------------------------------------------------------------------------------
+
 //	возвращаем камеру вида игры
-//------------------------------------------------------------------------------------------------------------------------
+
 	target->setView(core::view);
 
 }
-//------------------------------------------------------------------------------------------------------------------------

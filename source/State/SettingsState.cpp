@@ -1,8 +1,25 @@
 ﻿#include "../stdafx.h"
 #include "../State/SettingsState.h"
+#include "SettingsState.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// констуктор
+void SettingsState::addObserver(Observer& observer)
+{
+	observer_list.push_back(&observer);
+}
+
+void SettingsState::removeObserver(Observer& observer)
+{
+	observer_list.remove(&observer);
+}
+
+void SettingsState::notifyObservers()
+{
+	for (auto o : observer_list)
+	{
+		o->updateObserver();
+	}
+}
+
 SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {
@@ -15,14 +32,10 @@ SettingsState::SettingsState(StateData* state_data)
 	video_modes = sf::VideoMode::getFullscreenModes();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// деструктор
 SettingsState::~SettingsState()
 {
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление событий
 void SettingsState::updateEvents()
 {
 	if (core::sfmlEvent.type == sf::Event::KeyReleased && core::sfmlEvent.key.code == sf::Keyboard::D)
@@ -32,8 +45,6 @@ void SettingsState::updateEvents()
 	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление IMGUI
 void SettingsState::updateImGui()
 {
 	const char *resolution[] = { "1920x1080", "1289x720", "1024x768", "800x600", "640x480" };
@@ -192,15 +203,11 @@ void SettingsState::updateImGui()
 	ImGui::End();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-//обновляем все
 void SettingsState::update(const float& dtime)									
 {
 	this->updateMousePositions();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-//рисуем все
 void SettingsState::render(sf::RenderTarget* target)							
 {
 	if (!target)
@@ -208,4 +215,3 @@ void SettingsState::render(sf::RenderTarget* target)
 	target->setView(this->window->getDefaultView());
 	target->draw(sh);																// координаты
 }
-//------------------------------------------------------------------------------------------------------------------------
