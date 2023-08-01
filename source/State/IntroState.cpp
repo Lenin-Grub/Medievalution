@@ -3,11 +3,15 @@
 
 void IntroState::initEntities()
 {
-	shader.loadFromFile("shaders/test_shader.vert", "shaders/test_shader.frag");
-	shape.setSize(sf::Vector2f(300, 300));
 	sf::Texture texture;
-	texture.loadFromFile("resources/intro.jpg");
-	spr.setTexture(texture);
+	if (texture.loadFromFile("resources/intro.jpg"))
+	{
+		spr.setTexture(texture);
+	}
+	else
+	{
+		LOG_ERROR("File <<intro.jpg>> not found");
+	}
 }
 
 void IntroState::renderGUI(sf::RenderTarget& target)

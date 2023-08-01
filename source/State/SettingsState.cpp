@@ -6,7 +6,11 @@ SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {
 	this->updateEvents();
-	background.loadFromFile("resources/background.jpg");
+	if (!background.loadFromFile("resources/background.jpg"))
+	{
+		LOG_ERROR("File <<background.jpg>> not foubd");
+	}
+
 	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	sh.setTexture(&background);
 

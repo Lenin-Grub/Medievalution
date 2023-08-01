@@ -7,7 +7,7 @@ void Game::initVariables()
     core::music = std::make_unique<sf::Music>();
     core::dtime = 0.00f;
     if (!music.openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
-        LOG_ERROR ("fail sound");
+        LOG_ERROR ("Music <<Now-We-Ride.wav>> not found");
 	music.setLoop(true);
 }
 
@@ -64,8 +64,8 @@ void Game::initStates()
     StateManager::getInstance().init();
 	ImGui::SFML::Init(*window);
 
-    //установка дефолтного шрифта в ImGui
     //TODO перенсти в отдельное место
+    //установка дефолтного шрифта в ImGui
 
     ImGuiIO& io = ImGui::GetIO();
     ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",20.f,NULL,io.Fonts->GetGlyphRangesCyrillic());

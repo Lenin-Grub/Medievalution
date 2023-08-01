@@ -4,11 +4,17 @@
 MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)
 {
-	this->updateEvents();				// разовый вызов обновления событий для корректного отображения кнопок
+	this->updateEvents();
 	core::music->setVolume(WindowSettings::getInstance().music_volume);
 
-	language_rus.loadFromFile("resources/Flags/rus.png");
-	language_eng.loadFromFile("resources/Flags/eng.png");
+	if (!language_rus.loadFromFile("resources/Flags/rus.png"))
+	{
+		LOG_WARN("File <<rus.png>> not found");
+	}
+	if (!language_eng.loadFromFile("resources/Flags/eng.png"))
+	{
+		LOG_WARN("File <<eng.png>> not found");
+	}
 	
 	if (WindowSettings::getInstance().language == "rus")
 	{
@@ -17,13 +23,19 @@ MainMenuState::MainMenuState(StateData* state_data)
 		sprite.setTexture(language_rus);
 
 	}
+
 	if (WindowSettings::getInstance().language == "eng")
 	{
 		i.open("translation/eng.json");
 		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_eng);
 	}
-	background.loadFromFile("resources/background.jpg");
+
+	if (!background.loadFromFile("resources/background.jpg"))
+	{
+		LOG_ERROR("File <<background.jpg>> not foubd");
+	}
+
 	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	sh.setTexture(&background);
 }
