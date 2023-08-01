@@ -13,33 +13,45 @@ void Game::initVariables()
 
 void Game::initGraphicSettings()
 {
-    //TODO сделать проверку
-    WindowSettings::getInstance().loadFromFIle("config/settings.json");
+    try
+    {
+        WindowSettings::getInstance().loadFromFIle("config/settings.json");
+    }
+    catch (const std::exception& ex)
+    {
+       LOG_ERROR("Settings.json not found!");
+       LOG_ERROR(ex.what());
+    }
 }
 
-void Game::initWindow()                                                             
+void Game::initWindow()
 {
     // если окно в режиме "во весь экран", то устанавливаем след. настройки
     if (WindowSettings::getInstance().fullscrean)
         this->window = std::make_unique<sf::RenderWindow>
-                                            (   WindowSettings::getInstance().resolution,
-                                                WindowSettings::getInstance().title, sf::Style::Fullscreen,
-                                                WindowSettings::getInstance().contextSettings);
-   // если окнов оконном режиме, устанавливаем след. настройки
+        (WindowSettings::getInstance().resolution,
+            WindowSettings::getInstance().title, sf::Style::Fullscreen,
+            WindowSettings::getInstance().contextSettings);
+    // если окнов оконном режиме, устанавливаем след. настройки
     else
-        this->window = std::make_unique<sf::RenderWindow>   
-                                            (    WindowSettings::getInstance().resolution,
-                                                 WindowSettings::getInstance().title, sf::Style::Close,
-                                                 WindowSettings::getInstance().contextSettings);
-    
-    this->window->setFramerateLimit         (WindowSettings::getInstance().fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
-    this->window->setVerticalSyncEnabled    (WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
-    
-    //иконка приложения
-    //TODO сделать отдельно и добавить проверку
+        this->window = std::make_unique<sf::RenderWindow>
+        (WindowSettings::getInstance().resolution,
+            WindowSettings::getInstance().title, sf::Style::Close,
+            WindowSettings::getInstance().contextSettings);
+
+    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
+    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
+
+    //TODO перенести в отдельное место
     sf::Image i;
-    i.loadFromFile("resources/Icons/icon.png");
-   this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
+    if (i.loadFromFile("resources/Icons/icon.png"))
+    {
+        this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
+    }
+    else
+    {
+        LOG_ERROR("File <<icon.png>> not loadded");
+    }
 }
 
 void Game::initStateData()                                                         

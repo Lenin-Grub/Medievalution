@@ -1,17 +1,15 @@
 #include "../stdafx.h"
 #include "../World/WorldMap.h"
 
-//------------------------------------------------------------------------------------------------------------------------
 WorldMap::WorldMap()
 {
 	loadMapData();
 	loadProvincesMap();
 	initProvinceData();
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
-		LOG_WARN("SHADER NOT FOUND");
+		LOG_ERROR("Shader not found");
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
 	shader.setUniform("transperency", transperency);
-
 }
 
 WorldMap::~WorldMap()
@@ -19,20 +17,26 @@ WorldMap::~WorldMap()
 	file.close();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::loadMapData()
 {
-	file.open("resources/Map/Provinces.csv");
+	//file.exceptions(std::ifstream::badbit | std::ifstream::failbit);
+	try
+	{
+		file.open("resources/Map/Provinces.csv");
+	}
+	catch (const std::ifstream::failure & ex)
+	{
+		LOG_ERROR("File <<Proivinces.csv>> not found");
+		LOG_ERROR(ex.what());
+	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::loadProvincesMap()
 {
 	if (!map_image.loadFromFile("resources/Map/Provinces.bmp"))
-		LOG_WARN("resources/Map/Provinces.png\t NOT FOUND!");
+		LOG_ERROR("resources/Map/Provinces.png\t not found!");
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::initProvinceData()
 {
 	std::string str;
@@ -59,7 +63,6 @@ void WorldMap::initProvinceData()
 	}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::init()
 {
 	sf::Color ocean;
@@ -84,15 +87,12 @@ void WorldMap::init()
 	s_texture_map.setTexture(s_texture);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::update()
 {
 	getColorUnderCursor();
 	shader.setUniform("transperency", transperency);
 }
 
-
-//------------------------------------------------------------------------------------------------------------------------
 const int WorldMap::getProvinceID() const
 {
 	auto res = std::find_if(provinces.begin(), provinces.end(), [this] (ProvinceData p)
@@ -102,7 +102,6 @@ const int WorldMap::getProvinceID() const
 	return res->id;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 const std::string WorldMap::getProvinceName() const
 {
 	auto res = std::find_if(provinces.begin(), provinces.end(), [this](ProvinceData p)
@@ -112,7 +111,6 @@ const std::string WorldMap::getProvinceName() const
 	return res->name;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 bool WorldMap::isMouseOnMap()
 {
 	if (core::mousePosView.x >= 0 && core::mousePosView.y >= 0 && core::mousePosView.x <= map_image.getSize().x && core::mousePosView.y <= map_image.getSize().y)
@@ -121,14 +119,12 @@ bool WorldMap::isMouseOnMap()
 		return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
 	target.draw(s_texture_map);
 	target.draw(s_province_map, &shader);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 sf::Color WorldMap::getColorUnderCursor()
 {
 	if (isMouseOnMap())
@@ -140,4 +136,3 @@ sf::Color WorldMap::getColorUnderCursor()
 	}
 	return currentColor;
 }
-//------------------------------------------------------------------------------------------------------------------------
