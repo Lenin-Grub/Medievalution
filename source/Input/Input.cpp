@@ -50,5 +50,3 @@ bool Input::isMouseWheelUp(const sf::Mouse::Wheel code)
 			return true;
 		return false;
 }
-
-//------------------------------------------------------------------------------------------------------------------------

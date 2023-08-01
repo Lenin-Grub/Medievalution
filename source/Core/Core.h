@@ -7,7 +7,7 @@ class Core
 public:
 	static sf::Event sfmlEvent;						// события sfml
 	static sf::View view;							// камера вида
-	static sf::Clock clock;							// часыs
+	static sf::Clock clock;							// часы
 	static std::unique_ptr<sf::Music> music;		// музыка
 	static float dtime;								// время
 
@@ -17,8 +17,8 @@ public:
 	Core();
 
 };
-//------------------------------------------------------------------------------------------------------------------------
+
 typedef Core core;
-typedef sf::Vector2i vec2i;					// v2i
-typedef sf::Vector2f vec2f;					// v2f
-typedef sf::Vector2u vec2u;					// v2u
+typedef sf::Vector2i vec2i;					
+typedef sf::Vector2f vec2f;					
+typedef sf::Vector2u vec2u;					

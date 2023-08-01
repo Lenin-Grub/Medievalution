@@ -7,14 +7,12 @@
 class Camera
 {
 public:
-	void initView();												// инициализация камеры
-	void updateView(const float& dtime);							// обновление камеры
+	void initView();					
+	void updateView(const float& dtime);
 
-	void move(const float& dtime);									// движение камеры
-	void zoom();													// прокрутка камеры(приближение\удаление)
+	void move(const float& dtime);		
+	void zoom();						
 private:
-	//WindowSettings settings;
 	int max_zoom = 1500;
 	int min_zoom = 100;
 };
-//------------------------------------------------------------------------------------------------------------------------

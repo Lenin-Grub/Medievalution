@@ -2,24 +2,6 @@
 #include "../State/SettingsState.h"
 #include "SettingsState.h"
 
-void SettingsState::addObserver(Observer& observer)
-{
-	observer_list.push_back(&observer);
-}
-
-void SettingsState::removeObserver(Observer& observer)
-{
-	observer_list.remove(&observer);
-}
-
-void SettingsState::notifyObservers()
-{
-	for (auto o : observer_list)
-	{
-		o->updateObserver();
-	}
-}
-
 SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {

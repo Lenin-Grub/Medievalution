@@ -1,26 +1,5 @@
-﻿//------------------------------------------------------------------------------------------------------------------------
-#include "../stdafx.h"
+﻿#include "../stdafx.h"
 #include "MainMenuState.h"
-
-void MainMenuState::addObserver(Observer& observer)
-{
-	observer_list.push_back(&observer);
-	LOG_INFO("Main Menu observer added");
-}
-
-void MainMenuState::removeObserver(Observer& observer)
-{
-	observer_list.remove(&observer);
-}
-
-void MainMenuState::notifyObservers()
-{
-	LOG_INFO("Main Menu observer notifyed");
-	for (auto o : observer_list)
-	{
-		o->updateObserver();
-	}
-}
 
 MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)

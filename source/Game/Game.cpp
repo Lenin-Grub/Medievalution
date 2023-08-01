@@ -1,26 +1,22 @@
 ﻿#include "../stdafx.h"
 #include "Game.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализируем переменные
 void Game::initVariables()                                                          
 {
+    //TODO музыка должна быть в другом месте
     core::music = std::make_unique<sf::Music>();
-    core::dtime = 0.00f;                                                               // дельта времени 0.00f
+    core::dtime = 0.00f;
     if (!music.openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
         LOG_ERROR ("fail sound");
 	music.setLoop(true);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализируем настройки графики
 void Game::initGraphicSettings()
 {
+    //TODO сделать проверку
     WindowSettings::getInstance().loadFromFIle("config/settings.json");
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализируем окно приложения
 void Game::initWindow()                                                             
 {
     // если окно в режиме "во весь экран", то устанавливаем след. настройки
@@ -40,27 +36,25 @@ void Game::initWindow()
     this->window->setVerticalSyncEnabled    (WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
     
     //иконка приложения
+    //TODO сделать отдельно и добавить проверку
     sf::Image i;
     i.loadFromFile("resources/Icons/icon.png");
    this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализируем буфер стейтов
 void Game::initStateData()                                                         
 {
      StateManager::getInstance().stateData.window = window;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализируем стартовый стейт
 void Game::initStates()                                                             
 {
     StateManager::getInstance().init();
 	ImGui::SFML::Init(*window);
 
     //установка дефолтного шрифта в ImGui
-    // to do перенсти в отдельное место
+    //TODO перенсти в отдельное место
+
     ImGuiIO& io = ImGui::GetIO();
     ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",20.f,NULL,io.Fonts->GetGlyphRangesCyrillic());
     ImGui::SFML::UpdateFontTexture();
@@ -70,8 +64,6 @@ void Game::initStates()
     LOG_INFO ("Game started successful");
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// конструткор
 Game::Game()
 {
     initVariables();                                                                // инициализируем переменные
@@ -81,22 +73,16 @@ Game::Game()
     initStates();                                                                   // инициализируем стейты
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// деструктор
 Game::~Game() 
 {
     music.stop();
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление дельты времени
 void Game::updateDeltaTime()                                                        
 {
     core::dtime = this->m_clock.restart().asMilliseconds();                            // обновляем как милисекунды
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обвноялем события SFML
 void Game::updateSFMLevents()                                                        
 {
     while (this->window->pollEvent(core::sfmlEvent))                                 // пока крутится окно
@@ -108,13 +94,11 @@ void Game::updateSFMLevents()
 		}
 		if (!StateManager::getInstance().states.empty())                             // если в стеке есть стейты
 		{
-            StateManager::getInstance().states.back()->updateEvents();               // обновляем события sfml в активном стейте
+            StateManager::getInstance().states.top()->updateEvents();               // обновляем события sfml в активном стейте
 		}
     }
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление логики
 void Game::update()
 {
     updateSFMLevents();                                                                     // обновляем события sfml
@@ -122,22 +106,13 @@ void Game::update()
     {
         if (this->window->hasFocus()) {                                                     // если окно в фокусе
             ImGui::SFML::Update(*window, core::clock.restart());
-            /*
-            to do
-            тут надо обновлять не последний(верхний) стейт, а активный!иначе получается стек
-            StateManager::getInstance().getCurrentState()->update();
-                    если колво стейтов изменилось, то обновляем и переходим к активному стейту
-                    меню ----> загрузка ---> игра
-                    (prev)      (curent)    (next)
-            Дожидаюсь загрузки иры(next), делаю ее активным стейтом, закрываю предыдущий стейт
-            */
-            StateManager::getInstance().states.back()->update(core::dtime);                 // обновляем логику активного стейта
-            StateManager::getInstance().states.back()->updateImGui();                       // обновление ImGui 
-            if (StateManager::getInstance().states.back()->getQuit())                       // если выходим из активного стейта
+            StateManager::getInstance().states.top()->update(core::dtime);                 // обновляем логику активного стейта
+            StateManager::getInstance().states.top()->updateImGui();                       // обновление ImGui 
+            if (StateManager::getInstance().states.top()->getQuit())                       // если выходим из активного стейта
             {
-                StateManager::getInstance().states.back()->endState();                      // завершаем активный стейт в стеке
-                delete   StateManager::getInstance().states.back();                         // очичаем от стейта память
-                StateManager::getInstance().states.pop_back();                              // предпоследний стейт становится активным
+                StateManager::getInstance().states.top()->endState();                      // завершаем активный стейт в стеке
+                delete   StateManager::getInstance().states.top();                         // очичаем от стейта память
+                StateManager::getInstance().states.pop();                              // предпоследний стейт становится активным
                 LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
             }
         }
@@ -146,24 +121,19 @@ void Game::update()
     {
         this->window->close();                                                      // закрываем окно приложения
     }
-
 }
 
-//------------------------------------------------------------------------------------------------------------------------
- // отрисовка
 void Game::render()                                                                 
 {
     this->window->clear(sf::Color(63, 72, 204));                                    // очистка экрана в синеватый цвет (63,72,204)
 	if (!StateManager::getInstance().states.empty())								// если в стеке есть стейты
 	{
-        StateManager::getInstance().states.back()->render();						// отрисовка активного стейта
+        StateManager::getInstance().states.top()->render();						    // отрисовка активного стейта
 	}
 	ImGui::SFML::Render(*window);
     this->window->display();														// выовд на экран
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// запуск приложения
 void Game::run()                                                                    
 {
 	if (core::music->openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
@@ -172,8 +142,6 @@ void Game::run()
 	    core::music->play();
 	    core::music->setLoop(true);
     }
-
-
     while (this->window->isOpen())                                                   // пока окно приложения открыто
     {
         updateDeltaTime();                                                           // обновление дельты времени
@@ -182,4 +150,3 @@ void Game::run()
     }
 	ImGui::SFML::Shutdown();
 }
-//------------------------------------------------------------------------------------------------------------------------

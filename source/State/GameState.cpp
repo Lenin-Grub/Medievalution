@@ -10,24 +10,6 @@ void GameState::renderGUI(sf::RenderTarget& target)
 {
 }
 
-void GameState::addObserver(Observer& observer)
-{
-	observer_list.push_back(&observer);
-}
-
-void GameState::removeObserver(Observer& observer)
-{
-	observer_list.remove(&observer);
-}
-
-void GameState::notifyObservers()
-{
-	for (auto o : observer_list)
-	{
-		o->updateObserver();
-	}
-}
-
 GameState::GameState(StateData* state_data)
 	:State(state_data)
 {

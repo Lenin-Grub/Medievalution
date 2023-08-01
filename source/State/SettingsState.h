@@ -2,11 +2,8 @@
 #include "../Observer/Observable.hpp"
 #include "StateManager.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// стейт Настроек игры
 class SettingsState :
-	public State,
-	public Observable
+	public State
 {
 private:
 	int item_current = 0;
@@ -17,22 +14,15 @@ private:
 
 	std::list<Observer*> observer_list;
 	std::vector<sf::VideoMode> video_modes;
+
 	char resolution[];
 
-//------------------------------------------------------------------------------------------------------------------------
-private:
-//------------------------------------------------------------------------------------------------------------------------
 public:
 	SettingsState(StateData* state_data);
 	virtual ~SettingsState();
 
-	void updateEvents();												// обновление событий
-	void updateImGui();													// обновление IMGUI
-	void update(const float& dtime);									// обновление
-	void render(sf::RenderTarget* target = NULL);						// рендер
-
-	void addObserver(Observer& observer)	override;
-	void removeObserver(Observer& observer)	override;
-	void notifyObservers()					override;
+	void updateEvents();						
+	void updateImGui();							
+	void update(const float& dtime);			
+	void render(sf::RenderTarget* target = NULL);
 };
-//------------------------------------------------------------------------------------------------------------------------

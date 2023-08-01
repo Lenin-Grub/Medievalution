@@ -1,35 +1,26 @@
 ﻿#include "../stdafx.h"
 #include "Camera.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// инициализация камеры
 void Camera::initView()
 {
 	core::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width, WindowSettings::getInstance().resolution.height));
 	core::view.setCenter(sf::Vector2f(WindowSettings::getInstance().resolution.width / 2.f, WindowSettings::getInstance().resolution.height / 2.f));
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// обновление камеры
 void Camera::updateView(const float& dtime)
 {
 	move(dtime);
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// перемещение камеры
 void Camera::move(const float& dtime)
 {
-	//движение камеры WASD
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { core::view.move(-WindowSettings::getInstance().camera_speed * dtime, 0);}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { core::view.move(WindowSettings::getInstance().camera_speed * dtime, 0);}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { core::view.move(0, -WindowSettings::getInstance().camera_speed * dtime);}
 	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { core::view.move(0, WindowSettings::getInstance().camera_speed * dtime);}
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// прокрутка камеры колесиком мышки
-// to do  добавить проверку на GUI
+//TODO  добавить проверку на GUI
 void Camera::zoom()
 {
 	if (core::sfmlEvent.type == sf::Event::MouseWheelScrolled)

@@ -13,6 +13,7 @@ public:
 	}
 
 	std::string getStringByKey(std::string key);
+
 private:
     Localisation() {}
     Localisation(const Localisation& root) = delete;

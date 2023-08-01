@@ -13,6 +13,5 @@ std::string FileUtils::getPathToFile(const std::string& filename)
             std::replace(filepath.begin(), filepath.end(), '\\', '/');
             return filepath;
         }           
-
     return {};
 }

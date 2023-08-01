@@ -1,7 +1,6 @@
 ﻿#include "../stdafx.h"
 #include "WindowSettings.h"
 
-//------------------------------------------------------------------------------------------------------------------------
 // если settings.json не обнаружено, то будут приняты эти настройки
 WindowSettings::WindowSettings()																
 {
@@ -19,8 +18,6 @@ WindowSettings::WindowSettings()
 	LOG_WARN("Window settings not loaded. Used default settings");
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// сохранение в /Config/graphic_settings.ini файл
 bool WindowSettings::saveToFile(const std::string path)
 {
 	nlohmann::ordered_json j;
@@ -28,7 +25,7 @@ bool WindowSettings::saveToFile(const std::string path)
 	std::ofstream ofs(path);
 	if (ofs.is_open())
 	{
-		//to do json ругается на синхронизацию, т.к. она int, а требуется bool
+		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
 		//j["vertycalSync"] = contextSettings.antialiasingLevel;
 		j["title"] = title;
 		j["resolution"] = { {"x" , resolution.width}, {"y",resolution.height} };
@@ -46,18 +43,15 @@ bool WindowSettings::saveToFile(const std::string path)
 	return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
-// загрузка из файла /Config/graphic_settings.ini
 bool WindowSettings::loadFromFIle(const std::string path)										
 {
 	nlohmann::json j;
 	std::ifstream ifs(path);
 	j = nlohmann::json::parse(ifs);
-	
 
 	if (ifs.is_open())
 	{
-		//to do json ругается на синхронизацию, т.к. она int, а требуется bool
+		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
 		//j["vertycalSync"].get_to(vertycalSync);
 		j["title"].get_to(title);
 		j["resolution"]["x"].get_to(resolution.width);
@@ -74,4 +68,3 @@ bool WindowSettings::loadFromFIle(const std::string path)
 	}
 	return false;
 }
-//------------------------------------------------------------------------------------------------------------------------

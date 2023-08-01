@@ -4,41 +4,30 @@
 #include "../Camera/Camera.h"
 #include "StateManager.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// основной стейт игры
 class GameState :
-	public State,
-	public Observable
+	public State
 {
 private:
-	sf::Text province_name;												// название провинции
-	sf::Text mouseText;;												// координаты мыши
-	sf::Shader shader;													// шейдер
+	sf::Text province_name;												
+	sf::Text mouseText;;												
+	sf::Shader shader;													
 
-	std::stringstream cords;											// координаты мыши вывод
+	std::stringstream cords;											
 	std::list<Observer*> observer_list;
 
-	WorldMap _map;														// карта
-	Camera camera;														// камера
+	WorldMap _map;														
+	Camera camera;														
 
-	//------------------------------------------------------------------------------------------------------------------------
 private:
-	void initEntities();												// инициализация сущностей
-	void renderGUI(sf::RenderTarget& target);							// рендер кнопок
+	void initEntities();												
+	void renderGUI(sf::RenderTarget& target);							
 
-
-	//------------------------------------------------------------------------------------------------------------------------
 public:
 	GameState(StateData* state_data);
 	virtual ~GameState();
 
-	void updateEvents() override;												// обновление событий
-	void updateImGui() override;												// обновление IMGUI
-	void update(const float& dtime) override;									// обновление
-	void render(sf::RenderTarget* target = nullptr) override;					// рендер
-
-	void addObserver(Observer& observer)	override;
-	void removeObserver(Observer& observer)	override;
-	void notifyObservers()					override;
+	void updateEvents() override;												
+	void updateImGui() override;												
+	void update(const float& dtime) override;									
+	void render(sf::RenderTarget* target = nullptr) override;
 };
-//------------------------------------------------------------------------------------------------------------------------

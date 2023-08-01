@@ -1,31 +1,26 @@
 ﻿#pragma once
 #include "../State/StateManager.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// Основной класс игра, отвечающий за запуск,закрытие, обновление игры
 class Game
 {
-//------------------------------------------------------------------------------------------------------------------------
 private:
-	sf::Clock m_clock;								// время
-	std::shared_ptr <sf::RenderWindow> window;		// окно
-	sf::Music music;
-//------------------------------------------------------------------------------------------------------------------------
-private:
-
-	void initVariables();							// инициализация размера карты, окна, времени и тд
-	void initGraphicSettings();						// загрузка настроек графики
-	void initWindow();								// инициализация окна приложения
-	void initStateData();							// data для обмена данными между состояниями
-	void initStates();								// иницилизация состояния
-	
-	void update();									// обновление
-	void render();									// рендер
-	void updateDeltaTime();							// обновление времени
-	void updateSFMLevents();						// обновление событий сфмл
-//------------------------------------------------------------------------------------------------------------------------
-public:
-	Game();
-	virtual ~Game();
-	void run();										// запуск приложения
+	sf::Clock m_clock;						
+	std::shared_ptr <sf::RenderWindow> window;
+	sf::Music music;						
+private:									
+											
+	void initVariables();					
+	void initGraphicSettings();				
+	void initWindow();						
+	void initStateData();					
+	void initStates();						
+											
+	void update();							
+	void render();							
+	void updateDeltaTime();					
+	void updateSFMLevents();				
+public:										
+	Game();									
+	virtual ~Game();						
+	void run();								
 };

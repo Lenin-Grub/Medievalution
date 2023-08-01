@@ -4,12 +4,14 @@
 
 std::string Localisation::getStringByKey(std::string key)
 {
-	// to do сделать проверку на неправильный ключ или остутсвие строки
-	// example
-	// Localisation::getInstance().getStringByKey("key").c_str();
+	//TODO сделать проверку на неправильный ключ или остутсвие строки
 	if (!WindowSettings::getInstance().localisation.at(key).empty())
 	{
 		return WindowSettings::getInstance().localisation.at(key);
 	}
-	return "not found key";
+	else
+	{
+		LOG_WARN("NOT FOUND ", key, ". Check localisation file");
+	}
+	return "not_found_key";
 }

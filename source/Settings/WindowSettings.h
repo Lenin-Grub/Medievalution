@@ -2,9 +2,9 @@
 #include "../Core/Core.h"
 #include "../Json/json.hpp"
 #include "../Localisation/Localisation.hpp"
+
 using json = nlohmann::json;
 
-//------------------------------------------------------------------------------------------------------------------------
 class WindowSettings
 {
 public:
@@ -14,14 +14,14 @@ public:
 		return single_instance;
 	}
 
-	bool saveToFile(const std::string path);								// сохранине в файл
-	bool loadFromFIle(const std::string path);								// загрузка из файла
+	bool saveToFile(const std::string path);								
+	bool loadFromFIle(const std::string path);	
+
 private:
 	WindowSettings();
 	WindowSettings(const WindowSettings& root) = delete;
 	WindowSettings& operator=(const WindowSettings&) = delete;
 
-//------------------------------------------------------------------------------------------------------------------------
 public:
 	std::string title;														// название программы
 	sf::VideoMode resolution;												// расширение экрана
@@ -32,8 +32,6 @@ public:
 	std::vector<sf::VideoMode> videoModes;									// видео режимы
 	json localisation;
 
-//------------------------------------------------------------------------------------------------------------------------
-public:
 	int music_volume = 0;
 	int sound_volume = 0;
 	int camera_speed = 1;
@@ -44,4 +42,3 @@ public:
 
 	std::string language;
 };
-//------------------------------------------------------------------------------------------------------------------------
