@@ -3,7 +3,7 @@
 
 void GameState::initEntities()
 {
-	_map.init();
+	world_map.init();
 }
 
 void GameState::renderGUI(sf::RenderTarget& target)								
@@ -27,9 +27,9 @@ void GameState::updateEvents()
 	camera.zoom();
 	if (Input::isMouseReleased(sf::Mouse::Left))
 	{
-		sf::Color color = _map.getColorUnderCursor();
+		sf::Color color = world_map.getColorUnderCursor();
 		LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
-		LOG_INFO(_map.findProvinceByColor(color));
+		LOG_INFO(world_map.findProvinceByColor(color));
 	}
 }
 
@@ -44,7 +44,7 @@ void GameState::updateImGui()
 	}
 	ImGui::End();
 
-	std::string str = _map.getProvinceName();
+	std::string str = world_map.getProvinceName();
 	char* chr = const_cast<char*>(str.c_str());
 
 	ImGui::SetNextWindowBgAlpha(0.55f);
@@ -59,9 +59,9 @@ void GameState::updateImGui()
 		ImGui::Text("Mouse Position: <invalid>");
 	ImGui::Text("Mouse View Position: (%.1f,%.1f)",core::mousePosView.x, core::mousePosView.y);
 	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_name").c_str(), chr);
-	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_id").c_str(), _map.getProvinceID());
+	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID());
 	ImGui::Separator();
-	ImGui::SliderFloat(Localisation::getInstance().getStringByKey("T_transperecny").c_str(), &_map.transperency, 0.0f, 1.0f);
+	ImGui::SliderFloat(Localisation::getInstance().getStringByKey("T_transperecny").c_str(), &world_map.transperency, 0.0f, 1.0f);
 	ImGui::End();
 }
 
@@ -69,7 +69,7 @@ void GameState::update(const float& dtime)
 {
 	updateMousePositions();
 	camera.updateView(dtime);
-	_map.update();
+	world_map.update();
 }
 
 void GameState::render(sf::RenderTarget* target)							
@@ -80,7 +80,7 @@ void GameState::render(sf::RenderTarget* target)
 
 //	рисуем динамечские объекты
 
-	_map.draw(*target,sf::RenderStates::Default);
+	world_map.draw(*target,sf::RenderStates::Default);
 
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
 

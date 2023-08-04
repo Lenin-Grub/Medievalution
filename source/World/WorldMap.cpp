@@ -44,20 +44,20 @@ void WorldMap::initProvinceData()
 	{
 		std::stringstream ss(str);
 
-		std::getline(ss, ID,		';');
-		std::getline(ss, R,			';');
-		std::getline(ss, G,			';');
-		std::getline(ss, B,			';');
-		std::getline(ss, COMMENT,	';');
-		std::getline(ss, COMMENT_2, ';');
+		std::getline(ss, id,		';');
+		std::getline(ss, r,			';');
+		std::getline(ss, g,			';');
+		std::getline(ss, b,			';');
+		std::getline(ss, name,		';');
+		std::getline(ss, comment,	';');
 
-		province.id = std::stoi(ID);
-		province.name = COMMENT;
-		province.comment = COMMENT_2;
+		province.id = std::stoi(id);
+		province.name = name;
+		province.comment = comment;
 
-		province._color.r = std::stoi(R);
-		province._color.g = std::stoi(G);
-		province._color.b = std::stoi(B);
+		province.color.r = std::stoi(r);
+		province.color.g = std::stoi(g);
+		province.color.b = std::stoi(b);
 
 		provinces.push_back(province);
 	}
@@ -84,18 +84,18 @@ void WorldMap::update()
 
 const int WorldMap::getProvinceID() const
 {
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this] (ProvinceData p)
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this] (Province p)
 		{
-			return p._color == currentColor;
+			return p.color == currentColor;
 		});
 	return res->id;
 }
 
 const std::string WorldMap::getProvinceName() const
 {
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this](ProvinceData p)
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p)
 		{
-			return p._color == currentColor;
+			return p.color == currentColor;
 		});
 	return res->name;
 }

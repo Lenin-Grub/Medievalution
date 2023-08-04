@@ -1,11 +1,13 @@
 #pragma once
 #include "../Core/Core.h"
 #include "../Resource/ResourceManager.hpp"
+#include "Province.h"
 
 class WorldMap 
 	:public sf::Drawable
 {
 public:
+
 	WorldMap();
 	virtual ~WorldMap();
 
@@ -19,15 +21,17 @@ public:
 
 	int	findProvinceByColor(sf::Color color);
 
-	void findNeighbors(int porovince_id);
-
 private:
+
 	void loadProvincesMap();		
 	void loadMapData();				
 	void initProvinceData();		
 	bool isMouseOnMap();			
 
 private:
+
+	Province province;
+
 	sf::Color	pixelColor;											
 	sf::Color	currentColor;										
 	sf::Image	map_image;											
@@ -38,19 +42,9 @@ private:
 	sf::Shader  shader;												
 
 	std::ifstream file;												
-	std::string ID, R, G, B, COMMENT, COMMENT_2;					
+	std::string id, r, g, b, name, comment;			
 
 public:
 	float transperency = 0.0f;
-
-//------------------------------------------------------------------------------------------------------------------------
-	struct ProvinceData
-	{
-		int id;
-		std::string name;
-		std::string comment;
-		sf::Color _color;
-	};
-	ProvinceData province;				
-	std::vector<ProvinceData> provinces;
+	std::vector<Province> provinces;
 };

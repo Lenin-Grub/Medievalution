@@ -15,7 +15,7 @@ private:
 	std::stringstream cords;											
 	std::list<Observer*> observer_list;
 
-	WorldMap _map;														
+	WorldMap world_map;														
 	Camera camera;														
 
 private:
