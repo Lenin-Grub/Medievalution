@@ -65,17 +65,6 @@ void WorldMap::initProvinceData()
 
 void WorldMap::init()
 {
-	sf::Color ocean;
-	ocean = sf::Color(255, 255, 255,0);
-	for (size_t x = 0;x < 20; x++)
-	{
-		for (size_t y = 0; y < 20; y++)
-		{
-			map_image.setPixel(x, y, ocean);
-
-		}
-	}
-	map_image.createMaskFromColor(sf::Color::White);
 	map_texture.loadFromImage(this->map_image);
 	s_province_map.setTexture(map_texture, true);
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
@@ -135,4 +124,14 @@ sf::Color WorldMap::getColorUnderCursor()
 		currentColor.b = pixelColor.b;
 	}
 	return currentColor;
+}
+
+int WorldMap::findProvinceByColor(sf::Color color)
+{
+	if (color == getColorUnderCursor())
+	{
+		return getProvinceID();
+	}
+	else
+		return 0;
 }

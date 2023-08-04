@@ -2,34 +2,31 @@
 #include "../Core/Core.h"
 #include "../Resource/ResourceManager.hpp"
 
-//------------------------------------------------------------------------------------------------------------------------
 class WorldMap 
 	:public sf::Drawable
 {
-//------------------------------------------------------------------------------------------------------------------------
 public:
 	WorldMap();
 	virtual ~WorldMap();
-//------------------------------------------------------------------------------------------------------------------------
-public:
-//------------------------------------------------------------------------------------------------------------------------
+
 	void init();
 	void update();
-	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-	const int			getProvinceID()		const;						
-	const std::string	getProvinceName()	const;						
+	const int			getProvinceID()		const;
+	const std::string	getProvinceName()	const;	
+	sf::Color getColorUnderCursor();
 
-	template <typename T>
-	const T				findProvinceByColor(sf::Color color) const;			
-//------------------------------------------------------------------------------------------------------------------------
+	int	findProvinceByColor(sf::Color color);
+
+	void findNeighbors(int porovince_id);
+
 private:
 	void loadProvincesMap();		
 	void loadMapData();				
 	void initProvinceData();		
 	bool isMouseOnMap();			
-	sf::Color getColorUnderCursor();
-//------------------------------------------------------------------------------------------------------------------------
+
 private:
 	sf::Color	pixelColor;											
 	sf::Color	currentColor;										
@@ -42,9 +39,10 @@ private:
 
 	std::ifstream file;												
 	std::string ID, R, G, B, COMMENT, COMMENT_2;					
-//------------------------------------------------------------------------------------------------------------------------
+
 public:
 	float transperency = 0.0f;
+
 //------------------------------------------------------------------------------------------------------------------------
 	struct ProvinceData
 	{
@@ -53,19 +51,6 @@ public:
 		std::string comment;
 		sf::Color _color;
 	};
-//------------------------------------------------------------------------------------------------------------------------
 	ProvinceData province;				
 	std::vector<ProvinceData> provinces;
 };
-//------------------------------------------------------------------------------------------------------------------------
-
-// Very bad, bad code !!! What if provinces container will be empty?
-template<typename T>
-inline const T WorldMap::findProvinceByColor(sf::Color color) const
-{
-	if (color == provinces.data()->_color)
-	{
-		return T();
-	}
-	return -1;
-}

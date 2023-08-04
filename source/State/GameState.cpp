@@ -25,6 +25,12 @@ GameState::~GameState()
 void GameState::updateEvents()
 {
 	camera.zoom();
+	if (Input::isMouseReleased(sf::Mouse::Left))
+	{
+		sf::Color color = _map.getColorUnderCursor();
+		LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
+		LOG_INFO(_map.findProvinceByColor(color));
+	}
 }
 
 void GameState::updateImGui()
