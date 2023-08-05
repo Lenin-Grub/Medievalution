@@ -16,8 +16,10 @@ public:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	const int			getProvinceID()		const;
-	const std::string	getProvinceName()	const;	
-	sf::Color getColorUnderCursor();
+	const std::string	getProvinceName()	const;
+
+	//Return sf::Color on mouse position
+	sf::Color getColor();
 
 	int	findProvinceByColor(sf::Color color);
 
@@ -45,6 +47,7 @@ private:
 	std::string id, r, g, b, name, comment;			
 
 public:
+	//Use in fragment shader to hide main colors
 	float transperency = 0.0f;
 	std::vector<Province> provinces;
 };

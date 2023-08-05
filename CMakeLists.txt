@@ -18,10 +18,9 @@ FetchContent_Declare(
  SFML GIT_REPOSITORY https://github.com/SFML/SFML.git
  GIT_TAG 2.5.1
 )
+
 FetchContent_MakeAvailable(SFML)
 
-#add_subdirectory(ext_libs/SFML-2.5.1)
-#include_directories (ext_libs/SFML-2.5.1/include)
 
 target_link_libraries(${PROJECT_NAME}
 	sfml-graphics
@@ -47,4 +46,4 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
 					${CMAKE_SOURCE_DIR}/shaders $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
 					COMMAND ${CMAKE_COMMAND} -E copy 
 					${CMAKE_SOURCE_DIR}/ext_libs/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>/openal32.dll
-					)
+)

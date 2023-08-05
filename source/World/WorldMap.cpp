@@ -6,8 +6,10 @@ WorldMap::WorldMap()
 	loadMapData();
 	loadProvincesMap();
 	initProvinceData();
+
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
 		LOG_ERROR("Shader not found");
+
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
 	shader.setUniform("transperency", transperency);
 }
@@ -19,7 +21,6 @@ WorldMap::~WorldMap()
 
 void WorldMap::loadMapData()
 {
-	//file.exceptions(std::ifstream::badbit | std::ifstream::failbit);
 	try
 	{
 		file.open("resources/Map/Provinces.csv");
@@ -67,18 +68,25 @@ void WorldMap::init()
 {
 	map_texture.loadFromImage(this->map_image);
 	s_province_map.setTexture(map_texture, true);
+
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
 	{
 		LOG_WARN("Shaders not found!");
 	}
+
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
-	s_texture.loadFromFile("resources/Map/Colormap.jpg");
+
+	if (!s_texture.loadFromFile("resources/Map/Colormap.jpg"))
+	{
+		LOG_WARN("Colormap.jpg not found!");
+	}
+
 	s_texture_map.setTexture(s_texture);
 }
 
 void WorldMap::update()
 {
-	getColorUnderCursor();
+	getColor();
 	shader.setUniform("transperency", transperency);
 }
 
@@ -102,7 +110,10 @@ const std::string WorldMap::getProvinceName() const
 
 bool WorldMap::isMouseOnMap()
 {
-	if (core::mousePosView.x >= 0 && core::mousePosView.y >= 0 && core::mousePosView.x <= map_image.getSize().x && core::mousePosView.y <= map_image.getSize().y)
+	if (core::mousePosView.x >= 0 && 
+		core::mousePosView.y >= 0 && 
+		core::mousePosView.x <= map_image.getSize().x && 
+		core::mousePosView.y <= map_image.getSize().y)
 		return true;
 	else
 		return false;
@@ -114,7 +125,7 @@ void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw(s_province_map, &shader);
 }
 
-sf::Color WorldMap::getColorUnderCursor()
+sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
 	{
@@ -128,7 +139,7 @@ sf::Color WorldMap::getColorUnderCursor()
 
 int WorldMap::findProvinceByColor(sf::Color color)
 {
-	if (color == getColorUnderCursor())
+	if (color == getColor())
 	{
 		return getProvinceID();
 	}
