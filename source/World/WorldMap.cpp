@@ -12,6 +12,8 @@ WorldMap::WorldMap()
 
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
 	shader.setUniform("transperency", transperency);
+
+	shader.setUniform("owner_color", sf::Glsl::Vec4(owner_color));
 }
 
 WorldMap::~WorldMap()
@@ -129,10 +131,7 @@ sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
 	{
-		pixelColor = map_image.getPixel(core::mousePosView.x, core::mousePosView.y);
-		currentColor.r = pixelColor.r,
-		currentColor.g = pixelColor.g,
-		currentColor.b = pixelColor.b;
+		currentColor = map_image.getPixel(core::mousePosView.x, core::mousePosView.y);
 	}
 	return currentColor;
 }

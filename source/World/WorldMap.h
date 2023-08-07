@@ -34,20 +34,20 @@ private:
 
 	Province province;
 
-	sf::Color	pixelColor;											
 	sf::Color	currentColor;										
 	sf::Image	map_image;											
 	sf::Texture map_texture;										
 	sf::Texture s_texture;											
 	sf::Sprite	s_province_map;										
 	sf::Sprite	s_texture_map;										
-	sf::Shader  shader;												
 
 	std::ifstream file;												
 	std::string id, r, g, b, name, comment;			
 
 public:
 	//Use in fragment shader to hide main colors
+	sf::Shader  shader;												
 	float transperency = 0.0f;
+	sf::Color owner_color;
 	std::vector<Province> provinces;
 };
