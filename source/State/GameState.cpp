@@ -24,15 +24,18 @@ GameState::~GameState()
 
 void GameState::updateEvents()
 {
-	camera.zoom();
-	if (Input::isMouseReleased(sf::Mouse::Left))
+	ImGuiIO& io = ImGui::GetIO();
+	if (!io.WantCaptureMouse)
 	{
-		
-		sf::Color color = world_map.getColor();
-		LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
-		LOG_INFO(world_map.findProvinceByColor(color));
-		world_map.owner_color = world_map.getColor();
-		world_map.shader.setParameter("owner_color", world_map.owner_color);
+		camera.zoom();
+		if (Input::isMouseReleased(sf::Mouse::Left))
+		{
+			sf::Color color = world_map.getColor();
+			LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
+			LOG_INFO(world_map.findProvinceByColor(color));
+			world_map.owner_color = world_map.getColor();
+			world_map.shader.setParameter("owner_color", world_map.owner_color);
+		}
 	}
 }
 

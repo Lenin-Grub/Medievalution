@@ -21,7 +21,7 @@ private:
 private:
 	void initEntities();												
 	void renderGUI(sf::RenderTarget& target);							
-
+	bool onWidget();
 public:
 	GameState(StateData* state_data);
 	virtual ~GameState();
