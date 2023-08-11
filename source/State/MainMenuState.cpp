@@ -21,7 +21,6 @@ MainMenuState::MainMenuState(StateData* state_data)
 		i.open("translation/rus.json");
 		i >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_rus);
-
 	}
 
 	if (WindowSettings::getInstance().language == "eng")
@@ -31,7 +30,7 @@ MainMenuState::MainMenuState(StateData* state_data)
 		sprite.setTexture(language_eng);
 	}
 
-	if (!background.loadFromFile("resources/background.jpg"))
+	if (!background.loadFromFile("resources/Backgrounds/background_main.jpg"))
 	{
 		LOG_ERROR("File <<background.jpg>> not foubd");
 	}
