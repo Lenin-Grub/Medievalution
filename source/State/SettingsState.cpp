@@ -33,41 +33,39 @@ void SettingsState::updateEvents()
 
 void SettingsState::updateImGui()
 {
-	const char *resolution[] = { "1920x1080", "1289x720", "1024x768", "800x600", "640x480" };
-	//#define IM_ARRAYSIZE(_ARR)          ((int)(sizeof(_ARR) / sizeof(*(_ARR))))     // Size of a static C-style array. Don't use on pointers!
+	const char* resolution[] =
+	{
+	"3840x2160","2560x1600", "2560x1440", "2048x1536", "1920x1440","1920x1200", "1920x1080",
+	"1680x1050", "1600x1200", "1600x1024", "1600x900", "1440x1080","1440x900", "1366x768",
+	"1360x768", "1280x1024", "1280x960", "1280x800", "1280x768", "1280x720", "1176x664",
+	"1152x864", "1024x768" ,"800x600", "720x576", "720x480", "640x480"
+	};
 
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	std::string str = WindowSettings::getInstance().localisation.at("T_settings");
 	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
+	const char* combo_preview_value = resolution[item_current_idx];
+
 	str = WindowSettings::getInstance().localisation.at("T_resolution");
-	if (ImGui::BeginCombo(str.c_str(), *resolution))
+	if (ImGui::BeginCombo(str.c_str(), combo_preview_value, 0))
 	{
-		if (ImGui::Button(resolution[0], ImVec2(120, 0)))
+		for (int n = 0; n < ((int)(sizeof(resolution) / sizeof(*(resolution)))); n++)
 		{
-			WindowSettings::getInstance().resolution.width = 1920;
-			WindowSettings::getInstance().resolution.height = 1080;
-		}
-		if (ImGui::Button(resolution[1], ImVec2(120, 0)))
-		{
-			 WindowSettings::getInstance().resolution.width = 1280;
-			 WindowSettings::getInstance().resolution.height = 720;
-		}
-		if (ImGui::Button(resolution[2], ImVec2(120, 0)))
-		{
-			 WindowSettings::getInstance().resolution.width = 1024;
-			 WindowSettings::getInstance().resolution.height = 768;
-		}
-		if (ImGui::Button(resolution[3], ImVec2(120, 0)))
-		{
-			 WindowSettings::getInstance().resolution.width = 800;
-			 WindowSettings::getInstance().resolution.height = 600;
-		}
-		if (ImGui::Button(resolution[4], ImVec2(120, 0)))
-		{
-			 WindowSettings::getInstance().resolution.width = 640;
-			 WindowSettings::getInstance().resolution.height = 480;
+			const bool is_selected = (item_current_idx == n);
+			if (ImGui::Selectable(resolution[n], is_selected))
+			{
+				//TODO добавить функцию изменения разрешения экрана
+				item_current_idx = n;
+				WindowSettings::getInstance().resolution.width = video_modes.at(n).width;
+				WindowSettings::getInstance().resolution.height = video_modes.at(n).height;
+			}
+
+			if (is_selected)
+			{
+				ImGui::SetItemDefaultFocus();
+			}
 		}
 		ImGui::EndCombo();
 	}

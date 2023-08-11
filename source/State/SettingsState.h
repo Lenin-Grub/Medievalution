@@ -15,7 +15,7 @@ private:
 	std::list<Observer*> observer_list;
 	std::vector<sf::VideoMode> video_modes;
 
-	char resolution[];
+	int item_current_idx = 0;
 
 public:
 	SettingsState(StateData* state_data);
