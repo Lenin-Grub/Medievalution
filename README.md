@@ -6,6 +6,6 @@
 -sfml
 -spdlog
 -ImGui
-
+-json
 
 Использйте runscript.bat для компиляции -cmake
