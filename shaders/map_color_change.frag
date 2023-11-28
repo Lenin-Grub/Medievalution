@@ -26,8 +26,8 @@ vec4 get_pixel(in vec2 coords, in float dx, in float dy) {
 
 
 float IsEdge(in vec2 coords){
-  float dxtex = 0.5 / 3072.0 /*image width*/;
-  float dytex = 0.5 / 2048.0 /*image height*/;
+  float dxtex = 0.5 / width; //3072.0 /*image width*/;
+  float dytex = 0.5 / height;
   float pix[9];
   int k = -1;
   float delta;
