@@ -14,6 +14,9 @@ WorldMap::WorldMap()
 	shader.setUniform("transperency", transperency);
 
 	shader.setUniform("owner_color", sf::Glsl::Vec4(owner_color));
+	shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
+	shader.setUniform("width", (float)map_texture.getSize().x);
+	shader.setUniform("height", (float)map_texture.getSize().y);
 }
 
 WorldMap::~WorldMap()
@@ -94,6 +97,7 @@ void WorldMap::update()
 
 const int WorldMap::getProvinceID() const
 {
+	//TO DO нет проверки на ошибку, если не найдена провинци€
 	auto res = std::find_if(provinces.begin(), provinces.end(), [this] (Province p)
 		{
 			return p.color == currentColor;
@@ -103,6 +107,7 @@ const int WorldMap::getProvinceID() const
 
 const std::string WorldMap::getProvinceName() const
 {
+	//TO DO нет проверки на ошибку, если не найдена провинци€
 	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p)
 		{
 			return p.color == currentColor;
@@ -131,9 +136,10 @@ sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
 	{
-		currentColor = map_image.getPixel(core::mousePosView.x, core::mousePosView.y);
+	 return	currentColor = map_image.getPixel(core::mousePosView.x, core::mousePosView.y);
 	}
-	return currentColor;
+	else
+		return sf::Color::White;
 }
 
 int WorldMap::findProvinceByColor(sf::Color color)

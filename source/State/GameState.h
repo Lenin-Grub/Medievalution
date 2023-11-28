@@ -10,7 +10,7 @@ class GameState :
 private:
 	sf::Text province_name;												
 	sf::Text mouseText;;												
-	sf::Shader shader;													
+//	sf::Shader shader;													
 
 	std::stringstream cords;											
 	std::list<Observer*> observer_list;

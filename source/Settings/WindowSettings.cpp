@@ -2,19 +2,19 @@
 #include "WindowSettings.h"
 
 // если settings.json не обнаружено, то будут приняты эти настройки
-WindowSettings::WindowSettings()																
+WindowSettings::WindowSettings():
+	title("Unitiolized"),
+	resolution(sf::VideoMode::getDesktopMode()),
+	videoModes(sf::VideoMode::getFullscreenModes()),
+	fullscrean(false),
+	vertycalSync(false),
+	fps_limit(0),
+	music_volume(100),
+	camera_speed(1),
+	zoom_speed(0),
+	language("rus")
 {
-	title = "Unitiolized";
-	resolution = sf::VideoMode::getDesktopMode();
-	fullscrean = false;
-	vertycalSync = false;
-	fps_limit = 0;
 	contextSettings.antialiasingLevel = 0;
-	videoModes = sf::VideoMode::getFullscreenModes();
-	music_volume = 100;
-	camera_speed = 1;
-	zoom_speed = 0;
-	language = "rus";
 	LOG_WARN("Window settings not loaded. Used default settings");
 }
 

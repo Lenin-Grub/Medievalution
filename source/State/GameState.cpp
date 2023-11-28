@@ -4,6 +4,9 @@
 void GameState::initEntities()
 {
 	world_map.init();
+	//TODO инкапсулировать в WorldMap
+	world_map.shader.setParameter("width", (float)world_map.map_image.getSize().x);// 3072.0);
+	world_map.shader.setParameter("height",(float)world_map.map_image.getSize().y);// 2048.0);
 }
 
 void GameState::renderGUI(sf::RenderTarget& target)								
@@ -35,6 +38,7 @@ void GameState::updateEvents()
 			LOG_INFO(world_map.findProvinceByColor(color));
 			world_map.owner_color = world_map.getColor();
 			world_map.shader.setParameter("owner_color", world_map.owner_color);
+			world_map.shader.setParameter("select_color", world_map.select_color);
 		}
 	}
 }

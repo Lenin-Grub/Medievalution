@@ -3,6 +3,9 @@
 uniform sampler2D map_texture;
 uniform float transperency;
 uniform vec4 owner_color;
+uniform vec4 select_color;
+uniform float height;
+uniform float width;
 
 vec4 map = texture2D(map_texture, gl_TexCoord[0].xy);
 vec4 color = vec4(0.0f,0.0f,0.0f,1.0f);
@@ -26,7 +29,7 @@ vec4 get_pixel(in vec2 coords, in float dx, in float dy) {
 
 
 float IsEdge(in vec2 coords){
-  float dxtex = 0.5 / width; //3072.0 /*image width*/;
+  float dxtex = 0.5 / width;
   float dytex = 0.5 / height;
   float pix[9];
   int k = -1;
@@ -76,14 +79,14 @@ void main()
     else    if ( inRange( map.r, 0.0/255.0 ) && inRange( map.g, 75.0/255.0 ) && inRange( map.b, 140.0/255.0 ) )
     color = province_color;
 
-	else    if ( inRange( map.r, 168.0/255.0 ) && inRange( map.g, 72.0/255.0 ) && inRange( map.b, 12.0/255.0 ) )
+	else    if ( inRange( map.r, select_color.r/255.0 ) && inRange( map.g, select_color.g/255.0 ) && inRange( map.b, select_color.b/255.0 ) )
     color = province_color;
-
-	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 6.0/255.0 ) && inRange( map.b, 164.0/255.0 ) )
-    color = province_color;
-
-	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 153.0/255.0 ) && inRange( map.b, 179.0/255.0 ) )
-    color = vec4(0.0f);
+//
+//	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 6.0/255.0 ) && inRange( map.b, 164.0/255.0 ) )
+//    color = province_color;
+//
+//	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 153.0/255.0 ) && inRange( map.b, 179.0/255.0 ) )
+//    color = vec4(0.0f);
 
 
   else

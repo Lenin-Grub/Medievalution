@@ -39,8 +39,8 @@ void Game::initWindow()
             WindowSettings::getInstance().title, sf::Style::Close,
             WindowSettings::getInstance().contextSettings);
 
-    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);      // ограничиваем лимит fps, по-умолчанию 120 fps
-    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);   // устанавливаем вертикальную синхронизацию, по-умолчанию выкл
+    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);      
+    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);   
 
     //TODO перенести в отдельное место
     sf::Image i;
@@ -78,11 +78,11 @@ void Game::initStates()
 
 Game::Game()
 {
-    initVariables();                                                                // инициализируем переменные
-    initGraphicSettings();                                                          // инициализируем настройки графики
-    initWindow();                                                                   // инициализируем окно приложение
-    initStateData();                                                                // инициализируем буфер стейтов
-    initStates();                                                                   // инициализируем стейты
+    initVariables();                                                                
+    initGraphicSettings();                                                          
+    initWindow();                                                                   
+    initStateData();                                                                
+    initStates();                                                                   
 }
 
 Game::~Game() 
@@ -92,58 +92,58 @@ Game::~Game()
 
 void Game::updateDeltaTime()                                                        
 {
-    core::dtime = this->m_clock.restart().asMilliseconds();                            // обновляем как милисекунды
+    core::dtime = this->m_clock.restart().asMilliseconds();                         
 }
 
-void Game::updateSFMLevents()                                                        
+void Game::updateSFMLevents()                                                       
 {
-    while (this->window->pollEvent(core::sfmlEvent))                                 // пока крутится окно
+    while (this->window->pollEvent(core::sfmlEvent))                                
     {
 		ImGui::SFML::ProcessEvent(*window,core::sfmlEvent);
-		if (core::sfmlEvent.type == sf::Event::Closed)                               // если событие закрыть окно
+		if (core::sfmlEvent.type == sf::Event::Closed)                              
 		{
-			this->window->close();                                                   // закрываем окно
+			this->window->close();                                                  
 		}
-		if (!StateManager::getInstance().states.empty())                             // если в стеке есть стейты
+		if (!StateManager::getInstance().states.empty())                            
 		{
-            StateManager::getInstance().states.top()->updateEvents();               // обновляем события sfml в активном стейте
+            StateManager::getInstance().states.top()->updateEvents();               
 		}
     }
 }
 
 void Game::update()
 {
-    updateSFMLevents();                                                                     // обновляем события sfml
-    if (!StateManager::getInstance().states.empty())                                        // если в стеке есть стейты
+    updateSFMLevents();                                                             
+    if (!StateManager::getInstance().states.empty())                                
     {
-        if (this->window->hasFocus()) {                                                     // если окно в фокусе
+        if (this->window->hasFocus()) {                                             
             ImGui::SFML::Update(*window, core::clock.restart());
-            StateManager::getInstance().states.top()->update(core::dtime);                 // обновляем логику активного стейта
-            StateManager::getInstance().states.top()->updateImGui();                       // обновление ImGui 
-            if (StateManager::getInstance().states.top()->getQuit())                       // если выходим из активного стейта
+            StateManager::getInstance().states.top()->update(core::dtime);          
+            StateManager::getInstance().states.top()->updateImGui();                
+            if (StateManager::getInstance().states.top()->getQuit())                
             {
-                StateManager::getInstance().states.top()->endState();                      // завершаем активный стейт в стеке
-                delete   StateManager::getInstance().states.top();                         // очичаем от стейта память
-                StateManager::getInstance().states.pop();                              // предпоследний стейт становится активным
+                StateManager::getInstance().states.top()->endState();               
+                delete   StateManager::getInstance().states.top();                  
+                StateManager::getInstance().states.pop();                           
                 LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
             }
         }
     }
     else
     {
-        this->window->close();                                                      // закрываем окно приложения
+        this->window->close();                                                      
     }
 }
 
 void Game::render()                                                                 
 {
-    this->window->clear(sf::Color(63, 72, 204));                                    // очистка экрана в синеватый цвет (63,72,204)
-	if (!StateManager::getInstance().states.empty())								// если в стеке есть стейты
+    this->window->clear(sf::Color(63, 72, 204));                                    
+	if (!StateManager::getInstance().states.empty())								
 	{
-        StateManager::getInstance().states.top()->render();						    // отрисовка активного стейта
+        StateManager::getInstance().states.top()->render();						    
 	}
 	ImGui::SFML::Render(*window);
-    this->window->display();														// выовд на экран
+    this->window->display();														
 }
 
 void Game::run()                                                                    
@@ -154,11 +154,11 @@ void Game::run()
 	    core::music->play();
 	    core::music->setLoop(true);
     }
-    while (this->window->isOpen())                                                   // пока окно приложения открыто
+    while (this->window->isOpen())                                                  
     {
-        updateDeltaTime();                                                           // обновление дельты времени
-        update();                                                                    // обновление логики
-        render();                                                                    // отрисовка
+        updateDeltaTime();                                                          
+        update();                                                                   
+        render();                                                                   
     }
 	ImGui::SFML::Shutdown();
 }
