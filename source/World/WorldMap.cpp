@@ -39,7 +39,7 @@ void WorldMap::loadMapData()
 
 void WorldMap::loadProvincesMap()
 {
-	if (!map_image.loadFromFile("resources/Map/Provinces.bmp"))
+	if (!map_image.loadFromFile("resources/Map/Provinces.png"))
 		LOG_ERROR("resources/Map/Provinces.png\t not found!");
 }
 
@@ -97,22 +97,28 @@ void WorldMap::update()
 
 const int WorldMap::getProvinceID() const
 {
-	//TO DO нет проверки на ошибку, если не найдена провинци€
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this] (Province p)
-		{
-			return p.color == currentColor;
-		});
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == currentColor; });
+
+	if (res == provinces.end())
+	{
+		LOG_WARN("Province id not found");
+		return 0;
+	}
+	else
 	return res->id;
 }
 
 const std::string WorldMap::getProvinceName() const
 {
-	//TO DO нет проверки на ошибку, если не найдена провинци€
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p)
-		{
-			return p.color == currentColor;
-		});
-	return res->name;
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == currentColor; });
+
+	if (res == provinces.end())
+	{
+		LOG_WARN("Province name not found");
+		return "not_found";
+	}
+	else
+		return res->name;
 }
 
 bool WorldMap::isMouseOnMap()
