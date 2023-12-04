@@ -197,5 +197,5 @@ void SettingsState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
-	target->draw(sh);																// координаты
+	target->draw(sh);
 }

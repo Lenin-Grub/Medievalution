@@ -1,15 +1,16 @@
 ﻿#pragma once
 #include "../State/StateManager.h"
+#include "../Resource/Jukebox.hpp"
 
 class Game
 {
 private:
 	sf::Clock m_clock;						
 	std::shared_ptr <sf::RenderWindow> window;
-	sf::Music music;						
+	//sf::Music music;
+	Jukebox jukebox;
 private:									
-											
-	void initVariables();					
+			
 	void initGraphicSettings();				
 	void initWindow();						
 	void initStateData();					

@@ -5,13 +5,13 @@
 std::string Localisation::getStringByKey(std::string key)
 {
 	//TODO сделать проверку на неправильный ключ или остутсвие строки
-	if (!WindowSettings::getInstance().localisation.at(key).empty())
+	if (WindowSettings::getInstance().localisation.contains(key))
 	{
 		return WindowSettings::getInstance().localisation.at(key);
 	}
 	else
 	{
-		LOG_WARN("NOT FOUND ", key, ". Check localisation file");
+		LOG_WARN("KEY NOT FOUND  Check localisation file");
+		return  "not found_key";
 	}
-	return "not_found_key";
 }

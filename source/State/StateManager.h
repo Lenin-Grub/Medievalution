@@ -5,7 +5,6 @@
 #include "GameState.h"
 #include "../Observer/Observer.hpp"
 
-//------------------------------------------------------------------------------------------------------------------------
 class StateManager
 {
 public:
@@ -14,18 +13,18 @@ public:
 		static StateManager single_instance;
 		return single_instance;
 	}
-//------------------------------------------------------------------------------------------------------------------------
+
 	void addState(State* state);
 	void endState();		
 	void init();
-//------------------------------------------------------------------------------------------------------------------------
+	void changeState(State* state, bool replace);
+
 public:
-	std::stack<State*> states;						// стэк состояния игры (главное меню, игра, настройки и тд)
-	StateData stateData;							// передает в дочерние состояния информацию о времени, событиях и тд
-//------------------------------------------------------------------------------------------------------------------------
+	std::stack<State*> states;
+	StateData stateData;
+
 private:
 	StateManager() {}
 	StateManager(const StateManager& root) = delete;
 	StateManager& operator=(const StateManager&) = delete;
 };
-//------------------------------------------------------------------------------------------------------------------------

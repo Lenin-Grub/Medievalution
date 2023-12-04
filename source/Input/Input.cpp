@@ -1,8 +1,6 @@
 ﻿#include "../stdafx.h"
 #include "Input.h"
 
-
-//------------------------------------------------------------------------------------------------------------------------
 // нажата ли клавиша
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 {
@@ -12,7 +10,6 @@ bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 	return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 // отпущена ли клавиша
 bool Input::isKeyReleased(const sf::Keyboard::Key& code)
 {
@@ -22,7 +19,6 @@ bool Input::isKeyReleased(const sf::Keyboard::Key& code)
 	return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 // нажата ли мышка
 bool Input::isMousePressed(const sf::Mouse::Button& code)
 {
@@ -32,7 +28,6 @@ bool Input::isMousePressed(const sf::Mouse::Button& code)
 		return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 // отпущена ли мышка
 bool Input::isMouseReleased(const sf::Mouse::Button& code)
 {
@@ -42,7 +37,6 @@ bool Input::isMouseReleased(const sf::Mouse::Button& code)
 		return false;
 }
 
-//------------------------------------------------------------------------------------------------------------------------
 // прокручено ли колесико мышки
 bool Input::isMouseWheelUp(const sf::Mouse::Wheel code)
 {

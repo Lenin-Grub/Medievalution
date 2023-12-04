@@ -1,16 +1,6 @@
 ﻿#include "../stdafx.h"
 #include "Game.h"
 
-void Game::initVariables()                                                          
-{
-    //TODO музыка должна быть в другом месте
-    core::music = std::make_unique<sf::Music>();
-    core::dtime = 0.00f;
-    if (!music.openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
-        LOG_ERROR ("Music <<Now-We-Ride.wav>> not found");
-	music.setLoop(true);
-}
-
 void Game::initGraphicSettings()
 {
     try
@@ -78,16 +68,20 @@ void Game::initStates()
 
 Game::Game()
 {
-    initVariables();                                                                
-    initGraphicSettings();                                                          
-    initWindow();                                                                   
-    initStateData();                                                                
-    initStates();                                                                   
+    initGraphicSettings();
+    initWindow();
+    initStateData();                
+    initStates();       
+
+    jukebox.play();
+    jukebox.repeat();
+    core::dtime = 0.00f;
 }
 
 Game::~Game() 
 {
-    music.stop();
+    
+    //music.stop();
 }
 
 void Game::updateDeltaTime()                                                        
@@ -148,12 +142,6 @@ void Game::render()
 
 void Game::run()                                                                    
 {
-	if (core::music->openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
-    {
-        LOG_INFO ("Music track loaded sucsesfully");
-	    core::music->play();
-	    core::music->setLoop(true);
-    }
     while (this->window->isOpen())                                                  
     {
         updateDeltaTime();                                                          

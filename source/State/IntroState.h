@@ -9,14 +9,14 @@ class IntroState :
 private:
 	int load = 0;
 
-	sf::Shader shader;
-	sf::RectangleShape shape;
-	sf::Sprite spr;
-
+	sf::Texture background;
+	sf::Sprite sprite;
+	sf::RectangleShape sh;
 	std::list<Observer*> observer_list;
+	sf::Text text;
+	sf::Font font;
 
-private:
-	void initEntities();												
+private:									
 	void renderGUI(sf::RenderTarget& target);							
 
 public:

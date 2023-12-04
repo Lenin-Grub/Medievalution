@@ -55,11 +55,11 @@ void MainMenuState::updateImGui()
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
-		StateManager::getInstance().addState(new GameState(stateData));
+		StateManager::getInstance().changeState(new GameState(stateData), false);
 	}
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{
-		StateManager::getInstance().addState(new SettingsState(stateData));
+		StateManager::getInstance().changeState(new SettingsState(stateData),false);
 	}
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))

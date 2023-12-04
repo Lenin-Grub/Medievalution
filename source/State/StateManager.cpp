@@ -18,5 +18,19 @@ void StateManager::endState()
 
 void StateManager::init()
 {
- StateManager::getInstance().addState(new MainMenuState(&stateData));
+	StateManager::getInstance().addState(new IntroState(&stateData));
+}
+
+void StateManager::changeState(State* state, bool replace = false)
+{
+	if (replace == true)
+	{
+		endState();
+		addState(state);
+	}
+	else
+	{
+		replace = false;
+		addState(state);
+	}
 }
