@@ -5,7 +5,7 @@
 #include "GameState.h"
 #include "../Observer/Observer.hpp"
 
-class StateManager
+class StateManager : public Observable
 {
 public:
 	static StateManager& getInstance()
@@ -15,16 +15,23 @@ public:
 	}
 
 	void addState(State* state);
-	void endState();		
+	void endState();
 	void init();
 	void changeState(State* state, bool replace);
+
+
+	void addObserver(Observer& observer)override;
+	void removeObserver(Observer& observer) override;
+	void notifyObservers() override;
 
 public:
 	std::stack<State*> states;
 	StateData stateData;
 
 private:
-	StateManager() {}
+	StateManager();
 	StateManager(const StateManager& root) = delete;
 	StateManager& operator=(const StateManager&) = delete;
+
+	std::list<Observer*> observers;
 };

@@ -4,6 +4,7 @@
 class Observable
 {
 public:
+	Observable() {};
 	virtual ~Observable() = default;
 	// добавить наблюдателя
 	virtual void addObserver(Observer& observer) = 0;
@@ -13,4 +14,5 @@ public:
 	virtual void notifyObservers() = 0;
 
 private:
+
 };

@@ -1,6 +1,7 @@
 ﻿#pragma once
 #include "../Settings/WindowSettings.h"
 #include "../Core/Core.h"
+#include "../Observer/Observer.hpp"
 
 class WindowSettings;
 class State;
@@ -21,7 +22,7 @@ public:
 
 //------------------------------------------------------------------------------------------------------------------------
 // базовый класс состояний игры (главное меню, настройки и тд)
-class State
+class State: public Observer
 {
 protected:
 	StateData* stateData;										
@@ -37,9 +38,11 @@ public:
 	const bool& getQuit() const;								
 	void endState();											
 
-	virtual void updateMousePositions(sf::View* view = NULL);	
+	virtual void updateMousePositions(sf::View* view = nullptr);	
 	virtual void updateEvents() = 0;							
 	virtual void updateImGui() = 0;								
 	virtual void update(const float& dtime) = 0;				
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
+
+	virtual void updateObserver() = 0;
 };

@@ -24,5 +24,7 @@ public:
 	void updateEvents();						
 	void updateImGui();							
 	void update(const float& dtime);			
-	void render(sf::RenderTarget* target = NULL);
+	void render(sf::RenderTarget* target = nullptr);
+
+	void updateObserver() override;
 };

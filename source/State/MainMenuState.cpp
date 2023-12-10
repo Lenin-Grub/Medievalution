@@ -37,10 +37,12 @@ MainMenuState::MainMenuState(StateData* state_data)
 
 	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	sh.setTexture(&background);
+	StateManager::getInstance().addObserver(*this);
 }
 
 MainMenuState::~MainMenuState()
 {
+	StateManager::getInstance().removeObserver(*this);
 }
 
 void MainMenuState::updateEvents()
@@ -109,4 +111,9 @@ void MainMenuState::render(sf::RenderTarget* target)
 	target->setView(this->window->getDefaultView());
 	target->draw(sh);
 
+}
+
+void MainMenuState::updateObserver()
+{
+	LOG_INFO("observer main menu update");
 }

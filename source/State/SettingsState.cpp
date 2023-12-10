@@ -199,3 +199,7 @@ void SettingsState::render(sf::RenderTarget* target)
 	target->setView(this->window->getDefaultView());
 	target->draw(sh);
 }
+
+void SettingsState::updateObserver()
+{
+}

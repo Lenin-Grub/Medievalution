@@ -1,14 +1,12 @@
 ﻿#include "../stdafx.h"
 #include "../State/State.h"
 
-//------------------------------------------------------------------------------------------------------------------------
-// конструктор класса State
-State::State(StateData* state_data)
+State::State(StateData* state_data):
+	stateData(state_data),
+	window(state_data->window),
+	states(state_data->states),
+	quit(false)
 {
-	this->stateData = state_data;
-	this->window = state_data->window;
-	this->states = state_data->states;
-	this->quit = false;
 }
 
 State::~State()

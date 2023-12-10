@@ -1,6 +1,11 @@
 #include "../stdafx.h"
 #include "StateManager.h"
 
+
+StateManager::StateManager():Observable()
+{
+}
+
 void StateManager::addState(State* state)
 {
 	states.push(state);
@@ -36,5 +41,24 @@ void StateManager::changeState(State* state, bool replace = false)
 	{
 		replace = false;
 		addState(state);
+	}
+}
+
+void StateManager::addObserver(Observer& observer)
+{
+	observers.push_back(&observer);
+}
+
+void StateManager::removeObserver(Observer& observer)
+{
+	observers.remove(&observer);
+}
+
+void StateManager::notifyObservers()
+{
+	std::list<Observer*>::iterator iterator = observers.begin();
+	while (iterator != observers.end()) {
+		(*iterator)->updateObserver();
+		++iterator;
 	}
 }

@@ -26,11 +26,12 @@ IntroState::IntroState(StateData* state_data)
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f,textRect.top + textRect.height / 0.4f);
 	text.setPosition(vec2f(StateManager::getInstance().stateData.window->getSize().x / 2, StateManager::getInstance().stateData.window->getSize().y / 2));
-
+	StateManager::getInstance().addObserver(*this);
 }
 
 IntroState::~IntroState()
 {
+	StateManager::getInstance().removeObserver(*this);
 }
 
 void IntroState::updateEvents()
@@ -61,4 +62,9 @@ void IntroState::render(sf::RenderTarget* target)
 		target = this->window.get();
 	target->draw(sh);
 	target->draw(text);
+}
+
+void IntroState::updateObserver()
+{
+	LOG_INFO("observer intro update");
 }

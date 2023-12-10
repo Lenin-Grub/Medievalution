@@ -102,3 +102,7 @@ void GameState::render(sf::RenderTarget* target)
 	target->setView(core::view);
 
 }
+
+void GameState::updateObserver()
+{
+}

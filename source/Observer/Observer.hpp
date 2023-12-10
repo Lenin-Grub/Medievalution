@@ -3,9 +3,10 @@
 class Observer
 {
 public:
-	virtual ~Observer() = default;
+	Observer() {};
+	virtual ~Observer() {};
 
 	virtual void updateObserver() = 0;
-private:
 
+private:
 };

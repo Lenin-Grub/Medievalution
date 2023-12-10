@@ -30,4 +30,6 @@ public:
 	void updateImGui() override;												
 	void update(const float& dtime) override;									
 	void render(sf::RenderTarget* target = nullptr) override;
+
+	void updateObserver() override;
 };
