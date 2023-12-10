@@ -3,34 +3,39 @@
 Jukebox::Jukebox()
 {
 	core::music = std::make_unique<sf::Music>();
-
-	if (core::music->openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
-	{
-		LOG_INFO("Music track loaded sucsesfully");
-	}
-
 }
 
 Jukebox::~Jukebox()
 {
-	music.stop();
-
+	core::music->stop();
 }
 
 void Jukebox::next()
 {
-	music.stop();
-	music.getStatus() == sf::SoundSource::Status::Stopped;
-	if (music.getStatus() == sf::SoundSource::Status::Stopped)
+	if (core::music->openFromFile("resources/Audio/Muisics/Music2.wav"))
 	{
-		music.openFromFile("resources/Audio/Muisics/Music2.wav");
-		music.play();
+		LOG_INFO("Music track 2 loaded sucsesfully");
 	}
+}
+
+void Jukebox::prev()
+{
+	if (core::music->openFromFile("resources/Audio/Muisics/Now-We-Ride.wav"))
+	{
+		LOG_INFO("Music track 1 loaded sucsesfully");
+	}
+}
+
+void Jukebox::stop()
+{
+	core::music->stop();
+	LOG_INFO("Music stoped");
 }
 
 void Jukebox::play()
 {
 	core::music->play();
+	LOG_INFO("Music play");
 }
 
 void Jukebox::repeat()
@@ -40,5 +45,16 @@ void Jukebox::repeat()
 
 void Jukebox::toggle()
 {
-	music.setPlayingOffset(sf::seconds(150.f));
+	core::music->setPlayingOffset(sf::seconds(150.f));
+}
+
+void Jukebox::setVolume(float volume)
+{
+	core::music->setVolume(volume);
+	LOG_INFO("Music volume ", volume);
+}
+
+const float Jukebox::getVolume() const
+{
+	return core::music->getVolume();
 }

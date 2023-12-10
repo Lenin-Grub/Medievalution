@@ -73,15 +73,15 @@ Game::Game()
     initStateData();                
     initStates();       
 
+    core::dtime = 0.00f;
+
+    jukebox.prev();
     jukebox.play();
     jukebox.repeat();
-    core::dtime = 0.00f;
 }
 
 Game::~Game() 
 {
-    
-    //music.stop();
 }
 
 void Game::updateDeltaTime()                                                        
@@ -116,16 +116,16 @@ void Game::update()
             StateManager::getInstance().states.top()->updateImGui();                
             if (StateManager::getInstance().states.top()->getQuit())                
             {
-                StateManager::getInstance().states.top()->endState();               
-                delete   StateManager::getInstance().states.top();                  
-                StateManager::getInstance().states.pop();                           
+                StateManager::getInstance().states.top()->endState();
+                delete   StateManager::getInstance().states.top();
+                StateManager::getInstance().states.pop();
                 LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
             }
         }
     }
     else
     {
-        this->window->close();                                                      
+        this->window->close();
     }
 }
 

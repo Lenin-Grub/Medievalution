@@ -7,7 +7,6 @@ class Game
 private:
 	sf::Clock m_clock;						
 	std::shared_ptr <sf::RenderWindow> window;
-	//sf::Music music;
 	Jukebox jukebox;
 private:									
 			

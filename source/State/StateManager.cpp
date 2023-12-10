@@ -26,7 +26,11 @@ void StateManager::changeState(State* state, bool replace = false)
 	if (replace == true)
 	{
 		endState();
+		//TO DO добавить условие по короторому сперва завершится заменяемый стейт
+		if (true)
+		{
 		addState(state);
+		}
 	}
 	else
 	{

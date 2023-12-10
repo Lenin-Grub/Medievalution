@@ -15,10 +15,7 @@ public:
 	void repeat();
 	void toggle();
 
-	void setVolume();
-	void getVolume();
-
-	sf::Music music;
+	void setVolume(float volume);
+	const float getVolume() const;
 private:
-
 };
