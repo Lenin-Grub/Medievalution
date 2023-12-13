@@ -114,7 +114,6 @@ void Game::update()
             ImGui::SFML::Update(*window, core::clock.restart());
             StateManager::getInstance().states.top()->update(core::dtime);          
             StateManager::getInstance().states.top()->updateImGui();
-            StateManager::getInstance().notifyObservers();
             if (StateManager::getInstance().states.top()->getQuit())                
             {
                 StateManager::getInstance().states.top()->endState();

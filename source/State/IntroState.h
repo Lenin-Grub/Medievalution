@@ -16,9 +16,6 @@ private:
 	sf::Text text;
 	sf::Font font;
 
-private:									
-	void renderGUI(sf::RenderTarget& target);							
-
 public:
 	IntroState(StateData* state_data);
 	virtual ~IntroState();

@@ -1,13 +1,9 @@
 #include "../stdafx.h"
 #include "IntroState.h"
 
-
-void IntroState::renderGUI(sf::RenderTarget& target)
-{
-}
-
 IntroState::IntroState(StateData* state_data)
 	:State(state_data)
+
 {
 	this->updateEvents();
 	core::music->setVolume(WindowSettings::getInstance().music_volume);
@@ -26,17 +22,21 @@ IntroState::IntroState(StateData* state_data)
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f,textRect.top + textRect.height / 0.4f);
 	text.setPosition(vec2f(StateManager::getInstance().stateData.window->getSize().x / 2, StateManager::getInstance().stateData.window->getSize().y / 2));
+	
 	StateManager::getInstance().addObserver(*this);
 }
+
 
 IntroState::~IntroState()
 {
 	StateManager::getInstance().removeObserver(*this);
 }
 
+
 void IntroState::updateEvents()
 {
 }
+
 
 void IntroState::updateImGui()
 {
@@ -48,13 +48,16 @@ void IntroState::updateImGui()
 	ImGui::End();
 }
 
+
 void IntroState::update(const float& dtime)
 {
 	if (Input::isKeyReleased(sf::Keyboard::Key::Space))
 	{
-		StateManager::getInstance().changeState(new MainMenuState(stateData),true);
+		updateObserver();
+		StateManager::getInstance().changeState(new MainMenuState(stateData), true);
 	}
 }
+
 
 void IntroState::render(sf::RenderTarget* target)
 {
@@ -64,7 +67,9 @@ void IntroState::render(sf::RenderTarget* target)
 	target->draw(text);
 }
 
+
 void IntroState::updateObserver()
 {
+	//endState();
 	LOG_INFO("observer intro update");
 }

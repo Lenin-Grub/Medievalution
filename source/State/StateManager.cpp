@@ -31,11 +31,9 @@ void StateManager::changeState(State* state, bool replace = false)
 	if (replace == true)
 	{
 		endState();
+		StateManager::getInstance().states.pop();
 		//TO DO добавить условие по короторому сперва завершится заменяемый стейт
-		if (true)
-		{
 		addState(state);
-		}
 	}
 	else
 	{

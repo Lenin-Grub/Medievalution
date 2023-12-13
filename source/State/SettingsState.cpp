@@ -16,10 +16,12 @@ SettingsState::SettingsState(StateData* state_data)
 
 	//TODO
 	video_modes = sf::VideoMode::getFullscreenModes();
+	StateManager::getInstance().addObserver(*this);
 }
 
 SettingsState::~SettingsState()
 {
+	StateManager::getInstance().removeObserver(*this);
 }
 
 void SettingsState::updateEvents()
@@ -202,4 +204,5 @@ void SettingsState::render(sf::RenderTarget* target)
 
 void SettingsState::updateObserver()
 {
+	LOG_INFO("observer settings update");
 }
