@@ -54,7 +54,7 @@ void IntroState::update(const float& dtime)
 	if (Input::isKeyReleased(sf::Keyboard::Key::Space))
 	{
 		updateObserver();
-		StateManager::getInstance().changeState(new MainMenuState(stateData), true);
+		StateManager::getInstance().changeState(std::make_shared <MainMenuState>(stateData), true);
 	}
 }
 

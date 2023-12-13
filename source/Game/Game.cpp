@@ -82,6 +82,10 @@ Game::Game()
 
 Game::~Game() 
 {
+    while (!StateManager::getInstance().states.empty())
+    {
+        StateManager::getInstance().states.pop();
+    }
 }
 
 void Game::updateDeltaTime()                                                        
@@ -117,7 +121,7 @@ void Game::update()
             if (StateManager::getInstance().states.top()->getQuit())                
             {
                 StateManager::getInstance().states.top()->endState();
-                delete   StateManager::getInstance().states.top();
+//                delete   StateManager::getInstance().states.top();
                 StateManager::getInstance().states.pop();
                 LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
             }

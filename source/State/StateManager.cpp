@@ -6,7 +6,7 @@ StateManager::StateManager():Observable()
 {
 }
 
-void StateManager::addState(State* state)
+void StateManager::addState(std::shared_ptr<State> state)
 {
 	states.push(state);
 	LOG_INFO("State added. Count of state {}", states.size());
@@ -23,10 +23,10 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	StateManager::getInstance().addState(new IntroState(&stateData));
+	StateManager::getInstance().addState(std::make_shared <IntroState>(&stateData));
 }
 
-void StateManager::changeState(State* state, bool replace = false)
+void StateManager::changeState(std::shared_ptr<State> state, bool replace = false)
 {
 	if (replace == true)
 	{

@@ -14,10 +14,10 @@ public:
 		return single_instance;
 	}
 
-	void addState(State* state);
+	void addState(std::shared_ptr<State> state);
 	void endState();
 	void init();
-	void changeState(State* state, bool replace);
+	void changeState(std::shared_ptr<State> state, bool replace);
 
 
 	void addObserver(Observer& observer)override;
@@ -25,7 +25,7 @@ public:
 	void notifyObservers() override;
 
 public:
-	std::stack<State*> states;
+	std::stack<std::shared_ptr<State>> states;
 	StateData stateData;
 
 private:
