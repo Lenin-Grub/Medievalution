@@ -39,7 +39,9 @@ private:
 	sf::Texture map_texture;										
 	sf::Texture s_texture;											
 	sf::Sprite	s_province_map;										
-	sf::Sprite	s_texture_map;										
+	sf::Sprite	s_texture_map;			
+
+	//sf::RectangleShape shp;
 
 	std::ifstream file;												
 	std::string id, r, g, b, name, comment;	

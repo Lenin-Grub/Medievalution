@@ -5,7 +5,8 @@ State::State(StateData* state_data):
 	stateData(state_data),
 	window(state_data->window),
 	states(state_data->states),
-	quit(false)
+	quit(false),
+	replace(false)
 {
 }
 

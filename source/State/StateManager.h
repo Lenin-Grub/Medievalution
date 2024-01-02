@@ -14,7 +14,7 @@ public:
 		return single_instance;
 	}
 
-	void addState(std::shared_ptr<State> state);
+	void addState(std::shared_ptr<State> state, bool replace);
 	void endState();
 	void init();
 	void changeState(std::shared_ptr<State> state, bool replace);

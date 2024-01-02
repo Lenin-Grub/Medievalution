@@ -64,30 +64,25 @@ bool inRange( float c1, float c2 ) {
 
 void main()
 {
-  vec4 province_color = vec4(owner_color.rgb, 1.0f);
+  vec4 province_color = vec4(owner_color.rgb, transperency);
   
   color.rgba = vec4(IsEdge(vec2( gl_TexCoord[0].xy)), 1.0f, 1.0f, 1.0f );
 
-
+  // draw black border line
   if(color.r > 0.0f)
   {
 	vec3 black = vec3(0.0f,0.0f,0.0f);
 	color.rgba = vec4(black,1.0f);
   }
 
+  // colored selected area
+  else if(select_color.rgb == map.rgb)
+  {
+      color = vec4(1.0f,1.0f,1.0f,0.5f);
+  }
 
-    else    if ( inRange( map.r, 0.0/255.0 ) && inRange( map.g, 75.0/255.0 ) && inRange( map.b, 140.0/255.0 ) )
-    color = province_color;
-
-	else    if ( inRange( map.r, select_color.r/255.0 ) && inRange( map.g, select_color.g/255.0 ) && inRange( map.b, select_color.b/255.0 ) )
-    color = province_color;
-//
-//	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 6.0/255.0 ) && inRange( map.b, 164.0/255.0 ) )
+//	else    if ( inRange( map.r, owner_color.r/255.0f ) && inRange( map.g, owner_color.g/255.0f ) && inRange( map.b, owner_color.b/255.0f ) )
 //    color = province_color;
-//
-//	else    if ( inRange( map.r, 126.0/255.0 ) && inRange( map.g, 153.0/255.0 ) && inRange( map.b, 179.0/255.0 ) )
-//    color = vec4(0.0f);
-
 
   else
   {

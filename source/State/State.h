@@ -12,10 +12,10 @@ class State;
 class StateData
 {
 public:
-	StateData() = default;
+	StateData() {};
 	virtual ~StateData() = default;
 
-	std::list<State*>* states;
+	std::stack<State*>* states;
 	std::shared_ptr <sf::RenderWindow> window;
 };
 
@@ -25,9 +25,10 @@ public:
 class State: public Observer
 {
 protected:
-	StateData* stateData;										
-	std::list<State*>* states;									
-	bool quit;													
+	StateData* stateData;
+	std::stack<State*>* states;
+	bool quit;
+	bool replace;
 
 public:
 	std::shared_ptr <sf::RenderWindow> window;
@@ -35,13 +36,13 @@ public:
 	State(StateData* state_data);
 	virtual ~State();
 
-	const bool& getQuit() const;								
-	void endState();											
+	const bool& getQuit() const;
+	void endState();
 
-	virtual void updateMousePositions(sf::View* view = nullptr);	
-	virtual void updateEvents() = 0;							
-	virtual void updateImGui() = 0;								
-	virtual void update(const float& dtime) = 0;				
+	virtual void updateMousePositions(sf::View* view = nullptr);
+	virtual void updateEvents() = 0;
+	virtual void updateImGui() = 0;
+	virtual void update(const float& dtime) = 0;
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 
 	virtual void updateObserver() = 0;

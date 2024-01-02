@@ -6,7 +6,7 @@ StateManager::StateManager():Observable()
 {
 }
 
-void StateManager::addState(std::shared_ptr<State> state)
+void StateManager::addState(std::shared_ptr<State> state, bool replace)
 {
 	states.push(state);
 	LOG_INFO("State added. Count of state {}", states.size());
@@ -23,7 +23,7 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	StateManager::getInstance().addState(std::make_shared <IntroState>(&stateData));
+	StateManager::getInstance().addState(std::make_shared <IntroState>(&stateData), true);
 }
 
 void StateManager::changeState(std::shared_ptr<State> state, bool replace = false)
@@ -33,12 +33,12 @@ void StateManager::changeState(std::shared_ptr<State> state, bool replace = fals
 		endState();
 		StateManager::getInstance().states.pop();
 		//TO DO добавить условие по короторому сперва завершится заменяемый стейт
-		addState(state);
+		addState(state, true);
 	}
 	else
 	{
 		replace = false;
-		addState(state);
+		addState(state, true);
 	}
 }
 

@@ -81,12 +81,14 @@ void WorldMap::init()
 
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
 
-	if (!s_texture.loadFromFile("resources/Map/Colormap.jpg"))
+	if (!s_texture.loadFromFile("resources/Map/Colormap2.jpg"))
 	{
-		LOG_WARN("Colormap.jpg not found!");
+		LOG_WARN("Colormap2.jpg not found!");
 	}
-
+	s_texture.setRepeated(true);
 	s_texture_map.setTexture(s_texture);
+	//shp.setSize(sf::Vector2f(map_image.getSize().x, map_image.getSize().y));
+	//shp.setTexture(&s_texture);
 }
 
 void WorldMap::update()
