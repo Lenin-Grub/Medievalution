@@ -12,7 +12,6 @@ public:
 	virtual ~WorldMap();
 
 	void init();
-	void update();
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
 	const int			getProvinceID()		const;
@@ -21,7 +20,7 @@ public:
 	sf::Color getColor();
 	sf::Image	map_image;
 
-	int	findProvinceByColor(sf::Color color);
+	int	findProvinceID(sf::Color color);
 
 private:
 
@@ -41,8 +40,6 @@ private:
 	sf::Sprite	s_province_map;										
 	sf::Sprite	s_texture_map;			
 
-	//sf::RectangleShape shp;
-
 	std::ifstream file;												
 	std::string id, r, g, b, name, comment;	
 
@@ -50,7 +47,6 @@ private:
 	float width;
 
 public:
-	//Use in fragment shader to hide main colors
 	sf::Shader  shader;												
 	float transperency = 0.0f;
 	sf::Color owner_color;

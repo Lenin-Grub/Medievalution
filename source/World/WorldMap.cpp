@@ -41,6 +41,11 @@ void WorldMap::loadProvincesMap()
 {
 	if (!map_image.loadFromFile("resources/Map/Provinces.png"))
 		LOG_ERROR("resources/Map/Provinces.png\t not found!");
+
+	if (!s_texture.loadFromFile("resources/Map/Colormap2.jpg"))
+	{
+		LOG_WARN("Colormap2.jpg not found!");
+	}
 }
 
 void WorldMap::initProvinceData()
@@ -72,7 +77,8 @@ void WorldMap::initProvinceData()
 void WorldMap::init()
 {
 	map_texture.loadFromImage(this->map_image);
-	s_province_map.setTexture(map_texture, true);
+
+	s_province_map.setTexture(map_texture);
 
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
 	{
@@ -81,21 +87,18 @@ void WorldMap::init()
 
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
 
-	if (!s_texture.loadFromFile("resources/Map/Colormap2.jpg"))
-	{
-		LOG_WARN("Colormap2.jpg not found!");
-	}
-	s_texture.setRepeated(true);
+
+
 	s_texture_map.setTexture(s_texture);
-	//shp.setSize(sf::Vector2f(map_image.getSize().x, map_image.getSize().y));
-	//shp.setTexture(&s_texture);
 }
 
-void WorldMap::update()
-{
-	getColor();
-	shader.setUniform("transperency", transperency);
-}
+/*
+	todo @ при высоком фпс лагает
+	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
+	и каждый кадр сверяет текущий цвет с текстурой
+	нужно добавить проверку
+	если провинция найдена и позиция мыши не изменилась, искать не нужно
+*/
 
 const int WorldMap::getProvinceID() const
 {
@@ -107,8 +110,18 @@ const int WorldMap::getProvinceID() const
 		return 0;
 	}
 	else
-	return res->id;
+	{
+		return res->id;
+	}
 }
+
+/*
+	todo @ при высоком фпс лагает
+	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
+	и каждый кадр сверяет текущий цвет с текстурой
+	нужно добавить проверку
+	если провинция найдена и позиция мыши не изменилась, искать не нужно
+*/
 
 const std::string WorldMap::getProvinceName() const
 {
@@ -140,6 +153,14 @@ void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw(s_province_map, &shader);
 }
 
+/*
+	todo @ при высоком фпс лагает
+	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
+	и каждый кадр сверяет текущий цвет с текстурой
+	нужно добавить проверку
+	если провинция найдена и позиция мыши не изменилась, искать не нужно
+*/
+
 sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
@@ -150,7 +171,7 @@ sf::Color WorldMap::getColor()
 		return sf::Color::White;
 }
 
-int WorldMap::findProvinceByColor(sf::Color color)
+int WorldMap::findProvinceID(sf::Color color)
 {
 	if (color == getColor())
 	{

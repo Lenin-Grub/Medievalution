@@ -4,15 +4,13 @@
 void GameState::initEntities()
 {
 	world_map.init();
-	//TODO инкапсулировать в WorldMap
-	world_map.shader.setParameter("width", (float)world_map.map_image.getSize().x);// 3072.0);
-	world_map.shader.setParameter("height",(float)world_map.map_image.getSize().y);// 2048.0);
+
+	world_map.shader.setParameter("width", (float)world_map.map_image.getSize().x);
+	world_map.shader.setParameter("height",(float)world_map.map_image.getSize().y);
 	world_map.shader.setUniform("select_color", sf::Glsl::Vec4(world_map.select_color));
 }
 
-void GameState::renderGUI(sf::RenderTarget& target)								
-{
-}
+void GameState::renderGUI(sf::RenderTarget& target)	{}
 
 GameState::GameState(StateData* state_data)
 	:State(state_data)
@@ -22,9 +20,7 @@ GameState::GameState(StateData* state_data)
 	updateEvents();
 }
 
-GameState::~GameState()
-{
-}
+GameState::~GameState(){}
 
 void GameState::updateEvents()
 {
@@ -32,19 +28,6 @@ void GameState::updateEvents()
 	if (!io.WantCaptureMouse)
 	{
 		camera.zoom();
-		if (Input::isMouseReleased(sf::Mouse::Left))
-		{
-			sf::Color color = world_map.getColor();
-
-			LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
-			LOG_INFO(world_map.findProvinceByColor(color));
-
-			world_map.owner_color = color;
-			world_map.select_color = color;
-
-			world_map.shader.setParameter("owner_color", world_map.owner_color);
-			world_map.shader.setParameter("select_color",world_map.select_color);
-		}
 	}
 }
 
@@ -84,7 +67,27 @@ void GameState::update(const float& dtime)
 {
 	updateMousePositions();
 	camera.updateView(dtime);
-	world_map.update();
+
+	/*
+		todo @ при высоком фпс лагает
+		скорее всего за 1 кадр делает поиск по всем 10000+ провинций
+		и каждый кадр сверяет текущий цвет с текстурой
+		нужно добавить проверку
+		если провинция найдена и позиция мыши не изменилась, искать не нужно
+	*/
+	{
+		sf::Color& color = world_map.getColor();
+
+		world_map.owner_color = color;
+		world_map.select_color = color;
+
+		//	LOG_INFO("Color {0},{1},{2}", color.r, color.g, color.b);
+		//	LOG_INFO(world_map.findProvinceByColor(color));
+
+		world_map.shader.setParameter("owner_color", world_map.owner_color);
+		world_map.shader.setParameter("select_color", world_map.select_color);
+		world_map.shader.setParameter("transperency", world_map.transperency);
+	}
 }
 
 void GameState::render(sf::RenderTarget* target)							
@@ -94,18 +97,14 @@ void GameState::render(sf::RenderTarget* target)
 	target->setView(core::view);
 
 //	рисуем динамечские объекты
-
 	world_map.draw(*target,sf::RenderStates::Default);
 
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
-
 	target->setView(this->window->getDefaultView());
 	this->renderGUI(*target);
 
 //	возвращаем камеру вида игры
-
 	target->setView(core::view);
-
 }
 
 void GameState::updateObserver()

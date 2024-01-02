@@ -8,27 +8,25 @@ class GameState :
 	public State
 {
 private:
-	sf::Text province_name;												
-	sf::Text mouseText;;												
-//	sf::Shader shader;													
+	sf::Text province_name;
 
-	std::stringstream cords;											
+	std::stringstream cords;
 	std::list<Observer*> observer_list;
 
-	WorldMap world_map;														
-	Camera camera;														
+	WorldMap world_map;
+	Camera camera;
 
 private:
-	void initEntities();												
-	void renderGUI(sf::RenderTarget& target);							
-	bool onWidget();
+	void initEntities();
+	void renderGUI(sf::RenderTarget& target);
+
 public:
 	GameState(StateData* state_data);
 	virtual ~GameState();
 
-	void updateEvents() override;												
-	void updateImGui() override;												
-	void update(const float& dtime) override;									
+	void updateEvents() override;
+	void updateImGui() override;
+	void update(const float& dtime) override;
 	void render(sf::RenderTarget* target = nullptr) override;
 
 	void updateObserver() override;
