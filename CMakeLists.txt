@@ -21,6 +21,7 @@ FetchContent_Declare(
 
 FetchContent_MakeAvailable(SFML)
 
+target_sources ("${CMAKE_PROJECT_NAME}" PRIVATE ${MY_SOURCES} "resources.rc")
 
 target_link_libraries(${PROJECT_NAME}
 	sfml-graphics

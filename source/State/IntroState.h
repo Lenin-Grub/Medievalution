@@ -11,7 +11,7 @@ private:
 
 	sf::Texture background;
 	sf::Sprite sprite;
-	sf::RectangleShape sh;
+	sf::RectangleShape shape;
 	std::list<Observer*> observer_list;
 	sf::Text text;
 	sf::Font font;

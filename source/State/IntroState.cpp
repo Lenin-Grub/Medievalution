@@ -12,8 +12,8 @@ IntroState::IntroState(StateData* state_data)
 		LOG_ERROR("File <<ruszastavka.png>> not foubd");
 	}
 
-	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
-	sh.setTexture(&background);
+	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	shape.setTexture(&background);
 
 	font.loadFromFile("resources/Fonts/Blackmoor.ttf");
 	text.setFont(font);
@@ -63,7 +63,7 @@ void IntroState::render(sf::RenderTarget* target)
 {
 	if (!target)
 		target = this->window.get();
-	target->draw(sh);
+	target->draw(shape);
 	target->draw(text);
 }
 

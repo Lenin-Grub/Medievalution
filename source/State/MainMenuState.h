@@ -11,7 +11,7 @@ private:
 	std::stringstream cords;											
 	sf::Texture language_rus,language_eng,background;
 	sf::Sprite sprite;
-	sf::RectangleShape sh;
+	sf::RectangleShape shape;
 	std::ifstream i;
 	std::list<Observer*> observer_list;
 

@@ -11,8 +11,8 @@ SettingsState::SettingsState(StateData* state_data)
 		LOG_ERROR("File <<background.jpg>> not foubd");
 	}
 
-	sh.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
-	sh.setTexture(&background);
+	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	shape.setTexture(&background);
 
 	//TODO
 	video_modes = sf::VideoMode::getFullscreenModes();
@@ -199,7 +199,7 @@ void SettingsState::render(sf::RenderTarget* target)
 	if (!target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
-	target->draw(sh);
+	target->draw(shape);
 }
 
 void SettingsState::updateObserver()

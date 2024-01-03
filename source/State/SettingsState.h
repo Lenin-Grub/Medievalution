@@ -10,7 +10,7 @@ private:
 	bool play_music = true;
 	bool play_sound = true;
 	sf::Texture background;
-	sf::RectangleShape sh;
+	sf::RectangleShape shape;
 
 	std::list<Observer*> observer_list;
 	std::vector<sf::VideoMode> video_modes;
