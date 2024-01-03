@@ -5,8 +5,8 @@
         "y": 1080
     },
     "fullscrean": false,
-    "fps_limit": 30,
     "vertycalSync": false,
+    "fps_limit": 30,
     "music_volume": 10,
     "camera_speed": 1,
     "zoom_speed": 0.0,

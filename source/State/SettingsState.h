@@ -11,6 +11,7 @@ private:
 	bool play_sound = true;
 	sf::Texture background;
 	sf::RectangleShape shape;
+	std::map<int, sf::VideoMode> res;
 
 	std::list<Observer*> observer_list;
 	std::vector<sf::VideoMode> video_modes;

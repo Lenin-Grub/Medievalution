@@ -26,9 +26,9 @@ bool WindowSettings::saveToFile(const std::string path)
 	if (ofs.is_open())
 	{
 		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
-		//j["vertycalSync"] = contextSettings.antialiasingLevel;
 		j["title"] = title;
 		j["resolution"] = { {"x" , resolution.width}, {"y",resolution.height} };
+		j["id_resolution"] = id_resolution;
 		j["fullscrean"] = fullscrean;
 		j["fps_limit"] = fps_limit;
 		j["music_volume"] = music_volume;
@@ -52,10 +52,10 @@ bool WindowSettings::loadFromFIle(const std::string path)
 	if (ifs.is_open())
 	{
 		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
-		//j["vertycalSync"].get_to(vertycalSync);
 		j["title"].get_to(title);
 		j["resolution"]["x"].get_to(resolution.width);
 		j["resolution"]["y"].get_to(resolution.height);
+		j["id_resolution"].get_to(id_resolution);
 		j["fullscrean"].get_to(fullscrean);
 		j["fps_limit"].get_to(fps_limit);
 		j["music_volume"].get_to(music_volume);

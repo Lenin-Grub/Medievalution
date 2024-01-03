@@ -17,6 +17,13 @@ SettingsState::SettingsState(StateData* state_data)
 	//TODO
 	video_modes = sf::VideoMode::getFullscreenModes();
 	StateManager::getInstance().addObserver(*this);
+
+	for (int i = 0; i < WindowSettings::getInstance().resolution.getFullscreenModes().size(); ++i)
+	{
+		res[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
+		LOG_INFO("{0},{1}", WindowSettings::getInstance().resolution.getFullscreenModes().at(i).width, WindowSettings::getInstance().resolution.getFullscreenModes().at(i).height);
+	}
+	item_current_idx = WindowSettings::getInstance().id_resolution;
 }
 
 SettingsState::~SettingsState()
@@ -43,15 +50,21 @@ void SettingsState::updateImGui()
 	"1152x864", "1024x768" ,"800x600", "720x576", "720x480", "640x480"
 	};
 
+
+
+
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
+
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	std::string str = WindowSettings::getInstance().localisation.at("T_settings");
 	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
 
+
+	
 	const char* combo_preview_value = resolution[item_current_idx];
 
 	str = WindowSettings::getInstance().localisation.at("T_resolution");
-	if (ImGui::BeginCombo(str.c_str(), combo_preview_value, 0))
+	if (ImGui::BeginCombo(str.c_str(), combo_preview_value,0))
 	{
 		for (int n = 0; n < ((int)(sizeof(resolution) / sizeof(*(resolution)))); n++)
 		{
@@ -60,6 +73,7 @@ void SettingsState::updateImGui()
 			{
 				//TODO добавить функцию изменения разрешения экрана
 				item_current_idx = n;
+				WindowSettings::getInstance().id_resolution = item_current_idx;
 				WindowSettings::getInstance().resolution.width = video_modes.at(n).width;
 				WindowSettings::getInstance().resolution.height = video_modes.at(n).height;
 			}
@@ -88,10 +102,12 @@ void SettingsState::updateImGui()
 	}
 
 	str = WindowSettings::getInstance().localisation.at("T_vertychal_sync");
+	ImGui::BeginDisabled();
 	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycalSync))
 	{
-		WindowSettings::getInstance().vertycalSync;
+
 	}
+	ImGui::EndDisabled();
 
 	if (ImGui::IsItemHovered())
 	{
@@ -135,6 +151,7 @@ void SettingsState::updateImGui()
 		ImGui::Checkbox(str.c_str(), &play_music);
 	}
 	ImGui::Separator();
+	ImGui::BeginDisabled();
 	{
 		str = WindowSettings::getInstance().localisation.at("T_zoom_speed");
 		ImGui::SliderFloat(str.c_str(),&WindowSettings::getInstance().zoom_speed, 0, 1,"%.1f");
@@ -143,6 +160,7 @@ void SettingsState::updateImGui()
 		str = WindowSettings::getInstance().localisation.at("T_camera_speed");
 		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().camera_speed, 1, 100, "%d%%");
 	}
+	ImGui::EndDisabled();
 	ImGui::Separator();
 	
 	str = WindowSettings::getInstance().localisation.at("T_applay");
@@ -166,7 +184,7 @@ void SettingsState::updateImGui()
 		{
 			LOG_INFO("Settings changed");
 			WindowSettings::getInstance().saveToFile("config/settings.json");
-			ImGui::CloseCurrentPopup(); 
+			ImGui::CloseCurrentPopup();
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();

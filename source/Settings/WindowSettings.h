@@ -17,19 +17,20 @@ public:
 		return single_instance;
 	}
 
-	bool saveToFile(const std::string path);								
-	bool loadFromFIle(const std::string path);	
+	bool saveToFile(const std::string path);
+	bool loadFromFIle(const std::string path);
 
 public:
-	std::string title;														
-	sf::VideoMode resolution;												
-	bool fullscrean;														
-	bool vertycalSync;														
-	int fps_limit;															
-	sf::ContextSettings contextSettings;									
-	std::vector<sf::VideoMode> videoModes;									
+	std::string title;
+	sf::VideoMode resolution;
+	bool fullscrean;
+	bool vertycalSync;
+	int fps_limit;
+	sf::ContextSettings contextSettings;
+	std::vector<sf::VideoMode> videoModes;
 	json localisation;
 
+	int id_resolution = 0;
 	int music_volume = 0;
 	int sound_volume = 0;
 	int camera_speed = 1;
