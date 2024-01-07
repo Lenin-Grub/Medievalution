@@ -4,12 +4,12 @@
 
 class Game
 {
-private:
-	sf::Clock m_clock;
-	std::shared_ptr <sf::RenderWindow> window;
-	Jukebox jukebox;
-private:									
-			
+public:
+	Game();
+	virtual ~Game();
+	void run();
+
+private:										
 	void initGraphicSettings();
 	void initWindow();
 	void initStateData();
@@ -19,8 +19,9 @@ private:
 	void render();
 	void updateDeltaTime();
 	void updateSFMLevents();
-public:
-	Game();
-	virtual ~Game();
-	void run();
+
+private:
+	sf::Clock m_clock;
+	std::shared_ptr <sf::RenderWindow> window;
+	Jukebox jukebox;
 };

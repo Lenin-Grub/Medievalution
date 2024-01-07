@@ -17,6 +17,7 @@ private:
 
 public:
 	MainMenuState(StateData* state_data);
+	void loadEntities();
 	virtual ~MainMenuState();
 
 	void updateEvents();												

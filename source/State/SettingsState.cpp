@@ -5,7 +5,18 @@
 SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
 {
-	this->updateEvents();
+	StateManager::getInstance().addObserver(*this);
+	setBackground();
+	getVideoModes();
+}
+
+SettingsState::~SettingsState()
+{
+	StateManager::getInstance().removeObserver(*this);
+}
+
+void SettingsState::setBackground()
+{
 	if (!background.loadFromFile("resources/Backgrounds/background.jpg"))
 	{
 		LOG_ERROR("File <<background.jpg>> not foubd");
@@ -13,11 +24,11 @@ SettingsState::SettingsState(StateData* state_data)
 
 	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	shape.setTexture(&background);
+}
 
-	//TODO
+void SettingsState::getVideoModes()
+{
 	video_modes = sf::VideoMode::getFullscreenModes();
-	StateManager::getInstance().addObserver(*this);
-
 	for (int i = 0; i < WindowSettings::getInstance().resolution.getFullscreenModes().size(); ++i)
 	{
 		res[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
@@ -26,19 +37,7 @@ SettingsState::SettingsState(StateData* state_data)
 	item_current_idx = WindowSettings::getInstance().id_resolution;
 }
 
-SettingsState::~SettingsState()
-{
-	StateManager::getInstance().removeObserver(*this);
-}
-
-void SettingsState::updateEvents()
-{
-	if (core::sfmlEvent.type == sf::Event::KeyReleased && core::sfmlEvent.key.code == sf::Keyboard::D)
-	{
-
-		std::cout << "event work correct" << "\n";
-	}
-}
+void SettingsState::updateEvents(){}
 
 void SettingsState::updateImGui()
 {
@@ -49,17 +48,11 @@ void SettingsState::updateImGui()
 	"1360x768", "1280x1024", "1280x960", "1280x800", "1280x768", "1280x720", "1176x664",
 	"1152x864", "1024x768" ,"800x600", "720x576", "720x480", "640x480"
 	};
-
-
-
-
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 	std::string str = WindowSettings::getInstance().localisation.at("T_settings");
 	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
-
-
 	
 	const char* combo_preview_value = resolution[item_current_idx];
 
@@ -207,10 +200,7 @@ void SettingsState::updateImGui()
 	ImGui::End();
 }
 
-void SettingsState::update(const float& dtime)									
-{
-	this->updateMousePositions();
-}
+void SettingsState::update(const float& dtime){updateMousePositions();}
 
 void SettingsState::render(sf::RenderTarget* target)							
 {

@@ -5,18 +5,9 @@ WorldMap::WorldMap()
 {
 	loadMapData();
 	loadProvincesMap();
+	loadShader();
 	initProvinceData();
-
-	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
-		LOG_ERROR("Shader not found");
-
-	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
-	shader.setUniform("transperency", transperency);
-
-	shader.setUniform("owner_color", sf::Glsl::Vec4(owner_color));
-	shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
-	shader.setUniform("width", (float)map_texture.getSize().x);
-	shader.setUniform("height", (float)map_texture.getSize().y);
+	setUniformes();
 }
 
 WorldMap::~WorldMap()
@@ -74,21 +65,24 @@ void WorldMap::initProvinceData()
 	}
 }
 
-void WorldMap::init()
+void WorldMap::setUniformes()
 {
-	map_texture.loadFromImage(this->map_image);
-
-	s_province_map.setTexture(map_texture);
-
-	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
-	{
-		LOG_WARN("Shaders not found!");
-	}
-
 	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
+	shader.setUniform("transperency", transperency);
+	shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
+	shader.setUniform("width", (float)map_texture.getSize().x);
+	shader.setUniform("height", (float)map_texture.getSize().y);
+	shader.setUniform("owner_color", sf::Glsl::Vec4(owner_color));
+}
 
+void WorldMap::loadShader()
+{
+	//to do @ загружать карту через загрузчик
+	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
+		LOG_ERROR("Shader not found");
 
-
+	map_texture.loadFromImage(this->map_image);
+	s_province_map.setTexture(map_texture);
 	s_texture_map.setTexture(s_texture);
 }
 

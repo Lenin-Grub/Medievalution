@@ -5,6 +5,21 @@
 class SettingsState :
 	public State
 {
+public:
+	SettingsState(StateData* state_data);
+	virtual ~SettingsState();
+
+	void updateEvents();						
+	void updateImGui();							
+	void update(const float& dtime);			
+	void render(sf::RenderTarget* target = nullptr);
+
+	void updateObserver() override;
+
+private:
+	void setBackground();
+	void getVideoModes();
+
 private:
 	int item_current = 0;
 	bool play_music = true;
@@ -17,15 +32,4 @@ private:
 	std::vector<sf::VideoMode> video_modes;
 
 	int item_current_idx = 0;
-
-public:
-	SettingsState(StateData* state_data);
-	virtual ~SettingsState();
-
-	void updateEvents();						
-	void updateImGui();							
-	void update(const float& dtime);			
-	void render(sf::RenderTarget* target = nullptr);
-
-	void updateObserver() override;
 };

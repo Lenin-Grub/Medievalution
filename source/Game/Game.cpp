@@ -1,6 +1,31 @@
 ﻿#include "../stdafx.h"
 #include "Game.h"
 
+Game::Game()
+{
+    initGraphicSettings();
+    initWindow();
+    initStateData();                
+    initStates();       
+
+    core::dtime = 0.00f;
+
+    core::music->setVolume(WindowSettings::getInstance().music_volume);
+
+    jukebox.prev();
+    jukebox.play();
+    jukebox.repeat();
+}
+
+Game::~Game() 
+{
+    while (!StateManager::getInstance().states.empty())
+    {
+        StateManager::getInstance().states.pop();
+    }
+}
+
+
 void Game::initGraphicSettings()
 {
     try
@@ -9,8 +34,8 @@ void Game::initGraphicSettings()
     }
     catch (const std::exception& ex)
     {
-       LOG_ERROR("Settings.json not found!");
-       LOG_ERROR(ex.what());
+        LOG_ERROR("Settings.json not found!");
+        LOG_ERROR(ex.what());
     }
 }
 
@@ -29,8 +54,8 @@ void Game::initWindow()
             WindowSettings::getInstance().title, sf::Style::Close,
             WindowSettings::getInstance().contextSettings);
 
-    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);      
-    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);   
+    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);
+    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);
 
     //TODO перенести в отдельное место
     sf::Image i;
@@ -44,48 +69,26 @@ void Game::initWindow()
     }
 }
 
-void Game::initStateData()                                                         
+void Game::initStateData()
 {
-     StateManager::getInstance().stateData.window = window;
+    StateManager::getInstance().stateData.window = window;
 }
 
-void Game::initStates()                                                             
+void Game::initStates()
 {
     StateManager::getInstance().init();
-	ImGui::SFML::Init(*window);
+    ImGui::SFML::Init(*window);
 
     //TODO перенсти в отдельное место
     //установка дефолтного шрифта в ImGui
 
     ImGuiIO& io = ImGui::GetIO();
-    ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",20.f,NULL,io.Fonts->GetGlyphRangesCyrillic());
+    ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
     ImGui::SFML::UpdateFontTexture();
     ImFont* font = io.Fonts->Fonts[1];
     io.FontDefault = font;
 
-    LOG_INFO ("Game started successful");
-}
-
-Game::Game()
-{
-    initGraphicSettings();
-    initWindow();
-    initStateData();                
-    initStates();       
-
-    core::dtime = 0.00f;
-
-    jukebox.prev();
-    jukebox.play();
-    jukebox.repeat();
-}
-
-Game::~Game() 
-{
-    while (!StateManager::getInstance().states.empty())
-    {
-        StateManager::getInstance().states.pop();
-    }
+    LOG_INFO("Game started successful");
 }
 
 void Game::updateDeltaTime()                                                        

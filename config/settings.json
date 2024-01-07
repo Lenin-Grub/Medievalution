@@ -2,12 +2,12 @@
     "title": "Medievalution",
     "resolution": {
         "x": 1920,
-        "y": 1080
+        "y": 1200
     },
+    "id_resolution": 5,
     "fullscrean": false,
-    "vertycalSync": false,
-    "fps_limit": 30,
-    "music_volume": 10,
+    "fps_limit": 50,
+    "music_volume": 20,
     "camera_speed": 1,
     "zoom_speed": 0.0,
     "language": "rus"

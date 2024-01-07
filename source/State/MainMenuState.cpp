@@ -4,9 +4,13 @@
 MainMenuState::MainMenuState(StateData* state_data)
 	:State(state_data)
 {
-	this->updateEvents();
-	core::music->setVolume(WindowSettings::getInstance().music_volume);
+	updateEvents();
+	loadEntities();
+	StateManager::getInstance().addObserver(*this);
+}
 
+void MainMenuState::loadEntities()
+{
 	if (!language_rus.loadFromFile("resources/Flags/rus.png"))
 	{
 		LOG_WARN("File <<rus.png>> not found");
@@ -15,7 +19,7 @@ MainMenuState::MainMenuState(StateData* state_data)
 	{
 		LOG_WARN("File <<eng.png>> not found");
 	}
-	
+
 	if (WindowSettings::getInstance().language == "rus")
 	{
 		i.open("translation/rus.json");
@@ -37,7 +41,6 @@ MainMenuState::MainMenuState(StateData* state_data)
 
 	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
 	shape.setTexture(&background);
-	StateManager::getInstance().addObserver(*this);
 }
 
 MainMenuState::~MainMenuState()
@@ -45,9 +48,7 @@ MainMenuState::~MainMenuState()
 	StateManager::getInstance().removeObserver(*this);
 }
 
-void MainMenuState::updateEvents()
-{
-}
+void MainMenuState::updateEvents(){}
 
 void MainMenuState::updateImGui()
 {
@@ -90,8 +91,6 @@ void MainMenuState::updateImGui()
 	ImGui::Image(sprite, sf::Vector2f(120, 78));
 	ImGui::End();
 
-
-
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
 	ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
@@ -110,7 +109,6 @@ void MainMenuState::render(sf::RenderTarget* target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
 	target->draw(shape);
-
 }
 
 void MainMenuState::updateObserver()

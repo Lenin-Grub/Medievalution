@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "../Animation/Animation.hpp"
 #include "../Observer/Observable.hpp"
 #include "../World/WorldMap.h"
 #include "../Camera/Camera.h"
@@ -16,9 +17,7 @@ private:
 	WorldMap world_map;
 	Camera camera;
 
-private:
-	void initEntities();
-	void renderGUI(sf::RenderTarget& target);
+	Animation anim;
 
 public:
 	GameState(StateData* state_data);

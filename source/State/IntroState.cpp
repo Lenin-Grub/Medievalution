@@ -5,8 +5,17 @@ IntroState::IntroState(StateData* state_data)
 	:State(state_data)
 
 {
-	this->updateEvents();
-	core::music->setVolume(WindowSettings::getInstance().music_volume);
+	setBackground();
+	StateManager::getInstance().addObserver(*this);
+}
+
+IntroState::~IntroState()
+{
+	StateManager::getInstance().removeObserver(*this);
+}
+
+void IntroState::setBackground()
+{
 	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
 	{
 		LOG_ERROR("File <<ruszastavka.png>> not foubd");
@@ -20,23 +29,12 @@ IntroState::IntroState(StateData* state_data)
 	text.setString("MedievalutioN");
 	text.setCharacterSize(200);
 	sf::FloatRect textRect = text.getLocalBounds();
-	text.setOrigin(textRect.left + textRect.width / 2.0f,textRect.top + textRect.height / 0.4f);
+	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 0.4f);
 	text.setPosition(vec2f(StateManager::getInstance().stateData.window->getSize().x / 2, StateManager::getInstance().stateData.window->getSize().y / 2));
-	
-	StateManager::getInstance().addObserver(*this);
+
 }
 
-
-IntroState::~IntroState()
-{
-	StateManager::getInstance().removeObserver(*this);
-}
-
-
-void IntroState::updateEvents()
-{
-}
-
+void IntroState::updateEvents(){}
 
 void IntroState::updateImGui()
 {
@@ -67,9 +65,4 @@ void IntroState::render(sf::RenderTarget* target)
 	target->draw(text);
 }
 
-
-void IntroState::updateObserver()
-{
-	//endState();
-	LOG_INFO("observer intro update");
-}
+void IntroState::updateObserver(){}

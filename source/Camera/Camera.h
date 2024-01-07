@@ -7,11 +7,13 @@
 class Camera
 {
 public:
-	void initView();
-	void updateView(const float& dtime);
+	Camera();
+	virtual ~Camera();
 
+	void update(const float& dtime);
 	void move(const float& dtime);
 	void zoom();
+
 private:
 	int max_zoom = 1500;
 	int min_zoom = 90;

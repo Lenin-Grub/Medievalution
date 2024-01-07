@@ -7,7 +7,7 @@ WindowSettings::WindowSettings():
 	resolution(sf::VideoMode::getDesktopMode()),
 	videoModes(sf::VideoMode::getFullscreenModes()),
 	fullscrean(false),
-	vertycalSync(false),
+	//vertycalSync(false),
 	fps_limit(0),
 	music_volume(100),
 	camera_speed(1),

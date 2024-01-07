@@ -1,13 +1,17 @@
 ﻿#include "../stdafx.h"
 #include "Camera.h"
 
-void Camera::initView()
+Camera::Camera()
 {
 	core::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width, WindowSettings::getInstance().resolution.height));
 	core::view.setCenter(sf::Vector2f(WindowSettings::getInstance().resolution.width / 2.f, WindowSettings::getInstance().resolution.height / 2.f));
 }
 
-void Camera::updateView(const float& dtime)
+Camera::~Camera()
+{
+}
+
+void Camera::update(const float& dtime)
 {
 	move(dtime);
 }
