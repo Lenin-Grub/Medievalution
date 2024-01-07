@@ -72,7 +72,6 @@ void WorldMap::setUniformes()
 	shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
 	shader.setUniform("width", (float)map_texture.getSize().x);
 	shader.setUniform("height", (float)map_texture.getSize().y);
-	shader.setUniform("owner_color", sf::Glsl::Vec4(owner_color));
 }
 
 void WorldMap::loadShader()

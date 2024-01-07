@@ -4,11 +4,36 @@
 GameState::GameState(StateData* state_data)
 	:State(state_data),
 	camera(),
-	anim(),
 	world_map()
-{}
+{
+	texture.loadFromFile("resources/SptitreAtlas/Archer/Shot_1.png");
+	sprite.setTexture(texture);
+	
+	animator = new Animator(sprite);
+	int a = 128;
+	animator->addFrame(sf::IntRect(0,0,128,128));
+	animator->addFrame(sf::IntRect(a, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
+	animator->setFrameTime(0.5f);
+	animator->stop();
+}
 
-GameState::~GameState(){}
+GameState::~GameState() 
+{ 
+	delete animator; 
+}
 
 void GameState::updateEvents()
 {
@@ -56,7 +81,10 @@ void GameState::updateImGui()
 	ImGui::End();
 
 	ImGui::Begin("Animation", nullptr);
-	ImGui::Image(anim.sprite,sf::Vector2f(128*3,128*3));
+	ImGui::Image(sprite,sf::Vector2f(256,256));
+	ImGui::Separator();
+	ImGui::SliderFloat("speed", &animator->frameTime, 0.0f, 1.0f);
+	ImGui::Checkbox("play", &animator->played);
 	ImGui::End();
 }
 
@@ -64,7 +92,7 @@ void GameState::update(const float& dtime)
 {
 	updateMousePositions();
 	camera.update(dtime);
-	anim.update();
+	animator->update(0.1f);
 
 	/*
 		todo @ при высоком фпс лагает
@@ -73,16 +101,11 @@ void GameState::update(const float& dtime)
 		нужно добавить проверку
 		если провинция найдена и позиция мыши не изменилась, искать не нужно
 	*/
-	{
-		sf::Color& color = world_map.getColor();
+	sf::Color& color = world_map.getColor();
 
-		world_map.owner_color = color;
-		world_map.select_color = color;
-
-		world_map.shader.setParameter("owner_color", world_map.owner_color);
-		world_map.shader.setParameter("select_color", world_map.select_color);
-		world_map.shader.setParameter("transperency", world_map.transperency);
-	}
+	world_map.select_color = color;
+	world_map.shader.setParameter("select_color", world_map.select_color);
+	world_map.shader.setParameter("transperency", world_map.transperency);
 }
 
 void GameState::render(sf::RenderTarget* target)							
@@ -93,7 +116,7 @@ void GameState::render(sf::RenderTarget* target)
 
 //	рисуем динамечские объекты
 	world_map.draw(*target,sf::RenderStates::Default);
-	
+//	target->draw(sprite);
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
 	target->setView(this->window->getDefaultView());
 

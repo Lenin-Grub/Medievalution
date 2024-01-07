@@ -22,7 +22,6 @@ public:
 public:
 	sf::Shader  shader;
 	float transperency = 0.0f;
-	sf::Color owner_color;
 	sf::Color select_color;
 	sf::Image	map_image;
 	std::vector<Province> provinces;

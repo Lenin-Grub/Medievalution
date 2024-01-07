@@ -8,17 +8,6 @@
 class GameState :
 	public State
 {
-private:
-	sf::Text province_name;
-
-	std::stringstream cords;
-	std::list<Observer*> observer_list;
-
-	WorldMap world_map;
-	Camera camera;
-
-	Animation anim;
-
 public:
 	GameState(StateData* state_data);
 	virtual ~GameState();
@@ -29,4 +18,16 @@ public:
 	void render(sf::RenderTarget* target = nullptr) override;
 
 	void updateObserver() override;
+
+private:
+	sf::Text province_name;
+	sf::Sprite sprite;
+	sf::Texture texture;
+
+	std::stringstream cords;
+	std::list<Observer*> observer_list;
+
+	WorldMap world_map;
+	Camera camera;
+	Animator* animator;
 };

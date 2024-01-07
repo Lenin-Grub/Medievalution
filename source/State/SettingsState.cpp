@@ -32,7 +32,7 @@ void SettingsState::getVideoModes()
 	for (int i = 0; i < WindowSettings::getInstance().resolution.getFullscreenModes().size(); ++i)
 	{
 		res[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
-		LOG_INFO("{0},{1}", WindowSettings::getInstance().resolution.getFullscreenModes().at(i).width, WindowSettings::getInstance().resolution.getFullscreenModes().at(i).height);
+		//LOG_INFO("{0},{1}", WindowSettings::getInstance().resolution.getFullscreenModes().at(i).width, WindowSettings::getInstance().resolution.getFullscreenModes().at(i).height);
 	}
 	item_current_idx = WindowSettings::getInstance().id_resolution;
 }

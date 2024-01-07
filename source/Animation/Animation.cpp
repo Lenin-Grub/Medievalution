@@ -1,22 +1,39 @@
 #include "Animation.hpp"
 
-void Animation::init()
+void Animator::addFrame(sf::IntRect rect)
 {
-	texture.loadFromFile("resources/SptitreAtlas/Archer/Shot_1.png");
-	sprite.setTexture(texture);
-	sprite.setTextureRect(sf::IntRect(0, 128, 128, 128));
-	sf::Vector2i spriteSize = sf::Vector2i(128, 128);
+	frames.push_back(rect);
 }
 
-void Animation::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Animator::setFrameTime(float time)
 {
-	target.draw(sprite);
+	frameTime = time;
 }
 
-void Animation::update()
+void Animator::update(float deltaTime)
 {
-	elapsedTime += core::clock.getElapsedTime();
-	float timeAsSecond = elapsedTime.asSeconds();
-	int animFrame = static_cast<int>((timeAsSecond / animationDuration) * static_cast<float>(frameNum)) % frameNum;
-	sprite.setTextureRect(sf::IntRect(animFrame * spriteSize.x, 0, spriteSize.x, spriteSize.y));
+	currentTime += deltaTime;
+	if (!played)
+	{
+		sprite.setTextureRect(frames.at(currentFrame));
+	}
+	else
+	{
+		if (currentTime >= frameTime)
+		{
+			currentFrame = (currentFrame + 1) % frames.size();
+			sprite.setTextureRect(frames.at(currentFrame));
+			currentTime = 0.0f;
+		}
+	}
+}
+
+void Animator::play()
+{
+	played = true;
+}
+
+void Animator::stop()
+{
+	played = false;
 }
