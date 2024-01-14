@@ -41,3 +41,31 @@ void Camera::zoom()
 		}
 	}
 }
+
+void Camera::scroll()
+{
+	if (core::sfmlEvent.type == sf::Event::MouseButtonPressed && core::sfmlEvent.mouseButton.button == sf::Mouse::Middle) 
+	{
+		prevMousePos.x = core::mousePosWindow.x;
+		prevMousePos.y = core::mousePosWindow.y;
+		isPanning = true;
+	}
+	else if (core::sfmlEvent.type == sf::Event::MouseMoved && isPanning) 
+	{
+		sf::Vector2f mousePos;
+		mousePos.x = core::mousePosWindow.x;
+		mousePos.y = core::mousePosWindow.y;
+		
+		sf::Vector2f offset = prevMousePos - mousePos;
+		prevMousePos = mousePos;
+		
+		if (offset.x * offset.x + offset.y * offset.y > panThreshold * panThreshold) 
+		{
+			core::view.move(offset);
+		}
+	}
+	else if (core::sfmlEvent.type == sf::Event::MouseButtonReleased && core::sfmlEvent.mouseButton.button == sf::Mouse::Middle) 
+	{
+		isPanning = false;
+	}
+}

@@ -6,15 +6,6 @@
 class MainMenuState :
 	public State
 {
-private:
-	sf::Text mouseCordsText;											
-	std::stringstream cords;											
-	sf::Texture language_rus,language_eng,background;
-	sf::Sprite sprite;
-	sf::RectangleShape shape;
-	std::ifstream i;
-	std::list<Observer*> observer_list;
-
 public:
 	MainMenuState(StateData* state_data);
 	void loadEntities();
@@ -26,4 +17,13 @@ public:
 	void render(sf::RenderTarget* target = nullptr);		
 
 	void updateObserver() override;
+
+private:
+	sf::Text mouseCordsText;
+	std::stringstream cords;
+	sf::Texture language_rus, language_eng, background;
+	sf::Sprite sprite;
+	sf::RectangleShape shape;
+	std::ifstream i;
+	std::list<Observer*> observer_list;
 };

@@ -41,6 +41,7 @@ void GameState::updateEvents()
 	if (!io.WantCaptureMouse)
 	{
 		camera.zoom();
+		camera.scroll();
 	}
 }
 
@@ -84,6 +85,7 @@ void GameState::updateImGui()
 	ImGui::Image(sprite,sf::Vector2f(256,256));
 	ImGui::Separator();
 	ImGui::SliderFloat("speed", &animator->frameTime, 0.0f, 1.0f);
+	ImGui::SliderInt("frame",  &animator->currentFrame, 0, animator->frames.size());
 	ImGui::Checkbox("play", &animator->played);
 	ImGui::End();
 }
@@ -92,6 +94,7 @@ void GameState::update(const float& dtime)
 {
 	updateMousePositions();
 	camera.update(dtime);
+
 	animator->update(0.1f);
 
 	/*
@@ -116,7 +119,7 @@ void GameState::render(sf::RenderTarget* target)
 
 //	рисуем динамечские объекты
 	world_map.draw(*target,sf::RenderStates::Default);
-//	target->draw(sprite);
+
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
 	target->setView(this->window->getDefaultView());
 

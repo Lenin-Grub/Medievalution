@@ -4,7 +4,7 @@
 
 class Animator {
 public:
-	Animator(sf::Sprite& sprite) : sprite(sprite) {}
+	Animator(sf::Sprite& sprite) : sprite(sprite),played(true) {}
 
 	void addFrame(sf::IntRect rect);
 	void setFrameTime(float time);
@@ -12,11 +12,12 @@ public:
 	void play();
 	void stop();
 
-	float frameTime = 0.2f;
+	std::vector<sf::IntRect> frames;
+	int currentFrame = 0;
 	bool played = true;
+	float currentTime = 0.0f;
+	float frameTime = 0.2f;
+
 private:
 	sf::Sprite& sprite;
-	std::vector<sf::IntRect> frames;
-	float currentTime = 0.0f;
-	unsigned int currentFrame = 0;
 };

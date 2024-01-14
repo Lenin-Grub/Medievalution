@@ -2,7 +2,8 @@
 
 #include <spdlog/spdlog.h>
 
-namespace LogInfo {
+namespace LogInfo 
+{
 
 #ifdef NDEBUG
 
@@ -19,5 +20,4 @@ namespace LogInfo {
 #define LOG_CRITICAL(...)   spdlog::critical(__VA_ARGS__)
 
 #endif
-
 }
