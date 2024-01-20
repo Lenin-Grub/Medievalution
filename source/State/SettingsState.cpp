@@ -135,7 +135,7 @@ void SettingsState::updateImGui()
 	str = WindowSettings::getInstance().localisation.at("T_music_volume");
 	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
-		core::music->setVolume(WindowSettings::getInstance().music_volume);
+//		core::music->setVolume(WindowSettings::getInstance().music_volume);
 	}
 
 	ImGui::SameLine();

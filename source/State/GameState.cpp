@@ -25,7 +25,6 @@ GameState::GameState(StateData* state_data)
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
-	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->setFrameTime(0.5f);
 	animator->stop();
 }
@@ -85,7 +84,7 @@ void GameState::updateImGui()
 	ImGui::Image(sprite,sf::Vector2f(256,256));
 	ImGui::Separator();
 	ImGui::SliderFloat("speed", &animator->frameTime, 0.0f, 1.0f);
-	ImGui::SliderInt("frame",  &animator->currentFrame, 0, animator->frames.size());
+	ImGui::SliderInt("frame",  &animator->currentFrame, 1, animator->frames.size());
 	ImGui::Checkbox("play", &animator->played);
 	ImGui::End();
 }

@@ -2,19 +2,16 @@
 #include "Game.h"
 
 Game::Game()
+    :jukebox("resources/Audio/Muisics/")
 {
     initGraphicSettings();
     initWindow();
     initStateData();                
     initStates();       
 
-    core::dtime = 0.00f;
-
-    core::music->setVolume(WindowSettings::getInstance().music_volume);
-
-    jukebox.prev();
     jukebox.play();
-    jukebox.repeat();
+
+    core::dtime = 0.00f;
 }
 
 Game::~Game() 
