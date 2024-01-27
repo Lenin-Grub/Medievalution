@@ -1,7 +1,8 @@
 #include "Jukebox.hpp"
 
 Jukebox::Jukebox(const std::string& path)
-    :currentTrackIndex(0)
+    :currentTrackIndex(0),
+    volume(20)
 {
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
@@ -26,7 +27,7 @@ bool Jukebox::loadMusic()
     return false;
 }
 
-void Jukebox::play(bool repeat = true)
+void Jukebox::play()
 {
     if (music.getStatus() == sf::Music::Playing)
         return;
@@ -101,4 +102,9 @@ const float Jukebox::getVolume() const
 void Jukebox::stop()
 {
     music.stop();
+}
+
+void Jukebox::pause()
+{
+    music.pause();
 }

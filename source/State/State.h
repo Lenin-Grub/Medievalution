@@ -6,32 +6,17 @@
 class WindowSettings;
 class State;
 
-
-//------------------------------------------------------------------------------------------------------------------------
-// буферный класс для передачи инфы между стейтами
-class StateData
+// Буферный класс для передачи инфы между стейтами
+struct StateData
 {
-public:
-	StateData() {};
-	virtual ~StateData() = default;
-
-	std::stack<State*>* states;
-	std::shared_ptr <sf::RenderWindow> window;
+	std::stack <std::shared_ptr<State>> states;
+	std::shared_ptr <sf::RenderWindow>	window;
 };
 
 
-//------------------------------------------------------------------------------------------------------------------------
-// базовый класс состояний игры (главное меню, настройки и тд)
+// Базовый класс состояний игры (главное меню, настройки и тд)
 class State: public Observer
 {
-protected:
-	StateData* stateData;
-	std::stack<State*>* states;
-	bool quit;
-	bool replace;
-
-public:
-	std::shared_ptr <sf::RenderWindow> window;
 public:
 	State(StateData* state_data);
 	virtual ~State();
@@ -46,4 +31,13 @@ public:
 	virtual void render(sf::RenderTarget* target = nullptr) = 0;
 
 	virtual void updateObserver() = 0;
+
+protected:
+	StateData* stateData;
+	std::stack< std::shared_ptr<State>> states;
+	bool quit;
+	bool replace;
+
+public:
+	std::shared_ptr <sf::RenderWindow> window;
 };

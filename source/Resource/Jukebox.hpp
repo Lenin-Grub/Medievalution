@@ -23,6 +23,8 @@ public:
 
     void stop();
 
+    void pause();
+
 private:
 
     sf::Music music;

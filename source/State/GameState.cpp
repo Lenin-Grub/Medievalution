@@ -9,10 +9,10 @@ GameState::GameState(StateData* state_data)
 	texture.loadFromFile("resources/SptitreAtlas/Archer/Shot_1.png");
 	sprite.setTexture(texture);
 	
-	animator = new Animator(sprite);
-	int a = 128;
-	animator->addFrame(sf::IntRect(0,0,128,128));
-	animator->addFrame(sf::IntRect(a, 0, 128, 128));
+	animator = std::make_unique<Animator>(sprite);
+	int a = 0;
+	animator->addFrame(sf::IntRect(a,0,128,128));
+	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
 	animator->addFrame(sf::IntRect(a +=128, 0, 128, 128));
@@ -31,7 +31,6 @@ GameState::GameState(StateData* state_data)
 
 GameState::~GameState() 
 { 
-	delete animator; 
 }
 
 void GameState::updateEvents()
@@ -84,7 +83,7 @@ void GameState::updateImGui()
 	ImGui::Image(sprite,sf::Vector2f(256,256));
 	ImGui::Separator();
 	ImGui::SliderFloat("speed", &animator->frameTime, 0.0f, 1.0f);
-	ImGui::SliderInt("frame",  &animator->currentFrame, 1, animator->frames.size());
+	ImGui::SliderInt("frame",  &animator->currentFrame, 0, animator->frames.size()-1);
 	ImGui::Checkbox("play", &animator->played);
 	ImGui::End();
 }

@@ -29,5 +29,5 @@ private:
 
 	WorldMap world_map;
 	Camera camera;
-	Animator* animator;
+	std::unique_ptr	<Animator> animator;
 };
