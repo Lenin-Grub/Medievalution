@@ -9,6 +9,7 @@ Game::Game()
     initStateData();                
     initStates();       
 
+    jukebox.requestAll();
     jukebox.play();
 
     core::dtime = 0.00f;
@@ -90,20 +91,20 @@ void Game::initStates()
 
 void Game::updateDeltaTime()                                                        
 {
-    core::dtime = this->m_clock.restart().asMilliseconds();                         
+    core::dtime = this->m_clock.restart().asMilliseconds();
 }
 
-void Game::updateSFMLevents()                                                       
+void Game::updateSFMLevents()
 {
-    while (this->window->pollEvent(core::sfmlEvent))                                
+    while (this->window->pollEvent(core::sfmlEvent))
     {
 		ImGui::SFML::ProcessEvent(*window,core::sfmlEvent);
-		if (core::sfmlEvent.type == sf::Event::Closed)                              
-		{
-			this->window->close();                                                  
-		}
-		if (!StateManager::getInstance().states.empty())                            
-		{
+		if (core::sfmlEvent.type == sf::Event::Closed)
+        {
+			this->window->close();
+        }
+		if (!StateManager::getInstance().states.empty())
+        {
             StateManager::getInstance().states.top()->updateEvents();
 		}
     }
@@ -111,17 +112,18 @@ void Game::updateSFMLevents()
 
 void Game::update()
 {
-    updateSFMLevents();                                                             
-    if (!StateManager::getInstance().states.empty())                                
+    updateSFMLevents();
+    if (!StateManager::getInstance().states.empty())
     {
-        if (this->window->hasFocus()) {                                             
+        if (this->window->hasFocus()) 
+        {                                             
             ImGui::SFML::Update(*window, core::clock.restart());
-            StateManager::getInstance().states.top()->update(core::dtime);          
+            StateManager::getInstance().states.top()->update(core::dtime);
             StateManager::getInstance().states.top()->updateImGui();
-            if (StateManager::getInstance().states.top()->getQuit())                
+            jukebox.update();
+            if (StateManager::getInstance().states.top()->getQuit())
             {
                 StateManager::getInstance().states.top()->endState();
-//                delete   StateManager::getInstance().states.top();
                 StateManager::getInstance().states.pop();
                 LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
             }
@@ -133,24 +135,24 @@ void Game::update()
     }
 }
 
-void Game::render()                                                                 
+void Game::render()
 {
-    this->window->clear(sf::Color(63, 72, 204));                                    
-	if (!StateManager::getInstance().states.empty())								
-	{
-        StateManager::getInstance().states.top()->render();						    
-	}
+    this->window->clear(sf::Color(63, 72, 204));
+    if (!StateManager::getInstance().states.empty())
+    {
+        StateManager::getInstance().states.top()->render();
+    }
 	ImGui::SFML::Render(*window);
-    this->window->display();														
+    this->window->display();
 }
 
-void Game::run()                                                                    
+void Game::run()
 {
-    while (this->window->isOpen())                                                  
+    while (this->window->isOpen())
     {
-        updateDeltaTime();                                                          
-        update();                                                                   
-        render();                                                                   
+        updateDeltaTime();
+        update();
+        render();
     }
 	ImGui::SFML::Shutdown();
 }
