@@ -45,22 +45,33 @@ private:
 class Animator 
 {
 public:
-	Animator(sf::Sprite& sprite);
-	virtual ~Animator();
+	Animator            (sf::Sprite& sprite);
+	virtual ~Animator   ();
 
-	void addFrame(sf::IntRect rect);
-	void setFrameTime(float time);
+	void addFrame       (sf::IntRect rect);
 
-	void update(float deltaTime);
-	void play();
-	void stop();
+	void setFrameTime   (float time);
+    void setCurrentFrame(int frame);
 
-	std::vector<sf::IntRect> frames;
+	void update         (float deltaTime);
+	void play           (bool play);
+	void pause          ();
+
+    const bool   isPlayed();
+
+    const int    getCurrentFrame();
+    const float  getCurrentTime();
+    const float  getFrameTime();
+
+    const std::vector<sf::IntRect> getFrames();
+
+private:
+
 	int currentFrame = 0;
 	bool played = true;
 	float currentTime = 0.0f;
 	float frameTime = 0.2f;
 
-private:
 	sf::Sprite& sprite;
+	std::vector<sf::IntRect> frames;
 };

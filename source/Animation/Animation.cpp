@@ -19,6 +19,11 @@ void Animator::setFrameTime(float time)
 	frameTime = time;
 }
 
+void Animator::setCurrentFrame(int frame)
+{
+	currentFrame = frame;
+}
+
 void Animator::update(float deltaTime)
 {
 	currentTime += deltaTime;
@@ -37,14 +42,39 @@ void Animator::update(float deltaTime)
 	}
 }
 
-void Animator::play()
+void Animator::play(bool play)
 {
-	played = true;
+	played = play;
 }
 
-void Animator::stop()
+void Animator::pause()
 {
 	played = false;
+}
+
+const int Animator::getCurrentFrame()
+{
+	return currentFrame;
+}
+
+const float Animator::getCurrentTime()
+{
+	return currentTime;
+}
+
+const float Animator::getFrameTime()
+{
+	return frameTime;
+}
+
+const bool Animator::isPlayed()
+{
+	return played;
+}
+
+const std::vector<sf::IntRect> Animator::getFrames()
+{
+	return frames;
 }
 
 
