@@ -28,21 +28,21 @@ public:
     void shuffle();
     void shuffleRemaining();
 
-    std::size_t songsAvailable() const;
-    std::size_t songsInPlaylist() const;
-    std::size_t songsRemaining() const;
+    std::size_t songsAvailable()    const;
+    std::size_t songsInPlaylist()   const;
+    std::size_t songsRemaining()    const;
 
-    std::vector<std::string> getCatalog() const;
-    std::vector<std::string> getPlaylist() const;
+    std::vector<std::string> getCatalog()   const;
+    std::vector<std::string> getPlaylist()  const;
 
-    std::string getCurrent() const;
+    std::string getCurrent()const;
 
     sf::SoundSource::Status getStatus() const;
 
-    bool isLooping() const;
-    bool playing() const;
-    bool stopped() const;
-    bool paused() const;
+    bool isLooping()    const;
+    bool playing()      const;
+    bool stopped()      const;
+    bool paused()       const;
 
 private:
 
@@ -56,9 +56,8 @@ private:
     float volume;
     bool looping;
 
-
-    template <typename ITER>
-    void shuffle_range(ITER first, ITER last)
+    template <typename T>
+    void shuffle_range(T first, T last)
     {
         std::random_device rd;
         auto g = std::mt19937(rd());

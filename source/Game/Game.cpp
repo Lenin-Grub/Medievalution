@@ -6,8 +6,10 @@ Game::Game()
 {
     initGraphicSettings();
     initWindow();
-    initStateData();                
+    initIcon();
+    initStateData();
     initStates();       
+    initFonts();
 
     jukebox.requestAll();
     jukebox.play();
@@ -54,7 +56,22 @@ void Game::initWindow()
 
     this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);
     this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);
+}
 
+void Game::initStateData()
+{
+    StateManager::getInstance().stateData.window = window;
+}
+
+void Game::initStates()
+{
+    StateManager::getInstance().init();
+    ImGui::SFML::Init(*window);
+    LOG_INFO("Game started successful");
+}
+
+void Game::initIcon()
+{
     //TODO перенести в отдельное место
     sf::Image i;
     if (i.loadFromFile("resources/Icons/icon.png"))
@@ -67,16 +84,8 @@ void Game::initWindow()
     }
 }
 
-void Game::initStateData()
+void Game::initFonts()
 {
-    StateManager::getInstance().stateData.window = window;
-}
-
-void Game::initStates()
-{
-    StateManager::getInstance().init();
-    ImGui::SFML::Init(*window);
-
     //TODO перенсти в отдельное место
     //установка дефолтного шрифта в ImGui
 
@@ -85,8 +94,6 @@ void Game::initStates()
     ImGui::SFML::UpdateFontTexture();
     ImFont* font = io.Fonts->Fonts[1];
     io.FontDefault = font;
-
-    LOG_INFO("Game started successful");
 }
 
 void Game::updateDeltaTime()                                                        

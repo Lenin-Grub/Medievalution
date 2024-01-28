@@ -14,7 +14,10 @@ private:
 	void initWindow();
 	void initStateData();
 	void initStates();
-											
+
+	void initIcon();
+	void initFonts();
+
 	void update();
 	void render();
 	void updateDeltaTime();
