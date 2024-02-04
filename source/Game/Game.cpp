@@ -9,9 +9,7 @@ Game::Game()
     initStateData();
     initStates();       
     initFonts();
-
-    StateManager::getInstance().stateData.jukebox.requestAll();
-    StateManager::getInstance().stateData.jukebox.play();
+    initJukebox();
 
     core::dtime = 0.00f;
 }
@@ -24,6 +22,16 @@ Game::~Game()
     }
 }
 
+void Game::run()
+{
+    while (this->window->isOpen())
+    {
+        updateDeltaTime();
+        update();
+        render();
+    }
+    ImGui::SFML::Shutdown();
+}
 
 void Game::initGraphicSettings()
 {
@@ -95,6 +103,13 @@ void Game::initFonts()
     io.FontDefault = font;
 }
 
+void Game::initJukebox()
+{
+    StateManager::getInstance().stateData.jukebox.requestAll();
+    StateManager::getInstance().stateData.jukebox.setVolume(WindowSettings::getInstance().music_volume);
+    StateManager::getInstance().stateData.jukebox.play();
+}
+
 void Game::updateDeltaTime()                                                        
 {
     core::dtime = this->m_clock.restart().asMilliseconds();
@@ -152,15 +167,4 @@ void Game::render()
     }
 	ImGui::SFML::Render(*window);
     this->window->display();
-}
-
-void Game::run()
-{
-    while (this->window->isOpen())
-    {
-        updateDeltaTime();
-        update();
-        render();
-    }
-	ImGui::SFML::Shutdown();
 }

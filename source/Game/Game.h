@@ -16,6 +16,7 @@ private:
 
 	void initIcon();
 	void initFonts();
+	void initJukebox();
 
 	void update();
 	void render();
