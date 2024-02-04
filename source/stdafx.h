@@ -27,7 +27,6 @@
 #include <filesystem>
 #include <random>
 
-
 //SFML
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
@@ -36,8 +35,8 @@
 #include <SFML\Network.hpp>
 
 //ImGui
-#include "ImGui/imgui.h"
-#include "ImGui/imgui-SFML.h"
+#include <imgui.h>
+#include <imgui-SFML.h>
 
 //SPDLOG
 #include "Core/Log.h"
