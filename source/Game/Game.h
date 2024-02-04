@@ -1,6 +1,5 @@
 ﻿#pragma once
 #include "../State/StateManager.h"
-#include "../Resource/Jukebox.hpp"
 
 class Game
 {
@@ -26,5 +25,4 @@ private:
 private:
 	sf::Clock m_clock;
 	std::shared_ptr <sf::RenderWindow> window;
-	Jukebox jukebox;
 };

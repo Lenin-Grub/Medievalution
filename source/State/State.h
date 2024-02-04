@@ -11,6 +11,7 @@ struct StateData
 {
 	std::stack <std::shared_ptr<State>> states;
 	std::shared_ptr <sf::RenderWindow>	window;
+	Jukebox jukebox = Jukebox("resources/Audio/Muisics/");
 };
 
 

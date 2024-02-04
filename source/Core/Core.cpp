@@ -6,7 +6,6 @@ class Input;
 sf::Event				core::sfmlEvent;	
 sf::View				core::view;			
 sf::Clock				core::clock;
-//std::unique_ptr<sf::Music> core::music;		
 float					core::dtime;		
 
 sf::Vector2i			core::mousePosScreen;

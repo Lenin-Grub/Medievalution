@@ -2,7 +2,6 @@
 #include "Game.h"
 
 Game::Game()
-    :jukebox("resources/Audio/Muisics/")
 {
     initGraphicSettings();
     initWindow();
@@ -11,8 +10,8 @@ Game::Game()
     initStates();       
     initFonts();
 
-    jukebox.requestAll();
-    jukebox.play();
+    StateManager::getInstance().stateData.jukebox.requestAll();
+    StateManager::getInstance().stateData.jukebox.play();
 
     core::dtime = 0.00f;
 }
@@ -125,9 +124,11 @@ void Game::update()
         if (this->window->hasFocus()) 
         {                                             
             ImGui::SFML::Update(*window, core::clock.restart());
+
             StateManager::getInstance().states.top()->update(core::dtime);
             StateManager::getInstance().states.top()->updateImGui();
-            jukebox.update();
+            StateManager::getInstance().stateData.jukebox.update();
+
             if (StateManager::getInstance().states.top()->getQuit())
             {
                 StateManager::getInstance().states.top()->endState();

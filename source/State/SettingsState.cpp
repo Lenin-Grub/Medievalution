@@ -135,13 +135,23 @@ void SettingsState::updateImGui()
 	str = WindowSettings::getInstance().localisation.at("T_music_volume");
 	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
-//		core::music->setVolume(WindowSettings::getInstance().music_volume);
+		StateManager::getInstance().stateData.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
 	}
 
 	ImGui::SameLine();
 	{
 		str = WindowSettings::getInstance().localisation.at("T_music");
-		ImGui::Checkbox(str.c_str(), &play_music);
+		if (ImGui::Checkbox(str.c_str(), &play_music))
+		{
+			if (play_music)
+			{
+				StateManager::getInstance().stateData.jukebox.play();
+			}
+			else
+			{
+				StateManager::getInstance().stateData.jukebox.pause();
+			}
+		}
 	}
 	ImGui::Separator();
 	ImGui::BeginDisabled();
