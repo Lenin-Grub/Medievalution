@@ -27,10 +27,12 @@ void IntroState::setBackground()
 	font.loadFromFile("resources/Fonts/Blackmoor.ttf");
 	text.setFont(font);
 	text.setString("MedievalutioN");
-	text.setCharacterSize(200);
+	text.setCharacterSize(core::math.convertToPercentage(StateManager::getInstance().stateData.window->getSize().x, 10));
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 0.4f);
-	text.setPosition(vec2f(StateManager::getInstance().stateData.window->getSize().x / 2, StateManager::getInstance().stateData.window->getSize().y / 2));
+
+	auto pos = StateManager::getInstance().stateData.window->getSize();
+	text.setPosition(core::math.setCentre(pos.x,pos.y));
 
 }
 

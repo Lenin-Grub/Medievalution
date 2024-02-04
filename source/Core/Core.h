@@ -2,6 +2,7 @@
 #include "../stdafx.h"
 #include "../Input/Input.h"
 #include "../Resource/Jukebox.hpp"
+#include "../Math/Math.h"
 //------------------------------------------------------------------------------------------------------------------------
 class Core
 {
@@ -14,6 +15,8 @@ public:
 	static sf::Vector2i mousePosScreen;				// глобальное положение мыши на мониторе
 	static sf::Vector2i mousePosWindow;				// положение мыши относительно окна приложения
 	static sf::Vector2f mousePosView;				// положение мыши относительно камеры вида
+	static Math	math;
+
 	Core();
 };
 
