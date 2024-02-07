@@ -27,14 +27,14 @@ void Camera::move(const float& dtime)
 //TODO  добавить проверку на GUI
 void Camera::zoom()
 {
-	if (core::sfmlEvent.type == sf::Event::MouseWheelScrolled)
+	if (core::sfml_event.type == sf::Event::MouseWheelScrolled)
 	{
-		if (core::sfmlEvent.mouseWheelScroll.delta > 0)
+		if (core::sfml_event.mouseWheelScroll.delta > 0)
 		{
 			if (core::view.getSize().x <= max_zoom || core::view.getSize().y <= max_zoom)
 				core::view.zoom(1.1 + WindowSettings::getInstance().zoom_speed);
 		}
-		else if (core::sfmlEvent.mouseWheelScroll.delta < 0)
+		else if (core::sfml_event.mouseWheelScroll.delta < 0)
 		{
 			if (core::view.getSize().x >= min_zoom || core::view.getSize().y >= min_zoom)
 				core::view.zoom(0.9 - WindowSettings::getInstance().zoom_speed);
@@ -44,28 +44,28 @@ void Camera::zoom()
 
 void Camera::scroll()
 {
-	if (core::sfmlEvent.type == sf::Event::MouseButtonPressed && core::sfmlEvent.mouseButton.button == sf::Mouse::Middle) 
+	if (core::sfml_event.type == sf::Event::MouseButtonPressed && core::sfml_event.mouseButton.button == sf::Mouse::Middle) 
 	{
-		prevMousePos.x = core::mousePosWindow.x;
-		prevMousePos.y = core::mousePosWindow.y;
-		isPanning = true;
+		prev_mouse_pos.x = core::mouse_pos_window.x;
+		prev_mouse_pos.y = core::mouse_pos_window.y;
+		is_panning = true;
 	}
-	else if (core::sfmlEvent.type == sf::Event::MouseMoved && isPanning) 
+	else if (core::sfml_event.type == sf::Event::MouseMoved && is_panning) 
 	{
 		sf::Vector2f mousePos;
-		mousePos.x = core::mousePosWindow.x;
-		mousePos.y = core::mousePosWindow.y;
+		mousePos.x = core::mouse_pos_window.x;
+		mousePos.y = core::mouse_pos_window.y;
 		
-		sf::Vector2f offset = prevMousePos - mousePos;
-		prevMousePos = mousePos;
+		sf::Vector2f offset = prev_mouse_pos - mousePos;
+		prev_mouse_pos = mousePos;
 		
-		if (offset.x * offset.x + offset.y * offset.y > panThreshold * panThreshold) 
+		if (offset.x * offset.x + offset.y * offset.y > pan_threshold * pan_threshold) 
 		{
 			core::view.move(offset);
 		}
 	}
-	else if (core::sfmlEvent.type == sf::Event::MouseButtonReleased && core::sfmlEvent.mouseButton.button == sf::Mouse::Middle) 
+	else if (core::sfml_event.type == sf::Event::MouseButtonReleased && core::sfml_event.mouseButton.button == sf::Mouse::Middle) 
 	{
-		isPanning = false;
+		is_panning = false;
 	}
 }

@@ -9,7 +9,6 @@ public:
 
     template <typename T1, typename T2>
     sf::Vector2f setCentre(T1 first, T2 second);
-
 };
 
 template<typename T1, typename T2>

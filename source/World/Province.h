@@ -7,5 +7,5 @@ struct Province
 	std::string name;
 	std::string comment;
 	std::string owner;
-	sf::Color color;
+	sf::Color	color;
 };

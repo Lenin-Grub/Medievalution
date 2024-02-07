@@ -22,7 +22,7 @@ void SettingsState::setBackground()
 		LOG_ERROR("File <<background.jpg>> not foubd");
 	}
 
-	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	shape.setSize(vec2f(StateManager::getInstance().state_data.window->getSize().x, StateManager::getInstance().state_data.window->getSize().y));
 	shape.setTexture(&background);
 }
 
@@ -31,8 +31,7 @@ void SettingsState::getVideoModes()
 	video_modes = sf::VideoMode::getFullscreenModes();
 	for (int i = 0; i < WindowSettings::getInstance().resolution.getFullscreenModes().size(); ++i)
 	{
-		res[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
-		//LOG_INFO("{0},{1}", WindowSettings::getInstance().resolution.getFullscreenModes().at(i).width, WindowSettings::getInstance().resolution.getFullscreenModes().at(i).height);
+		video_mode[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
 	}
 	item_current_idx = WindowSettings::getInstance().id_resolution;
 }
@@ -96,7 +95,7 @@ void SettingsState::updateImGui()
 
 	str = WindowSettings::getInstance().localisation.at("T_vertychal_sync");
 	ImGui::BeginDisabled();
-	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycalSync))
+	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycal_sync))
 	{
 
 	}
@@ -135,7 +134,7 @@ void SettingsState::updateImGui()
 	str = WindowSettings::getInstance().localisation.at("T_music_volume");
 	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
-		StateManager::getInstance().stateData.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
+		StateManager::getInstance().state_data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
 	}
 
 	ImGui::SameLine();
@@ -145,11 +144,11 @@ void SettingsState::updateImGui()
 		{
 			if (play_music)
 			{
-				StateManager::getInstance().stateData.jukebox.play();
+				StateManager::getInstance().state_data.jukebox.play();
 			}
 			else
 			{
-				StateManager::getInstance().stateData.jukebox.pause();
+				StateManager::getInstance().state_data.jukebox.pause();
 			}
 		}
 	}

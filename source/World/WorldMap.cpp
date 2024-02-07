@@ -95,7 +95,7 @@ void WorldMap::loadShader()
 
 const int WorldMap::getProvinceID() const
 {
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == currentColor; });
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == current_color; });
 
 	if (res == provinces.end())
 	{
@@ -118,7 +118,7 @@ const int WorldMap::getProvinceID() const
 
 const std::string WorldMap::getProvinceName() const
 {
-	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == currentColor; });
+	auto res = std::find_if(provinces.begin(), provinces.end(), [this](Province p) {return p.color == current_color; });
 
 	if (res == provinces.end())
 	{
@@ -131,10 +131,10 @@ const std::string WorldMap::getProvinceName() const
 
 bool WorldMap::isMouseOnMap()
 {
-	if (core::mousePosView.x >= 0 && 
-		core::mousePosView.y >= 0 && 
-		core::mousePosView.x <= map_image.getSize().x && 
-		core::mousePosView.y <= map_image.getSize().y)
+	if (core::mouse_pos_view.x >= 0 && 
+		core::mouse_pos_view.y >= 0 && 
+		core::mouse_pos_view.x <= map_image.getSize().x && 
+		core::mouse_pos_view.y <= map_image.getSize().y)
 		return true;
 	else
 		return false;
@@ -158,7 +158,7 @@ sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
 	{
-	 return	currentColor = map_image.getPixel(core::mousePosView.x, core::mousePosView.y);
+	 return	current_color = map_image.getPixel(core::mouse_pos_view.x, core::mouse_pos_view.y);
 	}
 	else
 		return sf::Color::White;

@@ -26,7 +26,7 @@ public:
 
 public:
 	std::stack<std::shared_ptr<State>> states;
-	StateData stateData;
+	StateData state_data;
 
 private:
 	StateManager();

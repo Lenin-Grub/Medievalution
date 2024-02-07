@@ -21,19 +21,18 @@ void IntroState::setBackground()
 		LOG_ERROR("File <<ruszastavka.png>> not foubd");
 	}
 
-	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	shape.setSize(vec2f(StateManager::getInstance().state_data.window->getSize().x, StateManager::getInstance().state_data.window->getSize().y));
 	shape.setTexture(&background);
 
 	font.loadFromFile("resources/Fonts/Blackmoor.ttf");
 	text.setFont(font);
 	text.setString("MedievalutioN");
-	text.setCharacterSize(core::math.convertToPercentage(StateManager::getInstance().stateData.window->getSize().x, 10));
+	text.setCharacterSize(core::math.convertToPercentage(StateManager::getInstance().state_data.window->getSize().x, 10));
 	sf::FloatRect textRect = text.getLocalBounds();
 	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 0.4f);
 
-	auto pos = StateManager::getInstance().stateData.window->getSize();
+	auto pos = StateManager::getInstance().state_data.window->getSize();
 	text.setPosition(core::math.setCentre(pos.x,pos.y));
-
 }
 
 void IntroState::updateEvents(){}
@@ -54,7 +53,7 @@ void IntroState::update(const float& dtime)
 	if (Input::isKeyReleased(sf::Keyboard::Key::Space))
 	{
 		updateObserver();
-		StateManager::getInstance().changeState(std::make_shared <MainMenuState>(stateData), true);
+		StateManager::getInstance().changeState(std::make_shared <MainMenuState>(state_data), true);
 	}
 }
 

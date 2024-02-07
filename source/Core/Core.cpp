@@ -3,14 +3,14 @@
 
 class Input;
 
-sf::Event				core::sfmlEvent;	
+sf::Event				core::sfml_event;	
 sf::View				core::view;			
 sf::Clock				core::clock;
 float					core::dtime;		
 
-sf::Vector2i			core::mousePosScreen;
-sf::Vector2i			core::mousePosWindow;
-sf::Vector2f			core::mousePosView;	
+sf::Vector2i			core::mouse_pos_screen;
+sf::Vector2i			core::mouse_pos_window;
+sf::Vector2f			core::mouse_pos_view;
 
 Math					core::math;
 

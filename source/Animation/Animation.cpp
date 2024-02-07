@@ -16,28 +16,28 @@ void Animator::addFrame(sf::IntRect rect)
 
 void Animator::setFrameTime(float time)
 {
-	frameTime = time;
+	frame_time = time;
 }
 
 void Animator::setCurrentFrame(int frame)
 {
-	currentFrame = frame;
+	current_frame = frame;
 }
 
 void Animator::update(float deltaTime)
 {
-	currentTime += deltaTime;
+	current_time += deltaTime;
 	if (!played)
 	{
-		sprite.setTextureRect(frames.at(currentFrame));
+		sprite.setTextureRect(frames.at(current_frame));
 	}
 	else
 	{
-		if (currentTime >= frameTime)
+		if (current_time >= frame_time)
 		{
-			currentFrame = (currentFrame + 1) % frames.size();
-			sprite.setTextureRect(frames.at(currentFrame));
-			currentTime = 0.0f;
+			current_frame = (current_frame + 1) % frames.size();
+			sprite.setTextureRect(frames.at(current_frame));
+			current_time = 0.0f;
 		}
 	}
 }
@@ -54,17 +54,17 @@ void Animator::pause()
 
 const int Animator::getCurrentFrame()
 {
-	return currentFrame;
+	return current_frame;
 }
 
 const float Animator::getCurrentTime()
 {
-	return currentTime;
+	return current_time;
 }
 
 const float Animator::getFrameTime()
 {
-	return frameTime;
+	return frame_time;
 }
 
 const bool Animator::isPlayed()

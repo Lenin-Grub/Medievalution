@@ -19,8 +19,10 @@ public:
 private:
 	int max_zoom = 1500;
 	int min_zoom = 90;
-	sf::Vector2f prevMousePos;
-	bool isPanning = false;
-	float panThreshold = 5.0f;
-	//Input& input;
+
+	float pan_threshold = 5.0f;
+
+	bool is_panning = false;
+
+	sf::Vector2f prev_mouse_pos;
 };

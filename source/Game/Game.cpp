@@ -53,21 +53,21 @@ void Game::initWindow()
         this->window = std::make_unique<sf::RenderWindow>
         (WindowSettings::getInstance().resolution,
             WindowSettings::getInstance().title, sf::Style::Fullscreen,
-            WindowSettings::getInstance().contextSettings);
+            WindowSettings::getInstance().context_settings);
     // если окнов оконном режиме, устанавливаем след. настройки
     else
         this->window = std::make_unique<sf::RenderWindow>
         (WindowSettings::getInstance().resolution,
             WindowSettings::getInstance().title, sf::Style::Close,
-            WindowSettings::getInstance().contextSettings);
+            WindowSettings::getInstance().context_settings);
 
     this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);
-    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycalSync);
+    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycal_sync);
 }
 
 void Game::initStateData()
 {
-    StateManager::getInstance().stateData.window = window;
+    StateManager::getInstance().state_data.window = window;
 }
 
 void Game::initStates()
@@ -105,22 +105,22 @@ void Game::initFonts()
 
 void Game::initJukebox()
 {
-    StateManager::getInstance().stateData.jukebox.requestAll();
-    StateManager::getInstance().stateData.jukebox.setVolume(WindowSettings::getInstance().music_volume);
-    StateManager::getInstance().stateData.jukebox.play();
+    StateManager::getInstance().state_data.jukebox.requestAll();
+    StateManager::getInstance().state_data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
+    StateManager::getInstance().state_data.jukebox.play();
 }
 
 void Game::updateDeltaTime()                                                        
 {
-    core::dtime = this->m_clock.restart().asMilliseconds();
+    core::dtime = this->clock.restart().asMilliseconds();
 }
 
 void Game::updateSFMLevents()
 {
-    while (this->window->pollEvent(core::sfmlEvent))
+    while (this->window->pollEvent(core::sfml_event))
     {
-		ImGui::SFML::ProcessEvent(*window,core::sfmlEvent);
-		if (core::sfmlEvent.type == sf::Event::Closed)
+		ImGui::SFML::ProcessEvent(*window,core::sfml_event);
+		if (core::sfml_event.type == sf::Event::Closed)
         {
 			this->window->close();
         }
@@ -142,7 +142,7 @@ void Game::update()
 
             StateManager::getInstance().states.top()->update(core::dtime);
             StateManager::getInstance().states.top()->updateImGui();
-            StateManager::getInstance().stateData.jukebox.update();
+            StateManager::getInstance().state_data.jukebox.update();
 
             if (StateManager::getInstance().states.top()->getQuit())
             {

@@ -71,7 +71,7 @@ void GameState::updateImGui()
 	else
 		ImGui::Text("Mouse Position: <invalid>");
 	
-	ImGui::Text("Mouse View Position: (%.1f,%.1f)",core::mousePosView.x, core::mousePosView.y);
+	ImGui::Text("Mouse View Position: (%.1f,%.1f)",core::mouse_pos_view.x, core::mouse_pos_view.y);
 	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_name").c_str(), chr);
 	ImGui::Text(Localisation::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID());
 	

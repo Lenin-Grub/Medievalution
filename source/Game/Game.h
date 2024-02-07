@@ -24,6 +24,6 @@ private:
 	void updateSFMLevents();
 
 private:
-	sf::Clock m_clock;
+	sf::Clock clock;
 	std::shared_ptr <sf::RenderWindow> window;
 };

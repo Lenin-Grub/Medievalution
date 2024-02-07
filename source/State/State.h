@@ -34,7 +34,7 @@ public:
 	virtual void updateObserver() = 0;
 
 protected:
-	StateData* stateData;
+	StateData* state_data;
 	std::stack< std::shared_ptr<State>> states;
 	bool quit;
 	bool replace;

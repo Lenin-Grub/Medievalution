@@ -7,20 +7,118 @@
 class Core
 {
 public:
-	static sf::Event sfmlEvent;						// события sfml
+	static sf::Event sfml_event;					// события sfml
 	static sf::View view;							// камера вида
 	static sf::Clock clock;							// часы
 	static float dtime;								// время
 
-	static sf::Vector2i mousePosScreen;				// глобальное положение мыши на мониторе
-	static sf::Vector2i mousePosWindow;				// положение мыши относительно окна приложения
-	static sf::Vector2f mousePosView;				// положение мыши относительно камеры вида
+	static sf::Vector2i mouse_pos_screen;			// глобальное положение мыши на мониторе
+	static sf::Vector2i mouse_pos_window;			// положение мыши относительно окна приложения
+	static sf::Vector2f mouse_pos_view;				// положение мыши относительно камеры вида
 	static Math	math;
 
 	Core();
+
+    template <typename T>
+    void centerToLeft(sf::Drawable& object, T windowWidth);
+
+    template <typename T>
+    void centerToRight(sf::Drawable& object, T windowWidth);
+
+    template <typename T>
+    void centerToTop(sf::Drawable& object, T windowHeight);
+
+    template <typename T>
+    void centerToBottom(sf::Drawable& object, T windowHeight);
+
+    template <typename T>
+    void centerToTopLeft(sf::Drawable& object);
+
+    template <typename T>
+    void centerToTopRight(sf::Drawable& object, T windowWidth);
+
+    template <typename T>
+    void centerToBottomLeft(sf::Drawable& object, T windowHeight);
+
+    template <typename T>
+    void centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight);
+
+    template <typename T>
+    void centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight);
 };
 
 typedef Core core;
-typedef sf::Vector2i vec2i;					
-typedef sf::Vector2f vec2f;					
-typedef sf::Vector2u vec2u;					
+typedef sf::Vector2i vec2i;
+typedef sf::Vector2f vec2f;
+typedef sf::Vector2u vec2u;
+
+template<typename T>
+inline void Core::centerToLeft(sf::Drawable& object, T windowWidth)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(0, bounds.height / 2);
+    object.setPosition(0, windowWidth / 2);
+}
+
+template<typename T>
+inline void Core::centerToRight(sf::Drawable& object, T windowWidth)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width, bounds.height / 2);
+    object.setPosition(windowWidth, windowWidth / 2);
+}
+
+template<typename T>
+inline void Core::centerToTop(sf::Drawable& object, T windowHeight)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width / 2, 0);
+    object.setPosition(windowHeight / 2, 0);
+}
+
+template<typename T>
+inline void Core::centerToBottom(sf::Drawable& object, T windowHeight)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width / 2, bounds.height);
+    object.setPosition(windowHeight / 2, windowHeight);
+}
+
+template<typename T>
+inline void Core::centerToTopLeft(sf::Drawable& object)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(0, 0);
+}
+
+template<typename T>
+inline void Core::centerToTopRight(sf::Drawable& object, T windowWidth)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width, 0);
+    object.setPosition(windowWidth, 0);
+}
+
+template<typename T>
+inline void Core::centerToBottomLeft(sf::Drawable& object, T windowHeight)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(0, bounds.height);
+    object.setPosition(0, windowHeight);
+}
+
+template<typename T>
+inline void Core::centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width, bounds.height);
+    object.setPosition(windowWidth, windowHeight);
+}
+
+template<typename T>
+void Core::centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight)
+{
+    sf::FloatRect bounds = object.getLocalBounds();
+    object.setOrigin(bounds.width / 2, bounds.height / 2);
+    object.setPosition(windowWidth / 2, windowHeight / 2);
+}

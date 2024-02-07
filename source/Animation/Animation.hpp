@@ -67,10 +67,10 @@ public:
 
 private:
 
-	int currentFrame = 0;
+	int current_frame = 0;
 	bool played = true;
-	float currentTime = 0.0f;
-	float frameTime = 0.2f;
+	float current_time = 0.0f;
+	float frame_time = 0.2f;
 
 	sf::Sprite& sprite;
 	std::vector<sf::IntRect> frames;

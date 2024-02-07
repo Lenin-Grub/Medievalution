@@ -5,16 +5,16 @@
 WindowSettings::WindowSettings():
 	title("Unitiolized"),
 	resolution(sf::VideoMode::getDesktopMode()),
-	videoModes(sf::VideoMode::getFullscreenModes()),
+	video_modes(sf::VideoMode::getFullscreenModes()),
 	fullscrean(false),
-	//vertycalSync(false),
+	vertycal_sync(false),
 	fps_limit(0),
 	music_volume(100),
 	camera_speed(1),
 	zoom_speed(0),
 	language("rus")
 {
-	contextSettings.antialiasingLevel = 0;
+	context_settings.antialiasingLevel = 0;
 	LOG_WARN("Window settings not loaded. Used default settings");
 }
 

@@ -22,15 +22,15 @@ void MainMenuState::loadEntities()
 
 	if (WindowSettings::getInstance().language == "rus")
 	{
-		i.open("translation/rus.json");
-		i >> WindowSettings::getInstance().localisation;
+		localisation_file.open("translation/rus.json");
+		localisation_file >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_rus);
 	}
 
 	if (WindowSettings::getInstance().language == "eng")
 	{
-		i.open("translation/eng.json");
-		i >> WindowSettings::getInstance().localisation;
+		localisation_file.open("translation/eng.json");
+		localisation_file >> WindowSettings::getInstance().localisation;
 		sprite.setTexture(language_eng);
 	}
 
@@ -39,7 +39,7 @@ void MainMenuState::loadEntities()
 		LOG_ERROR("File <<background.jpg>> not foubd");
 	}
 
-	shape.setSize(vec2f(StateManager::getInstance().stateData.window->getSize().x, StateManager::getInstance().stateData.window->getSize().y));
+	shape.setSize(vec2f(StateManager::getInstance().state_data.window->getSize().x, StateManager::getInstance().state_data.window->getSize().y));
 	shape.setTexture(&background);
 }
 
@@ -58,11 +58,11 @@ void MainMenuState::updateImGui()
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
-		StateManager::getInstance().changeState(std::make_shared <GameState>(stateData), false);
+		StateManager::getInstance().changeState(std::make_shared <GameState>(state_data), false);
 	}
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{
-		StateManager::getInstance().changeState(std::make_shared <SettingsState>(stateData),false);
+		StateManager::getInstance().changeState(std::make_shared <SettingsState>(state_data),false);
 	}
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))

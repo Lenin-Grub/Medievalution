@@ -21,8 +21,8 @@ public:
 
 public:
 	sf::Shader  shader;
-	float transperency = 0.0f;
-	sf::Color select_color;
+	float		transperency = 0.0f;
+	sf::Color	select_color;
 	sf::Image	map_image;
 	std::vector<Province> provinces;
 
@@ -35,8 +35,8 @@ private:
 	bool isMouseOnMap();			
 
 private:
-	Province province;
-	sf::Color	currentColor;
+	Province	province;
+	sf::Color	current_color;
 	sf::Texture map_texture;
 	sf::Texture s_texture;
 	sf::Sprite	s_province_map;

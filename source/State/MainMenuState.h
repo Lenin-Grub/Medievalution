@@ -19,11 +19,9 @@ public:
 	void updateObserver() override;
 
 private:
-	sf::Text mouseCordsText;
-	std::stringstream cords;
 	sf::Texture language_rus, language_eng, background;
 	sf::Sprite sprite;
 	sf::RectangleShape shape;
-	std::ifstream i;
+	std::ifstream localisation_file;
 	std::list<Observer*> observer_list;
 };

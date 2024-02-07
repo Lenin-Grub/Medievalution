@@ -23,7 +23,7 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	StateManager::getInstance().addState(std::make_shared <IntroState>(&stateData), true);
+	StateManager::getInstance().addState(std::make_shared <IntroState>(&state_data), true);
 }
 
 void StateManager::changeState(std::shared_ptr<State> state, bool replace = false)

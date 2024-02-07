@@ -24,10 +24,10 @@ public:
 	std::string title;
 	sf::VideoMode resolution;
 	bool fullscrean;
-	bool vertycalSync;
+	bool vertycal_sync;
 	int fps_limit;
-	sf::ContextSettings contextSettings;
-	std::vector<sf::VideoMode> videoModes;
+	sf::ContextSettings context_settings;
+	std::vector<sf::VideoMode> video_modes;
 	json localisation;
 
 	int id_resolution = 0;
