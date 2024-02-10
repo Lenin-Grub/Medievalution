@@ -20,31 +20,31 @@ public:
 	Core();
 
     template <typename T>
-    void centerToLeft(sf::Drawable& object, T windowWidth);
+    static void centerToLeft(sf::Transformable& object, T windowWidth);
 
     template <typename T>
-    void centerToRight(sf::Drawable& object, T windowWidth);
+    static void centerToRight(sf::Drawable& object, T windowWidth);
 
     template <typename T>
-    void centerToTop(sf::Drawable& object, T windowHeight);
+    static void centerToTop(sf::Drawable& object, T windowHeight);
 
     template <typename T>
-    void centerToBottom(sf::Drawable& object, T windowHeight);
+    static void centerToBottom(sf::Transformable& object, T windowHeight);
 
     template <typename T>
-    void centerToTopLeft(sf::Drawable& object);
+    static void centerToTopLeft(sf::Drawable& object);
 
     template <typename T>
-    void centerToTopRight(sf::Drawable& object, T windowWidth);
+    static void centerToTopRight(sf::Drawable& object, T windowWidth);
 
     template <typename T>
-    void centerToBottomLeft(sf::Drawable& object, T windowHeight);
+    static void centerToBottomLeft(sf::Drawable& object, T windowHeight);
 
     template <typename T>
-    void centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight);
+    static void centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight);
 
     template <typename T>
-    void centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight);
+    static void centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight);
 };
 
 typedef Core core;
@@ -53,7 +53,7 @@ typedef sf::Vector2f vec2f;
 typedef sf::Vector2u vec2u;
 
 template<typename T>
-inline void Core::centerToLeft(sf::Drawable& object, T windowWidth)
+static void Core::centerToLeft(sf::Transformable& object, T windowWidth)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(0, bounds.height / 2);
@@ -61,7 +61,7 @@ inline void Core::centerToLeft(sf::Drawable& object, T windowWidth)
 }
 
 template<typename T>
-inline void Core::centerToRight(sf::Drawable& object, T windowWidth)
+static void Core::centerToRight(sf::Drawable& object, T windowWidth)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(bounds.width, bounds.height / 2);
@@ -69,7 +69,7 @@ inline void Core::centerToRight(sf::Drawable& object, T windowWidth)
 }
 
 template<typename T>
-inline void Core::centerToTop(sf::Drawable& object, T windowHeight)
+static void Core::centerToTop(sf::Drawable& object, T windowHeight)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(bounds.width / 2, 0);
@@ -77,22 +77,22 @@ inline void Core::centerToTop(sf::Drawable& object, T windowHeight)
 }
 
 template<typename T>
-inline void Core::centerToBottom(sf::Drawable& object, T windowHeight)
+static void Core::centerToBottom(sf::Transformable& object, T windowHeight)
 {
-    sf::FloatRect bounds = object.getLocalBounds();
-    object.setOrigin(bounds.width / 2, bounds.height);
+//    sf::FloatRect bounds = object.getLocalBounds();
+//    object.setOrigin(bounds.width / 2, bounds.height);
     object.setPosition(windowHeight / 2, windowHeight);
 }
 
 template<typename T>
-inline void Core::centerToTopLeft(sf::Drawable& object)
+static void Core::centerToTopLeft(sf::Drawable& object)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(0, 0);
 }
 
 template<typename T>
-inline void Core::centerToTopRight(sf::Drawable& object, T windowWidth)
+static void Core::centerToTopRight(sf::Drawable& object, T windowWidth)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(bounds.width, 0);
@@ -100,7 +100,7 @@ inline void Core::centerToTopRight(sf::Drawable& object, T windowWidth)
 }
 
 template<typename T>
-inline void Core::centerToBottomLeft(sf::Drawable& object, T windowHeight)
+static void Core::centerToBottomLeft(sf::Drawable& object, T windowHeight)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(0, bounds.height);
@@ -108,7 +108,7 @@ inline void Core::centerToBottomLeft(sf::Drawable& object, T windowHeight)
 }
 
 template<typename T>
-inline void Core::centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight)
+static void Core::centerToBottomRight(sf::Drawable& object, T windowWidth, T windowHeight)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(bounds.width, bounds.height);
@@ -116,7 +116,7 @@ inline void Core::centerToBottomRight(sf::Drawable& object, T windowWidth, T win
 }
 
 template<typename T>
-void Core::centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight)
+static void Core::centerToCenter(sf::Drawable& object, T windowWidth, T windowHeight)
 {
     sf::FloatRect bounds = object.getLocalBounds();
     object.setOrigin(bounds.width / 2, bounds.height / 2);

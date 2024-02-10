@@ -44,6 +44,27 @@ void IntroState::updateImGui()
 	ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press \"SPACEBAR\" to continue");
+
+	// Анимация и имитация загрузки
+	static float progress = 0.0f, progress_dir = 1.0f;
+	if (true)
+	{
+		progress += progress_dir * 0.4f * ImGui::GetIO().DeltaTime;
+
+		if (progress >= 1.0f)
+		{
+			StateManager::getInstance().changeState(std::make_shared <MainMenuState>(state_data), true);
+		}
+
+		if (progress >= +1.1f) 
+		{
+			progress = +1.1f; 
+		}
+	}
+
+	ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
+	ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
+	ImGui::Text("Progress Bar");
 	ImGui::End();
 }
 
