@@ -50,8 +50,10 @@ void SettingsState::updateImGui()
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
+
 	std::string str = WindowSettings::getInstance().localisation.at("T_settings");
-	ImGui::Begin(str.c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove);
+
+	ImGui::Begin((ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize  | ImGuiWindowFlags_NoMove);
 	
 	const char* combo_preview_value = resolution[item_current_idx];
 
@@ -79,7 +81,7 @@ void SettingsState::updateImGui()
 	}
 
 	str = WindowSettings::getInstance().localisation.at("T_full_window");
-	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().fullscrean))
+	if (ImGui::Checkbox((ICON_MAXIME_SIEZE_2 + str).c_str(), &WindowSettings::getInstance().fullscrean))
 	{
 		WindowSettings::getInstance().fullscrean;
 	}

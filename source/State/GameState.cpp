@@ -48,11 +48,17 @@ void GameState::updateImGui()
 {
 	ImGuiIO& io = ImGui::GetIO();
 	ImGui::ShowDemoWindow();
-	ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoResize);
+	ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 	
-	if (ImGui::Button(u8"Выход##toMainMenu"))
+	if (ImGui::Button(ICON_LOG_IN "Выход##toMainMenu"))
 	{
 		endState();
+	}
+	std::string str1 = WindowSettings::getInstance().localisation.at("T_settings");
+
+	if (ImGui::Button((ICON_SETTINGS + str1).c_str(), ImVec2(120, 0)))
+	{
+		StateManager::getInstance().changeState(std::make_shared <SettingsState>(state_data), false);
 	}
 	ImGui::End();
 
@@ -61,6 +67,7 @@ void GameState::updateImGui()
 
 	ImGui::SetNextWindowBgAlpha(0.55f);
 	ImGui::Begin("T", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+
 
 	ImGui::TextColored(ImVec4(1, 1, 1, 0.5),u8"Это карта мира\n" "Используй WSAD для навигации\n" "Используй колесико для масштабирования\n" "Это окошко можно передвинуть ЛКМ");
 	ImGui::Separator();

@@ -40,3 +40,6 @@
 
 //SPDLOG
 #include "Core/Log.h"
+
+//Icons for ImGui
+#include "Core/IconText.h"

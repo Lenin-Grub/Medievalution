@@ -95,12 +95,24 @@ void Game::initFonts()
 {
     //TODO перенсти в отдельное место
     //установка дефолтного шрифта в ImGui
+    ImFontConfig config;
+    config.MergeMode = true;
+    config.GlyphMinAdvanceX = 5.0f;
+    config.OversampleH = 1;
+    config.OversampleV = 1;
+    config.GlyphExtraSpacing.x = 10.0f;
+    config.GlyphExtraSpacing.y = 10.0f;
+
+    static const ImWchar icon_ranges[] = { ICON_MIN, ICON_MAX, 0 };
 
     ImGuiIO& io = ImGui::GetIO();
-    ImFont* f = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+    ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",   20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf",       20.f, &config, icon_ranges);
+    io.Fonts->Build();
+
     ImGui::SFML::UpdateFontTexture();
-    ImFont* font = io.Fonts->Fonts[1];
-    io.FontDefault = font;
+//    ImFont* font = io.Fonts->Fonts[1];
+    io.FontDefault = font1;
 }
 
 void Game::initJukebox()
