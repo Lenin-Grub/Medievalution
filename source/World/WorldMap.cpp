@@ -89,9 +89,10 @@ void WorldMap::loadShader()
 
 void WorldMap::initCentreOfProvinces()
 {
-	for (size_t i = 0; i == provinces.size(); i++)
+	for (std::vector<Province>::iterator it = provinces.begin(); it != provinces.end(); ++it) 
 	{
-		provinces.at(i).centre = findProvinceCenter(provinces.at(i).color);
+		sf::Vector2f center = { findProvinceCenter((*it).color) };
+		(*it).centre = center;
 	}
 }
 
@@ -231,7 +232,24 @@ sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor)
 	}
 }
 
-sf::Vector2f WorldMap::getProvinceCenter(sf::Color provinceColor) const
+sf::Vector2f WorldMap::getProvinceCenter(const std::string& provinceName) const
 {
-	return provinces.at(0).centre;
+	for (const auto& province : provinces)
+	{
+		if (province.name == provinceName)
+		{
+			return province.centre;
+		}
+	}
+}
+
+sf::Vector2f WorldMap::getProvinceCenter(const sf::Color& color) const
+{
+	for (const auto& province : provinces) {
+		if (province.color == color) {
+			return province.centre;
+		}
+	}
+	// Вернуть недопустимый центр (-1, -1) в случае отсутствия провинции
+	return sf::Vector2f(-1.f, -1.f);
 }

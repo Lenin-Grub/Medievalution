@@ -19,7 +19,8 @@ public:
 
 	int	findProvinceID(sf::Color color);
 	sf::Vector2f findProvinceCenter	(sf::Color provinceColor);
-	sf::Vector2f getProvinceCenter	(sf::Color provinceColor) const;
+	sf::Vector2f getProvinceCenter	(const std::string& provinceName) const;
+	sf::Vector2f getProvinceCenter(const sf::Color& color) const;
 
 public:
 	sf::Shader  shader;

@@ -40,11 +40,12 @@ void GameState::updateEvents()
 	{
 		camera.zoom();
 		camera.scroll();
-	}
-	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-	{
-		sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
-		world_map.shape.setPosition(provinceCenter);
+
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
+			world_map.shape.setPosition(provinceCenter);
+		}
 	}
 }
 
