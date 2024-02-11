@@ -87,6 +87,14 @@ void WorldMap::loadShader()
 	s_texture_map.setTexture(s_texture);
 }
 
+void WorldMap::initCentreOfProvinces()
+{
+	for (size_t i = 0; i == provinces.size(); i++)
+	{
+		provinces.at(i).centre = findProvinceCenter(provinces.at(i).color);
+	}
+}
+
 /*
 	todo @ при высоком фпс лагает
 	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
@@ -179,27 +187,51 @@ int WorldMap::findProvinceID(sf::Color color)
 
 sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor)
 {
-	// ѕроходим по всем пиксел€м изображени€ и находим средние координаты дл€ пикселей цвета провинции
 	int pixelCount = 0;
-	int sumX = 0;
-	int sumY = 0;
+	float sumX = 0.0f;
+	float sumY = 0.0f;
 
-	for (int y = 0; y < map_image.getSize().y; ++y)
-	{
-		for (int x = 0; x < map_image.getSize().x; ++x)
-		{
-			if (map_image.getPixel(x, y) == provinceColor)
-			{
-				sumX += x;
-				sumY += y;
-				pixelCount++;
+	// ѕолучаем указатель на пиксели и размер карты
+	const sf::Uint8* pixels = map_image.getPixelsPtr();
+	sf::Vector2u mapSize = map_image.getSize();
+
+	// ѕровер€ем загружено ли изображение
+	if (pixels == nullptr) {
+		// ќбработка ошибки загрузки изображени€
+		return sf::Vector2f(-1.f, -1.f);
+	}
+
+	for (unsigned int i = 0; i < mapSize.y; ++i) {
+		for (unsigned int j = 0; j < mapSize.x; ++j) {
+			unsigned int index = (i * mapSize.x + j) * 4;
+			// ѕровер€ем, что индекс не выходит за пределы массива пикселей
+			if (index + 3 < mapSize.x * mapSize.y * 4) {
+				sf::Color pixelColor(pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]);
+				if (pixelColor == provinceColor) {
+					sumX += j;
+					sumY += i;
+					pixelCount++;
+				}
+			}
+			else {
+				// ќбработка ошибок выхода индекса за пределы массива
+				return sf::Vector2f(-1.f, -1.f);
 			}
 		}
 	}
 
-	// ¬ычисл€ем средние координаты пикселей цвета провинции дл€ определени€ центра провинции
-	float centerX = static_cast<float>(sumX) / pixelCount;
-	float centerY = static_cast<float>(sumY) / pixelCount;
+	if (pixelCount > 0) {
+		float centerX = sumX / pixelCount;
+		float centerY = sumY / pixelCount;
+		return sf::Vector2f(centerX, centerY);
+	}
+	else {
+		// ќбработка случа€, когда провинци€ отсутствует на карте
+		return sf::Vector2f(-1.f, -1.f);
+	}
+}
 
-	return sf::Vector2f(centerX, centerY);
+sf::Vector2f WorldMap::getProvinceCenter(sf::Color provinceColor) const
+{
+	return provinces.at(0).centre;
 }
