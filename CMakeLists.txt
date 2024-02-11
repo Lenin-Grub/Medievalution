@@ -8,11 +8,13 @@ add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
+set(BUILD_SHARED_LIBS OFF)
 add_subdirectory(ext_libs/spdlog)
 include_directories (ext_libs/spdlog/include)
 
 
 include(FetchContent)
+
 
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
@@ -21,7 +23,7 @@ FetchContent_MakeAvailable(SFML)
 
 FetchContent_Declare(ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui
-    GIT_TAG v1.89.9)
+    GIT_TAG v1.90.2)
 FetchContent_MakeAvailable(ImGui)
 FetchContent_GetProperties(ImGui SOURCE_DIR IMGUI_DIR)
 
@@ -32,6 +34,8 @@ FetchContent_Declare(ImGui-SFML
 FetchContent_MakeAvailable(ImGui-SFML)
 
 FetchContent_MakeAvailable(SFML)
+
+
 
 target_sources ("${CMAKE_PROJECT_NAME}" PRIVATE ${MY_SOURCES} "resources.rc")
 
