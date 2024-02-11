@@ -18,7 +18,7 @@ public:
 	sf::Color getColor();
 
 	int	findProvinceID(sf::Color color);
-	sf::Vector2f findProvinceCenter(const sf::Image& image, sf::Color provinceColor);
+	sf::Vector2f findProvinceCenter(sf::Color provinceColor);
 
 public:
 	sf::Shader  shader;

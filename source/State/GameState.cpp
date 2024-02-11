@@ -43,9 +43,9 @@ void GameState::updateEvents()
 	}
 	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
 	{
-		sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.map_image, world_map.getColor());
-		world_map.shape.setRadius(5);
-		world_map.shape.setFillColor(sf::Color::Red);
+		sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
+		//world_map.shape.setRadius(5);
+		//world_map.shape.setFillColor(sf::Color::Red);
 		world_map.shape.setPosition(provinceCenter);
 	}
 }

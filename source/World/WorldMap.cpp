@@ -8,6 +8,8 @@ WorldMap::WorldMap()
 	loadShader();
 	initProvinceData();
 	setUniformes();
+	shape.setRadius(5);
+	shape.setFillColor(sf::Color::Red);
 }
 
 WorldMap::~WorldMap()
@@ -175,18 +177,18 @@ int WorldMap::findProvinceID(sf::Color color)
 		return 0;
 }
 
-sf::Vector2f WorldMap::findProvinceCenter(const sf::Image& image, sf::Color provinceColor)
+sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor)
 {
 	// ѕроходим по всем пиксел€м изображени€ и находим средние координаты дл€ пикселей цвета провинции
 	int pixelCount = 0;
 	int sumX = 0;
 	int sumY = 0;
 
-	for (int y = 0; y < image.getSize().y; ++y) 
+	for (int y = 0; y < map_image.getSize().y; ++y)
 	{
-		for (int x = 0; x < image.getSize().x; ++x) 
+		for (int x = 0; x < map_image.getSize().x; ++x)
 		{
-			if (image.getPixel(x, y) == provinceColor) 
+			if (map_image.getPixel(x, y) == provinceColor)
 			{
 				sumX += x;
 				sumY += y;

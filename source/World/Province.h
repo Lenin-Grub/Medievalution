@@ -4,8 +4,9 @@
 struct Province
 {
 	int id;
-	std::string name;
-	std::string comment;
-	std::string owner;
-	sf::Color	color;
+	std::string		name;
+	std::string		comment;
+	std::string		owner;
+	sf::Vector2f	centre;
+	sf::Color		color;
 };
