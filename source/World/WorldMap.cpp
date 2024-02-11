@@ -144,6 +144,7 @@ void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
 	target.draw(s_texture_map);
 	target.draw(s_province_map, &shader);
+	target.draw(shape);
 }
 
 /*
@@ -172,4 +173,31 @@ int WorldMap::findProvinceID(sf::Color color)
 	}
 	else
 		return 0;
+}
+
+sf::Vector2f WorldMap::findProvinceCenter(const sf::Image& image, sf::Color provinceColor)
+{
+	// ѕроходим по всем пиксел€м изображени€ и находим средние координаты дл€ пикселей цвета провинции
+	int pixelCount = 0;
+	int sumX = 0;
+	int sumY = 0;
+
+	for (int y = 0; y < image.getSize().y; ++y) 
+	{
+		for (int x = 0; x < image.getSize().x; ++x) 
+		{
+			if (image.getPixel(x, y) == provinceColor) 
+			{
+				sumX += x;
+				sumY += y;
+				pixelCount++;
+			}
+		}
+	}
+
+	// ¬ычисл€ем средние координаты пикселей цвета провинции дл€ определени€ центра провинции
+	float centerX = static_cast<float>(sumX) / pixelCount;
+	float centerY = static_cast<float>(sumY) / pixelCount;
+
+	return sf::Vector2f(centerX, centerY);
 }
