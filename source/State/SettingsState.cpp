@@ -81,7 +81,7 @@ void SettingsState::updateImGui()
 	}
 
 	str = WindowSettings::getInstance().localisation.at("T_full_window");
-	if (ImGui::Checkbox((ICON_MAXIME_SIEZE_2 + str).c_str(), &WindowSettings::getInstance().fullscrean))
+	if (ImGui::Checkbox((ICON_MAX_SIEZE + str).c_str(), &WindowSettings::getInstance().fullscrean))
 	{
 		WindowSettings::getInstance().fullscrean;
 	}

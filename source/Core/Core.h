@@ -79,8 +79,7 @@ static void Core::centerToTop(sf::Drawable& object, T windowHeight)
 template<typename T>
 static void Core::centerToBottom(sf::Transformable& object, T windowHeight)
 {
-//    sf::FloatRect bounds = object.getLocalBounds();
-//    object.setOrigin(bounds.width / 2, bounds.height);
+ //   object.setOrigin(bounds.width / 2, bounds.height);
     object.setPosition(windowHeight / 2, windowHeight);
 }
 

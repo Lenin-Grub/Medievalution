@@ -97,9 +97,10 @@ void Game::initFonts()
     //установка дефолтного шрифта в ImGui
     ImFontConfig config;
     config.MergeMode = true;
-    config.GlyphMinAdvanceX = 5.0f;
-    config.OversampleH = 1;
-    config.OversampleV = 1;
+    config.PixelSnapH = true;
+    config.GlyphMinAdvanceX = 6.0f;
+    config.OversampleH = 3;
+    config.OversampleV = 3;
     config.GlyphExtraSpacing.x = 10.0f;
     config.GlyphExtraSpacing.y = 10.0f;
 

@@ -41,6 +41,13 @@ void GameState::updateEvents()
 		camera.zoom();
 		camera.scroll();
 	}
+	if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+	{
+		sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.map_image, world_map.getColor());
+		world_map.shape.setRadius(5);
+		world_map.shape.setFillColor(sf::Color::Red);
+		world_map.shape.setPosition(provinceCenter);
+	}
 }
 
 //to do@ метод будет пухнуть, вынести куда-нибудь отдельно
@@ -136,6 +143,7 @@ void GameState::render(sf::RenderTarget* target)
 
 //	рисуем динамечские объекты
 	world_map.draw(*target,sf::RenderStates::Default);
+//	target->draw(world_map.shape);
 
 //	рисуем статические объекты после установки дефолтной камеры (gui и тд)
 	target->setView(this->window->getDefaultView());
