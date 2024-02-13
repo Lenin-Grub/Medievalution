@@ -14,7 +14,11 @@ WindowSettings::WindowSettings():
 	zoom_speed(0),
 	language("rus")
 {
-	context_settings.antialiasingLevel = 0;
+	context_settings.depthBits = 24;
+	context_settings.stencilBits = 8;
+	context_settings.antialiasingLevel = 4;
+	context_settings.majorVersion = 3;
+	context_settings.minorVersion = 0;
 	LOG_WARN("Window settings not loaded. Used default settings");
 }
 

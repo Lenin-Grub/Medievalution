@@ -52,14 +52,14 @@ void Game::initWindow()
     if (WindowSettings::getInstance().fullscrean)
         this->window = std::make_unique<sf::RenderWindow>
         (WindowSettings::getInstance().resolution,
-            WindowSettings::getInstance().title, sf::Style::Fullscreen,
-            WindowSettings::getInstance().context_settings);
+         WindowSettings::getInstance().title, sf::Style::Fullscreen,
+         WindowSettings::getInstance().context_settings);
     // если окнов оконном режиме, устанавливаем след. настройки
     else
         this->window = std::make_unique<sf::RenderWindow>
         (WindowSettings::getInstance().resolution,
-            WindowSettings::getInstance().title, sf::Style::Close,
-            WindowSettings::getInstance().context_settings);
+         WindowSettings::getInstance().title, sf::Style::Close,
+         WindowSettings::getInstance().context_settings);
 
     this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);
     this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycal_sync);
@@ -112,7 +112,6 @@ void Game::initFonts()
     io.Fonts->Build();
 
     ImGui::SFML::UpdateFontTexture();
-//    ImFont* font = io.Fonts->Fonts[1];
     io.FontDefault = font1;
 }
 
@@ -173,10 +172,13 @@ void Game::update()
 
 void Game::render()
 {
-    this->window->clear(sf::Color(63, 72, 204));
+    //this->window->clear(sf::Color(63, 72, 204));
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     if (!StateManager::getInstance().states.empty())
     {
+        window->pushGLStates();
         StateManager::getInstance().states.top()->render();
+        window->popGLStates();
     }
 	ImGui::SFML::Render(*window);
     this->window->display();

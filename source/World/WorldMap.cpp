@@ -188,47 +188,42 @@ int WorldMap::findProvinceID(sf::Color color)
 
 sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor)
 {
-	int pixelCount = 0;
-	float sumX = 0.0f;
-	float sumY = 0.0f;
-
-	// ѕолучаем указатель на пиксели и размер карты
 	const sf::Uint8* pixels = map_image.getPixelsPtr();
 	sf::Vector2u mapSize = map_image.getSize();
 
-	// ѕровер€ем загружено ли изображение
-	if (pixels == nullptr) {
-		// ќбработка ошибки загрузки изображени€
-		return sf::Vector2f(-1.f, -1.f);
-	}
+	float pixelCount = 0.0f;
+	float sumX = 0.0f;
+	float sumY = 0.0f;
 
-	for (unsigned int i = 0; i < mapSize.y; ++i) {
-		for (unsigned int j = 0; j < mapSize.x; ++j) {
-			unsigned int index = (i * mapSize.x + j) * 4;
-			// ѕровер€ем, что индекс не выходит за пределы массива пикселей
-			if (index + 3 < mapSize.x * mapSize.y * 4) {
-				sf::Color pixelColor(pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]);
-				if (pixelColor == provinceColor) {
-					sumX += j;
-					sumY += i;
-					pixelCount++;
-				}
-			}
-			else {
-				// ќбработка ошибок выхода индекса за пределы массива
-				return sf::Vector2f(-1.f, -1.f);
+	for (unsigned int i = 0; i < mapSize.y; ++i) 
+	{
+		unsigned int rowStart = i * mapSize.x * 4;
+		for (unsigned int j = 0; j < mapSize.x; ++j) 
+		{
+			unsigned int index = rowStart + j * 4;
+
+			if (pixels[index + 3] != 0 &&
+				pixels[index] == provinceColor.r &&
+				pixels[index + 1] == provinceColor.g &&
+				pixels[index + 2] == provinceColor.b &&
+				pixels[index + 3] == provinceColor.a) 
+			{
+				sumX += j;
+				sumY += i;
+				pixelCount++;
 			}
 		}
 	}
 
-	if (pixelCount > 0) {
+	if (pixelCount > 0.0f) 
+	{
 		float centerX = sumX / pixelCount;
 		float centerY = sumY / pixelCount;
 		return sf::Vector2f(centerX, centerY);
 	}
-	else {
-		// ќбработка случа€, когда провинци€ отсутствует на карте
-		return sf::Vector2f(-1.f, -1.f);
+	else 
+	{
+		return sf::Vector2f(-1.0f, -1.0f);
 	}
 }
 

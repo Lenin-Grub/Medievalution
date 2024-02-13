@@ -28,11 +28,17 @@
 #include <random>
 
 //SFML
+#include <SFML/OpenGL.hpp>
 #include <SFML\System.hpp>
 #include <SFML\Window.hpp>
 #include <SFML\Graphics.hpp>
 #include <SFML\Audio.hpp>
 #include <SFML\Network.hpp>
+
+//GLM
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 //ImGui
 #include <imgui.h>

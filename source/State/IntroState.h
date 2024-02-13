@@ -11,10 +11,10 @@ public:
 	void setBackground();
 	virtual ~IntroState();
 
-	void updateEvents() override;										
-	void updateImGui() override;										
-	void update(const float& dtime) override;							
-	void render(sf::RenderTarget* target = nullptr) override;			
+	void updateEvents() override;
+	void updateImGui() override;
+	void update(const float& dtime) override;
+	void render(sf::RenderTarget* target = nullptr) override;
 
 	void updateObserver() override;
 

@@ -15,17 +15,27 @@ include_directories (ext_libs/spdlog/include)
 
 include(FetchContent)
 
-
 FetchContent_Declare(SFML
     GIT_REPOSITORY https://github.com/SFML/SFML.git
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
+
+FetchContent_Declare(GLFW
+    GIT_REPOSITORY https://github.com/glfw/glfw
+    GIT_TAG 3.3.9)
+FetchContent_MakeAvailable(GLFW)
 
 FetchContent_Declare(ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui
     GIT_TAG v1.90.2)
 FetchContent_MakeAvailable(ImGui)
 FetchContent_GetProperties(ImGui SOURCE_DIR IMGUI_DIR)
+
+FetchContent_Declare(glm
+	GIT_REPOSITORY	https://github.com/g-truc/glm.git
+	GIT_TAG 	bf71a834948186f4097caa076cd2663c69a10e1e
+)
+FetchContent_MakeAvailable(glm)
 
 set(IMGUI_SFML_FIND_SFML OFF)
 FetchContent_Declare(ImGui-SFML
@@ -47,6 +57,7 @@ target_link_libraries(${PROJECT_NAME}
 	sfml-network
 	spdlog
 	ImGui-SFML::ImGui-SFML
+	glm::glm
 )
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ )

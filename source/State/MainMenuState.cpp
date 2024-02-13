@@ -105,10 +105,69 @@ void MainMenuState::update(const float& dtime)
 
 void MainMenuState::render(sf::RenderTarget* target)							
 { 
+	window->pushGLStates();
+
 	if (!target)
 		target = this->window.get();
 	target->setView(this->window->getDefaultView());
 	target->draw(shape);
+
+	window->popGLStates();
+
+	
+
+	glRotatef(i++, i, i,1);
+
+	glBegin(GL_QUADS);
+
+	glColor3f(1.0f, 0.0f, 0.0f);
+	// FRONT
+	glVertex3f(-0.5f, -0.5f, 0.5f);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, -0.5f, 0.5f);
+	glVertex3f(0.5f, 0.5f, 0.5f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-0.5f, 0.5f, 0.5f);
+	// BACK
+	glVertex3f(-0.5f, -0.5f, -0.5f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, -0.5f);
+	glVertex3f(0.5f, -0.5f, -0.5f);
+
+	glColor3f(0.0f, 1.0f, 0.0f);
+	// LEFT
+	glVertex3f(-0.5f, -0.5f, 0.5f);
+	glVertex3f(-0.5f, 0.5f, 0.5f);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-0.5f, -0.5f, -0.5f);
+	// RIGHT
+	glVertex3f(0.5f, -0.5f, -0.5f);
+	glVertex3f(0.5f, 0.5f, -0.5f);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, 0.5f);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.5f, -0.5f, 0.5f);
+
+	glColor3f(0.0f, 0.0f, 1.0f);
+	// TOP
+	glVertex3f(-0.5f, 0.5f, 0.5f);
+	glVertex3f(0.5f, 0.5f, 0.5f);
+	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, -0.5f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);
+	glColor3f(1.0f, 0.0f, 0.0f);
+	// BOTTOM
+	glVertex3f(-0.5f, -0.5f, 0.5f);
+	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.5f, -0.5f, -0.5f);
+	glVertex3f(0.5f, -0.5f, -0.5f);
+	glVertex3f(0.5f, -0.5f, 0.5f);
+	glEnd();
+
+
 }
 
 void MainMenuState::updateObserver()

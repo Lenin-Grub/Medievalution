@@ -14,7 +14,7 @@ public:
 	void updateEvents();												
 	void updateImGui();													
 	void update(const float& dtime);									
-	void render(sf::RenderTarget* target = nullptr);		
+	void render(sf::RenderTarget* target = nullptr);
 
 	void updateObserver() override;
 
@@ -24,4 +24,5 @@ private:
 	sf::RectangleShape shape;
 	std::ifstream localisation_file;
 	std::list<Observer*> observer_list;
+	int i = 0;
 };
