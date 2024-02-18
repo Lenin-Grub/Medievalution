@@ -4,10 +4,11 @@
 
 SettingsState::SettingsState(StateData* state_data)
 	:State(state_data)
+	,video_modes(sf::VideoMode::getFullscreenModes())
+	,resolution_current_id(WindowSettings::getInstance().id_resolution)
 {
 	StateManager::getInstance().addObserver(*this);
 	setBackground();
-	getVideoModes();
 }
 
 SettingsState::~SettingsState()
@@ -26,27 +27,11 @@ void SettingsState::setBackground()
 	shape.setTexture(&background);
 }
 
-void SettingsState::getVideoModes()
-{
-	video_modes = sf::VideoMode::getFullscreenModes();
-	for (int i = 0; i < WindowSettings::getInstance().resolution.getFullscreenModes().size(); ++i)
-	{
-		video_mode[i] = WindowSettings::getInstance().resolution.getFullscreenModes().at(i);
-	}
-	item_current_idx = WindowSettings::getInstance().id_resolution;
-}
 
 void SettingsState::updateEvents(){}
 
 void SettingsState::updateImGui()
 {
-	const char* resolution[] =
-	{
-	"3840x2160","2560x1600", "2560x1440", "2048x1536", "1920x1440","1920x1200", "1920x1080",
-	"1680x1050", "1600x1200", "1600x1024", "1600x900", "1440x1080","1440x900", "1366x768",
-	"1360x768", "1280x1024", "1280x960", "1280x800", "1280x768", "1280x720", "1176x664",
-	"1152x864", "1024x768" ,"800x600", "720x576", "720x480", "640x480"
-	};
 	ImVec2 center = ImGui::GetMainViewport()->GetCenter();
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
@@ -55,19 +40,26 @@ void SettingsState::updateImGui()
 
 	ImGui::Begin((ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize  | ImGuiWindowFlags_NoMove);
 	
-	const char* combo_preview_value = resolution[item_current_idx];
+	//std::string string_resolution = std::to_string(video_modes.at(resolution_current_id).width) + " x " + std::to_string(video_modes.at(resolution_current_id).height);
+	//auto char_resolution = string_resolution.c_str();
+	auto str2 = std::to_string((video_modes.at(resolution_current_id).width)) + "x" + std::to_string(video_modes.at(resolution_current_id).height);
+	const char* combo_preview_value = str2.c_str();
 
 	str = WindowSettings::getInstance().localisation.at("T_resolution");
 	if (ImGui::BeginCombo(str.c_str(), combo_preview_value,0))
 	{
-		for (int n = 0; n < ((int)(sizeof(resolution) / sizeof(*(resolution)))); n++)
+		for (int n = 0; n < video_modes.size(); n++)
 		{
-			const bool is_selected = (item_current_idx == n);
-			if (ImGui::Selectable(resolution[n], is_selected))
+			const bool is_selected = (resolution_current_id == n);
+
+			std::string string_all_resolutions = std::to_string(video_modes.at(n).width) + " x " + std::to_string(video_modes.at(n).height);
+			auto modes = string_all_resolutions.c_str();
+
+			if (ImGui::Selectable(modes, is_selected))
 			{
 				//TODO добавить функцию изменения разрешения экрана
-				item_current_idx = n;
-				WindowSettings::getInstance().id_resolution = item_current_idx;
+				resolution_current_id = n;
+				WindowSettings::getInstance().id_resolution = resolution_current_id;
 				WindowSettings::getInstance().resolution.width = video_modes.at(n).width;
 				WindowSettings::getInstance().resolution.height = video_modes.at(n).height;
 			}

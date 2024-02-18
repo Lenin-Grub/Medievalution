@@ -10,9 +10,9 @@ Jukebox::Jukebox(const std::string& path) :
     {
         if (entry.path().extension() == ".wav")
         {
-            auto dirrectory = path;
-            auto filename = entry.path().filename().string();
-            auto full_path = dirrectory + filename;
+            std::string dirrectory = path;
+            std::string filename = entry.path().filename().string();
+            std::string full_path = dirrectory + filename;
 
             auto music = std::unique_ptr<sf::Music>(new sf::Music);
             if (!music->openFromFile(full_path))

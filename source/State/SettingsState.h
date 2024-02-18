@@ -18,18 +18,17 @@ public:
 
 private:
 	void setBackground();
-	void getVideoModes();
 
 private:
-	int item_current = 0;
 	bool play_music = true;
 	bool play_sound = true;
 	sf::Texture background;
 	sf::RectangleShape shape;
-	std::map<int, sf::VideoMode> video_mode;
+
+	std::vector<sf::VideoMode> video_modes;
+	int resolution_current_id;
+	std::string string_resolution;
+
 
 	std::list<Observer*> observer_list;
-	std::vector<sf::VideoMode> video_modes;
-
-	int item_current_idx = 0;
 };

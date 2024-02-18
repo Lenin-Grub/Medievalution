@@ -172,8 +172,8 @@ void Game::update()
 
 void Game::render()
 {
-    //this->window->clear(sf::Color(63, 72, 204));
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    this->window->clear(sf::Color(63, 72, 204));
     if (!StateManager::getInstance().states.empty())
     {
         window->pushGLStates();

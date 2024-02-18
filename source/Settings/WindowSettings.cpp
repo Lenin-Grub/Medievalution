@@ -10,9 +10,13 @@ WindowSettings::WindowSettings():
 	vertycal_sync(false),
 	fps_limit(0),
 	music_volume(100),
+	sound_volume(100),
 	camera_speed(1),
 	zoom_speed(0),
-	language("rus")
+	language("rus"),
+	is_sound_play(true),
+	is_music_play(true),
+	id_resolution(0)
 {
 	context_settings.depthBits = 24;
 	context_settings.stencilBits = 8;

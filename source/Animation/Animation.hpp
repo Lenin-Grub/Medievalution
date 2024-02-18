@@ -2,45 +2,6 @@
 #include "../stdafx.h"
 #include "../Core/Core.h"
 
-class Frame 
-{
-public:
-    Frame(sf::Sprite& sprite);
-    void addFrame(sf::IntRect rect);
-    void setCurrentFrame(int frameIndex);
-
-    sf::Sprite getSpr();
-    sf::IntRect getCurrentFrame();
-
-    std::vector<sf::IntRect> getFrames();
-
-private:
-    sf::Sprite& sprite;
-    int currentFrame = 0;
-    std::vector<sf::IntRect> frames;
-};
-
-class Animation 
-{
-public:
-    Animation(sf::Sprite& sprite);
-    void addAnimation(std::string name);
-    Frame* getAnimation(std::string name);
-
-    void play();
-    void stop();
-    void update(float deltaTime);
-    bool isPlay();
-
-    bool played = true;
-    int currentFrame = 0;
-    float currentTime = 0.0f;
-    float frameTime = 0.2f;
-    std::map<std::string, Frame*> animations;
-    Frame* currentAnimation = nullptr;
-private:
-    sf::Sprite& sprite;
-};
 
 class Animator 
 {
@@ -57,20 +18,20 @@ public:
 	void play           (bool play);
 	void pause          ();
 
-    const bool   isPlayed();
+    const bool   isPlayed() const;
 
-    const int    getCurrentFrame();
-    const float  getCurrentTime();
-    const float  getFrameTime();
+    const int    getCurrentFrame()	const;
+    const float  getCurrentTime()	const;
+    const float  getFrameTime()		const;
 
-    const std::vector<sf::IntRect> getFrames();
+    const std::vector<sf::IntRect> getFrames() const;
 
 private:
 
 	int current_frame = 0;
 	bool played = true;
 	float current_time = 0.0f;
-	float frame_time = 0.2f;
+	float frame_time;
 
 	sf::Sprite& sprite;
 	std::vector<sf::IntRect> frames;

@@ -2,7 +2,8 @@
 #include "StateManager.h"
 
 
-StateManager::StateManager():Observable()
+StateManager::StateManager()
+	:Observable()
 {
 }
 
@@ -23,7 +24,7 @@ void StateManager::endState()
 
 void StateManager::init()
 {
-	StateManager::getInstance().addState(std::make_shared <IntroState>(&state_data), true);
+	addState(std::make_shared <IntroState>(&state_data), true);
 }
 
 void StateManager::changeState(std::shared_ptr<State> state, bool replace = false)
@@ -31,7 +32,7 @@ void StateManager::changeState(std::shared_ptr<State> state, bool replace = fals
 	if (replace == true)
 	{
 		endState();
-		StateManager::getInstance().states.pop();
+		states.pop();
 		//TO DO добавить условие по короторому сперва завершится заменяемый стейт
 		addState(state, true);
 	}
@@ -55,7 +56,8 @@ void StateManager::removeObserver(Observer& observer)
 void StateManager::notifyObservers()
 {
 	std::list<Observer*>::iterator iterator = observers.begin();
-	while (iterator != observers.end()) {
+	while (iterator != observers.end()) 
+	{
 		(*iterator)->updateObserver();
 		++iterator;
 	}

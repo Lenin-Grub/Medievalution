@@ -30,14 +30,14 @@ public:
 	std::vector<sf::VideoMode> video_modes;
 	json localisation;
 
-	int id_resolution = 0;
-	int music_volume = 0;
-	int sound_volume = 0;
-	int camera_speed = 1;
-	float zoom_speed = 0;
+	int id_resolution;
+	int music_volume;
+	int sound_volume;
+	int camera_speed;
+	float zoom_speed;
 
-	bool is_sound_play = false;
-	bool is_music_play = false;
+	bool is_sound_play;
+	bool is_music_play;
 
 	std::string language;
 };

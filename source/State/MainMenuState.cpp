@@ -105,6 +105,15 @@ void MainMenuState::update(const float& dtime)
 
 void MainMenuState::render(sf::RenderTarget* target)							
 { 
+	/*
+	* Для корректной отрисовки sfml и opengl брать объекты sfml в контекст
+	* 
+	*	window->pushGLStates();
+	*		отрисовка sfml
+	*	window->popGLStates();
+	*		отрисовка opengl
+	*/
+
 	window->pushGLStates();
 
 	if (!target)
@@ -114,54 +123,42 @@ void MainMenuState::render(sf::RenderTarget* target)
 
 	window->popGLStates();
 
-	
-
 	glRotatef(i++, i, i,1);
+//	glTranslatef(0.5, 0, 0);
+//	glScalef(0.3, 0.3, 1);
 
-	glBegin(GL_QUADS);
+	glBegin(GL_LINE_STRIP);
 
 	glColor3f(1.0f, 0.0f, 0.0f);
 	// FRONT
-	glVertex3f(-0.5f, -0.5f, 0.5f);
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.5f, -0.5f, 0.5f);	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f, -0.5f, 0.5f);
-	glVertex3f(0.5f, 0.5f, 0.5f);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, 0.5f);	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(-0.5f, 0.5f, 0.5f);
 	// BACK
 	glVertex3f(-0.5f, -0.5f, -0.5f);
-	glVertex3f(-0.5f, 0.5f, -0.5f);
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f, 0.5f, -0.5f);
 	glVertex3f(0.5f, -0.5f, -0.5f);
 
 	glColor3f(0.0f, 1.0f, 0.0f);
 	// LEFT
 	glVertex3f(-0.5f, -0.5f, 0.5f);
-	glVertex3f(-0.5f, 0.5f, 0.5f);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(-0.5f, 0.5f, -0.5f);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-0.5f, 0.5f, 0.5f);	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);	glColor3f(1.0f, 0.0f, 0.0f);
 	glVertex3f(-0.5f, -0.5f, -0.5f);
 	// RIGHT
 	glVertex3f(0.5f, -0.5f, -0.5f);
-	glVertex3f(0.5f, 0.5f, -0.5f);
-	glColor3f(0.0f, 1.0f, 0.0f);
-	glVertex3f(0.5f, 0.5f, 0.5f);
-	glColor3f(0.0f, 0.0f, 1.0f);
-	glVertex3f(0.5f, -0.5f, 0.5f);
-
-	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.5f, 0.5f, -0.5f);	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, 0.5f);	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(0.5f, -0.5f, 0.5f);	glColor3f(0.0f, 0.0f, 1.0f);
 	// TOP
 	glVertex3f(-0.5f, 0.5f, 0.5f);
-	glVertex3f(0.5f, 0.5f, 0.5f);
-	glColor3f(0.0f, 1.0f, 0.0f);
+	glVertex3f(0.5f, 0.5f, 0.5f);	glColor3f(0.0f, 1.0f, 0.0f);
 	glVertex3f(0.5f, 0.5f, -0.5f);
-	glVertex3f(-0.5f, 0.5f, -0.5f);
-	glColor3f(1.0f, 0.0f, 0.0f);
+	glVertex3f(-0.5f, 0.5f, -0.5f);	glColor3f(1.0f, 0.0f, 0.0f);
 	// BOTTOM
-	glVertex3f(-0.5f, -0.5f, 0.5f);
-	glColor3f(0.0f, 0.0f, 1.0f);
+	glVertex3f(-0.5f, -0.5f, 0.5f);	glColor3f(0.0f, 0.0f, 1.0f);
 	glVertex3f(-0.5f, -0.5f, -0.5f);
 	glVertex3f(0.5f, -0.5f, -0.5f);
 	glVertex3f(0.5f, -0.5f, 0.5f);

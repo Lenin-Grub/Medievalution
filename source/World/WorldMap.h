@@ -18,7 +18,7 @@ public:
 	sf::Color getColor();
 
 	int	findProvinceID(sf::Color color);
-	sf::Vector2f findProvinceCenter	(sf::Color provinceColor);
+	sf::Vector2f findProvinceCenter	(sf::Color provinceColor) const;
 	sf::Vector2f getProvinceCenter	(const std::string& provinceName) const;
 	sf::Vector2f getProvinceCenter(const sf::Color& color) const;
 
@@ -37,7 +37,7 @@ private:
 	void setUniformes();
 	void loadShader();
 	void initCentreOfProvinces();
-	bool isMouseOnMap();
+	bool isMouseOnMap() const;
 
 private:
 	Province	province;

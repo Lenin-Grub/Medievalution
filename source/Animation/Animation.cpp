@@ -52,111 +52,27 @@ void Animator::pause()
 	played = false;
 }
 
-const int Animator::getCurrentFrame()
+const int Animator::getCurrentFrame() const
 {
 	return current_frame;
 }
 
-const float Animator::getCurrentTime()
+const float Animator::getCurrentTime() const
 {
 	return current_time;
 }
 
-const float Animator::getFrameTime()
+const float Animator::getFrameTime() const
 {
 	return frame_time;
 }
 
-const bool Animator::isPlayed()
+const bool Animator::isPlayed() const
 {
 	return played;
 }
 
-const std::vector<sf::IntRect> Animator::getFrames()
+const std::vector<sf::IntRect> Animator::getFrames() const
 {
 	return frames;
-}
-
-
-
-Frame::Frame(sf::Sprite& sprite) : sprite(sprite) 
-{
-}
-
-void Frame::addFrame(sf::IntRect rect) 
-{
-    frames.push_back(rect);
-}
-
-void Frame::setCurrentFrame(int frameIndex) 
-{
-    if (frameIndex >= 0 && frameIndex < frames.size()) 
-	{
-        currentFrame = frameIndex;
-    }
-}
-
-sf::Sprite Frame::getSpr()
-{
-	return sprite;
-}
-
-sf::IntRect Frame::getCurrentFrame() 
-{
-    return frames[currentFrame];
-}
-
-std::vector<sf::IntRect> Frame::getFrames() 
-{
-    return frames;
-}
-
-Animation::Animation(sf::Sprite& sprite) : sprite(sprite) 
-{
-}
-
-void Animation::addAnimation(std::string name) 
-{
-    animations[name] = new Frame(sprite);
-}
-
-Frame* Animation::getAnimation(std::string name) 
-{
-    if (animations.find(name) != animations.end()) 
-	{
-        return animations[name];
-    }
-    return nullptr;
-}
-
-void Animation::play() 
-{
-    played = true;
-}
-
-void Animation::stop() 
-{
-    played = false;
-}
-
-void Animation::update(float deltaTime) 
-{
-    if (played) 
-	{
-        currentTime += deltaTime;
-		currentAnimation->getSpr().setTextureRect(currentAnimation->getFrames().at(currentFrame));
-
-        if (currentTime >= frameTime) 
-		{
-            currentFrame = (++currentFrame) % currentAnimation->getFrames().size();
-			currentAnimation->setCurrentFrame(currentFrame);
-			currentAnimation->getSpr().setTextureRect(currentAnimation->getFrames().at(currentFrame));
-            currentTime = 0.0f;
-        }
-    }
-}
-
-bool Animation::isPlay() 
-{
-    return played;
 }
