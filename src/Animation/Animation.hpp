@@ -1,7 +1,5 @@
 #pragma once
-#include "../stdafx.h"
 #include "../Core/Core.h"
-
 
 class Animator 
 {

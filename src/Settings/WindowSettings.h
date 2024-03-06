@@ -17,8 +17,8 @@ public:
 		return single_instance;
 	}
 
-	bool saveToFile(const std::string path);
-	bool loadFromFIle(const std::string path);
+	bool saveToFile(const std::string path)		noexcept;
+	bool loadFromFIle(const std::string path)	noexcept;
 
 public:
 	std::string title;

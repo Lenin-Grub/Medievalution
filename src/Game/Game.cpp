@@ -7,10 +7,9 @@ Game::Game()
     initWindow();
     initIcon();
     initStateData();
-    initStates();       
+    initStates();
     initFonts();
     initJukebox();
-
     core::dtime = 0.00f;
 }
 
@@ -33,7 +32,7 @@ void Game::run()
     ImGui::SFML::Shutdown();
 }
 
-void Game::initGraphicSettings()
+void Game::initGraphicSettings() noexcept
 {
     try
     {
@@ -46,7 +45,7 @@ void Game::initGraphicSettings()
     }
 }
 
-void Game::initWindow()
+void Game::initWindow() noexcept
 {
     // если окно в режиме "во весь экран", то устанавливаем след. настройки
     if (WindowSettings::getInstance().fullscrean)
@@ -65,19 +64,19 @@ void Game::initWindow()
     this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycal_sync);
 }
 
-void Game::initStateData()
+void Game::initStateData() noexcept
 {
     StateManager::getInstance().state_data.window = window;
 }
 
-void Game::initStates()
+void Game::initStates() noexcept
 {
     StateManager::getInstance().init();
     ImGui::SFML::Init(*window);
     LOG_INFO("Game started successful");
 }
 
-void Game::initIcon()
+void Game::initIcon() noexcept
 {
     //TODO перенести в отдельное место
     sf::Image i;
@@ -91,7 +90,7 @@ void Game::initIcon()
     }
 }
 
-void Game::initFonts()
+void Game::initFonts() noexcept
 {
     //TODO перенсти в отдельное место
     //установка дефолтного шрифта в ImGui
@@ -115,7 +114,7 @@ void Game::initFonts()
     io.FontDefault = font1;
 }
 
-void Game::initJukebox()
+void Game::initJukebox() noexcept
 {
     StateManager::getInstance().state_data.jukebox.requestAll();
     StateManager::getInstance().state_data.jukebox.setVolume(WindowSettings::getInstance().music_volume);

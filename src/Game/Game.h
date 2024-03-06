@@ -8,15 +8,15 @@ public:
 	virtual ~Game();
 	void run();
 
-private:										
-	void initGraphicSettings();
-	void initWindow();
-	void initStateData();
-	void initStates();
+private:
+	void initGraphicSettings()	noexcept;
+	void initWindow()			noexcept;
+	void initStateData()		noexcept;
+	void initStates()			noexcept;
 
-	void initIcon();
-	void initFonts();
-	void initJukebox();
+	void initIcon()				noexcept;
+	void initFonts()			noexcept;
+	void initJukebox()			noexcept;
 
 	void update();
 	void render();

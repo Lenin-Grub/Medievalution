@@ -23,10 +23,9 @@ WindowSettings::WindowSettings():
 	context_settings.antialiasingLevel = 4;
 	context_settings.majorVersion = 3;
 	context_settings.minorVersion = 0;
-	LOG_WARN("Window settings not loaded. Used default settings");
 }
 
-bool WindowSettings::saveToFile(const std::string path)
+bool WindowSettings::saveToFile(const std::string path) noexcept
 {
 	nlohmann::ordered_json j;
 	std::ofstream file("config/settings.json");
@@ -51,7 +50,7 @@ bool WindowSettings::saveToFile(const std::string path)
 	return false;
 }
 
-bool WindowSettings::loadFromFIle(const std::string path)										
+bool WindowSettings::loadFromFIle(const std::string path) noexcept 
 {
 	nlohmann::json j;
 	std::ifstream ifs(path);
