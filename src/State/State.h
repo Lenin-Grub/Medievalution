@@ -5,14 +5,11 @@
 class WindowSettings;
 class State;
 
-// Буферный класс для передачи инфы между стейтами
 struct StateData
 {
 	Jukebox jukebox = Jukebox("resources/Audio/Muisics/");
 };
 
-
-// Базовый класс состояний игры (главное меню, настройки и тд)
 class State
 {
 public:
