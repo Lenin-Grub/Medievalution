@@ -1,5 +1,8 @@
 ﻿#pragma once
 #include "../State/StateManager.h"
+#include "../State/IntroState.hpp"
+#include "../State/MainMenuState.hpp"
+
 
 class Game
 {
@@ -9,21 +12,19 @@ public:
 	void run();
 
 private:
-	void initGraphicSettings()	noexcept;
-	void initWindow()			noexcept;
-	void initStateData()		noexcept;
-	void initStates()			noexcept;
-
-	void initIcon()				noexcept;
+	bool initGraphicSettings()	noexcept;
+	bool initWindow()			noexcept;
+	
+	bool initIcon()				noexcept;
 	void initFonts()			noexcept;
-	void initJukebox()			noexcept;
+	bool initJukebox()			noexcept;
 
 	void update();
 	void render();
-	void updateDeltaTime();
 	void updateSFMLevents();
 
 private:
 	sf::Clock clock;
 	std::shared_ptr <sf::RenderWindow> window;
+	StateMachine state_manager;
 };

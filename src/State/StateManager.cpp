@@ -2,63 +2,78 @@
 #include "StateManager.h"
 
 
-StateManager::StateManager()
-	:Observable()
+StateMachine::StateMachine():
+	inserted_state_ID(0)
 {
 }
 
-void StateManager::addState(std::shared_ptr<State> state, bool replace)
+StateMachine::~StateMachine()
 {
-	states.push(state);
+}
+
+int StateMachine::add(std::shared_ptr<State> state)
+{
+	auto inserted = states.insert(std::make_pair(inserted_state_ID, state));
 	LOG_INFO("State added. Count of state {}", states.size());
+
+	return inserted_state_ID++;
 }
 
-void StateManager::endState()
+void StateMachine::end()
 {
-	if (!states.empty())
+	auto it = states.find(inserted_state_ID -1);
+	if (it != states.end())
 	{
-		states.top()->endState();
+		if (current_state == it->second)
+		{
+			current_state = nullptr;
+		}
+		states.erase(it);
 		LOG_INFO("State ended. Count of state {}", states.size());
 	}
 }
 
-void StateManager::init()
+void StateMachine::switchTo(int id, bool replace)
 {
-	addState(std::make_shared <IntroState>(&state_data), true);
-}
-
-void StateManager::changeState(std::shared_ptr<State> state, bool replace = false)
-{
-	if (replace == true)
+	if (replace)
 	{
-		endState();
-		states.pop();
-		//TO DO добавить условие по короторому сперва завершится заменяемый стейт
-		addState(state, true);
+		end();
 	}
-	else
+	auto it = states.find(id);
+	if (it != states.end())
 	{
-		replace = false;
-		addState(state, true);
+		current_state = it->second;
 	}
 }
 
-void StateManager::addObserver(Observer& observer)
+void StateMachine::processEvent()
 {
-	observers.push_back(&observer);
-}
-
-void StateManager::removeObserver(Observer& observer)
-{
-	observers.remove(&observer);
-}
-
-void StateManager::notifyObservers()
-{
-	std::list<Observer*>::iterator iterator = observers.begin();
-	while (iterator != observers.end()) 
+	if (current_state)
 	{
-		(*iterator)->updateObserver();
-		++iterator;
+		current_state->updateEvents();
+	}
+}
+
+void StateMachine::updateImGui()
+{
+	if (current_state)
+	{
+		current_state->updateImGui();
+	}
+}
+
+void StateMachine::update(float deltaTime)
+{
+	if (current_state)
+	{
+		current_state->update(deltaTime);
+	}
+}
+
+void StateMachine::draw(sf::RenderTarget& window)
+{
+	if (current_state)
+	{
+		current_state->render(&window);
 	}
 }

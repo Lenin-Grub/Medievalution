@@ -1,38 +1,34 @@
 #pragma once
-#include "IntroState.h"
-#include "MainMenuState.h"
-#include "SettingsState.h"
-#include "GameState.h"
-#include "BattleState.hpp"
-#include "../Observer/Observer.hpp"
+#include "State.h"
 
-class StateManager : public Observable
+enum States
+{
+	State_Intro,
+	State_Loading,
+	State_Main_Menu,
+	State_Settings,
+	State_Battle,
+	State_Game
+};
+
+class StateMachine
 {
 public:
-	static StateManager& getInstance()
-	{
-		static StateManager single_instance;
-		return single_instance;
-	}
+	StateMachine();
+	~StateMachine();
 
-	void addState(std::shared_ptr<State> state, bool replace);
-	void endState();
-	void init();
-	void changeState(std::shared_ptr<State> state, bool replace);
+	int  add			(std::shared_ptr<State> state);
+	void end			();
+	void switchTo		(int id, bool replace = false);
 
-
-	void addObserver(Observer& observer)override;
-	void removeObserver(Observer& observer) override;
-	void notifyObservers() override;
+	void processEvent	();
+	void updateImGui	();
+	void update			(float deltaTime);
+	void draw			(sf::RenderTarget& window);
 
 public:
-	std::stack<std::shared_ptr<State>> states;
-	StateData state_data;
-
-private:
-	StateManager();
-	StateManager(const StateManager& root) = delete;
-	StateManager& operator=(const StateManager&) = delete;
-
-	std::list<Observer*> observers;
+	std::unordered_map<int, std::shared_ptr<State>> states;
+	std::shared_ptr<State>				current_state;
+	StateData							state_data;
+	int inserted_state_ID;
 };

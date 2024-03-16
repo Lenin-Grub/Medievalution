@@ -3,183 +3,152 @@
 
 Game::Game()
 {
-    initGraphicSettings();
-    initWindow();
-    initIcon();
-    initStateData();
-    initStates();
-    initFonts();
-    initJukebox();
-    core::dtime = 0.00f;
+	core::dtime = 0.00f;
 }
 
 Game::~Game() 
 {
-    while (!StateManager::getInstance().states.empty())
-    {
-        StateManager::getInstance().states.pop();
-    }
 }
 
 void Game::run()
 {
-    while (this->window->isOpen())
-    {
-        updateDeltaTime();
-        update();
-        render();
-    }
-    ImGui::SFML::Shutdown();
+	initGraphicSettings();
+	initWindow();
+	initIcon();	
+	initFonts();
+	initJukebox();
+
+	std::shared_ptr<IntroState>		intro_state		= std::make_shared<IntroState>		(state_manager.state_data, state_manager);
+	std::shared_ptr<MainMenuState>	main_menu_state = std::make_shared<MainMenuState>	(state_manager.state_data, state_manager);
+
+	state_manager.add(intro_state);
+	state_manager.add(main_menu_state);
+
+	state_manager.switchTo(States::State_Intro);
+
+	while (window->isOpen())
+	{
+		update();
+		render();
+	}
+	ImGui::SFML::Shutdown();
 }
 
-void Game::initGraphicSettings() noexcept
+bool Game::initGraphicSettings() noexcept
 {
-    try
-    {
-        WindowSettings::getInstance().loadFromFIle("config/settings.json");
-    }
-    catch (const std::exception& ex)
-    {
-        LOG_ERROR("Settings.json not found!");
-        LOG_ERROR(ex.what());
-    }
+	if (WindowSettings::getInstance().loadFromFIle("config/settings.json"))
+	{
+		return true;
+	}
+	LOG_ERROR("Settings.json not found!");
+
+	return false;
 }
 
-void Game::initWindow() noexcept
+bool Game::initWindow() noexcept
 {
-    // если окно в режиме "во весь экран", то устанавливаем след. настройки
-    if (WindowSettings::getInstance().fullscrean)
-        this->window = std::make_unique<sf::RenderWindow>
-        (WindowSettings::getInstance().resolution,
-         WindowSettings::getInstance().title, sf::Style::Fullscreen,
-         WindowSettings::getInstance().context_settings);
-    // если окнов оконном режиме, устанавливаем след. настройки
-    else
-        this->window = std::make_unique<sf::RenderWindow>
-        (WindowSettings::getInstance().resolution,
-         WindowSettings::getInstance().title, sf::Style::Close,
-         WindowSettings::getInstance().context_settings);
+	if (WindowSettings::getInstance().fullscrean)
+		window = std::make_unique<sf::RenderWindow>(
+		 WindowSettings::getInstance().resolution,
+		 WindowSettings::getInstance().title, sf::Style::Fullscreen,
+		 WindowSettings::getInstance().context_settings);
+	else
+		window = std::make_unique<sf::RenderWindow>(
+		 WindowSettings::getInstance().resolution,
+		 WindowSettings::getInstance().title, sf::Style::Close,
+		 WindowSettings::getInstance().context_settings);
 
-    this->window->setFramerateLimit(WindowSettings::getInstance().fps_limit);
-    this->window->setVerticalSyncEnabled(WindowSettings::getInstance().vertycal_sync);
+	window->setFramerateLimit		(WindowSettings::getInstance().fps_limit);
+	window->setVerticalSyncEnabled	(WindowSettings::getInstance().vertycal_sync);
+	ImGui::SFML::Init(*window);
+
+	return true;
 }
 
-void Game::initStateData() noexcept
+bool Game::initIcon() noexcept
 {
-    StateManager::getInstance().state_data.window = window;
-}
-
-void Game::initStates() noexcept
-{
-    StateManager::getInstance().init();
-    ImGui::SFML::Init(*window);
-    LOG_INFO("Game started successful");
-}
-
-void Game::initIcon() noexcept
-{
-    //TODO перенести в отдельное место
-    sf::Image i;
-    if (i.loadFromFile("resources/Icons/icon.png"))
-    {
-        this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
-    }
-    else
-    {
-        LOG_ERROR("File <<icon.png>> not loadded");
-    }
+	sf::Image i;
+	if (i.loadFromFile("resources/Icons/icon.png"))
+	{
+		this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
+		return true;
+	}
+	LOG_ERROR("File <<icon.png>> not loadded");
+	return false;
 }
 
 void Game::initFonts() noexcept
 {
-    //TODO перенсти в отдельное место
-    //установка дефолтного шрифта в ImGui
-    ImFontConfig config;
-    config.MergeMode = true;
-    config.PixelSnapH = true;
-    config.GlyphMinAdvanceX = 6.0f;
-    config.OversampleH = 3;
-    config.OversampleV = 3;
-    config.GlyphExtraSpacing.x = 10.0f;
-    config.GlyphExtraSpacing.y = 10.0f;
+	//TODO перенсти в отдельное место
+	//установка дефолтного шрифта в ImGui
+	ImFontConfig config;
+	config.MergeMode = true;
+	config.PixelSnapH = true;
+	config.GlyphMinAdvanceX = 6.0f;
+	config.OversampleH = 3;
+	config.OversampleV = 3;
+	config.GlyphExtraSpacing.x = 10.0f;
+	config.GlyphExtraSpacing.y = 10.0f;
 
-    static const ImWchar icon_ranges[] = { ICON_MIN, ICON_MAX, 0 };
+	static const ImWchar icon_ranges[] = { ICON_MIN, ICON_MAX, 0 };
 
-    ImGuiIO& io = ImGui::GetIO();
-    ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf",   20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
-    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf",       20.f, &config, icon_ranges);
-    io.Fonts->Build();
+	ImGuiIO& io = ImGui::GetIO();
+	ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+	ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf", 20.f, &config, icon_ranges);
+	io.Fonts->Build();
 
-    ImGui::SFML::UpdateFontTexture();
-    io.FontDefault = font1;
+	ImGui::SFML::UpdateFontTexture();
+	io.FontDefault = font1;
 }
 
-void Game::initJukebox() noexcept
+bool Game::initJukebox() noexcept
 {
-    StateManager::getInstance().state_data.jukebox.requestAll();
-    StateManager::getInstance().state_data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
-    StateManager::getInstance().state_data.jukebox.play();
-}
-
-void Game::updateDeltaTime()                                                        
-{
-    core::dtime = this->clock.restart().asMilliseconds();
+	state_manager.state_data.jukebox.requestAll();
+	state_manager.state_data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
+	state_manager.state_data.jukebox.play();
+	return false;
 }
 
 void Game::updateSFMLevents()
 {
-    while (this->window->pollEvent(core::sfml_event))
-    {
-		ImGui::SFML::ProcessEvent(*window,core::sfml_event);
+	while (window->pollEvent(core::sfml_event))
+	{
+
+
 		if (core::sfml_event.type == sf::Event::Closed)
-        {
-			this->window->close();
-        }
-		if (!StateManager::getInstance().states.empty())
-        {
-            StateManager::getInstance().states.top()->updateEvents();
+		{
+			window->close();
 		}
-    }
+		if (!state_manager.states.empty())
+		{
+			ImGui::SFML::ProcessEvent(*window, core::sfml_event);
+			state_manager.processEvent();
+		}
+	}
 }
 
 void Game::update()
 {
-    updateSFMLevents();
-    if (!StateManager::getInstance().states.empty())
-    {
-        if (this->window->hasFocus()) 
-        {                                             
-            ImGui::SFML::Update(*window, core::clock.restart());
+	core::dtime = this->clock.restart().asMilliseconds();
 
-            StateManager::getInstance().states.top()->update(core::dtime);
-            StateManager::getInstance().states.top()->updateImGui();
-            StateManager::getInstance().state_data.jukebox.update();
+	updateSFMLevents();
+	ImGui::SFML::Update(*window, core::clock.restart());
 
-            if (StateManager::getInstance().states.top()->getQuit())
-            {
-                StateManager::getInstance().states.top()->endState();
-                StateManager::getInstance().states.pop();
-                LOG_INFO("Count of state {}", StateManager::getInstance().states.size());
-            }
-        }
-    }
-    else
-    {
-        this->window->close();
-    }
+	if (true)
+	{
+		state_manager.update(core::dtime);
+		state_manager.updateImGui();
+	}
+	else
+	{
+		window->close();
+	}
 }
 
 void Game::render()
 {
-    window->clear(sf::Color(63, 72, 204));
-    glClear(GL_COLOR_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
-    if (!StateManager::getInstance().states.empty())
-    {
-        window->pushGLStates();
-        StateManager::getInstance().states.top()->render();
-        window->popGLStates();
-    }
-
+	window->clear(sf::Color(63, 72, 204));
+	state_manager.draw(*window);
 	ImGui::SFML::Render(*window);
-    window->display();
+	window->display();
 }
