@@ -44,7 +44,7 @@ bool WindowSettings::saveToFile(const std::string path) noexcept
 		j["language"] = language;
 		file << std::setw(4) << j;
 		ofs.close();
-		LOG_INFO("Window settings saved successfully");
+		LOG_INFO("Settings\t Saved");
 		return true;
 	}
 	return false;
@@ -70,7 +70,7 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
 		j["zoom_speed"].get_to(zoom_speed);
 		j["language"].get_to(language);
 		ifs.close();
-		LOG_INFO("Window settings loaded successfully");
+		LOG_INFO("Settings\t Init");
 		return true;
 	}
 	return false;

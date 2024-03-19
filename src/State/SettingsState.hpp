@@ -1,14 +1,13 @@
 #pragma once
 #include "State.hpp"
-#include "../Math/Math.h"
-#include "../Input/Input.h"
+#include "../Localisation/Localisation.hpp"
 
 class StateMachine;
 
-class IntroState final : public State
+class SettingsState final : public State
 {
 public:
-	IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
+	SettingsState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
 	void pause()									override;
 	void resume()									override;
@@ -18,13 +17,13 @@ public:
 	void update(const float& dtime)					override;
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
-	void setBackground();
-
 private:
+	bool play_music;
+	bool play_sound;
 	sf::Texture background;
-	sf::Sprite	sprite;
 	sf::RectangleShape shape;
-	sf::Color alpha;
-	sf::Text text;
-	sf::Font font;
+
+	std::vector<sf::VideoMode> video_modes;
+	int resolution_current_id;
+	std::string string_resolution;
 };

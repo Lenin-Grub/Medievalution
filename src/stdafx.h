@@ -28,6 +28,7 @@
 #include <array>
 #include <filesystem>
 #include <random>
+#include <stdexcept>
 
 //SFML
 #include <SFML\OpenGL.hpp>

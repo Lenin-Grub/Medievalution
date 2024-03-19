@@ -18,19 +18,16 @@ void Game::run()
 	initFonts();
 	initJukebox();
 
-	std::shared_ptr<IntroState>		intro_state		= std::make_shared<IntroState>		(state_manager.state_data, state_manager);
-	std::shared_ptr<MainMenuState>	main_menu_state = std::make_shared<MainMenuState>	(state_manager.state_data, state_manager);
+	state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
+	sf::Clock deltaClock;
 
-	state_manager.add(intro_state);
-	state_manager.add(main_menu_state);
-
-	state_manager.switchTo(States::State_Intro);
-
-	while (window->isOpen())
+	while (state_machine.running())
 	{
-		update();
-		render();
+		state_machine.nextState();
+		state_machine.update();
+		state_machine.draw();
 	}
+
 	ImGui::SFML::Shutdown();
 }
 
@@ -67,10 +64,10 @@ bool Game::initWindow() noexcept
 
 bool Game::initIcon() noexcept
 {
-	sf::Image i;
-	if (i.loadFromFile("resources/Icons/icon.png"))
+	sf::Image icon;
+	if (icon.loadFromFile("resources/Icons/icon.png"))
 	{
-		this->window->setIcon(i.getSize().x, i.getSize().y, i.getPixelsPtr());
+		this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 		return true;
 	}
 	LOG_ERROR("File <<icon.png>> not loadded");
@@ -79,8 +76,6 @@ bool Game::initIcon() noexcept
 
 void Game::initFonts() noexcept
 {
-	//TODO перенсти в отдельное место
-	//установка дефолтного шрифта в ImGui
 	ImFontConfig config;
 	config.MergeMode = true;
 	config.PixelSnapH = true;
@@ -103,52 +98,8 @@ void Game::initFonts() noexcept
 
 bool Game::initJukebox() noexcept
 {
-	state_manager.state_data.jukebox.requestAll();
-	state_manager.state_data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
-	state_manager.state_data.jukebox.play();
+	state_machine.data.jukebox.requestAll();
+	state_machine.data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
+	state_machine.data.jukebox.play();
 	return false;
-}
-
-void Game::updateSFMLevents()
-{
-	while (window->pollEvent(core::sfml_event))
-	{
-
-
-		if (core::sfml_event.type == sf::Event::Closed)
-		{
-			window->close();
-		}
-		if (!state_manager.states.empty())
-		{
-			ImGui::SFML::ProcessEvent(*window, core::sfml_event);
-			state_manager.processEvent();
-		}
-	}
-}
-
-void Game::update()
-{
-	core::dtime = this->clock.restart().asMilliseconds();
-
-	updateSFMLevents();
-	ImGui::SFML::Update(*window, core::clock.restart());
-
-	if (true)
-	{
-		state_manager.update(core::dtime);
-		state_manager.updateImGui();
-	}
-	else
-	{
-		window->close();
-	}
-}
-
-void Game::render()
-{
-	window->clear(sf::Color(63, 72, 204));
-	state_manager.draw(*window);
-	ImGui::SFML::Render(*window);
-	window->display();
 }

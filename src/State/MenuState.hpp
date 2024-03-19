@@ -1,14 +1,22 @@
 #pragma once
 #include "State.hpp"
-#include "../Math/Math.h"
-#include "../Input/Input.h"
+#include "GameState.hpp"
+#include "SettingsState.hpp"
+#include "../Localisation/Localisation.hpp"
 
 class StateMachine;
 
-class IntroState final : public State
+namespace sf
+{
+	class RenderWindow;
+}
+
+class MenuState final : public State
 {
 public:
-	IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
+	MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
+
+
 
 	void pause()									override;
 	void resume()									override;
@@ -19,12 +27,11 @@ public:
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
 	void setBackground();
+	void initLocalisation();
 
 private:
 	sf::Texture background;
 	sf::Sprite	sprite;
 	sf::RectangleShape shape;
-	sf::Color alpha;
-	sf::Text text;
-	sf::Font font;
+	std::ifstream localisation_file;
 };

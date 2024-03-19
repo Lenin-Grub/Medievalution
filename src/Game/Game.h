@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../State/StateManager.h"
 #include "../State/IntroState.hpp"
-#include "../State/MainMenuState.hpp"
+#include "../State/StateMachine.hpp"
+#include "../Settings/WindowSettings.h"
 
 
 class Game
@@ -19,12 +19,7 @@ private:
 	void initFonts()			noexcept;
 	bool initJukebox()			noexcept;
 
-	void update();
-	void render();
-	void updateSFMLevents();
-
 private:
-	sf::Clock clock;
 	std::shared_ptr <sf::RenderWindow> window;
-	StateMachine state_manager;
+	StateMachine state_machine;
 };

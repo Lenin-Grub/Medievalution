@@ -1,23 +1,28 @@
-﻿#include "../stdafx.h"
-#include "../State/State.h"
+#include "../stdafx.h"
+#include "State.hpp"
 
-State::State(StateData& state_data):
-	state_data(&state_data),
-	quit(false),
-	replace(false)
+State::State(StateData& data, StateMachine& machine, sf::RenderWindow &window, const bool replace)
+: data{ data }
+, state_machine{ machine }
+, window{ window }
+, m_replacing{ replace }
 {
+
 }
 
-State::~State()
+std::unique_ptr<State> State::next()
 {
+	return std::move( m_next );
 }
 
-const bool& State::getQuit() const
+bool State::isReplacing() const
 {
-	return this->quit;
+	return m_replacing;
 }
 
-void State::endState()
+void State::updateMousePositions(sf::View* view)
 {
-	this->quit = true;
+	core::mouse_pos_screen	= sf::Mouse::getPosition();
+	core::mouse_pos_window	= sf::Mouse::getPosition(window);
+	core::mouse_pos_view	= window.mapPixelToCoords(sf::Mouse::getPosition(window));
 }
