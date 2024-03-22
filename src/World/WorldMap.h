@@ -24,8 +24,9 @@ public:
 	bool initProvinceData();
 
 public:
+	int			load_progress;
+	float		transperency;
 	sf::Shader  shader;
-	float		transperency = 0.0f;
 	sf::Color	select_color;
 	sf::Image	map_image;
 	std::vector<Province> provinces;

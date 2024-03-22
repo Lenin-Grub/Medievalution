@@ -81,7 +81,6 @@ void MenuState::draw(sf::RenderTarget* target)
 	window.display();
 }
 
-
 void MenuState::setBackground()
 {
 	if (!background.loadFromFile("resources/Backgrounds/background_main.jpg"))

@@ -14,8 +14,10 @@ public:
 	void update();
 	void draw();
 
-	bool running() const;
+	bool resturting()	const;
+	bool running()		const;
 	void quit();
+	void restart(bool restart = false);
 
 	template <typename T>
 	static std::unique_ptr<T> build(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);

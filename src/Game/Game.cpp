@@ -22,6 +22,12 @@ void Game::run()
 
 	while (state_machine.running())
 	{
+		if (state_machine.resturting())
+		{
+			state_machine.restart(false);
+			restartApplication();
+		}
+
 		state_machine.nextState();
 		state_machine.update();
 		state_machine.draw();
@@ -105,4 +111,19 @@ bool Game::initJukebox() noexcept
 	state_machine.data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
 	state_machine.data.jukebox.play();
 	return false;
+}
+
+void Game::restartApplication()
+{
+	window->close();
+	ImGui::SFML::Shutdown();
+
+	initGraphicSettings();
+	initWindow();
+	initIcon();
+	initFonts();
+	initJukebox();
+
+	state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
+	LOG_INFO("Application\t Restarted");
 }

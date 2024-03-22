@@ -2,6 +2,8 @@
 #include "../World/WorldMap.h"
 
 WorldMap::WorldMap()
+: transperency(0)
+, load_progress(0)
 {
 	loadMapData();
 	loadProvincesMap();
@@ -65,6 +67,7 @@ bool WorldMap::initProvinceData()
 		province.color.b = std::stoi(b);
 
 		provinces.push_back(province);
+		++load_progress;
 	}
 
 	if (!provinces.empty())

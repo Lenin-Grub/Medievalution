@@ -100,6 +100,11 @@ void StateMachine::draw()
 	}
 }
 
+bool StateMachine::resturting() const
+{
+	return is_restarting;
+}
+
 bool StateMachine::running() const
 {
 	return is_running;
@@ -108,4 +113,9 @@ bool StateMachine::running() const
 void StateMachine::quit()
 {
 	is_running = false;
+}
+
+void StateMachine::restart(bool restart)
+{
+	is_restarting = restart;
 }

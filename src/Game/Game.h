@@ -17,6 +17,7 @@ private:
 	bool initIcon()				noexcept;
 	bool initFonts()			noexcept;
 	bool initJukebox()			noexcept;
+	void restartApplication();
 
 private:
 	std::shared_ptr <sf::RenderWindow> window;

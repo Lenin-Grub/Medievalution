@@ -201,9 +201,10 @@ void SettingsState::updateImGui()
 		str = WindowSettings::getInstance().localisation.at("T_yes");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
-			LOG_INFO("Settings\t Changed");
+			state_machine.restart(true);
 			WindowSettings::getInstance().saveToFile("config/settings.json");
 			ImGui::CloseCurrentPopup();
+			LOG_INFO("Settings\t Changed");
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
