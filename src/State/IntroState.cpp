@@ -11,21 +11,21 @@ IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow&
 	setBackground();
 }
 
-void IntroState::pause()
+void IntroState::onDeactivate()
 {
-	LOG_INFO("State Intro\t Pause");
+	LOG_INFO("State Intro\t Deactivate");
 }
 
-void IntroState::resume()
+void IntroState::onActivate()
 {
-	LOG_INFO("State Intro\t Resume");
+	LOG_INFO("State Intro\t Activate");
 }
 
 void IntroState::updateEvents()
 {
 	if (Input::isKeyPressed(sf::Keyboard::Key::Space))
 	{
-		m_next = StateMachine::build<MenuState>(data, state_machine, window, true);
+		next_state = StateMachine::build<MenuState>(data, state_machine, window, true);
 	}
 }
 
@@ -51,7 +51,7 @@ void IntroState::update(const float& dtime)
 	}
 	else
 	{
-		m_next = StateMachine::build<MenuState>(data, state_machine, window, true);
+		next_state = StateMachine::build<MenuState>(data, state_machine, window, true);
 	}
 	text.setFillColor(alpha);
 }

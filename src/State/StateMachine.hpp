@@ -22,12 +22,15 @@ public:
 
 	StateData data;
 
+	bool is_loaded;
+
 private:
 	float dtime;
 	sf::Clock clock;
 	std::stack<std::unique_ptr<State>> states;
 	bool resume;
 	bool is_running;
+	bool is_restarting;
 };
 
 #include "StateMachine.inl"

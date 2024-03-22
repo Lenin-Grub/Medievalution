@@ -1,5 +1,6 @@
 #pragma once
 #include "State.hpp"
+#include "GameState.hpp"
 
 class StateMachine;
 
@@ -8,8 +9,8 @@ class LoadingState final : public State
 public:
 	LoadingState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
-	void pause()									override;
-	void resume()									override;
+	void onDeactivate()									override;
+	void onActivate()									override;
 
 	void updateEvents()								override;
 	void updateImGui()								override;
@@ -17,5 +18,12 @@ public:
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
 private:
-
+	void setBackground();
+private:
+	sf::Texture background;
+	sf::Sprite	sprite;
+	sf::RectangleShape shape;
+	sf::Color alpha;
+	sf::Text text;
+	sf::Font font;
 };

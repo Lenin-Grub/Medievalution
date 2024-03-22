@@ -10,14 +10,14 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 	initLocalisation();
 }
 
-void MenuState::pause()
+void MenuState::onDeactivate()
 {
-	LOG_INFO("State Menu\t Pause");
+	LOG_INFO("State Menu\t Deactivate");
 }
 
-void MenuState::resume()
+void MenuState::onActivate()
 {
-	LOG_INFO("State Menu\t Resume");
+	LOG_INFO("State Menu\t Activate");
 }
 
 void MenuState::updateEvents()
@@ -40,12 +40,12 @@ void MenuState::updateImGui()
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
-		m_next = StateMachine::build<GameState>(data, state_machine, window, false);
+		next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
 	}
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{
-		m_next = StateMachine::build<SettingsState>(data, state_machine, window, false);
+		next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
 	}
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))

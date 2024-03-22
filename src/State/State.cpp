@@ -5,19 +5,19 @@ State::State(StateData& data, StateMachine& machine, sf::RenderWindow &window, c
 : data{ data }
 , state_machine{ machine }
 , window{ window }
-, m_replacing{ replace }
+, is_replace{ replace }
 {
 
 }
 
 std::unique_ptr<State> State::next()
 {
-	return std::move( m_next );
+	return std::move( next_state );
 }
 
 bool State::isReplacing() const
 {
-	return m_replacing;
+	return is_replace;
 }
 
 void State::updateMousePositions(sf::View* view)

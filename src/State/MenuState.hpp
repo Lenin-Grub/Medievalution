@@ -1,6 +1,6 @@
 #pragma once
 #include "State.hpp"
-#include "GameState.hpp"
+#include "LoadingState.hpp"
 #include "SettingsState.hpp"
 #include "../Localisation/Localisation.hpp"
 
@@ -18,8 +18,8 @@ public:
 
 
 
-	void pause()									override;
-	void resume()									override;
+	void onDeactivate()									override;
+	void onActivate()									override;
 
 	void updateEvents()								override;
 	void updateImGui()								override;

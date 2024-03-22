@@ -19,7 +19,6 @@ void Game::run()
 	initJukebox();
 
 	state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
-	sf::Clock deltaClock;
 
 	while (state_machine.running())
 	{
@@ -74,7 +73,7 @@ bool Game::initIcon() noexcept
 	return false;
 }
 
-void Game::initFonts() noexcept
+bool Game::initFonts() noexcept
 {
 	ImFontConfig config;
 	config.MergeMode = true;
@@ -90,10 +89,14 @@ void Game::initFonts() noexcept
 	ImGuiIO& io = ImGui::GetIO();
 	ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
 	ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf", 20.f, &config, icon_ranges);
-	io.Fonts->Build();
+	if(io.Fonts->Build())
 
-	ImGui::SFML::UpdateFontTexture();
-	io.FontDefault = font1;
+	{
+		ImGui::SFML::UpdateFontTexture();
+		io.FontDefault = font1;
+	}
+
+	return false;
 }
 
 bool Game::initJukebox() noexcept

@@ -9,8 +9,8 @@ class SettingsState final : public State
 public:
 	SettingsState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
-	void pause()									override;
-	void resume()									override;
+	void onDeactivate()									override;
+	void onActivate()									override;
 
 	void updateEvents()								override;
 	void updateImGui()								override;
@@ -18,12 +18,17 @@ public:
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
 private:
+	void setBackground();
+
+private:
+	int  resolution_current_id;
 	bool play_music;
 	bool play_sound;
+
 	sf::Texture background;
+	sf::Sprite	sprite;
 	sf::RectangleShape shape;
 
 	std::vector<sf::VideoMode> video_modes;
-	int resolution_current_id;
 	std::string string_resolution;
 };

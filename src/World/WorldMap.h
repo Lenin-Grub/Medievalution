@@ -18,9 +18,10 @@ public:
 	sf::Color getColor();
 
 	int	findProvinceID(sf::Color color);
-	sf::Vector2f findProvinceCenter	(sf::Color provinceColor) const;
-	sf::Vector2f getProvinceCenter	(const std::string& provinceName) const;
-	sf::Vector2f getProvinceCenter(const sf::Color& color) const;
+	sf::Vector2f findProvinceCenter	(sf::Color provinceColor)			const;
+	sf::Vector2f getProvinceCenter	(const std::string& provinceName)	const;
+	sf::Vector2f getProvinceCenter	(const sf::Color& color)			const;
+	bool initProvinceData();
 
 public:
 	sf::Shader  shader;
@@ -31,12 +32,11 @@ public:
 	sf::CircleShape shape;
 
 private:
-	void loadProvincesMap();		
-	void loadMapData();				
-	void initProvinceData();		
+	void loadProvincesMap();
+	void loadMapData();
 	void setUniformes();
 	void loadShader();
-	void findAllProvinceCenters();
+	//void findAllProvinceCenters();
 	bool isMouseOnMap() const;
 
 private:

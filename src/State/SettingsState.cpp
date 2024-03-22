@@ -11,18 +11,19 @@ SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderW
 , resolution_current_id(WindowSettings::getInstance().id_resolution)
 
 {
+	setBackground();
 	LOG_INFO("State Settings\t Init");
 }
 
-void SettingsState::pause()
+void SettingsState::onDeactivate()
 {
-	LOG_INFO("State Settings\t Pause");
+	LOG_INFO("State Settings\t Deactivate");
 
 }
 
-void SettingsState::resume()
+void SettingsState::onActivate()
 {
-	LOG_INFO("State Settings\t Resume");
+	LOG_INFO("State Settings\t Activate");
 }
 
 void SettingsState::updateEvents()
@@ -240,9 +241,22 @@ void SettingsState::update(const float& dtime)
 
 void SettingsState::draw(sf::RenderTarget* target)
 {
+	if (!target)
+		target = &window;
+	target->setView(window.getDefaultView());
 	window.clear();
-
+	window.draw(shape);
 	ImGui::SFML::Render(window);
-
 	window.display();
+}
+
+void SettingsState::setBackground()
+{
+	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
+	{
+		LOG_ERROR("File \"background\" not foubd");
+	}
+
+	shape.setTexture(&background);
+	shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }

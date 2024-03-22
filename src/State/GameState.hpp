@@ -11,15 +11,16 @@ class GameState final : public State
 public:
 	GameState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
-	void pause()									override;
-	void resume()									override;
+	void onDeactivate()								override;
+	void onActivate()								override;
 
 	void updateEvents()								override;
 	void updateImGui()								override;
 	void update(const float& dtime)					override;
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
-private:
+	bool isLoad();
+
 private:
 	sf::Text province_name;
 	sf::Sprite sprite;
@@ -29,4 +30,6 @@ private:
 
 	WorldMap world_map;
 	Camera camera;
+
+	bool is_loaded;
 };

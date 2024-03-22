@@ -10,14 +10,15 @@ class IntroState final : public State
 public:
 	IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
-	void pause()									override;
-	void resume()									override;
+	void onDeactivate()									override;
+	void onActivate()									override;
 
 	void updateEvents()								override;
 	void updateImGui()								override;
 	void update(const float& dtime)					override;
 	void draw(sf::RenderTarget* target = nullptr)	override;
 
+private:
 	void setBackground();
 
 private:

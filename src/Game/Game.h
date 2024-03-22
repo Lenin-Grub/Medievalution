@@ -14,9 +14,8 @@ public:
 private:
 	bool initGraphicSettings()	noexcept;
 	bool initWindow()			noexcept;
-	
 	bool initIcon()				noexcept;
-	void initFonts()			noexcept;
+	bool initFonts()			noexcept;
 	bool initJukebox()			noexcept;
 
 private:

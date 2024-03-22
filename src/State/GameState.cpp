@@ -8,19 +8,20 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 : State{ data, machine, window, replace }
 , camera()
 , world_map()
+, is_loaded(false)
 {
 	LOG_INFO("State Game\t Init");
 }
 
-void GameState::pause()
+void GameState::onDeactivate()
 {
-	LOG_INFO("State Game\t Pause");
+	LOG_INFO("State Game\t Deactivate");
 
 }
 
-void GameState::resume()
+void GameState::onActivate()
 {
-	LOG_INFO("State Game\t Resume");
+	LOG_INFO("State Game\t Activate");
 }
 
 void GameState::updateEvents()
@@ -58,7 +59,7 @@ void GameState::updateImGui()
 
 	if (ImGui::Button(((char*)ICON_SETTINGS + str1).c_str(), ImVec2(120, 0)))
 	{
-		m_next = StateMachine::build<SettingsState>(data, state_machine, window, false);
+		next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
 	}
 	ImGui::End();
 
@@ -114,4 +115,13 @@ void GameState::draw(sf::RenderTarget* target)
 	ImGui::SFML::Render(window);
 
 	window.display();
+}
+
+bool GameState::isLoad()
+{
+	if (world_map.initProvinceData())
+	{
+		is_loaded = true;
+	}
+	return is_loaded;
 }

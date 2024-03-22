@@ -4,6 +4,7 @@
 StateMachine::StateMachine()
 : resume{ false }
 , is_running{ false }
+, is_restarting{ false }
 , dtime{ 0.0f }
 , clock { }
 {
@@ -12,8 +13,8 @@ StateMachine::StateMachine()
 
 void StateMachine::run(std::unique_ptr<State> state)
 {
-	is_running = true;
-
+	is_running		= true;
+	is_restarting	= false;
 	states.push(std::move(state));
 }
 
@@ -30,7 +31,7 @@ void StateMachine::nextState()
         // Resume previous state
         if (!states.empty())
         {
-            states.top()->resume();
+            states.top()->onActivate();
         }
 
         resume = false;
@@ -52,7 +53,7 @@ void StateMachine::nextState()
 			// Pause the running state
 			else
 			{
-				states.top()->pause();
+				states.top()->onDeactivate();
 			}
 
 			states.push(std::move(temp));
@@ -87,6 +88,7 @@ void StateMachine::update()
 		ImGui::SFML::Update(states.top()->window, clock.restart());
 		states.top()->updateImGui();
 		states.top()->update(dtime);
+		data.jukebox.update();
 	}
 }
 
