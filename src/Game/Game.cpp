@@ -24,7 +24,6 @@ void Game::run()
 	{
 		if (state_machine.resturting())
 		{
-			state_machine.restart(false);
 			restartApplication();
 		}
 
@@ -115,6 +114,7 @@ bool Game::initJukebox() noexcept
 
 void Game::restartApplication()
 {
+	state_machine.restart(false);
 	window->close();
 	ImGui::SFML::Shutdown();
 

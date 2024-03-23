@@ -16,5 +16,6 @@ Math					core::math;
 
 Core::Core()
 {
+	system("chcp 1251");
 	setlocale(LC_ALL, "ru");
 }
