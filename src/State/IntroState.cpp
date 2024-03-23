@@ -1,90 +1,94 @@
 #include "../stdafx.h"
-#include "IntroState.h"
+#include "IntroState.hpp"
+#include "MenuState.hpp"
+#include "StateMachine.hpp"
 
-IntroState::IntroState(StateData* state_data)
-	:State(state_data)
-
+IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
+: State{ data,  machine, window, replace }
+, alpha{ 255, 255, 255, 0 }
 {
+	LOG_INFO("State Intro\t Init");
 	setBackground();
-	StateManager::getInstance().addObserver(*this);
 }
 
-IntroState::~IntroState()
+void IntroState::onDeactivate()
 {
-	StateManager::getInstance().removeObserver(*this);
+	LOG_INFO("State Intro\t Deactivate");
+}
+
+void IntroState::onActivate()
+{
+	LOG_INFO("State Intro\t Activate");
+}
+
+void IntroState::updateEvents()
+{
+	if (Input::isKeyPressed(sf::Keyboard::Key::Space))
+	{
+		next_state = StateMachine::build<MenuState>(data, state_machine, window, true);
+	}
+}
+
+void IntroState::updateImGui()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	ImGui::SetNextWindowBgAlpha(0.35f);
+	ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration 
+							|	ImGuiWindowFlags_AlwaysAutoResize 
+							|	ImGuiWindowFlags_NoFocusOnAppearing 
+							|	ImGuiWindowFlags_NoNav 
+							|	ImGuiWindowFlags_NoMove);
+	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press \"SPACEBAR\" to continue");
+	ImGui::End();
+}
+
+void IntroState::update(const float& dtime)
+{
+	if (alpha.a != 255)
+	{
+		alpha.a++;
+	}
+	else
+	{
+		next_state = StateMachine::build<MenuState>(data, state_machine, window, true);
+	}
+	text.setFillColor(alpha);
+}
+
+void IntroState::draw(sf::RenderTarget* target)
+{
+	window.clear();
+
+	window.draw(shape);
+	window.draw(text);
+
+	ImGui::SFML::Render(window);
+	
+	window.display();
 }
 
 void IntroState::setBackground()
 {
 	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
 	{
-		LOG_ERROR("File <<ruszastavka.png>> not foubd");
+		LOG_ERROR("File \"background\" not foubd");
+	}
+	if (!font.loadFromFile("resources/Fonts/Blackmoor.ttf"))
+	{
+		LOG_ERROR("File \"font\" not foubd");
 	}
 
-	shape.setSize(vec2f(StateManager::getInstance().state_data.window->getSize().x, StateManager::getInstance().state_data.window->getSize().y));
 	shape.setTexture(&background);
+	shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 
-	font.loadFromFile("resources/Fonts/Blackmoor.ttf");
 	text.setFont(font);
 	text.setString("MedievalutioN");
-	text.setCharacterSize(core::math.convertToPercentage(StateManager::getInstance().state_data.window->getSize().x, 10));
+	text.setCharacterSize(core::math.convertToPercentage(window.getSize().x, 10));
+	text.setFillColor(alpha);
+
 	sf::FloatRect textRect = text.getLocalBounds();
+
 	text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 0.4f);
-
-	auto pos = StateManager::getInstance().state_data.window->getSize();
-	text.setPosition(core::math.setCentre(pos.x,pos.y));
+	text.setPosition(core::math.setCentre(window.getSize().x, window.getSize().y));
 }
-
-void IntroState::updateEvents(){}
-
-void IntroState::updateImGui()
-{
-	ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-	ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
-	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-	ImGui::TextColored(ImVec4(1, 1, 1, 1), "Press \"SPACEBAR\" to continue");
-
-	// Анимация и имитация загрузки
-	static float progress = 0.0f, progress_dir = 1.0f;
-	if (true)
-	{
-		progress += progress_dir * 0.4f * ImGui::GetIO().DeltaTime;
-
-		if (progress >= 1.0f)
-		{
-			StateManager::getInstance().changeState(std::make_shared <MainMenuState>(state_data), true);
-		}
-
-		if (progress >= +1.1f) 
-		{
-			progress = +1.1f; 
-		}
-	}
-
-	ImGui::ProgressBar(progress, ImVec2(0.0f, 0.0f));
-	ImGui::SameLine(0.0f, ImGui::GetStyle().ItemInnerSpacing.x);
-	ImGui::Text("Progress Bar");
-	ImGui::End();
-}
-
-
-void IntroState::update(const float& dtime)
-{
-	if (Input::isKeyReleased(sf::Keyboard::Key::Space))
-	{
-		updateObserver();
-		StateManager::getInstance().changeState(std::make_shared <MainMenuState>(state_data), true);
-	}
-}
-
-
-void IntroState::render(sf::RenderTarget* target)
-{
-	if (!target)
-		target = this->window.get();
-	target->draw(shape);
-	target->draw(text);
-}
-
-void IntroState::updateObserver(){}

@@ -1,6 +1,10 @@
 ﻿#include "../stdafx.h"
 #include "Input.h"
 
+static const int		MAX_DOUBLE_CLICK_TIME = 200;
+static unsigned int		last_click_time = 0;
+static sf::Vector2i		last_click_position;
+
 // нажата ли клавиша
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 {
@@ -35,6 +39,28 @@ bool Input::isMouseReleased(const sf::Mouse::Button& code)
 			if (core::sfml_event.key.code == code) 
 				return true;
 		return false;
+}
+
+// нажата ли кнопка мышки дважды
+bool Input::isMouseDoubleClick(const sf::Mouse::Button& code)
+{
+	if (isMouseReleased(code))
+	{
+		unsigned int currentTime = core::clock.getElapsedTime().asMilliseconds();
+
+		if ((currentTime - last_click_time) < MAX_DOUBLE_CLICK_TIME && sf::Mouse::getPosition() == last_click_position)
+		{
+			last_click_time = 0;
+
+			return true;
+		}
+		else 
+		{
+			last_click_time = currentTime;
+			last_click_position = sf::Mouse::getPosition();
+		}
+	}
+	return false;
 }
 
 // прокручено ли колесико мышки

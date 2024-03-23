@@ -37,6 +37,7 @@ void Jukebox::play()
     assert(currentTrackIndex >= 0);
     assert(currentTrackIndex < playlist.size());
 
+    setVolume(getVolume());
 
     playlist[currentTrackIndex].second->play();
     status = sf::SoundSource::Playing;

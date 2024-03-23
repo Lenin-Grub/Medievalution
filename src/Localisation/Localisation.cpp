@@ -9,7 +9,7 @@ std::string Localisation::getStringByKey(std::string key)
 	}
 	else
 	{
-		LOG_WARN("KEY NOT FOUND  Check localisation file");
-		return  "not_found_key";
+		LOG_WARN("{0} not found. Check localisation file", key);
+		return  "not found\t" + key;
 	}
 }

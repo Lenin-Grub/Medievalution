@@ -1,34 +1,38 @@
-ï»¿#include "../stdafx.h"
-#include "../State/SettingsState.h"
-#include "SettingsState.h"
+#include "../stdafx.h"
+#include "StateMachine.hpp"
+#include "SettingsState.hpp"
 
-SettingsState::SettingsState(StateData* state_data)
-	:State(state_data)
-	,video_modes(sf::VideoMode::getFullscreenModes())
-	,resolution_current_id(WindowSettings::getInstance().id_resolution)
+
+SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
+: State{ data, machine, window, replace }
+, play_music{ true }
+, play_sound{ true }
+, video_modes(sf::VideoMode::getFullscreenModes())
+, resolution_current_id(WindowSettings::getInstance().id_resolution)
+
 {
-	StateManager::getInstance().addObserver(*this);
 	setBackground();
+	LOG_INFO("State Settings\t Init");
 }
 
-SettingsState::~SettingsState()
+void SettingsState::onDeactivate()
 {
-	StateManager::getInstance().removeObserver(*this);
+	LOG_INFO("State Settings\t Deactivate");
+
 }
 
-void SettingsState::setBackground()
+void SettingsState::onActivate()
 {
-	if (!background.loadFromFile("resources/Backgrounds/background.jpg"))
+	LOG_INFO("State Settings\t Activate");
+}
+
+void SettingsState::updateEvents()
+{
+	if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
 	{
-		LOG_ERROR("File <<background.jpg>> not foubd");
+		state_machine.lastState();
 	}
-
-	shape.setSize(vec2f(StateManager::getInstance().state_data.window->getSize().x, StateManager::getInstance().state_data.window->getSize().y));
-	shape.setTexture(&background);
 }
-
-
-void SettingsState::updateEvents(){}
 
 void SettingsState::updateImGui()
 {
@@ -36,31 +40,36 @@ void SettingsState::updateImGui()
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	std::string str = WindowSettings::getInstance().localisation.at("T_settings");
+	std::string str = Localisation::getInstance().getStringByKey("T_settings");
 
-	ImGui::Begin(((char*)ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize  | ImGuiWindowFlags_NoMove);
-	
-	//std::string string_resolution = std::to_string(video_modes.at(resolution_current_id).width) + " x " + std::to_string(video_modes.at(resolution_current_id).height);
-	//auto char_resolution = string_resolution.c_str();
-	auto str2 = std::to_string((video_modes.at(resolution_current_id).width)) + "x" + std::to_string(video_modes.at(resolution_current_id).height);
-	const char* combo_preview_value = str2.c_str();
+	ImGui::Begin(((char*)ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse 
+															  | ImGuiWindowFlags_AlwaysAutoResize 
+															  | ImGuiWindowFlags_NoMove);
 
-	str = WindowSettings::getInstance().localisation.at("T_resolution");
-	if (ImGui::BeginCombo(str.c_str(), combo_preview_value,0))
+	std::string str_preview = std::to_string(video_modes.at(resolution_current_id).width) + "x" +
+							  std::to_string(video_modes.at(resolution_current_id).height);
+
+
+	const char* combo_preview_value = str_preview.c_str();
+
+	str = Localisation::getInstance().getStringByKey("T_resolution");
+	if (ImGui::BeginCombo(str.c_str(), combo_preview_value, 0))
 	{
 		for (int n = 0; n < video_modes.size(); n++)
 		{
 			const bool is_selected = (resolution_current_id == n);
 
-			std::string string_all_resolutions = std::to_string(video_modes.at(n).width) + " x " + std::to_string(video_modes.at(n).height);
+			std::string string_all_resolutions = std::to_string(video_modes.at(n).width) + " x " + 
+												 std::to_string(video_modes.at(n).height);
+			
 			auto modes = string_all_resolutions.c_str();
 
 			if (ImGui::Selectable(modes, is_selected))
 			{
-				//TODO Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ñ„ÑƒÐ½ÐºÑ†Ð¸ÑŽ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ñ Ñ€Ð°Ð·Ñ€ÐµÑˆÐµÐ½Ð¸Ñ ÑÐºÑ€Ð°Ð½Ð°
+				//TODO äîáàâèòü ôóíêöèþ èçìåíåíèÿ ðàçðåøåíèÿ ýêðàíà
 				resolution_current_id = n;
-				WindowSettings::getInstance().id_resolution = resolution_current_id;
-				WindowSettings::getInstance().resolution.width = video_modes.at(n).width;
+				WindowSettings::getInstance().id_resolution		= resolution_current_id;
+				WindowSettings::getInstance().resolution.width	= video_modes.at(n).width;
 				WindowSettings::getInstance().resolution.height = video_modes.at(n).height;
 			}
 
@@ -69,10 +78,12 @@ void SettingsState::updateImGui()
 				ImGui::SetItemDefaultFocus();
 			}
 		}
+
 		ImGui::EndCombo();
 	}
 
-	str = WindowSettings::getInstance().localisation.at("T_full_window");
+	//------------------------------------------------------------------------------------
+	str = Localisation::getInstance().getStringByKey("T_full_window");
 	if (ImGui::Checkbox(((char*)ICON_MAX_SIEZE + str).c_str(), &WindowSettings::getInstance().fullscrean))
 	{
 		WindowSettings::getInstance().fullscrean;
@@ -82,12 +93,12 @@ void SettingsState::updateImGui()
 	{
 		ImGui::BeginTooltip();
 
-		str = WindowSettings::getInstance().localisation.at("T_full_window_tooltip");
+		str = Localisation::getInstance().getStringByKey("T_full_window_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = WindowSettings::getInstance().localisation.at("T_vertychal_sync");
+	str = Localisation::getInstance().getStringByKey("T_vertychal_sync");
 	ImGui::BeginDisabled();
 	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycal_sync))
 	{
@@ -98,27 +109,32 @@ void SettingsState::updateImGui()
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = WindowSettings::getInstance().localisation.at("T_vertychal_sync_tooltip");
+		str = Localisation::getInstance().getStringByKey("T_vertychal_sync_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = WindowSettings::getInstance().localisation.at("T_fps_limit");
-	ImGui::InputInt(str.c_str(), &WindowSettings::getInstance().fps_limit, 0,1);
+	str = Localisation::getInstance().getStringByKey("T_fps_limit");
+	ImGui::InputInt(str.c_str(), &WindowSettings::getInstance().fps_limit, 0, 1);
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = WindowSettings::getInstance().localisation.at("T_fps_tooltip");
+		str = Localisation::getInstance().getStringByKey("T_fps_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
+	//------------------------------------------------------------------------------------
+
 	ImGui::Separator();
 	{
-		str = WindowSettings::getInstance().localisation.at("T_sound_volume");
+		str = Localisation::getInstance().getStringByKey("T_sound_volume");
 		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
 	}
+
+	//------------------------------------------------------------------------------------
+
 	ImGui::SameLine();
 	{
 		str = WindowSettings::getInstance().localisation.at("T_sound");
@@ -128,8 +144,10 @@ void SettingsState::updateImGui()
 	str = WindowSettings::getInstance().localisation.at("T_music_volume");
 	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
-		StateManager::getInstance().state_data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
+		state_machine.data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
 	}
+
+	//------------------------------------------------------------------------------------
 
 	ImGui::SameLine();
 	{
@@ -138,19 +156,22 @@ void SettingsState::updateImGui()
 		{
 			if (play_music)
 			{
-				StateManager::getInstance().state_data.jukebox.play();
+				state_machine.data.jukebox.play();
 			}
 			else
 			{
-				StateManager::getInstance().state_data.jukebox.pause();
+				state_machine.data.jukebox.pause();
 			}
 		}
 	}
+
+	//------------------------------------------------------------------------------------
+
 	ImGui::Separator();
 	ImGui::BeginDisabled();
 	{
 		str = WindowSettings::getInstance().localisation.at("T_zoom_speed");
-		ImGui::SliderFloat(str.c_str(),&WindowSettings::getInstance().zoom_speed, 0, 1,"%.1f");
+		ImGui::SliderFloat(str.c_str(), &WindowSettings::getInstance().zoom_speed, 0, 1, "%.1f");
 	}
 	{
 		str = WindowSettings::getInstance().localisation.at("T_camera_speed");
@@ -158,13 +179,15 @@ void SettingsState::updateImGui()
 	}
 	ImGui::EndDisabled();
 	ImGui::Separator();
-	
+
 	str = WindowSettings::getInstance().localisation.at("T_applay");
 	if (ImGui::Button(str.c_str()))
 	{
 		str = WindowSettings::getInstance().localisation.at("T_applay");
 		ImGui::OpenPopup(str.c_str());
 	}
+
+	//------------------------------------------------------------------------------------
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
@@ -178,9 +201,10 @@ void SettingsState::updateImGui()
 		str = WindowSettings::getInstance().localisation.at("T_yes");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
-			LOG_INFO("Settings changed");
+			state_machine.restart(true);
 			WindowSettings::getInstance().saveToFile("config/settings.json");
 			ImGui::CloseCurrentPopup();
+			LOG_INFO("Settings\t Changed");
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
@@ -188,32 +212,52 @@ void SettingsState::updateImGui()
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
 		ImGui::EndPopup();
 	}
+	
+	//------------------------------------------------------------------------------------
+	
 	ImGui::SameLine();
+
 	str = WindowSettings::getInstance().localisation.at("T_exit");
 	if (ImGui::Button(str.c_str()))
 	{
-		StateManager::getInstance().endState();
+		state_machine.lastState();
 	}
 	ImGui::End();
 
 	ImGuiIO& io = ImGui::GetIO();
-	ImGui::SetNextWindowBgAlpha(0.35f); // Transparent background
-	ImGui::Begin("T1", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+	ImGui::SetNextWindowBgAlpha(0.35f);
+	ImGui::Begin("T1", nullptr, ImGuiWindowFlags_NoDecoration 
+							  | ImGuiWindowFlags_AlwaysAutoResize 
+							  | ImGuiWindowFlags_NoFocusOnAppearing 
+							  | ImGuiWindowFlags_NoNav);
+
 	ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
 	ImGui::End();
 }
 
-void SettingsState::update(const float& dtime){updateMousePositions();}
-
-void SettingsState::render(sf::RenderTarget* target)							
+void SettingsState::update(const float& dtime)
 {
-	if (!target)
-		target = this->window.get();
-	target->setView(this->window->getDefaultView());
-	target->draw(shape);
+
 }
 
-void SettingsState::updateObserver()
+void SettingsState::draw(sf::RenderTarget* target)
 {
-	LOG_INFO("observer settings update");
+	if (!target)
+		target = &window;
+	target->setView(window.getDefaultView());
+	window.clear();
+	window.draw(shape);
+	ImGui::SFML::Render(window);
+	window.display();
+}
+
+void SettingsState::setBackground()
+{
+	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
+	{
+		LOG_ERROR("File \"background\" not foubd");
+	}
+
+	shape.setTexture(&background);
+	shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }
