@@ -253,7 +253,7 @@ void SettingsState::draw(sf::RenderTarget* target)
 
 void SettingsState::setBackground()
 {
-	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
+	if (!background.loadFromFile("resources/Backgrounds/background.jpg"))
 	{
 		LOG_ERROR("File \"background\" not foubd");
 	}

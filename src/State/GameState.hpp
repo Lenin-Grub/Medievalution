@@ -3,6 +3,7 @@
 #include "SettingsState.hpp"
 #include "../World/WorldMap.h"
 #include "../Camera/Camera.h"
+#include "../Pathfinding/Node.h"
 
 class StateMachine;
 

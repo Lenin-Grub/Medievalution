@@ -11,6 +11,8 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 , is_loaded(false)
 {
 	LOG_INFO("State Game\t Init");
+	Pathfinding pth;
+	pth.init();
 }
 
 void GameState::onDeactivate()
