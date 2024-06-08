@@ -4,8 +4,8 @@
 #include "StateMachine.hpp"
 
 IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
-: State{ data,  machine, window, replace }
-, alpha{ 255, 255, 255, 0 }
+: State { data, machine, window, replace }
+, alpha { 255, 255, 255, 0 }
 {
 	LOG_INFO("State Intro\t Init");
 	setBackground();

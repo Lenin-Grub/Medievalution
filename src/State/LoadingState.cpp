@@ -2,10 +2,9 @@
 #include "StateMachine.hpp"
 #include "LoadingState.hpp"
 
-
 LoadingState::LoadingState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
-: State{ data, machine, window, replace }
-, alpha{ 255, 255, 255, 255 }
+: State { data, machine, window, replace }
+, alpha { 255, 255, 255, 255 }
 {
 	LOG_INFO("State Loading\t Init");
 	setBackground();

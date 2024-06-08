@@ -1,4 +1,5 @@
 #pragma once
+
 template <typename T>
 std::unique_ptr<T> StateMachine::build(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace)
 {

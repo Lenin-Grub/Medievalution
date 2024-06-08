@@ -3,10 +3,10 @@
 
 struct Province
 {
-	int id;
-	std::string		name;
-	std::string		comment;
-	std::string		owner;
-	sf::Vector2f	centre;
-	sf::Color		color;
+	int          id;
+	std::string  name;
+	std::string  comment;
+	std::string  owner;
+	sf::Vector2f centre;
+	sf::Color    color;
 };

@@ -3,7 +3,7 @@
 #include "MenuState.hpp"
 
 MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
-: State{data, machine, window, replace }
+: State { data, machine, window, replace }
 {
 	LOG_INFO("State Menu\t Init");
 	setBackground();

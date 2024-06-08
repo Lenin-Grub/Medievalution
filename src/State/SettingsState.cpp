@@ -4,9 +4,9 @@
 
 
 SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
-: State{ data, machine, window, replace }
-, play_music{ true }
-, play_sound{ true }
+: State      { data, machine, window, replace }
+, play_music { true }
+, play_sound { true }
 , video_modes(sf::VideoMode::getFullscreenModes())
 , resolution_current_id(WindowSettings::getInstance().id_resolution)
 
