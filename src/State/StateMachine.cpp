@@ -2,19 +2,20 @@
 #include "StateMachine.hpp"
 
 StateMachine::StateMachine()
-: resume{ false }
-, is_running{ false }
-, is_restarting{ false }
-, dtime{ 0.0f }
-, clock { }
+: resume        { false }
+, is_running    { false }
+, is_restarting { false }
+, is_loaded		{ false }
+, dtime         { 0.0f }
+, clock         { }
 {
 	LOG_INFO("State Machine\t Init");
 }
 
 void StateMachine::run(std::unique_ptr<State> state)
 {
-	is_running		= true;
-	is_restarting	= false;
+	is_running    = true;
+	is_restarting = false;
 	states.push(std::move(state));
 }
 

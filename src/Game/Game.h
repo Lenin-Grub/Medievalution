@@ -9,17 +9,17 @@ class Game
 public:
 	Game();
 	virtual ~Game();
-	void run();
+	void    run();
 
 private:
-	bool initGraphicSettings()	noexcept;
-	bool initWindow()			noexcept;
-	bool initIcon()				noexcept;
-	bool initFonts()			noexcept;
-	bool initJukebox()			noexcept;
+	bool initGraphicSettings() noexcept;
+	bool initWindow()          noexcept;
+	bool initIcon()            noexcept;
+	bool initFonts()           noexcept;
+	bool initJukebox()         noexcept;
 	void restartApplication();
 
 private:
 	std::shared_ptr <sf::RenderWindow> window;
-	StateMachine state_machine;
+	StateMachine     state_machine;
 };

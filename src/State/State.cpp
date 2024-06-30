@@ -1,13 +1,13 @@
 #include "../stdafx.h"
 #include "State.hpp"
 
-State::State(StateData& data, StateMachine& machine, sf::RenderWindow &window, const bool replace)
-: data{ data }
-, state_machine{ machine }
-, window{ window }
-, is_replace{ replace }
+State::State (StateData& data, StateMachine& machine, sf::RenderWindow &window, const bool replace)
+: data          { data }
+, state_machine { machine }
+, window        { window }
+, is_replace    { replace }
 {
-
+	// Do nothing
 }
 
 std::unique_ptr<State> State::next()

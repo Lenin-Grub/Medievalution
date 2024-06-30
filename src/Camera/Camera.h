@@ -8,21 +8,19 @@
 class Camera
 {
 public:
-	Camera();
-	virtual ~Camera();
+	Camera			();
+	virtual ~Camera ();
 
-	void update(const float& dtime);
-	void move(const float& dtime);
-	void zoom();
-	void scroll();
+	void    update  (const float& dtime);
+	void    move	(const   float& dtime);
+	void    zoom	();
+	void    scroll	();
 
 private:
-	int max_zoom = 1500;
-	int min_zoom = 90;
-
-	float pan_threshold = 5.0f;
-
-	bool is_panning = false;
+	int   max_zoom;
+	int   min_zoom;
+	float pan_threshold;
+	bool  is_panning;
 
 	sf::Vector2f prev_mouse_pos;
 };
