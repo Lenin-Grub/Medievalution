@@ -48,7 +48,7 @@ bool Game::initGraphicSettings() noexcept
 
 bool Game::initWindow() noexcept
 {
-	if (WindowSettings::getInstance().fullscrean)
+	if (WindowSettings::getInstance().fullscreen)
 		window = std::make_unique<sf::RenderWindow>(
 		 WindowSettings::getInstance().resolution,
 		 WindowSettings::getInstance().title, sf::Style::Fullscreen,
@@ -60,7 +60,7 @@ bool Game::initWindow() noexcept
 		 WindowSettings::getInstance().context_settings);
 
 	window->setFramerateLimit		(WindowSettings::getInstance().fps_limit);
-	window->setVerticalSyncEnabled	(WindowSettings::getInstance().vertycal_sync);
+	window->setVerticalSyncEnabled	(WindowSettings::getInstance().vertical_sync);
 	ImGui::SFML::Init(*window);
 
 	return true;
@@ -81,11 +81,11 @@ bool Game::initIcon() noexcept
 bool Game::initFonts() noexcept
 {
 	ImFontConfig config;
-	config.MergeMode = true;
-	config.PixelSnapH = true;
-	config.GlyphMinAdvanceX = 6.0f;
-	config.OversampleH = 3;
-	config.OversampleV = 3;
+	config.MergeMode           = true;
+	config.PixelSnapH          = true;
+	config.GlyphMinAdvanceX    = 6.0f;
+	config.OversampleH         = 3;
+	config.OversampleV         = 3;
 	config.GlyphExtraSpacing.x = 10.0f;
 	config.GlyphExtraSpacing.y = 10.0f;
 

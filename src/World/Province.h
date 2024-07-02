@@ -3,7 +3,7 @@
 
 struct Province
 {
-	int          id;
+	int          id = -1;
 	std::string  name;
 	std::string  comment;
 	std::string  owner;

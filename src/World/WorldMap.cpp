@@ -332,7 +332,12 @@ sf::Vector2f WorldMap::getProvinceCenter(const std::string& provinceName) const
 		{
 			return province.centre;
 		}
+		else
+		{
+			return sf::Vector2f(-1,-1);
+		}
 	}
+	return sf::Vector2f(-1, -1);
 }
 
 sf::Vector2f WorldMap::getProvinceCenter(const sf::Color& color) const

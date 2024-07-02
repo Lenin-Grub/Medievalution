@@ -5,7 +5,7 @@ StateMachine::StateMachine()
 : resume        { false }
 , is_running    { false }
 , is_restarting { false }
-, is_loaded		{ false }
+, is_loaded     { false }
 , dtime         { 0.0f }
 , clock         { }
 {
