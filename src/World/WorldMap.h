@@ -7,18 +7,17 @@ class WorldMap
 	:public sf::Drawable
 {
 public:
-	WorldMap           ();
-	virtual  ~WorldMap ();
+	WorldMap ();
+	virtual		 ~WorldMap ();
+	bool		 init();
 	virtual      void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-
-	const        int getProvinceID          () const;
+	const        int getProvinceID () const;
 	const        std::string getProvinceName() const;
-
 	int          findProvinceID (sf::Color color);
-	sf::Color    getColor       ();
-	sf::Vector2f findProvinceCenter (sf::Color provinceColor)		  const;
+	sf::Color    getColor ();
+	sf::Vector2f findProvinceCenter (sf::Color provinceColor) const;
 	sf::Vector2f getProvinceCenter  (const std::string& provinceName) const;
-	sf::Vector2f getProvinceCenter  (const sf::Color& color)		  const;
+	sf::Vector2f getProvinceCenter  (const sf::Color& color) const;
 	bool         initProvinceData   ();
 
 public:

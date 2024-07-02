@@ -12,6 +12,7 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 	LOG_INFO("State Game\t Init");
 	Pathfinding pth;
 	pth.init();
+	world_map.init();
 }
 
 void GameState::onDeactivate()
