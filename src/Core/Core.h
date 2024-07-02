@@ -7,15 +7,14 @@
 class Core
 {
 public:
-	static sf::Event sfml_event;					// события sfml
-	static sf::View view;							// камера вида
-	static sf::Clock clock;							// часы
-	static float dtime;								// время
-
-	static sf::Vector2i mouse_pos_screen;			// глобальное положение мыши на мониторе
-	static sf::Vector2i mouse_pos_window;			// положение мыши относительно окна приложения
-	static sf::Vector2f mouse_pos_view;				// положение мыши относительно камеры вида
-	static Math	math;
+	static sf::Event sfml_event;
+	static sf::View view;
+	static sf::Clock clock;
+	static float dtime;
+	static sf::Vector2i mouse_pos_screen;
+	static sf::Vector2i mouse_pos_window;
+	static sf::Vector2f mouse_pos_view;
+	static Math math;
 
 	Core();
 };
