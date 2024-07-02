@@ -6,8 +6,8 @@ WindowSettings::WindowSettings():
 	title("Unitiolized"),
 	resolution(sf::VideoMode::getDesktopMode()),
 	video_modes(sf::VideoMode::getFullscreenModes()),
-	fullscrean(false),
-	vertycal_sync(false),
+	fullscreen(false),
+	vertical_sync(false),
 	fps_limit(0),
 	music_volume(100),
 	sound_volume(100),
@@ -36,7 +36,7 @@ bool WindowSettings::saveToFile(const std::string path) noexcept
 		j["title"] = title;
 		j["resolution"] = { {"x" , resolution.width}, {"y",resolution.height} };
 		j["id_resolution"] = id_resolution;
-		j["fullscrean"] = fullscrean;
+		j["fullscrean"] = fullscreen;
 		j["fps_limit"] = fps_limit;
 		j["music_volume"] = music_volume;
 		j["camera_speed"] = camera_speed;
@@ -63,7 +63,7 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
 		j["resolution"]["x"].get_to(resolution.width);
 		j["resolution"]["y"].get_to(resolution.height);
 		j["id_resolution"].get_to(id_resolution);
-		j["fullscrean"].get_to(fullscrean);
+		j["fullscrean"].get_to(fullscreen);
 		j["fps_limit"].get_to(fps_limit);
 		j["music_volume"].get_to(music_volume);
 		j["camera_speed"].get_to(camera_speed);

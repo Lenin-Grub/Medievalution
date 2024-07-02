@@ -84,9 +84,9 @@ void SettingsState::updateImGui()
 
 	//------------------------------------------------------------------------------------
 	str = Localisation::getInstance().getStringByKey("T_full_window");
-	if (ImGui::Checkbox(((char*)ICON_MAX_SIEZE + str).c_str(), &WindowSettings::getInstance().fullscrean))
+	if (ImGui::Checkbox(((char*)ICON_MAX_SIEZE + str).c_str(), &WindowSettings::getInstance().fullscreen))
 	{
-		WindowSettings::getInstance().fullscrean;
+		WindowSettings::getInstance().fullscreen;
 	}
 
 	if (ImGui::IsItemHovered())
@@ -100,7 +100,7 @@ void SettingsState::updateImGui()
 
 	str = Localisation::getInstance().getStringByKey("T_vertychal_sync");
 	ImGui::BeginDisabled();
-	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertycal_sync))
+	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertical_sync))
 	{
 
 	}
