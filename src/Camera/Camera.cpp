@@ -28,7 +28,7 @@ void Camera::move(const float& dtime)
 }
 
 //TODO  добавить проверку на GUI
-void Camera::zoom()
+void Camera::zoom() const
 {
 	if (core::sfml_event.type == sf::Event::MouseWheelScrolled)
 	{

@@ -30,7 +30,7 @@ public:
 ///@brief Zooms the camera in or out
 ///This method handles the zoom functionality of the camera.The
 /// zoom level is typically adjusted based on user input.
-	void zoom();
+	void zoom() const;
 
 /// @brief Scrolls the camera view.
 /// This method handles the scrolling of the camera view, typically
