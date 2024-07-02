@@ -9,6 +9,14 @@ struct StateData
 	Jukebox jukebox = Jukebox("resources/Audio/Muisics/");
 };
 
+/**
+ * @class State
+ * @brief Base class for individual states within the application.
+ *
+ * The State class provides a common interface for different states to implement.
+ * It includes methods for updating, drawing, and handling various state-specific functionalities.
+ */
+
 class State
 {
 public:
@@ -20,7 +28,6 @@ public:
 
 	virtual void onActivate()								= 0;
 	virtual void onDeactivate()								= 0;
-
 	virtual void updateEvents()								= 0;
 	virtual void updateImGui()								= 0;
 	virtual void update(const float& dtime)					= 0;
