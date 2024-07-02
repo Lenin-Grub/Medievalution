@@ -1,4 +1,4 @@
-﻿#pragma once
+#pragma once
 #include "../Core/Core.h"
 
 /**
@@ -12,34 +12,33 @@
 class Input
 {
 public:
-
 /// @brief Checks if a specific key is currently pressed
 /// @param code The key code to check.
 /// @return True if the key is pressed, false otherwise.
-	static bool isKeyPressed			(const sf::Keyboard::Key& code);
+	static bool isKeyPressed (const sf::Keyboard::Key& code);
 
 /// @brief Checks if a specific key was just released
 /// @param code The key code to check.
 /// @return True if the key was released, false otherwise.
-	static bool isKeyReleased			(const sf::Keyboard::Key& code);
+	static bool isKeyReleased (const sf::Keyboard::Key& code);
 
 /// @brief Checks if a specific mouse button is currently pressed
 ///  @param code The mouse button code to check.
 ///  @return True if the mouse button is pressed, false otherwise.
-	static bool isMousePressed			(const sf::Mouse::Button& code);
+	static bool isMousePressed (const sf::Mouse::Button& code);
 
 /// @brief Checks if a specific mouse button was just released
 /// @param code The mouse button code to check.
 /// @return True if the mouse button was released, false otherwise.
-	static bool isMouseReleased			(const sf::Mouse::Button& code);
+	static bool isMouseReleased (const sf::Mouse::Button& code);
 
 /// @brief Checks if a specific mouse button was double - clicked
 /// @param code The mouse button code to check.
 /// @return True if the mouse button was double - clicked, false otherwise.
-	static bool isMouseDoubleClick		(const sf::Mouse::Button& code);
+	static bool isMouseDoubleClick (const sf::Mouse::Button& code);
 
 /// @brief Checks if the mouse wheel was scrolled up
 /// @param code The mouse wheel code to check.
 /// @return True if the mouse wheel was scrolled up, false otherwise.
-	static bool isMouseWheelUp			(const sf::Mouse::Wheel code);
+	static bool isMouseWheelUp (const sf::Mouse::Wheel code);
 };

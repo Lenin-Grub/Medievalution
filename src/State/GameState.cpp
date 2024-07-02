@@ -3,14 +3,15 @@
 #include "GameState.hpp"
 #include "MenuState.hpp"
 
-
 GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
-: State{ data, machine, window, replace }
+: State { data, machine, window, replace }
 , camera()
 , world_map()
 , is_loaded(false)
 {
 	LOG_INFO("State Game\t Init");
+	Pathfinding pth;
+	pth.init();
 }
 
 void GameState::onDeactivate()

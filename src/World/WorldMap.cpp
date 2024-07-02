@@ -56,10 +56,10 @@ bool WorldMap::initProvinceData()
 		std::getline(ss, g,			';');
 		std::getline(ss, b,			';');
 		std::getline(ss, name,		';');
-		std::getline(ss, comment,	';');
+		std::getline(ss, comment,   ';');
 
-		province.id = std::stoi(id);
-		province.name = name;
+		province.id      = std::stoi(id);
+		province.name    = name;
 		province.comment = comment;
 
 		province.color.r = std::stoi(r);
@@ -78,11 +78,11 @@ bool WorldMap::initProvinceData()
 
 void WorldMap::setUniformes()
 {
-	shader.setUniform("map_texture", sf::Shader::CurrentTexture);
-	shader.setUniform("transperency", transperency);
-	shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
-	shader.setUniform("width",	(float)map_texture.getSize().x);
-	shader.setUniform("height", (float)map_texture.getSize().y);
+	shader.setUniform ("map_texture", sf::Shader::CurrentTexture);
+	shader.setUniform ("transperency", transperency);
+	shader.setUniform ("select_color", sf::Glsl::Vec4(select_color));
+	shader.setUniform ("width",	(float)map_texture.getSize().x);
+	shader.setUniform ("height", (float)map_texture.getSize().y);
 }
 
 void WorldMap::loadShader()
@@ -93,7 +93,7 @@ void WorldMap::loadShader()
 
 	map_texture.loadFromImage(this->map_image);
 	s_province_map.setTexture(map_texture);
-	s_texture_map.setTexture(s_texture);
+	s_texture_map.setTexture (s_texture);
 }
 
 //TODO
@@ -244,9 +244,9 @@ bool WorldMap::isMouseOnMap() const
 
 void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 {
-	target.draw(s_texture_map);
-	target.draw(s_province_map, &shader);
-	target.draw(shape);
+	target.draw (s_texture_map);
+	target.draw (s_province_map, &shader);
+	target.draw (shape);
 }
 
 /*
@@ -289,8 +289,8 @@ sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const
 	sf::Vector2u mapSize = map_image.getSize();
 
 	float pixelCount = 0.0f;
-	float sumX = 0.0f;
-	float sumY = 0.0f;
+	float sumX       = 0.0f;
+	float sumY       = 0.0f;
 
 	for (unsigned int i = 0; i < mapSize.y; ++i) 
 	{
@@ -300,10 +300,10 @@ sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const
 			unsigned int index = rowStart + j * 4;
 
 			if (pixels[index + 3] != 0 &&
-				pixels[index]		== provinceColor.r &&
-				pixels[index + 1]	== provinceColor.g &&
-				pixels[index + 2]	== provinceColor.b &&
-				pixels[index + 3]	== provinceColor.a)
+				pixels[index]     == provinceColor.r &&
+				pixels[index + 1] == provinceColor.g &&
+				pixels[index + 2] == provinceColor.b &&
+				pixels[index + 3] == provinceColor.a)
 			{
 				sumX += j;
 				sumY += i;

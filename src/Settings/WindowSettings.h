@@ -24,7 +24,6 @@ public:
 		return single_instance;
 	}
 
-
 /// @brief Saves the window settings to a file
 /// This method saves the current window settings to a specified file
 /// @param path The path to the file where settings will be saved.

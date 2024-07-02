@@ -30,8 +30,10 @@ public:
 
 /// @brief Stops the music playback.
     void stop();
+  
 /// @brief Pauses the music playback.
     void pause();
+  
 /// @brief Updates the jukebox, typically called each frame.
     void update();
 
@@ -77,7 +79,7 @@ public:
 /// @brief Gets the current playlist.
 /// @return A vector of song names in the playlist.
     std::vector<std::string> getPlaylist()const;
-
+  
 /// @brief Gets the name of the currently playing song.
 /// @return The name of the current song.
     std::string getCurrent() const;
@@ -99,7 +101,6 @@ public:
     bool paused() const;
 
 private:
-
     sf::Music                                         music;             ///< The SFML music object that handles playback.
     std::deque<std::pair<std::string, sf::Music*>>    playlist;          ///< The playlist queue.
     std::map<std::string, std::unique_ptr<sf::Music>> catalog;           ///< The catalog of available songs.

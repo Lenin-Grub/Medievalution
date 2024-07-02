@@ -107,8 +107,8 @@ bool Game::initFonts() noexcept
 bool Game::initJukebox() noexcept
 {
 	state_machine.data.jukebox.requestAll();
-	state_machine.data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
 	state_machine.data.jukebox.play();
+	state_machine.data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
 	return false;
 }
 

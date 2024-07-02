@@ -18,11 +18,11 @@ WindowSettings::WindowSettings():
 	is_music_play(true),
 	id_resolution(0)
 {
-	context_settings.depthBits = 24;
-	context_settings.stencilBits = 8;
+	context_settings.depthBits         = 24;
+	context_settings.stencilBits       = 8;
 	context_settings.antialiasingLevel = 4;
-	context_settings.majorVersion = 3;
-	context_settings.minorVersion = 0;
+	context_settings.majorVersion      = 3;
+	context_settings.minorVersion      = 0;
 }
 
 bool WindowSettings::saveToFile(const std::string path) noexcept
@@ -34,7 +34,7 @@ bool WindowSettings::saveToFile(const std::string path) noexcept
 	{
 		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
 		j["title"] = title;
-		j["resolution"] = { {"x" , resolution.width}, {"y",resolution.height} };
+		j["resolution"] = { { "x", resolution.width }, { "y", resolution.height } };
 		j["id_resolution"] = id_resolution;
 		j["fullscrean"] = fullscreen;
 		j["fps_limit"] = fps_limit;
@@ -59,7 +59,7 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
 	if (ifs.is_open())
 	{
 		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
-		j["title"].get_to(title);
+		j["title"] .get_to(title);
 		j["resolution"]["x"].get_to(resolution.width);
 		j["resolution"]["y"].get_to(resolution.height);
 		j["id_resolution"].get_to(id_resolution);

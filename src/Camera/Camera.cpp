@@ -2,6 +2,10 @@
 #include "Camera.h"
 
 Camera::Camera()
+	: max_zoom		(1500)
+	, min_zoom		(90)
+	, pan_threshold (5.0f)
+	, is_panning	(false)
 {
 	core::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width, 
 									WindowSettings::getInstance().resolution.height));
@@ -21,10 +25,11 @@ void Camera::update(const float& dtime)
 
 void Camera::move(const float& dtime)
 {
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { core::view.move(-WindowSettings::getInstance().camera_speed * dtime, 0);}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { core::view.move(WindowSettings::getInstance().camera_speed * dtime, 0);}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { core::view.move(0, -WindowSettings::getInstance().camera_speed * dtime);}
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { core::view.move(0, WindowSettings::getInstance().camera_speed * dtime);}
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { core::view.move(-WindowSettings::getInstance().camera_speed * dtime, 0); }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { core::view.move(WindowSettings::getInstance().camera_speed * dtime, 0);  }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { core::view.move(0, -WindowSettings::getInstance().camera_speed * dtime); }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { core::view.move(0, WindowSettings::getInstance().camera_speed * dtime);  }
+
 }
 
 //TODO  добавить проверку на GUI

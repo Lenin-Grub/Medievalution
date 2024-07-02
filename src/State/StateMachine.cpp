@@ -14,8 +14,8 @@ StateMachine::StateMachine()
 
 void StateMachine::run(std::unique_ptr<State> state)
 {
-	is_running		= true;
-	is_restarting	= false;
+	is_running    = true;
+	is_restarting = false;
 	states.push(std::move(state));
 }
 

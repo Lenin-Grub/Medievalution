@@ -13,7 +13,7 @@
 class StateMachine
 {
 public:
-	StateMachine();
+	StateMachine   ();
 
 /// @brief Begins running the specified state.
 /// @param state The initial state to run.
@@ -53,7 +53,6 @@ public:
 	static std::unique_ptr<T> build(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
 	StateData data; ///< @brief Holds information necessary for the states to function.
-
 	bool is_loaded; ///< @brief Indicates whether the state machine is loaded and ready.
 
 private:

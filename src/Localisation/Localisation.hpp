@@ -35,7 +35,7 @@ public:
 
 private:
 	Localisation() {};
-    Localisation(const Localisation& root)		 = delete;
+    Localisation(const Localisation& root)		   = delete;
     Localisation& operator=(const Localisation&) = delete;
 private:
 };

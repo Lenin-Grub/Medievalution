@@ -1,9 +1,9 @@
 ﻿#include "../stdafx.h"
 #include "Input.h"
 
-static const int		MAX_DOUBLE_CLICK_TIME = 200;
-static unsigned int		last_click_time = 0;
-static sf::Vector2i		last_click_position;
+static const int    MAX_DOUBLE_CLICK_TIME = 200;
+static unsigned     int last_click_time   = 0;
+static sf::Vector2i last_click_position;
 
 // нажата ли клавиша
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)

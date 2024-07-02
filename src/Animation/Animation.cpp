@@ -2,10 +2,11 @@
 #include "Animation.hpp"
 
 Animator::Animator(sf::Sprite& sprite)
-	: sprite(sprite)
-	, played(true)
-	, frame_time (0.0f)
-	, current_time (0.0f)
+	: sprite        (sprite)
+	, played        (true)
+	, current_frame (0)
+	, frame_time    (0.0f)
+	, current_time  (0.0f)
 {
 }
 

@@ -12,8 +12,8 @@
 class Camera
 {
 public:
-	Camera();
-	virtual ~Camera();
+	Camera			();
+	virtual ~Camera ();
 
 /// @brief Updates the camera's state based on the elapsed time.
 /// This method should be called every frame to update the camera's
