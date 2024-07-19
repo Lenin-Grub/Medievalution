@@ -14,7 +14,7 @@ class Game
 {
 public:
 	Game();
-	virtual ~Game();
+	virtual ~Game() = default;
   
 /// @brief Starts the main game loop
 /// The run method contains the main loop that keeps the game running

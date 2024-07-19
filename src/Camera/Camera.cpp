@@ -14,10 +14,6 @@ Camera::Camera()
 									  WindowSettings::getInstance().resolution.height	/ 2.f));
 }
 
-Camera::~Camera()
-{
-}
-
 void Camera::update(const float& dtime)
 {
 	move(dtime);

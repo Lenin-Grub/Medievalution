@@ -6,10 +6,6 @@ Game::Game()
 	core::dtime = 0.00f;
 }
 
-Game::~Game() 
-{
-}
-
 void Game::run()
 {
 	initGraphicSettings();

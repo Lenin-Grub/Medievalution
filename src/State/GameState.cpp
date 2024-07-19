@@ -10,8 +10,7 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 , is_loaded(false)
 {
 	LOG_INFO("State Game\t Init");
-	Pathfinding pth;
-	pth.init();
+	pathfinding.initNodes(50, 50);
 	world_map.init();
 }
 
@@ -45,6 +44,8 @@ void GameState::updateEvents()
 			world_map.shape.setPosition(provinceCenter);
 		}
 	}
+
+	pathfinding.handleInput();
 }
 
 void GameState::updateImGui()
@@ -100,6 +101,8 @@ void GameState::update(const float& dtime)
 
 	updateMousePositions();
 	camera.update(dtime);
+
+	pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
 }
 
 void GameState::draw(sf::RenderTarget* target)
@@ -110,6 +113,7 @@ void GameState::draw(sf::RenderTarget* target)
 	target->setView(core::view);
 
 	world_map.draw(*target, sf::RenderStates::Default);
+	pathfinding.draw(window);
 
 	target->setView(window.getDefaultView());
 	target->setView(core::view);

@@ -12,7 +12,7 @@ class Animator
 {
 public:
 	Animator (sf::Sprite& sprite);
-	virtual ~Animator ();
+	virtual ~Animator () = default;
 
 /// @brief Adds a frame to the animation sequence
 /// @param rect The rectangle defining the frame within the sprite's texture.

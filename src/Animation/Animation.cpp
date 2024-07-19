@@ -10,10 +10,6 @@ Animator::Animator(sf::Sprite& sprite)
 {
 }
 
-Animator::~Animator()
-{
-}
-
 void Animator::addFrame(sf::IntRect rect)
 {
 	frames.push_back(rect);
