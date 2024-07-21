@@ -21,6 +21,8 @@ public:
 /// until the window is closed.
 	void run();
 
+	void initCursor();
+
 private:
 
 /// @brief Initializes the graphical settings for the game
@@ -55,4 +57,6 @@ private:
 private:
 	std::shared_ptr <sf::RenderWindow> window;  ///< A shared pointer to the main render window for the game.
 	StateMachine     state_machine;             ///< Manages the state of the game (e.g., menus, gameplay).
+	sf::Cursor cursor;                          ///< Mouse cursor.
+	sf::Image im_cursor;                        ///< Image to the mouse cursor.
 };
