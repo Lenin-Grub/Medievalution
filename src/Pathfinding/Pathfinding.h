@@ -13,7 +13,7 @@ public:
     void handleInput();
     void findPath(Node* start, Node* end);
     void resetNodes();
-    int heuristic(Node* start, Node* end);
+    int  heuristic(Node* start, Node* end);
 
     Node* start_node;
     Node* end_node;

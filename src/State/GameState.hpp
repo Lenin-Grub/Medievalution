@@ -3,7 +3,6 @@
 #include "SettingsState.hpp"
 #include "../World/WorldMap.h"
 #include "../Camera/Camera.h"
-#include "../Pathfinding/Pathfinding.h"
 
 class StateMachine;
 
@@ -29,5 +28,4 @@ private:
 	WorldMap          world_map;
 	Camera            camera;
 	bool              is_loaded;
-	Pathfinding		  pathfinding;
 };

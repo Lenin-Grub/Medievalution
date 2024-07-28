@@ -42,6 +42,11 @@ void MenuState::updateImGui()
 	{
 		next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
 	}
+	
+	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_battle_scene").c_str(), ImVec2(120, 0)))
+	{
+		next_state = StateMachine::build<BattleState>(data, state_machine, window, false);
+	}
 
 	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{

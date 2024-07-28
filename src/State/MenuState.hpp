@@ -2,6 +2,7 @@
 #include "State.hpp"
 #include "LoadingState.hpp"
 #include "SettingsState.hpp"
+#include "BattleState.hpp"
 #include "../Localisation/Localisation.hpp"
 
 class StateMachine;
