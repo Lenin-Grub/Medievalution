@@ -23,4 +23,5 @@ private:
 	Battleground battleground;
 	Pathfinding pathfinding;
 	Camera camera;
+	int id = 0;
 };

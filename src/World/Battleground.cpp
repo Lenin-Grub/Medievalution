@@ -8,8 +8,8 @@ bool Battleground::load(const std::string& tileset, sf::Vector2u tileSize, const
         return false;
 
     // resize the vertex array to fit the level size
-    m_vertices.setPrimitiveType(sf::Triangles);
-    m_vertices.resize(width * height * 6);
+    vertices.setPrimitiveType(sf::Triangles);
+    vertices.resize(width * height * 6);
 
     // populate the vertex array, with two triangles per tile
     for (unsigned int i = 0; i < width; ++i)
@@ -23,7 +23,7 @@ bool Battleground::load(const std::string& tileset, sf::Vector2u tileSize, const
             int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
 
             // get a pointer to the triangles' vertices of the current tile
-            sf::Vertex* triangles = &m_vertices[(i + j * width) * 6];
+            sf::Vertex* triangles = &vertices[(i + j * width) * 6];
 
             // define the 6 corners of the two triangles
             triangles[0].position  = sf::Vector2f(i * tileSize.x, j * tileSize.y);
@@ -45,6 +45,28 @@ bool Battleground::load(const std::string& tileset, sf::Vector2u tileSize, const
     return true;
 }
 
+
+void Battleground::update(unsigned int x, unsigned int y, int tileNumber)
+{
+    if (x >= 0 && x < 16 && y >= 0 && y < 16)
+    {
+        // Find the position of the tile in the tileset texture
+        int tu = tileNumber % (m_tileset.getSize().x / 64);
+        int tv = tileNumber / (m_tileset.getSize().x / 64);
+
+        // Get a pointer to the triangles' vertices of the current tile
+        sf::Vertex* triangles = &vertices[(x + y * 16) * 6];
+
+        // Update the texture coordinates of the triangles
+        triangles[0].texCoords = sf::Vector2f(tu * 64, tv * 64);
+        triangles[1].texCoords = sf::Vector2f((tu + 1) * 64, tv * 64);
+        triangles[2].texCoords = sf::Vector2f(tu * 64, (tv + 1) * 64);
+        triangles[3].texCoords = sf::Vector2f(tu * 64, (tv + 1) * 64);
+        triangles[4].texCoords = sf::Vector2f((tu + 1) * 64, tv * 64);
+        triangles[5].texCoords = sf::Vector2f((tu + 1) * 64, (tv + 1) * 64);
+    }
+}
+
 void Battleground::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the transform
@@ -54,5 +76,5 @@ void Battleground::draw(sf::RenderTarget& target, sf::RenderStates states) const
     states.texture = &m_tileset;
 
     // draw the vertex array
-    target.draw(m_vertices, states);
+    target.draw(vertices, states);
 }
