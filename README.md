@@ -5,7 +5,7 @@
 ## About
 Mdeivalution - мой pet проект, который задуман как игра мечты. Управляйте государством на глобальной карте и сражайтесь на полях битвы в реальном времени. Игра будет охватывать период времени с падения Западной римской империи до падения Константинополя в 1453. Сражайтесь в битвах, торгуйте, заключайте союзы и объявляйте войны.
 
-Проект вдохнавлен такими играми как: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War. 
+Проект вдохновлен такими играми как: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War. 
 * Жанр - 4x RTStrategy.
 
 ## Development
