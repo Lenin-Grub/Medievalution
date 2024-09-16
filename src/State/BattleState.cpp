@@ -72,10 +72,9 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
-    if (Input::isMouseReleased(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
+    if (Input::isMousePressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
-        sf::Vector2f position = core::mouse_pos_view;
-        m_sprite_sheet.addTileId(m_selected_tile_id, position.x, position.y);
+        m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
     }
 
 	//pathfinding.handleInput();

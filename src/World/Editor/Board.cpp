@@ -43,6 +43,5 @@ void Board::initBoard()
 void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
-
     target.draw(m_background, states);
 }

@@ -17,11 +17,11 @@ SpriteSheet::SpriteSheet(std::string file_name, int tile_size)
 
 void SpriteSheet::import(Board & board)
 {
-
     m_file_name = "./resources/" + m_file_name;
 
     if (!m_tilesetTexture.loadFromFile(m_file_name))
     {
+        LOG_ERROR("Texture map not loaded");
     }
 
     m_tileset_cols = std::round(m_tilesetTexture.getSize().x / m_tile_size);
@@ -73,14 +73,14 @@ void SpriteSheet::mergeTiles()
     }
 }
 
-void SpriteSheet::addTileId(int id, int xpos, int ypos)
+void SpriteSheet::addTileId(int id, sf::Vector2f pos)
 {
-    int tile_x_pos = xpos / 32;
-    int tile_y_pos = ypos / 32;
-
+    int tile_x_pos = pos.x / 32;
+    int tile_y_pos = pos.y / 32;
+    const int max_index = 1920;
     int index = tile_x_pos + tile_y_pos * m_boardWidth;
 
-    if (index < 1920)
+    if (index < max_index)
     {
         m_tile_ids.at(index) = id;
     }

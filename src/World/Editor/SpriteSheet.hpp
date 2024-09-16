@@ -26,7 +26,7 @@ public:
 		Updates the tile id at the given position. Xpos and Ypos are absolute coordinates
 		that need to be converted into relative coordinates to find the clicked tile
 	*/
-	void addTileId(int id, int xpos, int ypos);
+	void addTileId(int id, sf::Vector2f pos);
 
 	sf::Texture& getTilesetTexture();
 
