@@ -5,11 +5,11 @@
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
 , camera()
-, battleground()
+
 {
 	LOG_INFO("State Battle\t Init");
 	pathfinding.initNodes(100, 100);
-	    const int level[] =
+    const int level[] =
     {
         1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
         1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 46, 1, 1, 1, 1,
@@ -44,25 +44,17 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
         46, 1, 1, 1, 16, 1, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1,
         1,  1, 1, 1, 16, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1, 1,
     };
-	battleground.load("resources/Map/tileset.png", sf::Vector2u(64, 64), level, 16, 16);
 
     try
     {
-        SpriteSheet sprite_sheet("Map/tileset.png", 32);
-
-        sprite_sheet.import(m_board);
-
-        m_size_error_msg = false;
-        m_file_error_msg = false;
-        m_sprite_sheet = sprite_sheet;
-        m_imported_sheet = true;
+        m_sprite_sheet = { "Map/tileset.png", 32};
+        m_sprite_sheet.import(m_board);
     }
     catch (const std::exception& ex)
     {
-        // If an integer is not entered display tile size error
         if (dynamic_cast<const std::invalid_argument*>(&ex))
         {
-            m_size_error_msg = true;
+            LOG_WARN("Errore load tileset!");
         }
     }
     m_board.initBoard();
@@ -80,35 +72,10 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
-	if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
-	{
-		state_machine.lastState();
-	}
-
-	if (Input::isKeyPressed(sf::Keyboard::Key::Num1))
-	{
-		id++;
-	}
-	if (Input::isKeyPressed(sf::Keyboard::Key::Num2))
-	{
-		id--;
-	}
-
-
-	if (Input::isMouseReleased(sf::Mouse::Left))
-	{
-		sf::Vector2u tilePos = sf::Vector2u(core::mouse_pos_view.x / 64, core::mouse_pos_view.y / 64);
-		battleground.update(tilePos.x, tilePos.y, id);
-		
-	}
-
     if (Input::isMouseReleased(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
-        if (m_imported_sheet)
-        {
-            sf::Vector2f position = core::mouse_pos_view;
-            m_sprite_sheet.add_tile_id(m_selected_tile_id, position.x, position.y);
-        }
+        sf::Vector2f position = core::mouse_pos_view;
+        m_sprite_sheet.addTileId(m_selected_tile_id, position.x, position.y);
     }
 
 	//pathfinding.handleInput();
@@ -126,17 +93,8 @@ void BattleState::updateImGui()
 	}
 	ImGui::End();
 
-	//ImGui::Begin("Editor", nullptr);
-	//std::string message = "World editor";
-	//ImGui::Text(message.data(), message.data() + message.size());
-	//ImGui::Text("Tile id: %d", id);
-	//ImGui::Image(battleground.m_tileset);
-	//ImGui::End();
-
     ImGui::Begin("Editor", nullptr);
     
-    if (m_imported_sheet)
-    {
         // Create a child window with scrolling
         ImGui::BeginChild("Tileset", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
@@ -146,9 +104,9 @@ void BattleState::updateImGui()
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
 
-        sf::Texture& tileset_Texture = m_sprite_sheet.get_tileset_texture();
-        int tileset_cols = m_sprite_sheet.get_sheet_width();
-        int tileset_rows = m_sprite_sheet.get_sheet_height();
+        sf::Texture& tileset_Texture = m_sprite_sheet.getTilesetTexture();
+        int tileset_cols = m_sprite_sheet.getSheetWidth();
+        int tileset_rows = m_sprite_sheet.getSheetHeight();
 
         ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle(); // Cast the texture ID to ImTextureID
 
@@ -194,7 +152,6 @@ void BattleState::updateImGui()
         }
         ImGui::EndTable();
         ImGui::EndChild();
-    }
     ImGui::End();
 }
 
@@ -207,25 +164,21 @@ void BattleState::update(const float& dtime)
 
 void BattleState::draw(sf::RenderTarget* target)
 {
-	window.clear();
-	if (!target)
-		target = &window;
-	target->setView(core::view);
+    window.clear();
+    if (!target)
+        target = &window;
+    target->setView(core::view);
 
-	//pathfinding.draw(window);
-    //target->draw(battleground);
+    //pathfinding.draw(window);
     target->draw(m_board);
 
-    if (m_imported_sheet)
-    {
-        m_sprite_sheet.merge_tiles();
-        target->draw(m_sprite_sheet);
-    }
+    m_sprite_sheet.mergeTiles();
+    target->draw(m_sprite_sheet);
 
-	target->setView(window.getDefaultView());
-	target->setView(core::view);
+    target->setView(window.getDefaultView());
+    target->setView(core::view);
 
-	ImGui::SFML::Render(window);
+    ImGui::SFML::Render(window);
 
-	window.display();
+    window.display();
 }

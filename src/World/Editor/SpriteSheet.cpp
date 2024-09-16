@@ -2,6 +2,19 @@
 #include "spritesheet.hpp"
 
 
+SpriteSheet::SpriteSheet()
+    : m_tile_size(0)
+    , m_tileset_cols(0)
+    , m_tileset_rows(0)
+{
+}
+
+SpriteSheet::SpriteSheet(std::string file_name, int tile_size)
+    : m_file_name(file_name)
+    , m_tile_size(tile_size)
+{
+}
+
 void SpriteSheet::import(Board & board)
 {
 
@@ -21,7 +34,7 @@ void SpriteSheet::import(Board & board)
     m_tile_ids.resize(m_boardWidth * m_boardHeight, -1);
 }
 
-void SpriteSheet::merge_tiles()
+void SpriteSheet::mergeTiles()
 {
     // resize the vertex array to fit the level size
     m_drawn_tiles.setPrimitiveType(sf::Quads);
@@ -60,7 +73,7 @@ void SpriteSheet::merge_tiles()
     }
 }
 
-void SpriteSheet::add_tile_id(int id, int xpos, int ypos)
+void SpriteSheet::addTileId(int id, int xpos, int ypos)
 {
     int tile_x_pos = xpos / 32;
     int tile_y_pos = ypos / 32;
@@ -73,20 +86,29 @@ void SpriteSheet::add_tile_id(int id, int xpos, int ypos)
     }
 }
 
-void SpriteSheet::export_world(std::string file_name)
+sf::Texture& SpriteSheet::getTilesetTexture()
 {
-    sf::RenderTexture renderTexture;
-    int width = m_boardWidth * m_board_tileWidth;   // Width of the image
-    int height = m_boardHeight * m_board_tileWidth; // Height of the image
+    return m_tilesetTexture;
+}
 
-    renderTexture.create(width, height);
-    renderTexture.setActive(true);               // Activate the render texture
-    renderTexture.clear(sf::Color::Transparent); // Set the clear color to transparent
-    renderTexture.draw(m_drawn_tiles, &m_tilesetTexture);
-    renderTexture.display();
+const int SpriteSheet::getTileSize()
+{
+    return m_tile_size;
+}
 
-    sf::Texture texture = renderTexture.getTexture();
-    sf::Image image = texture.copyToImage();
+const int SpriteSheet::getSheetWidth()
+{
+    return m_tileset_cols;
+}
 
-    image.saveToFile(file_name);
+const int SpriteSheet::getSheetHeight()
+{
+    return m_tileset_rows;
+}
+
+void SpriteSheet::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+    states.transform *= getTransform();
+    states.texture = &m_tilesetTexture;
+    target.draw(m_drawn_tiles, states);
 }

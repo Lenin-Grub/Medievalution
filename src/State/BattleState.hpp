@@ -2,10 +2,8 @@
 #include "State.hpp"
 #include "../Camera/Camera.h"
 #include "../Pathfinding/Pathfinding.h"
-#include "../World/Battleground.h"
 #include "../World/Editor/Board.hpp"
 #include "../World/Editor/SpriteSheet.hpp"
-
 
 class StateMachine;
 
@@ -23,17 +21,10 @@ public:
 	void draw(sf::RenderTarget* target = nullptr)	    override;
 
 private:
-	Battleground battleground;
 	Pathfinding pathfinding;
 	Camera camera;
-	int id = 0;
 
 	SpriteSheet m_sprite_sheet;
 	Board m_board{ 32, 55, 32 };
-
-	// Gui fields to track error messages and application state
-	bool m_imported_sheet = false;
-	bool m_size_error_msg = false;
-	bool m_file_error_msg = false;
 	int m_selected_tile_id = 0;
 };
