@@ -6,15 +6,12 @@ Game::Game()
 	core::dtime = 0.00f;
 }
 
-Game::~Game() 
-{
-}
-
 void Game::run()
 {
 	initGraphicSettings();
 	initWindow();
 	initIcon();	
+	initCursor();
 	initFonts();
 	initJukebox();
 
@@ -26,13 +23,19 @@ void Game::run()
 		{
 			restartApplication();
 		}
-
+		window->setMouseCursor(cursor);
 		state_machine.nextState();
 		state_machine.update();
 		state_machine.draw();
 	}
 
 	ImGui::SFML::Shutdown();
+}
+
+void Game::initCursor()
+{
+	im_cursor.loadFromFile("resources/Icons/cursor.png");
+	cursor.loadFromPixels(im_cursor.getPixelsPtr(), im_cursor.getSize(), sf::Vector2u(0, 0));
 }
 
 bool Game::initGraphicSettings() noexcept

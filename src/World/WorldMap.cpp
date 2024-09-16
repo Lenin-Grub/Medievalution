@@ -2,22 +2,30 @@
 #include "../World/WorldMap.h"
 
 WorldMap::WorldMap()
-: transperency(0)
+: transperency (0)
 , load_progress(0)
+, height       (0)
+, width        (0)
+{
+// Do nothig
+}
+
+WorldMap::~WorldMap()
+{
+	file.close();
+}
+
+bool WorldMap::init()
 {
 	loadMapData();
 	loadProvincesMap();
 	loadShader();
 	initProvinceData();
 	setUniformes();
-
 	shape.setRadius(5);
 	shape.setFillColor(sf::Color::Red);
-}
 
-WorldMap::~WorldMap()
-{
-	file.close();
+	return false;
 }
 
 void WorldMap::loadMapData()
@@ -96,6 +104,7 @@ void WorldMap::loadShader()
 	s_texture_map.setTexture (s_texture);
 }
 
+#pragma region Fixe it
 //TODO
 /*
 * Временный метод для просчета центра провинции
@@ -194,6 +203,8 @@ void WorldMap::loadShader()
 	нужно добавить проверку
 	если провинция найдена и позиция мыши не изменилась, искать не нужно
 */
+
+#pragma endregion
 
 const int WorldMap::getProvinceID() const
 {

@@ -10,8 +10,7 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 , is_loaded(false)
 {
 	LOG_INFO("State Game\t Init");
-	Pathfinding pth;
-	pth.init();
+	world_map.init();
 }
 
 void GameState::onDeactivate()
@@ -86,6 +85,13 @@ void GameState::updateImGui()
 
 	ImGui::Separator();
 	ImGui::SliderFloat(Localisation::getInstance().getStringByKey("T_transperecny").c_str(), &world_map.transperency, 0.0f, 1.0f);
+
+	//{
+	//	// string â imgui
+	//	std::string message = "Hello world";
+	//	ImGui::Text(message.data(), message.data() + message.size());
+	//}
+
 	ImGui::End();
 }
 

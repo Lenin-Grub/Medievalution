@@ -14,12 +14,14 @@ class Game
 {
 public:
 	Game();
-	virtual ~Game();
+	virtual ~Game() = default;
   
 /// @brief Starts the main game loop
 /// The run method contains the main loop that keeps the game running
 /// until the window is closed.
 	void run();
+
+	void initCursor();
 
 private:
 
@@ -54,5 +56,7 @@ private:
 
 private:
 	std::shared_ptr <sf::RenderWindow> window;  ///< A shared pointer to the main render window for the game.
-	StateMachine     state_machine;             ///< Manages the state of the game (e.g., menus, gameplay).
+	StateMachine state_machine;                 ///< Manages the state of the game (e.g., menus, gameplay).
+	sf::Cursor cursor;                          ///< Mouse cursor.
+	sf::Image im_cursor;                        ///< Image to the mouse cursor.
 };
