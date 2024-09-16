@@ -93,14 +93,12 @@ void BattleState::updateImGui()
 	}
 	ImGui::End();
 
-    ImGui::Begin("Editor", nullptr);
+    ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
     
-        // Create a child window with scrolling
-        ImGui::BeginChild("Tileset", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
-
-        static int value = 32;   // Initial scale value
-        const int minValue = 8;  // Minimum scale value
-        const int maxValue = 64; // Maximum scale value
+    // Create a child window with scrolling
+        static int value    = 32; // Initial scale value
+        const int  minValue = 8;  // Minimum scale value
+        const int  maxValue = 64; // Maximum scale value
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
 
@@ -112,46 +110,47 @@ void BattleState::updateImGui()
 
         ImVec2 scale_factor = ImVec2(value, value);
 
-        ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY);
-        for (int row = 0; row < tileset_rows; row++)
-        {
-            ImGui::TableNextRow();
-            for (int col = 0; col < tileset_cols; col++)
-            {
-                ImGui::TableNextColumn();
+       if(ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
+       {
+           for (int row = 0; row < tileset_rows; row++)
+           {
+               ImGui::TableNextRow();
+               for (int col = 0; col < tileset_cols; col++)
+               {
+                   ImGui::TableNextColumn();
 
-                // Create a unique ID for the button using row and column indices
-                ImGui::PushID(row * tileset_cols + col);
+                   // Create a unique ID for the button using row and column indices
+                   ImGui::PushID(row * tileset_cols + col);
 
-                ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
-                ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
+                   ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
+                   ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
 
-                int current_id = row * tileset_cols + col;
-                bool selected = m_selected_tile_id == current_id;
+                   int current_id = row * tileset_cols + col;
+                   bool selected = m_selected_tile_id == current_id;
 
-                if (selected)
-                {
-                    // You can adjust the border color and width here
-                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f);
-                }
+                   if (selected)
+                   {
+                       // You can adjust the border color and width here
+                       ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                       ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f);
+                   }
 
-                if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
-                {
-                    m_selected_tile_id = row * tileset_cols + col;
-                }
+                   if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
+                   {
+                       m_selected_tile_id = row * tileset_cols + col;
+                   }
 
-                if (selected)
-                {
-                    ImGui::PopStyleColor();
-                    ImGui::PopStyleVar();
-                }
+                   if (selected)
+                   {
+                       ImGui::PopStyleColor();
+                       ImGui::PopStyleVar();
+                   }
 
-                ImGui::PopID();
-            }
-        }
+                   ImGui::PopID();
+               }
+           }
         ImGui::EndTable();
-        ImGui::EndChild();
+       }
     ImGui::End();
 }
 
