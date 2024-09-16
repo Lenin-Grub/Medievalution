@@ -61,8 +61,8 @@ target_link_libraries(${PROJECT_NAME}
 	sfml-window
 	sfml-system
 	sfml-audio
-    spdlog
-    ImGui-SFML::ImGui-SFML
+	spdlog
+	ImGui-SFML::ImGui-SFML
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
