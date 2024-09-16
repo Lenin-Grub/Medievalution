@@ -23,7 +23,7 @@ bool Battleground::load(const std::string& tileset, sf::Vector2u tileSize, const
             int tv = tileNumber / (m_tileset.getSize().x / tileSize.x);
 
             // get a pointer to the triangles' vertices of the current tile
-            sf::Vertex* triangles = &vertices[(i + j * width) * 6];
+            sf::Vertex* triangles = &vertices[(i + static_cast<size_t>(j) * width) * 6];
 
             // define the 6 corners of the two triangles
             triangles[0].position  = sf::Vector2f(i * tileSize.x, j * tileSize.y);
@@ -70,7 +70,7 @@ void Battleground::update(unsigned int x, unsigned int y, int tileNumber)
 void Battleground::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     // apply the transform
-    states.transform *= getTransform();
+//    states.transform *= getTransform();
 
     // apply the tileset texture
     states.texture = &m_tileset;

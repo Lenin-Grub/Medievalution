@@ -102,6 +102,8 @@ void BattleState::updateImGui()
 	ImGui::Text(message.data(), message.data() + message.size());
 	ImGui::Text("Tile id: %d", id);
 
+	ImGui::Image(battleground.m_tileset);
+
 	ImGui::End();
 }
 
