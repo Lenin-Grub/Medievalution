@@ -14,11 +14,11 @@ public:
 
     void initBoard();
 
-    const int m_tile_size;
-    const int m_board_width;
-    const int m_board_height;
+    const int tile_size;
+    const int board_width;
+    const int board_height;
 
 private:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
-    sf::VertexArray m_background;
+    sf::VertexArray background;
 };
