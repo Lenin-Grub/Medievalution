@@ -72,7 +72,7 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
-    if (Input::isMousePressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
         m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
     }

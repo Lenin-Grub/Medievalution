@@ -5,7 +5,6 @@ static const int    MAX_DOUBLE_CLICK_TIME = 200;
 static unsigned     int last_click_time   = 0;
 static sf::Vector2i last_click_position;
 
-// нажата ли клавиша
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 {
 	if (core::sfml_event.type == sf::Event::KeyPressed)
@@ -14,34 +13,30 @@ bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 	return false;
 }
 
-// отпущена ли клавиша
 bool Input::isKeyReleased(const sf::Keyboard::Key& code)
 {
 	if (core::sfml_event.type == sf::Event::KeyReleased)
-		if (core::sfml_event.key.code == code) 
+		if (core::sfml_event.key.code == code)
 			return true;
 	return false;
 }
 
-// нажата ли мышка
 bool Input::isMousePressed(const sf::Mouse::Button& code)
 {
-		if (core::sfml_event.type == sf::Event::MouseButtonPressed)
-			if (core::sfml_event.key.code == code) 
-				return true;
-		return false;
+	if (core::sfml_event.type == sf::Event::MouseButtonPressed)
+		if (core::sfml_event.key.code == code)
+			return true;
+	return false;
 }
 
-// отпущена ли мышка
 bool Input::isMouseReleased(const sf::Mouse::Button& code)
 {
-		if (core::sfml_event.type == sf::Event::MouseButtonReleased)
-			if (core::sfml_event.key.code == code) 
-				return true;
-		return false;
+	if (core::sfml_event.type == sf::Event::MouseButtonReleased)
+		if (core::sfml_event.key.code == code)
+			return true;
+	return false;
 }
 
-// нажата ли кнопка мышки дважды
 bool Input::isMouseDoubleClick(const sf::Mouse::Button& code)
 {
 	if (isMouseReleased(code))
@@ -63,7 +58,6 @@ bool Input::isMouseDoubleClick(const sf::Mouse::Button& code)
 	return false;
 }
 
-// прокручено ли колесико мышки
 bool Input::isMouseWheelUp(const sf::Mouse::Wheel code)
 {
 		if (core::sfml_event.mouseWheel.x == code)

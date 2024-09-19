@@ -25,6 +25,6 @@ private:
 	Camera camera;
 
 	SpriteSheet m_sprite_sheet;
-	Board m_board{ 32, 55, 32 };
+	Board m_board{ 32, 50, 50 };
 	int m_selected_tile_id = 0;
 };
