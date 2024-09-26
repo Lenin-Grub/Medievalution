@@ -3,7 +3,7 @@
 
 // если settings.json не обнаружено, то будут приняты эти настройки
 WindowSettings::WindowSettings():
-	title("Unitiolized"),
+	title("Uninitialized"),
 	resolution(sf::VideoMode::getDesktopMode()),
 	video_modes(sf::VideoMode::getFullscreenModes()),
 	fullscreen(false),
@@ -36,7 +36,7 @@ bool WindowSettings::saveToFile(const std::string path) noexcept
 		j["title"] = title;
 		j["resolution"] = { { "x", resolution.width }, { "y", resolution.height } };
 		j["id_resolution"] = id_resolution;
-		j["fullscrean"] = fullscreen;
+		j["fullscreen"] = fullscreen;
 		j["fps_limit"] = fps_limit;
 		j["music_volume"] = music_volume;
 		j["camera_speed"] = camera_speed;
@@ -63,7 +63,7 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
 		j["resolution"]["x"].get_to(resolution.width);
 		j["resolution"]["y"].get_to(resolution.height);
 		j["id_resolution"].get_to(id_resolution);
-		j["fullscrean"].get_to(fullscreen);
+		j["fullscreen"].get_to(fullscreen);
 		j["fps_limit"].get_to(fps_limit);
 		j["music_volume"].get_to(music_volume);
 		j["camera_speed"].get_to(camera_speed);

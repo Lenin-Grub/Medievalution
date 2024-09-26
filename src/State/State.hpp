@@ -6,7 +6,7 @@ class StateMachine;
 
 struct StateData
 {
-	Jukebox jukebox = Jukebox("resources/Audio/Muisics/");
+	Jukebox jukebox = Jukebox("resources/Audio/Musics/");
 };
 
 /**

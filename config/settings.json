@@ -5,7 +5,7 @@
         "y": 1200
     },
     "id_resolution": 5,
-    "fullscrean": false,
+    "fullscreen": false,
     "fps_limit": 50,
     "music_volume": 20,
     "camera_speed": 1,

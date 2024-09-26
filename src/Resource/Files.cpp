@@ -4,9 +4,9 @@
 
 std::string FileUtils::getPathToFile(const std::string& filename, const std::string& filetype)
 {   
-    static const std::string recource_folder("resources/");
+    static const std::string resource_folder("resources/");
 
-    for (auto& file : std::filesystem::recursive_directory_iterator(recource_folder))
+    for (auto& file : std::filesystem::recursive_directory_iterator(resource_folder))
     {
         if (file.path().stem().string() == filename && file.path().stem().extension().string() == filetype)
         {

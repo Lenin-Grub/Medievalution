@@ -2,11 +2,11 @@
 #include "Pathfinding.h"
 
 Pathfinding::Pathfinding()
-    : width(10)
-    , height(10)
+    : width(50)
+    , height(50)
     , start_node(nullptr)
     , end_node(nullptr)
-    , tile_size(sf::Vector2f(10, 10))
+    , tile_size(sf::Vector2f(32, 32))
 {
 }
 
@@ -21,11 +21,11 @@ void Pathfinding::initNodes(int width, int height)
     {
         for (int y = 0; y < height; y++)
         {
-            nodes[x][y].position = sf::Vector2f(x, y);
-            nodes[x][y].walkable = true;
+            nodes[x][y].position   = sf::Vector2f(x, y);
+            nodes[x][y].walkable   = true;
             nodes[x][y].is_visited = false;
-            nodes[x][y].parent = nullptr;
-            nodes[x][y].gCost = 0;
+            nodes[x][y].parent     = nullptr;
+            nodes[x][y].gCost      = 0;
 
             if (x > 0)
                 nodes[x][y].neighbors.push_back(&nodes[x - 1][y]);
@@ -51,42 +51,68 @@ void Pathfinding::initNodes(int width, int height)
 
 void Pathfinding::draw(sf::RenderWindow& window)
 {
+    sf::Vertex line[] = {
+       sf::Vertex(sf::Vector2f(0, 0)),
+       sf::Vertex(sf::Vector2f(0, 0))
+    };
+
+    // Draw grid lines
+    for (int x = 0; x <= width; x++)
+    {
+        line[0].position = sf::Vector2f(x * tile_size.x, 0);
+        line[1].position = sf::Vector2f(x * tile_size.x, height * tile_size.y);
+        line[0].color = sf::Color::Black;
+        line[1].color = sf::Color::Black;
+        window.draw(line, 2, sf::Lines);
+    }
+
+    for (int y = 0; y <= height; y++)
+    {
+        line[0].position = sf::Vector2f(0, y * tile_size.y);
+        line[1].position = sf::Vector2f(width * tile_size.x, y * tile_size.y);
+        line[0].color = sf::Color::Black;
+        line[1].color = sf::Color::Black;
+        window.draw(line, 2, sf::Lines);
+    }
+
+    glLineWidth(1.0f);
+    // Draw path
+    if (end_node != nullptr)
+    {
+        glLineWidth(5.0f);
+        Node* p = end_node;
+        while (p->parent != nullptr)
+        {
+            line[0].position = sf::Vector2f(p->position.x * tile_size.x + tile_size.x / 2, p->position.y * tile_size.y + tile_size.y / 2);
+            line[1].position = sf::Vector2f(p->parent->position.x * tile_size.x + tile_size.x / 2, p->parent->position.y * tile_size.y + tile_size.y / 2);
+            line[0].color = sf::Color::Blue;
+            line[1].color = sf::Color::Blue;
+            window.draw(line, 2, sf::Lines);
+            p = p->parent;
+        }
+        glLineWidth(1.0f);
+    }
+
     sf::RectangleShape rect(tile_size);
 
     for (int x = 0; x < width; x++)
     {
         for (int y = 0; y < height; y++)
         {
-            if (!nodes[x][y].walkable)
-                rect.setFillColor(sf::Color::Black);
-            else if (&nodes[x][y] == start_node)
+            if (&nodes[x][y] == start_node)
                 rect.setFillColor(sf::Color::Green);
             else if (&nodes[x][y] == end_node)
                 rect.setFillColor(sf::Color::Red);
             else
             {
-                rect.setFillColor(sf::Color::White);
-                rect.setOutlineColor(sf::Color::Black);
-                rect.setOutlineThickness(1);
+                rect.setFillColor(sf::Color::Transparent);
+                rect.setOutlineColor(sf::Color::Transparent);
             }
 
             rect.setPosition(x * tile_size.x, y * tile_size.y);
             window.draw(rect);
         }
     }
-
-    if (end_node != nullptr)
-    {
-        Node* p = end_node;
-        while (p->parent != nullptr)
-        {
-            rect.setFillColor(sf::Color::Blue);
-            rect.setPosition(p->position.x * tile_size.x, p->position.y * tile_size.y);
-            window.draw(rect);
-            p = p->parent;
-        }
-    }
-
 }
 
 void Pathfinding::handleInput()
@@ -122,7 +148,7 @@ void Pathfinding::findPath(Node* start, Node* end)
 {
     resetNodes();
     start_node = start;
-    end_node = end;
+    end_node   = end;
 
     std::priority_queue<Node*, std::vector<Node*>, Node> openList;
     std::vector<Node*> closedList;

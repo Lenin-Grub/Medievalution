@@ -44,7 +44,7 @@ public:
     int                        fps_limit;                      ///< The frame rate limit.
     sf::ContextSettings        context_settings;               ///< OpenGL context settings.
     std::vector<sf::VideoMode> video_modes;                    ///< Available video modes for the window.
-    json                       localisation;                   ///< Localisation settings in JSON format.
+    json                       localization;                   ///< Localization settings in JSON format.
     int                        id_resolution;                  ///< ID of the currently selected resolution.
     int                        music_volume;                   ///< Volume level for the music.
     int                        sound_volume;                   ///< Volume level for sound effects.

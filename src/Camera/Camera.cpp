@@ -28,20 +28,22 @@ void Camera::move(const float& dtime)
 
 }
 
-//TODO  добавить проверку на GUI
 void Camera::zoom() const
 {
-	if (core::sfml_event.type == sf::Event::MouseWheelScrolled)
+	if (!ImGui::GetIO().WantCaptureMouse)
 	{
-		if (core::sfml_event.mouseWheelScroll.delta > 0)
+		if (core::sfml_event.type == sf::Event::MouseWheelScrolled)
 		{
-			if (core::view.getSize().x <= max_zoom || core::view.getSize().y <= max_zoom)
-				core::view.zoom(1.1 + WindowSettings::getInstance().zoom_speed);
-		}
-		else if (core::sfml_event.mouseWheelScroll.delta < 0)
-		{
-			if (core::view.getSize().x >= min_zoom || core::view.getSize().y >= min_zoom)
-				core::view.zoom(0.9 - WindowSettings::getInstance().zoom_speed);
+			if (core::sfml_event.mouseWheelScroll.delta > 0)
+			{
+				if (core::view.getSize().x <= max_zoom || core::view.getSize().y <= max_zoom)
+					core::view.zoom(1.1 + WindowSettings::getInstance().zoom_speed);
+			}
+			else if (core::sfml_event.mouseWheelScroll.delta < 0)
+			{
+				if (core::view.getSize().x >= min_zoom || core::view.getSize().y >= min_zoom)
+					core::view.zoom(0.9 - WindowSettings::getInstance().zoom_speed);
+			}
 		}
 	}
 }

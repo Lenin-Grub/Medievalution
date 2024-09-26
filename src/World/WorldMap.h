@@ -22,7 +22,7 @@ public:
 
 public:
 	int                   load_progress;
-	float                 transperency;
+	float                 transparency;
 	sf::Shader            shader;
 	sf::Color             select_color;
 	sf::Image             map_image;
@@ -32,7 +32,7 @@ public:
 private:
 	void loadProvincesMap();
 	void loadMapData     ();
-	void setUniformes    ();
+	void setUniforms     ();
 	void loadShader      ();
 	bool isMouseOnMap    () const;
 

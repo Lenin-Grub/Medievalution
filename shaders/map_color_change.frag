@@ -1,7 +1,7 @@
 #version 150 compatibility
 
 uniform sampler2D map_texture;
-uniform float transperency;
+uniform float transparency;
 uniform vec4 select_color;
 uniform float height;
 uniform float width;
@@ -71,5 +71,5 @@ void main()
   else if (select_color.rgb == map.rgb)
     gl_FragColor = vec4(selectionColor, 0.5);
   else
-    gl_FragColor = vec4(map.rgb, transperency);
+    gl_FragColor = vec4(map.rgb, transparency);
 }

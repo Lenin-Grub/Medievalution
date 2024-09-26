@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 /build
 /desktop.ini
+.vscode/settings.json

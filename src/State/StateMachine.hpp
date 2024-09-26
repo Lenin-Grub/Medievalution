@@ -6,7 +6,7 @@
  * @brief A class to manage and transition between various states in an application.
  *
  * The StateMachine class is designed to handle states within an application,
- * such as a game, settings, loading screan and etc. It allows updating, drawing, and transitioning
+ * such as a game, settings, loading screen and etc. It allows updating, drawing, and transitioning
  * between different states, and manages the overall state of the application.
  */
 
@@ -35,7 +35,7 @@ public:
 
 /// @brief Checks if the state machine is restarting.
 /// @return true if the state machine is restarting, false otherwise.
-	bool resturting() const;
+	bool restarting() const;
 
 /// @brief Checks if the state machine is currently running.
 /// @return true if the state machine is running, false otherwise.

@@ -101,7 +101,7 @@ void StateMachine::draw()
 	}
 }
 
-bool StateMachine::resturting() const
+bool StateMachine::restarting() const
 {
 	return is_restarting;
 }

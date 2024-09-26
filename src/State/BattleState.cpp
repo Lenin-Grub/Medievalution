@@ -8,43 +8,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
 
 {
 	LOG_INFO("State Battle\t Init");
-	pathfinding.initNodes(100, 100);
-    const int level[] =
-    {
-        1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 46, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 16, 16, 16, 16, 16, 16, 16, 16,
-        1,  1, 1, 1, 46, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 46, 1, 1,
-        1,  1, 1, 1, 16, 1, 46, 46, 1, 1, 1, 1, 1, 1, 46, 1,
-        46, 1, 1, 1, 16, 1, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1, 1,
-        6,  1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 16, 1, 1, 1, 1, 46, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 16, 1, 16, 16, 16, 16, 16, 16, 16, 16,
-        1,  1, 1, 1, 46, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 46, 1, 1,
-        1,  1, 1, 1, 16, 1, 46, 46, 1, 1, 1, 1, 1, 1, 46, 1,
-        46, 1, 1, 1, 16, 1, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1, 1,
-        6,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 46, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 16, 16, 16, 16, 16, 16, 16, 16,
-        1,  1, 1, 1, 46, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 46, 1, 1,
-        1,  1, 1, 1, 16, 1, 46, 46, 1, 1, 1, 1, 1, 1, 46, 1,
-        46, 1, 1, 1, 16, 1, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1, 1,
-        6,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 46, 1, 1, 1, 1,
-        1,  1, 1, 1, 1, 1, 1, 1, 16, 16, 16, 16, 16, 16, 16, 16,
-        1,  1, 1, 1, 46, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 16, 16, 1, 1, 1, 1, 1, 1, 46, 1, 1,
-        1,  1, 1, 1, 16, 1, 46, 46, 1, 1, 1, 1, 1, 1, 46, 1,
-        46, 1, 1, 1, 16, 1, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1,
-        1,  1, 1, 1, 16, 46, 46, 46, 1, 1, 1, 1, 1, 1, 1, 1,
-    };
-
+	pathfinding.initNodes(50, 50);
     try
     {
         m_sprite_sheet = { "Map/tileset.png", 32};
@@ -54,7 +18,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
     {
         if (dynamic_cast<const std::invalid_argument*>(&ex))
         {
-            LOG_WARN("Errore load tileset!");
+            LOG_WARN("Error load tileset!");
         }
     }
     m_board.initBoard();
@@ -72,12 +36,12 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
-    if (Input::isMousePressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
         m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
     }
 
-	//pathfinding.handleInput();
+    pathfinding.handleInput();
 	camera.scroll();
 	camera.zoom();
 }
@@ -86,7 +50,7 @@ void BattleState::updateImGui()
 {
 	ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-	if (ImGui::Button((char*)ICON_LOG_IN "Выход###toMainMenu", ImVec2(120, 0)))
+	if (ImGui::Button((char*)ICON_LOG_IN "Р’С‹С…РѕРґ###toMainMenu", ImVec2(120, 0)))
 	{
 		state_machine.lastState();
 	}
@@ -156,7 +120,7 @@ void BattleState::updateImGui()
 void BattleState::update(const float& dtime)
 {
 	updateMousePositions();
-	//pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
+	pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
 	camera.update(dtime);
 }
 
@@ -167,11 +131,10 @@ void BattleState::draw(sf::RenderTarget* target)
         target = &window;
     target->setView(core::view);
 
-    //pathfinding.draw(window);
     target->draw(m_board);
-
     m_sprite_sheet.mergeTiles();
     target->draw(m_sprite_sheet);
+    pathfinding.draw(window);
 
     target->setView(window.getDefaultView());
     target->setView(core::view);
