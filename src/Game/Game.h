@@ -56,7 +56,7 @@ private:
 
 private:
 	std::shared_ptr <sf::RenderWindow> window;  ///< A shared pointer to the main render window for the game.
-	StateMachine state_machine;                 ///< Manages the state of the game (e.g., menus, gameplay).
+	StateMachine state_machine;                 ///< Manages the state of the game (e.g., menus, game play).
 	sf::Cursor cursor;                          ///< Mouse cursor.
 	sf::Image im_cursor;                        ///< Image to the mouse cursor.
 };

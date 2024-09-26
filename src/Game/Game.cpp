@@ -19,7 +19,7 @@ void Game::run()
 
 	while (state_machine.running())
 	{
-		if (state_machine.resturting())
+		if (state_machine.restarting())
 		{
 			restartApplication();
 		}
@@ -77,7 +77,7 @@ bool Game::initIcon() noexcept
 		this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
 		return true;
 	}
-	LOG_ERROR("File <<icon.png>> not loadded");
+	LOG_ERROR("File <<icon.png>> not loaded");
 	return false;
 }
 
