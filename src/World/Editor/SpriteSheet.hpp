@@ -23,7 +23,7 @@ public:
 
 	///	@brie Updates the tile id at the given position. Xpos and Ypos are absolute coordinates
 	///	that need to be converted into relative coordinates to find the clicked tile
-	/// @param id The tile ID that you whant place.
+	/// @param id The tile ID that you want place.
 	/// @param pos The coordinates of the tile position.
 	void addTileId(int id, sf::Vector2f pos);
 

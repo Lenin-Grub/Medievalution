@@ -4,25 +4,25 @@
 #include "../Settings/WindowSettings.h"
 
 /**
- * @class Localisation
+ * @class Localization
  * @brief A singleton class for managing localization strings within an application.
  *
- * The Localisation class provides a centralized way to manage and retrieve localized strings
+ * The Localization class provides a centralized way to manage and retrieve localized strings
  * based on unique keys. It ensures that there is only one instance of the localization
  * data within the application.
  */
 
-class Localisation
+class Localization
 {
 public:
  
-/// @brief Gets the singleton instance of the Localisation class.
-/// This function ensures that there is only one instance of the Localisation
+/// @brief Gets the singleton instance of the Localization class.
+/// This function ensures that there is only one instance of the Localization
 /// class. It returns a reference to this single instance.
-/// @return A reference to the single instance of the Localisation class.
-	static Localisation& getInstance()
+/// @return A reference to the single instance of the Localization class.
+	static Localization& getInstance()
 	{
-		static Localisation single_instance;
+		static Localization single_instance;
 		return single_instance;
 	}
 
@@ -34,8 +34,8 @@ public:
 	std::string getStringByKey(std::string key);
 
 private:
-	Localisation() {};
-    Localisation(const Localisation& root)		   = delete;
-    Localisation& operator=(const Localisation&) = delete;
+	Localization() {};
+    Localization(const Localization& root)		   = delete;
+    Localization& operator=(const Localization&) = delete;
 private:
 };

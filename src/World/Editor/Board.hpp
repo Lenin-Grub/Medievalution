@@ -2,7 +2,7 @@
 #include "../../Core/Core.h"
 
 /**
-    Updates this boards vertex array to create a grid of empty tiles. The "grid lines"
+    @class Updates this boards vertex array to create a grid of empty tiles. The "grid lines"
     are created by drawing two squares in each cell one pixel different in size. The
     larger square is a unique color to create a grid line effect.
 */

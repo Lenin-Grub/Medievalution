@@ -7,7 +7,7 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 {
 	LOG_INFO("State Menu\t Init");
 	setBackground();
-	initLocalisation();
+	initLocalization();
 }
 
 void MenuState::onDeactivate()
@@ -38,22 +38,22 @@ void MenuState::updateImGui()
 									 | ImGuiWindowFlags_NoResize
 									 | ImGuiWindowFlags_NoMove);
 
-	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localization::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
 	{
 		next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
 	}
 	
-	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_battle_scene").c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localization::getInstance().getStringByKey("T_battle_scene").c_str(), ImVec2(120, 0)))
 	{
 		next_state = StateMachine::build<BattleState>(data, state_machine, window, false);
 	}
 
-	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localization::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
 	{
 		next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
 	}
 
-	if (ImGui::Button(Localisation::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
+	if (ImGui::Button(Localization::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
 	{
 		state_machine.quit();
 	}
@@ -90,25 +90,25 @@ void MenuState::setBackground()
 {
 	if (!background.loadFromFile("resources/Backgrounds/background_main.jpg"))
 	{
-		LOG_ERROR("File \"background_main.jpg\" not foubd");
+		LOG_ERROR("File \"background_main.jpg\" not found");
 	}
 
 	shape.setTexture(&background);
 	shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }
 
-void MenuState::initLocalisation()
+void MenuState::initLocalization()
 {
 
 	if (WindowSettings::getInstance().language == "rus")
 	{
-		localisation_file.open("translation/rus.json");
-		localisation_file >> WindowSettings::getInstance().localisation;
+		localization_file.open("translation/rus.json");
+		localization_file >> WindowSettings::getInstance().localization;
 	}
 
 	if (WindowSettings::getInstance().language == "eng")
 	{
-		localisation_file.open("translation/eng.json");
-		localisation_file >> WindowSettings::getInstance().localisation;
+		localization_file.open("translation/eng.json");
+		localization_file >> WindowSettings::getInstance().localization;
 	}
 }

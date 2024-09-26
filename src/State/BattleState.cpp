@@ -18,7 +18,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
     {
         if (dynamic_cast<const std::invalid_argument*>(&ex))
         {
-            LOG_WARN("Errore load tileset!");
+            LOG_WARN("Error load tileset!");
         }
     }
     m_board.initBoard();
@@ -50,7 +50,7 @@ void BattleState::updateImGui()
 {
 	ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-	if (ImGui::Button((char*)ICON_LOG_IN "Выход###toMainMenu", ImVec2(120, 0)))
+	if (ImGui::Button((char*)ICON_LOG_IN "Р’С‹С…РѕРґ###toMainMenu", ImVec2(120, 0)))
 	{
 		state_machine.lastState();
 	}

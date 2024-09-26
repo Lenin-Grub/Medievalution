@@ -56,11 +56,11 @@ void LoadingState::setBackground()
 {
 	if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
 	{
-		LOG_ERROR("File \"background\" not foubd");
+		LOG_ERROR("File \"background\" not found");
 	}
 	if (!font.loadFromFile("resources/Fonts/Blackmoor.ttf"))
 	{
-		LOG_ERROR("File \"font\" not foubd");
+		LOG_ERROR("File \"font\" not found");
 	}
 
 	shape.setTexture(&background);

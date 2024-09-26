@@ -3,7 +3,7 @@
 #include "../Input/Input.h"
 #include "../Resource/Jukebox.hpp"
 #include "../Math/Math.h"
-//------------------------------------------------------------------------------------------------------------------------
+
 class Core
 {
 public:

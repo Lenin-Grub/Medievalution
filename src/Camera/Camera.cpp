@@ -28,7 +28,6 @@ void Camera::move(const float& dtime)
 
 }
 
-//TODO  добавить проверку на GUI
 void Camera::zoom() const
 {
 	if (!ImGui::GetIO().WantCaptureMouse)

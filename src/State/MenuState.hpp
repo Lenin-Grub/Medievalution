@@ -21,11 +21,11 @@ public:
 	void draw (sf::RenderTarget* target = nullptr)   override;
 
 	void setBackground();
-	void initLocalisation();
+	void initLocalization();
 
 private:
 	sf::Texture        background;
 	sf::Sprite         sprite;
 	sf::RectangleShape shape;
-	std::ifstream      localisation_file;
+	std::ifstream      localization_file;
 };

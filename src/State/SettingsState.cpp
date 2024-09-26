@@ -40,7 +40,7 @@ void SettingsState::updateImGui()
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	std::string str = Localisation::getInstance().getStringByKey("T_settings");
+	std::string str = Localization::getInstance().getStringByKey("T_settings");
 
 	ImGui::Begin(((char*)ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse 
 															  | ImGuiWindowFlags_AlwaysAutoResize 
@@ -52,7 +52,7 @@ void SettingsState::updateImGui()
 
 	const char* combo_preview_value = str_preview.c_str();
 
-	str = Localisation::getInstance().getStringByKey("T_resolution");
+	str = Localization::getInstance().getStringByKey("T_resolution");
 	if (ImGui::BeginCombo(str.c_str(), combo_preview_value, 0))
 	{
 		for (int n = 0; n < video_modes.size(); n++)
@@ -66,7 +66,6 @@ void SettingsState::updateImGui()
 
 			if (ImGui::Selectable(modes, is_selected))
 			{
-				//TODO добавить функцию изменения разрешения экрана
 				resolution_current_id = n;
 				WindowSettings::getInstance().id_resolution		= resolution_current_id;
 				WindowSettings::getInstance().resolution.width	= video_modes.at(n).width;
@@ -83,8 +82,8 @@ void SettingsState::updateImGui()
 	}
 
 	//------------------------------------------------------------------------------------
-	str = Localisation::getInstance().getStringByKey("T_full_window");
-	if (ImGui::Checkbox(((char*)ICON_MAX_SIEZE + str).c_str(), &WindowSettings::getInstance().fullscreen))
+	str = Localization::getInstance().getStringByKey("T_full_window");
+	if (ImGui::Checkbox(((char*)ICON_MAX_SIZE + str).c_str(), &WindowSettings::getInstance().fullscreen))
 	{
 		WindowSettings::getInstance().fullscreen;
 	}
@@ -93,12 +92,12 @@ void SettingsState::updateImGui()
 	{
 		ImGui::BeginTooltip();
 
-		str = Localisation::getInstance().getStringByKey("T_full_window_tooltip");
+		str = Localization::getInstance().getStringByKey("T_full_window_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = Localisation::getInstance().getStringByKey("T_vertychal_sync");
+	str = Localization::getInstance().getStringByKey("T_vertical_sync");
 	ImGui::BeginDisabled();
 	if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertical_sync))
 	{
@@ -109,18 +108,18 @@ void SettingsState::updateImGui()
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = Localisation::getInstance().getStringByKey("T_vertychal_sync_tooltip");
+		str = Localization::getInstance().getStringByKey("T_vertical_sync_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
 
-	str = Localisation::getInstance().getStringByKey("T_fps_limit");
+	str = Localization::getInstance().getStringByKey("T_fps_limit");
 	ImGui::InputInt(str.c_str(), &WindowSettings::getInstance().fps_limit, 0, 1);
 
 	if (ImGui::IsItemHovered())
 	{
 		ImGui::BeginTooltip();
-		str = Localisation::getInstance().getStringByKey("T_fps_tooltip");
+		str = Localization::getInstance().getStringByKey("T_fps_tooltip");
 		ImGui::SetTooltip(str.c_str());
 		ImGui::EndTooltip();
 	}
@@ -129,7 +128,7 @@ void SettingsState::updateImGui()
 
 	ImGui::Separator();
 	{
-		str = Localisation::getInstance().getStringByKey("T_sound_volume");
+		str = Localization::getInstance().getStringByKey("T_sound_volume");
 		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
 	}
 
@@ -137,11 +136,11 @@ void SettingsState::updateImGui()
 
 	ImGui::SameLine();
 	{
-		str = WindowSettings::getInstance().localisation.at("T_sound");
+		str = WindowSettings::getInstance().localization.at("T_sound");
 		ImGui::Checkbox(str.c_str(), &play_sound);
 	}
 
-	str = WindowSettings::getInstance().localisation.at("T_music_volume");
+	str = WindowSettings::getInstance().localization.at("T_music_volume");
 	if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
 	{
 		state_machine.data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
@@ -151,7 +150,7 @@ void SettingsState::updateImGui()
 
 	ImGui::SameLine();
 	{
-		str = WindowSettings::getInstance().localisation.at("T_music");
+		str = WindowSettings::getInstance().localization.at("T_music");
 		if (ImGui::Checkbox(str.c_str(), &play_music))
 		{
 			if (play_music)
@@ -170,20 +169,20 @@ void SettingsState::updateImGui()
 	ImGui::Separator();
 	ImGui::BeginDisabled();
 	{
-		str = WindowSettings::getInstance().localisation.at("T_zoom_speed");
+		str = WindowSettings::getInstance().localization.at("T_zoom_speed");
 		ImGui::SliderFloat(str.c_str(), &WindowSettings::getInstance().zoom_speed, 0, 1, "%.1f");
 	}
 	{
-		str = WindowSettings::getInstance().localisation.at("T_camera_speed");
+		str = WindowSettings::getInstance().localization.at("T_camera_speed");
 		ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().camera_speed, 1, 100, "%d%%");
 	}
 	ImGui::EndDisabled();
 	ImGui::Separator();
 
-	str = WindowSettings::getInstance().localisation.at("T_applay");
+	str = WindowSettings::getInstance().localization.at("T_apply");
 	if (ImGui::Button(str.c_str()))
 	{
-		str = WindowSettings::getInstance().localisation.at("T_applay");
+		str = WindowSettings::getInstance().localization.at("T_apply");
 		ImGui::OpenPopup(str.c_str());
 	}
 
@@ -191,14 +190,14 @@ void SettingsState::updateImGui()
 
 	ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
 
-	str = WindowSettings::getInstance().localisation.at("T_applay");
+	str = WindowSettings::getInstance().localization.at("T_apply");
 	if (ImGui::BeginPopupModal(str.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		str = WindowSettings::getInstance().localisation.at("T_changed_game_settings");
+		str = WindowSettings::getInstance().localization.at("T_changed_game_settings");
 		ImGui::Text(str.c_str());
 		ImGui::Separator();
 
-		str = WindowSettings::getInstance().localisation.at("T_yes");
+		str = WindowSettings::getInstance().localization.at("T_yes");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0)))
 		{
 			state_machine.restart(true);
@@ -208,7 +207,7 @@ void SettingsState::updateImGui()
 		}
 		ImGui::SetItemDefaultFocus();
 		ImGui::SameLine();
-		str = WindowSettings::getInstance().localisation.at("T_cancel");
+		str = WindowSettings::getInstance().localization.at("T_cancel");
 		if (ImGui::Button(str.c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
 		ImGui::EndPopup();
 	}
@@ -217,7 +216,7 @@ void SettingsState::updateImGui()
 	
 	ImGui::SameLine();
 
-	str = WindowSettings::getInstance().localisation.at("T_exit");
+	str = WindowSettings::getInstance().localization.at("T_exit");
 	if (ImGui::Button(str.c_str()))
 	{
 		state_machine.lastState();
@@ -255,7 +254,7 @@ void SettingsState::setBackground()
 {
 	if (!background.loadFromFile("resources/Backgrounds/background.jpg"))
 	{
-		LOG_ERROR("File \"background\" not foubd");
+		LOG_ERROR("File \"background\" not found");
 	}
 
 	shape.setTexture(&background);

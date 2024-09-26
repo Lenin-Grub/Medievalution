@@ -2,12 +2,12 @@
 #include "../World/WorldMap.h"
 
 WorldMap::WorldMap()
-: transperency (0)
+: transparency (0)
 , load_progress(0)
 , height       (0)
 , width        (0)
 {
-// Do nothig
+// Do nothing
 }
 
 WorldMap::~WorldMap()
@@ -21,7 +21,7 @@ bool WorldMap::init()
 	loadProvincesMap();
 	loadShader();
 	initProvinceData();
-	setUniformes();
+	setUniforms();
 	shape.setRadius(5);
 	shape.setFillColor(sf::Color::Red);
 
@@ -36,7 +36,7 @@ void WorldMap::loadMapData()
 	}
 	catch (const std::ifstream::failure & ex)
 	{
-		LOG_ERROR("File <<Proivinces.csv>> not found");
+		LOG_ERROR("File <<Provinces.csv>> not found");
 		LOG_ERROR(ex.what());
 	}
 }
@@ -84,10 +84,10 @@ bool WorldMap::initProvinceData()
 		return false;
 }
 
-void WorldMap::setUniformes()
+void WorldMap::setUniforms()
 {
 	shader.setUniform ("map_texture", sf::Shader::CurrentTexture);
-	shader.setUniform ("transperency", transperency);
+	shader.setUniform ("transparency", transparency);
 	shader.setUniform ("select_color", sf::Glsl::Vec4(select_color));
 	shader.setUniform ("width",	(float)map_texture.getSize().x);
 	shader.setUniform ("height", (float)map_texture.getSize().y);
@@ -95,7 +95,7 @@ void WorldMap::setUniformes()
 
 void WorldMap::loadShader()
 {
-	//to do @ загружать карту через загрузчик
+
 	if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
 		LOG_ERROR("Shader not found");
 
@@ -105,12 +105,7 @@ void WorldMap::loadShader()
 }
 
 #pragma region Fixe it
-//TODO
-/*
-* ¬ременный метод дл€ просчета центра провинции
-* ¬ дальнейшем будет удален,т.к. центр провинций будет прописан в Province.csv
-* Ќекорректно находит центр провинций, findProvinceCenter() работает точнее
-*/
+
 //void WorldMap::findAllProvinceCenters()
 //{
 //	const sf::Uint8* pixels = map_image.getPixelsPtr();
@@ -196,13 +191,6 @@ void WorldMap::loadShader()
 //	}
 //}
 
-/*
-	todo @ при высоком фпс лагает
-	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
-	и каждый кадр свер€ет текущий цвет с текстурой
-	нужно добавить проверку
-	если провинци€ найдена и позици€ мыши не изменилась, искать не нужно
-*/
 
 #pragma endregion
 
@@ -220,14 +208,6 @@ const int WorldMap::getProvinceID() const
 		return res->id;
 	}
 }
-
-/*
-	todo @ при высоком фпс лагает
-	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
-	и каждый кадр свер€ет текущий цвет с текстурой
-	нужно добавить проверку
-	если провинци€ найдена и позици€ мыши не изменилась, искать не нужно
-*/
 
 const std::string WorldMap::getProvinceName() const
 {
@@ -260,14 +240,6 @@ void WorldMap::draw(sf::RenderTarget & target, sf::RenderStates states) const
 	target.draw (shape);
 }
 
-/*
-	todo @ при высоком фпс лагает
-	скорее всего за 1 кадр делает поиск по всем 10000+ провинций
-	и каждый кадр свер€ет текущий цвет с текстурой
-	нужно добавить проверку
-	если провинци€ найдена и позици€ мыши не изменилась, искать не нужно
-*/
-
 sf::Color WorldMap::getColor()
 {
 	if (isMouseOnMap())
@@ -288,12 +260,7 @@ int WorldMap::findProvinceID(sf::Color color)
 		return 0;
 }
 
-//TODO
-/*
-* ¬ременный метод дл€ просчета центра провинции
-* ¬ дальнейшем будет удален,т.к. центр провинций будет прописан в Province.csv
-* –аботает медленно и не подходит дл€ поиска всех центров провинции
-*/
+
 sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const
 {
 	const sf::Uint8* pixels = map_image.getPixelsPtr();
@@ -360,6 +327,5 @@ sf::Vector2f WorldMap::getProvinceCenter(const sf::Color& color) const
 			return province.centre;
 		}
 	}
-	// ¬ернуть недопустимый центр (-1, -1) в случае отсутстви€ провинции
 	return sf::Vector2f(-1.f, -1.f);
 }
