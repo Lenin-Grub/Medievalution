@@ -56,8 +56,18 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
 	std::ifstream ifs(path);
 	j = nlohmann::json::parse(ifs);
 
+	 const std::vector<std::string> requiredKeys = {"title", "resolution", "id_resolution", "fullscreen", "fps_limit", "music_volume", "camera_speed", "zoom_speed", "language"};
+
 	if (ifs.is_open())
 	{
+		for (const auto& key : requiredKeys) 
+        {
+            if (!j.contains(key)) 
+            {
+				LOG_ERROR("Uncorrected key in settings file. Please check it.");
+                return false;
+            }
+        }
 		//TODO json ругается на синхронизацию, т.к. она int, а требуется bool
 		j["title"] .get_to(title);
 		j["resolution"]["x"].get_to(resolution.width);
