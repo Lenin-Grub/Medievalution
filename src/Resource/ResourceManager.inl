@@ -4,42 +4,42 @@
 template<class T>
 T* ResourceManager::get(const std::string& name, bool remove)
 {
-	static std::unordered_map<std::string, T> resources;
+    static std::unordered_map<std::string, T> resources;
 
-	if (remove)
-	{
-		auto found = resources.find(name);
+    if (remove)
+    {
+        auto found = resources.find(name);
 
-		if (found != resources.end())
-			resources.erase(found);
+        if (found != resources.end())
+            resources.erase(found);
 
-		return nullptr;
-	}
+        return nullptr;
+    }
 
-	if (name.empty())
-		return nullptr;
+    if (name.empty())
+        return nullptr;
 
-	auto found = resources.find(name);
+    auto found = resources.find(name);
 
-	if (found != resources.end())
-		return &found->second;
+    if (found != resources.end())
+        return &found->second;
 
-	std::string filepath = FileUtils::getPathToFile(name);
+    std::string filepath = FileUtils::getPathToFile(name);
 
-	if (!filepath.empty())
-	{
-		auto [iterator, result] = resources.try_emplace(name);
+    if (!filepath.empty())
+    {
+        auto [iterator, result] = resources.try_emplace(name);
 
-		if (result)
-		{
-			if (!iterator->second.loadFromFile(filepath))
-			{
-				resources.erase(name);
-				return nullptr;
-			}
-		}
-		return &iterator->second;
-	}
+        if (result)
+        {
+            if (!iterator->second.loadFromFile(filepath))
+            {
+                resources.erase(name);
+                return nullptr;
+            }
+        }
+        return &iterator->second;
+    }
 
-	return nullptr;
+    return nullptr;
 }

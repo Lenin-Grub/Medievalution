@@ -11,16 +11,16 @@
 class Animator 
 {
 public:
-	Animator (sf::Sprite& sprite);
-	virtual ~Animator () = default;
+    Animator (sf::Sprite& sprite);
+    virtual ~Animator () = default;
 
 /// @brief Adds a frame to the animation sequence
 /// @param rect The rectangle defining the frame within the sprite's texture.
-	void addFrame (sf::IntRect rect);
+    void addFrame (sf::IntRect rect);
 
 /// @brief Sets the display time for each frame
 /// @param time The time to display each frame, in seconds.
-	void setFrameTime (float time);
+    void setFrameTime (float time);
 
 /// @brief Sets the current frame of the animation
 /// @param frame The index of the frame to set as the current frame.
@@ -29,14 +29,14 @@ public:
 /// @brief Updates the animation based on the elapsed time
 /// This method should be called every frame to update the animation's state.
 /// @param deltaTime The elapsed time since the last update call, in seconds.
-	void update (float deltaTime);
+    void update (float deltaTime);
 
 /// @brief Starts or resumes the animation.
 /// @param play If true, the animation will start or resume playing.
-	void play (bool play);
+    void play (bool play);
 
 /// @brief Pauses the animation.
-	void pause ();
+    void pause ();
 
 /// @brief Checks if the animation is currently playing
 /// @return True if the animation is being played, false otherwise.

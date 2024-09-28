@@ -1,4 +1,4 @@
-#pragma once 
+#pragma once
 #include "../../Core/Core.h"
 
 /**
@@ -19,6 +19,6 @@ public:
     const int board_height;
 
 private:
-    void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     sf::VertexArray background;
 };

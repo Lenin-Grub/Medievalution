@@ -7,16 +7,16 @@
 class Core
 {
 public:
-	static sf::Event sfml_event;
-	static sf::View view;
-	static sf::Clock clock;
-	static float dtime;
-	static sf::Vector2i mouse_pos_screen;
-	static sf::Vector2i mouse_pos_window;
-	static sf::Vector2f mouse_pos_view;
-	static Math math;
+    static sf::Event    sfml_event;
+    static sf::View     view;
+    static sf::Clock    clock;
+    static float        dtime;
+    static sf::Vector2i mouse_pos_screen;
+    static sf::Vector2i mouse_pos_window;
+    static sf::Vector2f mouse_pos_view;
+    static Math         math;
 
-	Core();
+    Core();
 };
 
 typedef Core core;
