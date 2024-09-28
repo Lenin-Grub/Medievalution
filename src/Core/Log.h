@@ -4,7 +4,6 @@
 
 namespace LogInfo 
 {
-
 #ifdef NDEBUG
 
 #define LOG_INFO(...)

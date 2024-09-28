@@ -6,6 +6,8 @@ Jukebox::Jukebox(const std::string& path) :
     status(sf::SoundSource::Stopped),
     looping(true)
 {
+    if (std::filesystem::exists(path) && std::filesystem::is_directory(path))
+    {
     for (const auto& entry : std::filesystem::directory_iterator(path))
     {
         if (entry.path().extension() == ".wav")
@@ -23,6 +25,11 @@ Jukebox::Jukebox(const std::string& path) :
             const auto inserted = catalog.emplace(filename, std::move(music));
             assert(inserted.second);
         }
+    }
+    }
+    else
+    {
+     LOG_ERROR("Invalid path: {}",path);
     }
 }
 

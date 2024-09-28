@@ -3,8 +3,8 @@
 class Entity
 {
 public:
-	Entity();
-	~Entity();
+    Entity();
+    ~Entity();
 
 private:
 

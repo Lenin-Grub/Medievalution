@@ -36,7 +36,7 @@ void Pathfinding::initNodes(int width, int height)
             if (y < height - 1)
                 nodes[x][y].neighbors.push_back(&nodes[x][y + 1]);
 
-            // диагональ
+            // diagonal
             if (x > 0 && y > 0)
                 nodes[x][y].neighbors.push_back(&nodes[x - 1][y - 1]);
             if (x > 0 && y < height - 1)

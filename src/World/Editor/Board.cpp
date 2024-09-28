@@ -40,7 +40,7 @@ void Board::initBoard()
     }
 }
 
-void Board::draw(sf::RenderTarget& target, sf::RenderStates states) const
+void Board::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
     target.draw(background, states);
