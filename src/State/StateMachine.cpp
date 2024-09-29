@@ -6,6 +6,7 @@ StateMachine::StateMachine()
 , is_running    { false }
 , is_restarting { false }
 , is_loaded     { false }
+, is_init       { false }
 , dtime         { 0.0f }
 , clock         { }
 {
@@ -65,6 +66,18 @@ void StateMachine::nextState()
 void StateMachine::lastState()
 {
     resume = true;
+}
+
+void StateMachine::init()
+{
+    if (is_init)
+    {
+    if (!states.empty())
+    {
+        states.top()->init();
+        is_init = false;
+    }
+    }
 }
 
 void StateMachine::update()

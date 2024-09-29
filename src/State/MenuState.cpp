@@ -5,9 +5,14 @@
 MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
 {
-    LOG_INFO("State Menu\t Init");
+        state_machine.is_init = true;
+}
+
+void MenuState::init()
+{
     setBackground();
     Localization::getInstance().init();
+    LOG_INFO("State Menu\t Init");
 }
 
 void MenuState::onDeactivate()

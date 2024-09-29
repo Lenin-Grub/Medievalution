@@ -20,7 +20,7 @@ bool WorldMap::init()
     loadMapData();
     loadProvincesMap();
     loadShader();
-    initProvinceData();
+    isInitProvinces();
     setUniforms();
     shape.setRadius(5);
     shape.setFillColor(sf::Color::Red);
@@ -52,7 +52,7 @@ void WorldMap::loadProvincesMap()
     }
 }
 
-bool WorldMap::initProvinceData()
+bool WorldMap::isInitProvinces()
 {
     std::string str;
     provinces.reserve(9000);

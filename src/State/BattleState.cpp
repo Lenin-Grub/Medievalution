@@ -5,9 +5,12 @@
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
 , camera()
-
 {
-    LOG_INFO("State Battle\t Init");
+    state_machine.is_init = true;
+}
+
+void BattleState::init()
+{
     pathfinding.initNodes(50, 50);
     try
     {
@@ -22,6 +25,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
         }
     }
     m_board.initBoard();
+    LOG_INFO("State Battle\t Init");
 }
 
 void BattleState::onDeactivate()
@@ -40,8 +44,10 @@ void BattleState::updateEvents()
     {
         m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
     }
-
-    pathfinding.handleInput();
+    if (!ImGui::GetIO().WantCaptureMouse)
+    {
+        pathfinding.handleInput();
+    }
     camera.scroll();
     camera.zoom();
 }

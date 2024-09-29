@@ -16,7 +16,7 @@ void Game::run()
     initJukebox();
 
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
-
+    state_machine.is_init = true;
     while (state_machine.running())
     {
         if (state_machine.restarting())
@@ -25,6 +25,7 @@ void Game::run()
         }
         window->setMouseCursor(cursor);
         state_machine.nextState();
+        state_machine.init();
         state_machine.update();
         state_machine.draw();
     }

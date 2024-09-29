@@ -25,6 +25,8 @@ public:
 /// @brief Reverts to the previous state in the stack.
     void lastState();
 
+    void init();
+
 /// @brief Updates the current state.
 /// Calculates the time delta and calls the update function of the state on top of the stack.
     void update();
@@ -54,6 +56,7 @@ public:
 
     StateData data; ///< @brief Holds information necessary for the states to function.
     bool is_loaded; ///< @brief Indicates whether the state machine is loaded and ready.
+    bool                               is_init;
 
 private:
     float                              dtime;         ///< @brief Time delta between updates.
