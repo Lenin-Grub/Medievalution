@@ -40,8 +40,10 @@ void BattleState::updateEvents()
     {
         m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
     }
-
-    pathfinding.handleInput();
+    if (!ImGui::GetIO().WantCaptureMouse)
+    {
+        pathfinding.handleInput();
+    }
     camera.scroll();
     camera.zoom();
 }
