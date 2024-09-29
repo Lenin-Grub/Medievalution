@@ -59,7 +59,7 @@ public:
 
     /// @brief Initializes the province data.
     /// @return True if initialization is successful, false otherwise.
-    bool         initProvinceData   ();
+    bool         isInitProvinces   ();
 
 public:
     int                   load_progress; ///< @brief The load progress of the world map. 

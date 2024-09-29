@@ -7,12 +7,12 @@ IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow&
 : State { data, machine, window, replace }
 , alpha { 255, 255, 255, 0 }
 {
-    LOG_INFO("State Intro\t Init");
-    setBackground();
 }
 
 void IntroState::init()
 {
+    setBackground();
+    LOG_INFO("State Intro\t Init");
 }
 
 void IntroState::onDeactivate()

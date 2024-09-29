@@ -6,12 +6,13 @@ LoadingState::LoadingState(StateData& data, StateMachine& machine, sf::RenderWin
 : State { data, machine, window, replace }
 , alpha { 255, 255, 255, 255 }
 {
-    LOG_INFO("State Loading\t Init");
-    setBackground();
+    state_machine.is_init = true;
 }
 
 void LoadingState::init()
 {
+    setBackground();
+    LOG_INFO("State Loading\t Init");
 }
 
 void LoadingState::onDeactivate()

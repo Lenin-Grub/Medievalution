@@ -5,9 +5,12 @@
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
 , camera()
-
 {
-    LOG_INFO("State Battle\t Init");
+    state_machine.is_init = true;
+}
+
+void BattleState::init()
+{
     pathfinding.initNodes(50, 50);
     try
     {
@@ -22,10 +25,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
         }
     }
     m_board.initBoard();
-}
-
-void BattleState::init()
-{
+    LOG_INFO("State Battle\t Init");
 }
 
 void BattleState::onDeactivate()

@@ -56,6 +56,7 @@ public:
 
     StateData data; ///< @brief Holds information necessary for the states to function.
     bool is_loaded; ///< @brief Indicates whether the state machine is loaded and ready.
+    bool                               is_init;
 
 private:
     float                              dtime;         ///< @brief Time delta between updates.

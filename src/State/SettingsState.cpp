@@ -9,14 +9,14 @@ SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderW
 , play_sound { true }
 , video_modes(sf::VideoMode::getFullscreenModes())
 , resolution_current_id(WindowSettings::getInstance().id_resolution)
-
 {
-    setBackground();
-    LOG_INFO("State Settings\t Init");
+    state_machine.is_init = true;
 }
 
 void SettingsState::init()
 {
+    setBackground();
+    LOG_INFO("State Settings\t Init"); 
 }
 
 void SettingsState::onDeactivate()

@@ -9,12 +9,12 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 , world_map()
 , is_loaded(false)
 {
-    LOG_INFO("State Game\t Init");
-    world_map.init();
 }
 
 void GameState::init()
 {
+    state_machine.is_init = true;
+    LOG_INFO("State Game\t Init");
 }
 
 void GameState::onDeactivate()
@@ -130,7 +130,8 @@ void GameState::draw(sf::RenderTarget* target)
 
 bool GameState::isLoad()
 {
-    if (world_map.initProvinceData())
+    world_map.init();
+    if (world_map.isInitProvinces())
     {
         is_loaded = true;
     }
