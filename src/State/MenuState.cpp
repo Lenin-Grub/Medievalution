@@ -10,6 +10,10 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
     Localization::getInstance().init();
 }
 
+void MenuState::init()
+{
+}
+
 void MenuState::onDeactivate()
 {
     LOG_INFO("State Menu\t Deactivate");

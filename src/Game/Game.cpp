@@ -19,6 +19,7 @@ void Game::run()
 
     while (state_machine.running())
     {
+        state_machine.init();
         if (state_machine.restarting())
         {
             restartApplication();

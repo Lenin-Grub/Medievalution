@@ -67,6 +67,14 @@ void StateMachine::lastState()
     resume = true;
 }
 
+void StateMachine::init()
+{
+    if (!states.empty())
+    {
+        states.top()->init();
+    }
+}
+
 void StateMachine::update()
 {
     dtime = clock.restart().asMilliseconds();

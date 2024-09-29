@@ -24,6 +24,10 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
     m_board.initBoard();
 }
 
+void BattleState::init()
+{
+}
+
 void BattleState::onDeactivate()
 {
     LOG_INFO("State Battle\t Deactivate");

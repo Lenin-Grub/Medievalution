@@ -10,6 +10,10 @@ LoadingState::LoadingState(StateData& data, StateMachine& machine, sf::RenderWin
     setBackground();
 }
 
+void LoadingState::init()
+{
+}
+
 void LoadingState::onDeactivate()
 {
     LOG_INFO("State Loading\t Deactivate");

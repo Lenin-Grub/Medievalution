@@ -12,6 +12,7 @@ class GameState final
 public:
     GameState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
+    void init()                                   override;
     void onDeactivate()                           override;
     void onActivate  ()                           override;
     void updateEvents()                           override;

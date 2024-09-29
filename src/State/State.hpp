@@ -25,6 +25,7 @@ public:
     State(const State&) = delete;
     State& operator = (const State&) = delete;
 
+    virtual void init()                        = 0;
     virtual void onActivate()                  = 0;
     virtual void onDeactivate()                = 0;
     virtual void updateEvents()                = 0;

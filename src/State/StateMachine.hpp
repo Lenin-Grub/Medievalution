@@ -25,6 +25,8 @@ public:
 /// @brief Reverts to the previous state in the stack.
     void lastState();
 
+    void init();
+
 /// @brief Updates the current state.
 /// Calculates the time delta and calls the update function of the state on top of the stack.
     void update();

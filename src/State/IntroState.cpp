@@ -11,6 +11,10 @@ IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow&
     setBackground();
 }
 
+void IntroState::init()
+{
+}
+
 void IntroState::onDeactivate()
 {
     LOG_INFO("State Intro\t Deactivate");

@@ -13,6 +13,10 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
     world_map.init();
 }
 
+void GameState::init()
+{
+}
+
 void GameState::onDeactivate()
 {
     LOG_INFO("State Game\t Deactivate");

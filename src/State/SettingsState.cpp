@@ -15,6 +15,10 @@ SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderW
     LOG_INFO("State Settings\t Init");
 }
 
+void SettingsState::init()
+{
+}
+
 void SettingsState::onDeactivate()
 {
     LOG_INFO("State Settings\t Deactivate");
