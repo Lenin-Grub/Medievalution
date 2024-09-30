@@ -67,7 +67,7 @@ void GameState::updateImGui()
     }
     ImGui::End();
 
-    std::string str = world_map.getProvinceName();
+    std::string str = world_map.getProvinceName(world_map.getColor());
     char* chr = const_cast<char*>(str.c_str());
 
     ImGui::SetNextWindowBgAlpha(0.55f);
@@ -85,7 +85,7 @@ void GameState::updateImGui()
 
     ImGui::Text("Mouse View Position: (%.1f,%.1f)", core::mouse_pos_view.x, core::mouse_pos_view.y);
     ImGui::Text(Localization::getInstance().getStringByKey("T_Province_name").c_str(), chr);
-    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID());
+    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID(world_map.getColor()));
 
     ImGui::Separator();
     ImGui::SliderFloat(Localization::getInstance().getStringByKey("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);

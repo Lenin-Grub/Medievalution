@@ -25,41 +25,26 @@ public:
     /// @param states The render states to use.
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    /// @brief Gets the color of the current province.
+    /// @return The sf::Color of the current province.
+    const sf::Color getColor();
+
     /// @brief Gets the ID of the current province.
     /// @return The ID of the current province. */
-    const int getProvinceID () const;
+    int getProvinceID(const sf::Color& color) const;
 
     /// @brief Gets the name of the current province.
     /// @return The name of the current province.
-    const std::string getProvinceName() const;
-
-    /// @brief Finds the ID of a province by its color.
-    /// @param color The color of the province to find.
-    /// @return The ID of the province, or -1 if not found.
-    int findProvinceID (sf::Color color);
-
-    /// @brief Gets the color of the current province.
-    /// @return The color of the current province.
-    sf::Color getColor ();
+    const std::string getProvinceName(const sf::Color& color) const;
 
     /// @brief Finds the center of a province by its color.
     /// @param provinceColor The color of the province to find.
     /// @return The center of the province, or (-1, -1) if not found.
-    sf::Vector2f findProvinceCenter (sf::Color provinceColor) const;
-
-    /// @brief Gets the center of a province by its name.
-    /// @param provinceName The name of the province to find.
-    /// @return The center of the province, or (0, 0) if not found.
-    sf::Vector2f getProvinceCenter  (const std::string& provinceName) const;
-
-    /// @brief Gets the center of a province by its color.
-    /// @param color The color of the province to find.
-    /// @return The center of the province, or (0, 0) if not found.
-    sf::Vector2f getProvinceCenter  (const sf::Color& color) const;
+    sf::Vector2f findProvinceCenter(sf::Color provinceColor) const;
 
     /// @brief Initializes the province data.
     /// @return True if initialization is successful, false otherwise.
-    bool         isInitProvinces   ();
+    bool isInitProvinces();
 
 public:
     int                   load_progress; ///< @brief The load progress of the world map. 
@@ -67,9 +52,8 @@ public:
     sf::Shader            shader;        ///< @brief The shader used for rendering the world map.
     sf::Color             select_color;  ///< @brief The color used for selecting provinces.
     sf::Image             map_image;     ///< @brief The image of the world map. 
-    std::vector<Province> provinces;     ///< @brief A vector of provinces on the world map.
-    sf::CircleShape       shape;         ///< @brief The shape of the world map.
-
+    sf::CircleShape       shape;         ///< @brief The shape of the world map
+    
 private:
 
     /// @brief Loads the provinces map.
@@ -106,4 +90,27 @@ private:
 
     float         height;
     float         width;
+
+    struct ColorHash 
+    {
+        size_t operator()(const sf::Color& c) const noexcept 
+        {
+            size_t hash = 0;
+            hash = combine(hash, c.r);
+            hash = combine(hash, c.g);
+            hash = combine(hash, c.b);
+            hash = combine(hash, c.a);
+            return hash;
+        }
+
+        static size_t combine(size_t seed, size_t v) noexcept 
+        {
+            return seed ^ (v + 0x9e3779b9 + (seed << 6) + (seed >> 2));
+        }
+    };
+    public:
+    /// @brief A unordered map of provinces on the world map.
+    /// @param sf::Color - is a key
+    /// @param Province - is a value
+    std::unordered_map<sf::Color, Province, ColorHash> provinces;
 };
