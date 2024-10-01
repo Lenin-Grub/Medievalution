@@ -84,16 +84,16 @@ void StateMachine::update()
 {
     dtime = clock.restart().asMilliseconds();
 
-    while (states.top()->window.pollEvent(core::sfml_event))
+    while (states.top()->window.pollEvent(common::sfml_event))
     {
-        if (core::sfml_event.type == sf::Event::Closed)
+        if (common::sfml_event.type == sf::Event::Closed)
         {
             quit();
         }
         if (!states.empty())
         {
             states.top()->updateEvents();
-            ImGui::SFML::ProcessEvent(states.top()->window, core::sfml_event);
+            ImGui::SFML::ProcessEvent(states.top()->window, common::sfml_event);
         }
     }
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Core/Core.h"
+#include "../../Common/Common.h"
 
 /**
     @class Updates this boards vertex array to create a grid of empty tiles. The "grid lines"

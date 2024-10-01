@@ -22,7 +22,7 @@ bool State::isReplacing() const
 
 void State::updateMousePositions(sf::View* view)
 {
-    core::mouse_pos_screen	= sf::Mouse::getPosition();
-    core::mouse_pos_window	= sf::Mouse::getPosition(window);
-    core::mouse_pos_view	= window.mapPixelToCoords(sf::Mouse::getPosition(window));
+    common::mouse_pos_screen	= sf::Mouse::getPosition();
+    common::mouse_pos_window	= sf::Mouse::getPosition(window);
+    common::mouse_pos_view	= window.mapPixelToCoords(sf::Mouse::getPosition(window));
 }

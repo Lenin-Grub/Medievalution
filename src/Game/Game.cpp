@@ -3,7 +3,7 @@
 
 Game::Game()
 {
-    core::dtime = 0.00f;
+    common::dtime = 0.00f;
 }
 
 void Game::run()

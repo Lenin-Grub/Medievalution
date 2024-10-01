@@ -108,7 +108,7 @@ const sf::Color WorldMap::getColor()
 {
     if (isMouseOnMap())
     {
-        return	current_color = map_image.getPixel(core::mouse_pos_view.x, core::mouse_pos_view.y);
+        return	current_color = map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y);
     }
     else
         return sf::Color::White;
@@ -118,7 +118,7 @@ int WorldMap::getProvinceID(const sf::Color& color) const
 {
     if (!isMouseOnMap())
         return 0;
-    if (color == map_image.getPixel(core::mouse_pos_view.x, core::mouse_pos_view.y))
+    if (color == map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
         return provinces.find(color)->second.id;
     else
         return 0;
@@ -128,7 +128,7 @@ const std::string WorldMap::getProvinceName(const sf::Color& color) const
 {
     if (!isMouseOnMap())
         return "not_found";
-    if (color == map_image.getPixel(core::mouse_pos_view.x, core::mouse_pos_view.y))
+    if (color == map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
         return provinces.find(color)->second.name;
     else
         return "not_found";
@@ -136,10 +136,10 @@ const std::string WorldMap::getProvinceName(const sf::Color& color) const
 
 bool WorldMap::isMouseOnMap() const
 {
-    if (core::mouse_pos_view.x >= 0 && 
-        core::mouse_pos_view.y >= 0 && 
-        core::mouse_pos_view.x <= map_image.getSize().x && 
-        core::mouse_pos_view.y <= map_image.getSize().y)
+    if (common::mouse_pos_view.x >= 0 && 
+        common::mouse_pos_view.y >= 0 && 
+        common::mouse_pos_view.x <= map_image.getSize().x && 
+        common::mouse_pos_view.y <= map_image.getSize().y)
         return true;
     else
         return false;

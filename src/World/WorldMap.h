@@ -1,5 +1,5 @@
 #pragma once
-#include "../Core/Core.h"
+#include "../Common/Common.h"
 #include "../Resource/ResourceManager.hpp"
 #include "Province.h"
 

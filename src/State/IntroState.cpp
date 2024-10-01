@@ -88,11 +88,11 @@ void IntroState::setBackground()
 
     text.setFont(font);
     text.setString("MedievalutioN");
-    text.setCharacterSize(core::math.convertToPercentage(window.getSize().x, 10));
+    text.setCharacterSize(common::math.convertToPercentage(window.getSize().x, 10));
     text.setFillColor(alpha);
 
     sf::FloatRect textRect = text.getLocalBounds();
 
     text.setOrigin(textRect.left + textRect.width / 2.0f, textRect.top + textRect.height / 0.4f);
-    text.setPosition(core::math.setCentre(window.getSize().x, window.getSize().y));
+    text.setPosition(common::math.setCentre(window.getSize().x, window.getSize().y));
 }

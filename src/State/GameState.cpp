@@ -83,7 +83,7 @@ void GameState::updateImGui()
     else
         ImGui::Text("Mouse Position: <invalid>");
 
-    ImGui::Text("Mouse View Position: (%.1f,%.1f)", core::mouse_pos_view.x, core::mouse_pos_view.y);
+    ImGui::Text("Mouse View Position: (%.1f,%.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);
     ImGui::Text(Localization::getInstance().getStringByKey("T_Province_name").c_str(), chr);
     ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID(world_map.getColor()));
 
@@ -116,12 +116,12 @@ void GameState::draw(sf::RenderTarget* target)
     window.clear();
     if (!target)
         target = &window;
-    target->setView(core::view);
+    target->setView(common::view);
 
     world_map.draw(*target, sf::RenderStates::Default);
 
     target->setView(window.getDefaultView());
-    target->setView(core::view);
+    target->setView(common::view);
 
     ImGui::SFML::Render(window);
 
