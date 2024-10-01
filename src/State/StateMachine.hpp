@@ -13,44 +13,46 @@
 class StateMachine
 {
 public:
-    StateMachine   ();
+    StateMachine();
 
-/// @brief Begins running the specified state.
-/// @param state The initial state to run.
+    /// @brief Begins running the specified state.
+    /// @param state The initial state to run.
     void run(std::unique_ptr<State> state);
 
-/// @brief Transitions to the next state in the stack.
+    /// @brief Transitions to the next state in the stack.
     void nextState();
 
-/// @brief Reverts to the previous state in the stack.
+    /// @brief Reverts to the previous state in the stack.
     void lastState();
 
+    /// @brief Initializes the state.
+    /// This method must be implemented in derived classes to initialize the state.
     void init();
 
-/// @brief Updates the current state.
-/// Calculates the time delta and calls the update function of the state on top of the stack.
+    /// @brief Updates the current state.
+    /// Calculates the time delta and calls the update function of the state on top of the stack.
     void update();
 
-/// @brief Draws the current state.
-/// Calls the draw function of the state on top of the stack.
+    /// @brief Draws the current state.
+    /// Calls the draw function of the state on top of the stack.
     void draw();
 
-/// @brief Checks if the state machine is restarting.
-/// @return true if the state machine is restarting, false otherwise.
+    // @brief Checks if the state machine is restarting.
+    /// @return true if the state machine is restarting, false otherwise.
     bool restarting() const;
 
-/// @brief Checks if the state machine is currently running.
-/// @return true if the state machine is running, false otherwise.
+    /// @brief Checks if the state machine is currently running.
+    /// @return true if the state machine is running, false otherwise.
     bool running() const;
 
-/// @brief Stops the state machine.
+    /// @brief Stops the state machine.
     void quit();
 
-/// @brief Restarts the state machine.
-/// @param restart Indicates whether to restart the state machine(default is false).
+    /// @brief Restarts the state machine.
+    /// @param restart Indicates whether to restart the state machine(default is false).
     void restart(bool restart = false);
 
-/// @brief Creates and initializes a new state. Called first.
+    /// @brief Creates and initializes a new state. Called first.
     template <typename T>
     static std::unique_ptr<T> build(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 

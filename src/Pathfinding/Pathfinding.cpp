@@ -12,7 +12,7 @@ Pathfinding::Pathfinding()
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width = width;
+    this->width  = width;
     this->height = height;
 
     nodes.resize(width, std::vector<Node>(height));
