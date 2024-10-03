@@ -118,12 +118,13 @@ void Game::restartApplication()
     window->close();
     ImGui::SFML::Shutdown();
 
+    state_machine.is_init = true;
     initGraphicSettings();
     initWindow();
     initIcon();
     initFonts();
     initJukebox();
-
+    
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
     LOG_INFO("Application\t Restarted");
 }

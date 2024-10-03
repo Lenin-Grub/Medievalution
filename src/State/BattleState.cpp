@@ -40,6 +40,10 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
+    if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
+    {
+        state_machine.lastState();
+    }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
         m_sprite_sheet.addTileId(m_selected_tile_id, common::mouse_pos_view);
