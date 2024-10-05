@@ -78,8 +78,6 @@ void MenuState::update(const float& dtime)
 
 void MenuState::draw(sf::RenderTarget* target)
 {
-    window.clear();
-
     if (!target)
         target = &window;
     target->setView(window.getDefaultView());
@@ -87,8 +85,6 @@ void MenuState::draw(sf::RenderTarget* target)
     window.draw(shape);
 
     ImGui::SFML::Render(window);
-
-    window.display();
 }
 
 void MenuState::setBackground()

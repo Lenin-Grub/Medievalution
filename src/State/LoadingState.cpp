@@ -48,12 +48,9 @@ void LoadingState::draw(sf::RenderTarget* target)
             }
         });
 
-    window.clear();
     window.draw(shape);
     window.draw(text);
     ImGui::SFML::Render(window);
-    window.display();
-
     thread.join();
 }
 

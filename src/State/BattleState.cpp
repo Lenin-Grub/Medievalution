@@ -136,7 +136,6 @@ void BattleState::update(const float& dtime)
 
 void BattleState::draw(sf::RenderTarget* target)
 {
-    window.clear();
     if (!target)
         target = &window;
     target->setView(common::view);
@@ -150,6 +149,4 @@ void BattleState::draw(sf::RenderTarget* target)
     target->setView(common::view);
 
     ImGui::SFML::Render(window);
-
-    window.display();
 }

@@ -110,7 +110,9 @@ void StateMachine::draw()
 {
     if (!states.empty())
     {
+        states.top()->window.clear();
         states.top()->draw();
+        states.top()->window.display();
     }
 }
 

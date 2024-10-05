@@ -233,10 +233,8 @@ void SettingsState::draw(sf::RenderTarget* target)
     if (!target)
         target = &window;
     target->setView(window.getDefaultView());
-    window.clear();
     window.draw(shape);
     ImGui::SFML::Render(window);
-    window.display();
 }
 
 void SettingsState::setBackground()

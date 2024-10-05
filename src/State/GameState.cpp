@@ -118,7 +118,6 @@ void GameState::update(const float& dtime)
 
 void GameState::draw(sf::RenderTarget* target)
 {
-    window.clear();
     if (!target)
         target = &window;
     target->setView(common::view);
@@ -129,8 +128,6 @@ void GameState::draw(sf::RenderTarget* target)
     target->setView(common::view);
 
     ImGui::SFML::Render(window);
-
-    window.display();
 }
 
 bool GameState::isLoad()
