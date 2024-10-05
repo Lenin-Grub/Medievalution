@@ -43,7 +43,7 @@
 #include <imgui-SFML.h>
 
 //SPDLOG
-#include "Core/Log.h"
+#include "Common/Log.h"
 
 //Icons for ImGui
-#include "Core/IconText.h"
+#include "Common/IconText.h"

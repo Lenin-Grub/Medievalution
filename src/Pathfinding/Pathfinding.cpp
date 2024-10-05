@@ -12,7 +12,7 @@ Pathfinding::Pathfinding()
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width = width;
+    this->width  = width;
     this->height = height;
 
     nodes.resize(width, std::vector<Node>(height));
@@ -117,8 +117,8 @@ void Pathfinding::draw(sf::RenderWindow& window)
 
 void Pathfinding::handleInput()
 {
-    int x = core::mouse_pos_view.x / tile_size.x;
-    int y = core::mouse_pos_view.y / tile_size.y;
+    int x = common::mouse_pos_view.x / tile_size.x;
+    int y = common::mouse_pos_view.y / tile_size.y;
 
     if (x >= 0 && x < width && y >= 0 && y < height)
     {

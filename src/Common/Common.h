@@ -4,7 +4,7 @@
 #include "../Resource/Jukebox.hpp"
 #include "../Math/Math.h"
 
-class Core
+class Common
 {
 public:
     static sf::Event    sfml_event;
@@ -16,10 +16,10 @@ public:
     static sf::Vector2f mouse_pos_view;
     static Math         math;
 
-    Core();
+    Common();
 };
 
-typedef Core core;
+typedef Common common;
 typedef sf::Vector2i vec2i;
 typedef sf::Vector2f vec2f;
 typedef sf::Vector2u vec2u;

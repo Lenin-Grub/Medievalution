@@ -14,12 +14,12 @@ public:
 
     void init()                                   override;
     void onDeactivate()                           override;
-    void onActivate  ()                           override;
+    void onActivate()                             override;
     void updateEvents()                           override;
-    void updateImGui ()                           override;
+    void updateImGui()                            override;
     void update(const float& dtime)               override;
     void draw(sf::RenderTarget* target = nullptr) override;
-    bool isLoad      ();
+    bool isLoad();
 
 private:
     sf::Text          province_name;

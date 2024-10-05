@@ -1,5 +1,5 @@
 #pragma once
-#include "../../Core/Core.h"
+#include "../../Common/Common.h"
 #include "Board.hpp"
 
 class SpriteSheet 

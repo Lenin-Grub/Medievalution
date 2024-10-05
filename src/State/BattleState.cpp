@@ -40,9 +40,13 @@ void BattleState::onActivate()
 
 void BattleState::updateEvents()
 {
+    if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
+    {
+        state_machine.lastState();
+    }
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
     {
-        m_sprite_sheet.addTileId(m_selected_tile_id, core::mouse_pos_view);
+        m_sprite_sheet.addTileId(m_selected_tile_id, common::mouse_pos_view);
     }
     if (!ImGui::GetIO().WantCaptureMouse)
     {
@@ -132,10 +136,9 @@ void BattleState::update(const float& dtime)
 
 void BattleState::draw(sf::RenderTarget* target)
 {
-    window.clear();
     if (!target)
         target = &window;
-    target->setView(core::view);
+    target->setView(common::view);
 
     target->draw(m_board);
     m_sprite_sheet.mergeTiles();
@@ -143,9 +146,7 @@ void BattleState::draw(sf::RenderTarget* target)
     pathfinding.draw(window);
 
     target->setView(window.getDefaultView());
-    target->setView(core::view);
+    target->setView(common::view);
 
     ImGui::SFML::Render(window);
-
-    window.display();
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include "../stdafx.h"
-#include "../Core/Core.h"
+#include "../Common/Common.h"
 
 struct FileUtils
 {

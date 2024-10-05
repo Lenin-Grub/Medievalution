@@ -41,15 +41,13 @@ void SettingsState::updateEvents()
 void SettingsState::updateImGui()
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
-
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
     std::string str = Localization::getInstance().getStringByKey("T_settings");
-
     ImGui::Begin(((char*)ICON_SETTINGS + str).c_str(), nullptr, ImGuiWindowFlags_NoCollapse 
                                                               | ImGuiWindowFlags_AlwaysAutoResize 
                                                               | ImGuiWindowFlags_NoMove);
 
+#pragma region Window settings
     std::string str_preview = std::to_string(video_modes.at(resolution_current_id).width) + "x" +
                               std::to_string(video_modes.at(resolution_current_id).height);
 
@@ -81,21 +79,17 @@ void SettingsState::updateImGui()
                 ImGui::SetItemDefaultFocus();
             }
         }
-
         ImGui::EndCombo();
     }
 
     //------------------------------------------------------------------------------------
     str = Localization::getInstance().getStringByKey("T_full_window");
     if (ImGui::Checkbox(((char*)ICON_MAX_SIZE + str).c_str(), &WindowSettings::getInstance().fullscreen))
-    {
         WindowSettings::getInstance().fullscreen;
-    }
 
     if (ImGui::IsItemHovered())
     {
         ImGui::BeginTooltip();
-
         str = Localization::getInstance().getStringByKey("T_full_window_tooltip");
         ImGui::SetTooltip(str.c_str());
         ImGui::EndTooltip();
@@ -103,10 +97,7 @@ void SettingsState::updateImGui()
 
     str = Localization::getInstance().getStringByKey("T_vertical_sync");
     ImGui::BeginDisabled();
-    if (ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertical_sync))
-    {
-
-    }
+    ImGui::Checkbox(str.c_str(), &WindowSettings::getInstance().vertical_sync);
     ImGui::EndDisabled();
 
     if (ImGui::IsItemHovered())
@@ -127,49 +118,41 @@ void SettingsState::updateImGui()
         ImGui::SetTooltip(str.c_str());
         ImGui::EndTooltip();
     }
+#pragma endregion
 
+#pragma region Sounds and Musics
     //------------------------------------------------------------------------------------
-
     ImGui::Separator();
-    {
-        str = Localization::getInstance().getStringByKey("T_sound_volume");
-        ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
-    }
-
+    ImGui::BeginTable("table1", 2);
+    ImGui::TableNextRow();
     //------------------------------------------------------------------------------------
-
-    ImGui::SameLine();
-    {
-        str = WindowSettings::getInstance().localization.at("T_sound");
-        ImGui::Checkbox(str.c_str(), &play_sound);
-    }
-
+    ImGui::TableNextColumn();
+    str = Localization::getInstance().getStringByKey("T_sound_volume");
+    ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
+    //------------------------------------------------------------------------------------
+    ImGui::TableNextColumn();
+    str = WindowSettings::getInstance().localization.at("T_sound");
+    ImGui::Checkbox(str.c_str(), &play_sound);
+    //------------------------------------------------------------------------------------
+    ImGui::TableNextRow();
+    ImGui::TableNextColumn();
     str = WindowSettings::getInstance().localization.at("T_music_volume");
     if (ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
-    {
         state_machine.data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
-    }
-
     //------------------------------------------------------------------------------------
+    ImGui::TableNextColumn();
+     str = WindowSettings::getInstance().localization.at("T_music");
+     if (ImGui::Checkbox(str.c_str(), &play_music))
+     {
+         if (play_music)
+             state_machine.data.jukebox.play();
+         else
+             state_machine.data.jukebox.pause();
+     }
+     ImGui::EndTable();
+#pragma endregion
 
-    ImGui::SameLine();
-    {
-        str = WindowSettings::getInstance().localization.at("T_music");
-        if (ImGui::Checkbox(str.c_str(), &play_music))
-        {
-            if (play_music)
-            {
-                state_machine.data.jukebox.play();
-            }
-            else
-            {
-                state_machine.data.jukebox.pause();
-            }
-        }
-    }
-
-    //------------------------------------------------------------------------------------
-
+#pragma region Camera settings 
     ImGui::Separator();
     ImGui::BeginDisabled();
     {
@@ -181,19 +164,20 @@ void SettingsState::updateImGui()
         ImGui::SliderInt(str.c_str(), &WindowSettings::getInstance().camera_speed, 1, 100, "%d%%");
     }
     ImGui::EndDisabled();
-    ImGui::Separator();
+#pragma endregion
 
+#pragma region Apply 
+    ImGui::Separator();
     str = WindowSettings::getInstance().localization.at("T_apply");
     if (ImGui::Button(str.c_str()))
     {
         str = WindowSettings::getInstance().localization.at("T_apply");
         ImGui::OpenPopup(str.c_str());
     }
+#pragma endregion
 
-    //------------------------------------------------------------------------------------
-
+#pragma region Apply  settings
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-
     str = WindowSettings::getInstance().localization.at("T_apply");
     if (ImGui::BeginPopupModal(str.c_str(), NULL, ImGuiWindowFlags_AlwaysAutoResize))
     {
@@ -209,17 +193,18 @@ void SettingsState::updateImGui()
             ImGui::CloseCurrentPopup();
             LOG_INFO("Settings\t Changed");
         }
+
         ImGui::SetItemDefaultFocus();
         ImGui::SameLine();
         str = WindowSettings::getInstance().localization.at("T_cancel");
         if (ImGui::Button(str.c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
         ImGui::EndPopup();
     }
-    
-    //------------------------------------------------------------------------------------
-    
-    ImGui::SameLine();
+#pragma endregion
 
+#pragma region Exit and metrics
+
+    ImGui::SameLine();
     str = WindowSettings::getInstance().localization.at("T_exit");
     if (ImGui::Button(str.c_str()))
     {
@@ -236,11 +221,11 @@ void SettingsState::updateImGui()
 
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
     ImGui::End();
+#pragma endregion
 }
 
 void SettingsState::update(const float& dtime)
 {
-
 }
 
 void SettingsState::draw(sf::RenderTarget* target)
@@ -248,10 +233,8 @@ void SettingsState::draw(sf::RenderTarget* target)
     if (!target)
         target = &window;
     target->setView(window.getDefaultView());
-    window.clear();
     window.draw(shape);
     ImGui::SFML::Render(window);
-    window.display();
 }
 
 void SettingsState::setBackground()

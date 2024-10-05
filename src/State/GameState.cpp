@@ -67,36 +67,41 @@ void GameState::updateImGui()
     }
     ImGui::End();
 
-    std::string str = world_map.getProvinceName();
+    std::string str = world_map.getProvinceName(world_map.getColor());
     char* chr = const_cast<char*>(str.c_str());
 
     ImGui::SetNextWindowBgAlpha(0.55f);
     ImGui::Begin("T", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
-
-
     ImGui::TextColored(ImVec4(1, 1, 1, 0.5), (char*)"Это карта мира\n" "Используйте WSAD для навигации\n" "Используй колесико мышки для масштабирования\n" "Зажми колесико и перетащи мышь для перемещения по карте\n" "Это и многие другие окна можно передвинуть ЛКМ");
+    
     ImGui::Separator();
 
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
-    if (ImGui::IsMousePosValid())
-        ImGui::Text("Mouse Window Position: (%.1f,%.1f)", io.MousePos.x, io.MousePos.y);
-    else
-        ImGui::Text("Mouse Position: <invalid>");
-
-    ImGui::Text("Mouse View Position: (%.1f,%.1f)", core::mouse_pos_view.x, core::mouse_pos_view.y);
-    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_name").c_str(), chr);
-    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str(), world_map.getProvinceID());
-
     ImGui::Separator();
-    ImGui::SliderFloat(Localization::getInstance().getStringByKey("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
 
+    //--------
+    ImGui::Columns(2, "table_columns");
+    ImGui::Separator();
+    ImGui::Text("Mouse Window Position:");                                              ImGui::NextColumn();
+    if (ImGui::IsMousePosValid())
+        ImGui::Text("(%.1f , %.1f)", io.MousePos.x, io.MousePos.y); 
+    else ImGui::Text("Mouse Position: <invalid>");
+                                                                                        ImGui::NextColumn();
+    ImGui::Text("Mouse View Position:");                                                ImGui::NextColumn();
+    ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);   ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_name").c_str()); ImGui::NextColumn();
+    ImGui::Text("%s", chr);                                                             ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str());   ImGui::NextColumn();
+    ImGui::Text("%d",world_map.getProvinceID(world_map.getColor()));                    ImGui::NextColumn();
+    ImGui::Separator();
+    ImGui::Columns(1);
+    ImGui::SliderFloat(Localization::getInstance().getStringByKey("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
+    ImGui::End();
     //{
     //	// string � imgui
     //	std::string message = "Hello world";
     //	ImGui::Text(message.data(), message.data() + message.size());
     //}
-
-    ImGui::End();
 }
 
 void GameState::update(const float& dtime)
@@ -113,19 +118,16 @@ void GameState::update(const float& dtime)
 
 void GameState::draw(sf::RenderTarget* target)
 {
-    window.clear();
     if (!target)
         target = &window;
-    target->setView(core::view);
+    target->setView(common::view);
 
     world_map.draw(*target, sf::RenderStates::Default);
 
     target->setView(window.getDefaultView());
-    target->setView(core::view);
+    target->setView(common::view);
 
     ImGui::SFML::Render(window);
-
-    window.display();
 }
 
 bool GameState::isLoad()

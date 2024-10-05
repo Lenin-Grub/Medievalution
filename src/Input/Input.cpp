@@ -7,32 +7,32 @@ static sf::Vector2i last_click_position;
 
 bool Input::isKeyPressed(const sf::Keyboard::Key& code)
 {
-    if (core::sfml_event.type == sf::Event::KeyPressed)
-        if (core::sfml_event.key.code == code)
+    if (common::sfml_event.type == sf::Event::KeyPressed)
+        if (common::sfml_event.key.code == code)
             return true;
     return false;
 }
 
 bool Input::isKeyReleased(const sf::Keyboard::Key& code)
 {
-    if (core::sfml_event.type == sf::Event::KeyReleased)
-        if (core::sfml_event.key.code == code)
+    if (common::sfml_event.type == sf::Event::KeyReleased)
+        if (common::sfml_event.key.code == code)
             return true;
     return false;
 }
 
 bool Input::isMousePressed(const sf::Mouse::Button& code)
 {
-    if (core::sfml_event.type == sf::Event::MouseButtonPressed)
-        if (core::sfml_event.key.code == code)
+    if (common::sfml_event.type == sf::Event::MouseButtonPressed)
+        if (common::sfml_event.key.code == code)
             return true;
     return false;
 }
 
 bool Input::isMouseReleased(const sf::Mouse::Button& code)
 {
-    if (core::sfml_event.type == sf::Event::MouseButtonReleased)
-        if (core::sfml_event.key.code == code)
+    if (common::sfml_event.type == sf::Event::MouseButtonReleased)
+        if (common::sfml_event.key.code == code)
             return true;
     return false;
 }
@@ -41,7 +41,7 @@ bool Input::isMouseDoubleClick(const sf::Mouse::Button& code)
 {
     if (isMouseReleased(code))
     {
-        unsigned int currentTime = core::clock.getElapsedTime().asMilliseconds();
+        unsigned int currentTime = common::clock.getElapsedTime().asMilliseconds();
 
         if ((currentTime - last_click_time) < MAX_DOUBLE_CLICK_TIME && sf::Mouse::getPosition() == last_click_position)
         {
@@ -59,7 +59,7 @@ bool Input::isMouseDoubleClick(const sf::Mouse::Button& code)
 
 bool Input::isMouseWheelUp(const sf::Mouse::Wheel code)
 {
-        if (core::sfml_event.mouseWheel.x == code)
+        if (common::sfml_event.mouseWheel.x == code)
             return true;
         return false;
 }
