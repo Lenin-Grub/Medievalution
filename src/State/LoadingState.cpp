@@ -39,6 +39,8 @@ void LoadingState::update(const float& dtime)
 
 void LoadingState::draw(sf::RenderTarget* target)
 {
+    window.draw(shape);
+    window.draw(text);
     std::thread thread([&]()
         {
             auto load_state = StateMachine::build<GameState>(data, state_machine, window, true);
@@ -48,9 +50,8 @@ void LoadingState::draw(sf::RenderTarget* target)
             }
         });
 
-    window.draw(shape);
-    window.draw(text);
     ImGui::SFML::Render(window);
+    window.display();
     thread.join();
 }
 

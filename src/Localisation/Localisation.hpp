@@ -33,7 +33,7 @@ public:
 /// @return The localized string corresponding to the given key.
     std::string getStringByKey(std::string key);
 
-/// @brief Init loaclisation file
+/// @brief Init localisation file
     bool init();
 
 private:
