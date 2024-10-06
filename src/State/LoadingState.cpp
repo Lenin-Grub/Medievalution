@@ -39,22 +39,23 @@ void LoadingState::update(const float& dtime)
 
 void LoadingState::draw(sf::RenderTarget* target)
 {
-    window.draw(shape);
-    window.draw(text);
-    std::thread thread([&]()
+    auto load_state_future = std::async(std::launch::async, [&]()
         {
             auto load_state = StateMachine::build<GameState>(data, state_machine, window, true);
-            if (load_state->isLoad())
-            {
-                next_state = std::move(load_state);
-            }
+            return load_state;
         });
 
+    window.draw(shape);
+    window.draw(text);
     ImGui::SFML::Render(window);
     window.display();
-    thread.join();
-}
 
+    auto load_state = load_state_future.get();
+    if (load_state->isLoad())
+    {
+        next_state = std::move(load_state);
+    }
+}
 void LoadingState::setBackground()
 {
     if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
