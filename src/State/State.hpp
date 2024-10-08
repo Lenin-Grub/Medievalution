@@ -1,6 +1,7 @@
 #pragma once
 #include "../Resource/Jukebox.hpp"
 #include "../Common/Common.h"
+#include "../Resource/ResourceManager.hpp"
 
 class StateMachine;
 

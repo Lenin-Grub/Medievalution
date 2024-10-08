@@ -20,7 +20,7 @@ public:
 /// This function ensures that there is only one instance of the Localization
 /// class. It returns a reference to this single instance.
 /// @return A reference to the single instance of the Localization class.
-    static Localization& getInstance()
+    static Localization& get()
     {
         static Localization single_instance;
         return single_instance;
@@ -31,7 +31,9 @@ public:
 /// the corresponding localized string.
 /// @param key The unique key associated with the desired localized string.
 /// @return The localized string corresponding to the given key.
-    std::string getStringByKey(std::string key);
+    std::string getString(const std::string& key);
+
+    std::string getString(const std::string& icon, const std::string& key);
 
 /// @brief Init localisation file
     bool init();
@@ -40,6 +42,8 @@ private:
     Localization()                               = default;
     Localization(const Localization& root)       = delete;
     Localization& operator=(const Localization&) = delete;
+
 private:
-    std::ifstream      localization_file;
+    std::ifstream  localization_file;
+    nlohmann::json localization;        ///< @brief Localization settings in JSON format.
 };

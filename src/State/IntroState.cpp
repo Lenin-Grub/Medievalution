@@ -79,6 +79,9 @@ void IntroState::setBackground()
         LOG_ERROR("File \"font\" not found");
     }
 
+    //background = ResourceManager::getInstance().load<sf::Texture>("resources/Backgrounds/ruszastavka.png");
+    
+
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 

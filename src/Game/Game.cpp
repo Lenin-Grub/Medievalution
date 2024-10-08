@@ -95,7 +95,7 @@ bool Game::initFonts() noexcept
 
     ImGuiIO& io = ImGui::GetIO();
     ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
-    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf", 20.f, &config, icon_ranges);
+    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/MedievalutionIcons.ttf", 20.f, &config, icon_ranges);
     if(io.Fonts->Build())
     {
         ImGui::SFML::UpdateFontTexture();

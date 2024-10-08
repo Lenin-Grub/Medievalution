@@ -1,11 +1,24 @@
 #include "../stdafx.h"
 #include "Localisation.hpp"
 
-std::string Localization::getStringByKey(std::string key)
+std::string Localization::getString(const std::string& key)
 {
-    if (WindowSettings::getInstance().localization.contains(key))
+    if (localization.contains(key))
     {
-        return WindowSettings::getInstance().localization.at(key);
+        return localization.at(key);
+    }
+    else
+    {
+        LOG_WARN("{0} not found. Check localization file", key);
+        return  "not found\t" + key;
+    }
+}
+
+std::string Localization::getString(const std::string& icon, const std::string& key)
+{
+    if (localization.contains(key))
+    {
+        return icon + (std::string)localization.at(key);
     }
     else
     {
@@ -40,7 +53,7 @@ bool Localization::init()
         return false;
     }
 
-    localization_file >> WindowSettings::getInstance().localization;
+    localization_file >> localization;
     localization_file.close();
     return true;
 }
