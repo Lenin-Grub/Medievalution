@@ -11,7 +11,7 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 void MenuState::init()
 {
     setBackground();
-    Localization::get().init();
+    Localization::getInstance().init();
     LOG_INFO("State Menu\t Init");
 }
 
@@ -43,22 +43,22 @@ void MenuState::updateImGui()
                                      | ImGuiWindowFlags_NoResize
                                      | ImGuiWindowFlags_NoMove);
 
-    if (ImGui::Button(Localization::get().getString("T_new_game").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_new_game").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
     }
     
-    if (ImGui::Button(Localization::get().getString("T_battle_scene").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_battle_scene").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<BattleState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::get().getString("T_settings").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_settings").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::get().getString("T_exit").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
     {
         state_machine.quit();
     }

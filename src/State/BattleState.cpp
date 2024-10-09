@@ -60,7 +60,7 @@ void BattleState::updateImGui()
 {
     ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    if (ImGui::Button(Localization::get().getString("T_exit").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
     {
         state_machine.lastState();
     }

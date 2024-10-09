@@ -55,12 +55,12 @@ void GameState::updateImGui()
     ImGui::ShowDemoWindow();
     ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
     
-    if (ImGui::Button((Localization::get().getString(ICON_LOG_OUT, "T_exit")).c_str(), ImVec2(120, 0)))
+    if (ImGui::Button((Localization::getInstance().get(ICON_LOG_OUT, "T_exit")).c_str(), ImVec2(120, 0)))
     {
         state_machine.lastState();
     }
 
-    if (ImGui::Button(Localization::get().getString(ICON_SETTINGS, "T_settings").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get(ICON_SETTINGS, "T_settings").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
@@ -88,13 +88,13 @@ void GameState::updateImGui()
                                                                                         ImGui::NextColumn();
     ImGui::Text("Mouse View Position:");                                                ImGui::NextColumn();
     ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);   ImGui::NextColumn();
-    ImGui::Text(Localization::get().getString("T_Province_name").c_str()); ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().get("T_Province_name").c_str()); ImGui::NextColumn();
     ImGui::Text("%s", chr);                                                             ImGui::NextColumn();
-    ImGui::Text(Localization::get().getString("T_Province_id").c_str());   ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().get("T_Province_id").c_str());   ImGui::NextColumn();
     ImGui::Text("%d",world_map.getProvinceID(world_map.getColor()));                    ImGui::NextColumn();
     ImGui::Separator();
     ImGui::Columns(1);
-    ImGui::SliderFloat(Localization::get().getString("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
+    ImGui::SliderFloat(Localization::getInstance().get("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
     ImGui::End();
     //{
     //	// string � imgui
