@@ -13,6 +13,7 @@ void Game::run()
     initIcon();	
     initCursor();
     initFonts();
+    initLocalization();
     initJukebox();
 
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
@@ -104,6 +105,13 @@ bool Game::initFonts() noexcept
     return false;
 }
 
+bool Game::initLocalization() noexcept
+{
+    if (Localization::getInstance().init("translation/rus.json"))
+        return true;
+    return false;
+}
+
 bool Game::initJukebox() noexcept
 {
     state_machine.data.jukebox.requestAll();
@@ -123,6 +131,7 @@ void Game::restartApplication()
     initWindow();
     initIcon();
     initFonts();
+    initLocalization();
     initJukebox();
     
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));

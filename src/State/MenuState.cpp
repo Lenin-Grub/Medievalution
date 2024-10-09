@@ -11,7 +11,6 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 void MenuState::init()
 {
     setBackground();
-    Localization::getInstance().init();
     LOG_INFO("State Menu\t Init");
 }
 

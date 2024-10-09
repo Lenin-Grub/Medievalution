@@ -45,6 +45,8 @@ private:
     /// @return True if the fonts were successfully initialized; false otherwise.
     bool initFonts() noexcept;
 
+    bool initLocalization() noexcept;
+
     /// @brief Initializes the jukebox for the game
     /// This method initializes the audio system for the game, setting up music and sound effects
     /// @return True if the jukebox was successfully initialized; false otherwise.
