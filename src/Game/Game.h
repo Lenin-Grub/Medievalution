@@ -21,9 +21,6 @@ public:
     /// until the window is closed.
     void run();
 
-    /// @brief Load and set cursor
-    void initCursor();
-
 private:
     /// @brief Initializes the graphical settings for the game
     /// This method sets up various graphical settings necessary for the game
@@ -39,11 +36,18 @@ private:
     /// This method sets the icon for the application window
     /// @return True if the icon was successfully initialized; false otherwise.
     bool initIcon() noexcept;
+    
+    /// @brief Load and set cursor
+    void initCursor();
 
     /// @brief Initializes the fonts used in the game
     /// This method loads and initializes the fonts used throughout the game
     /// @return True if the fonts were successfully initialized; false otherwise.
     bool initFonts() noexcept;
+
+    /// @brief Initializes the localization.
+    /// @return true if the initialization was successful, false otherwise.
+    bool initLocalization() noexcept;
 
     /// @brief Initializes the jukebox for the game
     /// This method initializes the audio system for the game, setting up music and sound effects

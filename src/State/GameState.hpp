@@ -2,7 +2,6 @@
 #include "State.hpp"
 #include "SettingsState.hpp"
 #include "../World/WorldMap.h"
-#include "../Camera/Camera.h"
 
 class StateMachine;
 
@@ -19,7 +18,6 @@ public:
     void updateImGui()                            override;
     void update(const float& dtime)               override;
     void draw(sf::RenderTarget* target = nullptr) override;
-    bool isLoad();
 
 private:
     sf::Text          province_name;
@@ -27,6 +25,5 @@ private:
     sf::Texture       texture;
     std::stringstream cords;
     WorldMap          world_map;
-    Camera            camera;
     bool              is_loaded;
 };

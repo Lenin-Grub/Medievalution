@@ -31,6 +31,11 @@ void LoadingState::updateEvents()
 
 void LoadingState::updateImGui()
 {
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::End();
 }
 
 void LoadingState::update(const float& dtime)
@@ -39,31 +44,24 @@ void LoadingState::update(const float& dtime)
 
 void LoadingState::draw(sf::RenderTarget* target)
 {
-    std::thread thread([&]()
+    auto load_state_future = std::async(std::launch::async, [&]()
         {
             auto load_state = StateMachine::build<GameState>(data, state_machine, window, true);
-            if (load_state->isLoad())
-            {
-                next_state = std::move(load_state);
-            }
+            return load_state;
         });
 
     window.draw(shape);
     window.draw(text);
     ImGui::SFML::Render(window);
-    thread.join();
-}
+    window.display();
 
+    auto load_state = load_state_future.get();
+    next_state = std::move(load_state);
+}
 void LoadingState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
-    {
-        LOG_ERROR("File \"background\" not found");
-    }
-    if (!font.loadFromFile("resources/Fonts/Blackmoor.ttf"))
-    {
-        LOG_ERROR("File \"font\" not found");
-    }
+    background = ResourceLoader::instance().getTexture("background_1.png");
+    font = ResourceLoader::instance().getFont("Blackmoor.ttf");
 
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));

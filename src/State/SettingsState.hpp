@@ -1,6 +1,5 @@
 #pragma once
 #include "State.hpp"
-#include "../Localisation/Localisation.hpp"
 
 class StateMachine;
 

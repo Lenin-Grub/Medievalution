@@ -13,6 +13,7 @@ void Game::run()
     initIcon();	
     initCursor();
     initFonts();
+    initLocalization();
     initJukebox();
 
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));
@@ -35,7 +36,7 @@ void Game::run()
 
 void Game::initCursor()
 {
-    im_cursor.loadFromFile("resources/Icons/cursor.png");
+    im_cursor = ResourceLoader::instance().getImage("cursor.png");
     cursor.loadFromPixels(im_cursor.getPixelsPtr(), im_cursor.getSize(), sf::Vector2u(0, 0));
 }
 
@@ -70,14 +71,9 @@ bool Game::initWindow() noexcept
 
 bool Game::initIcon() noexcept
 {
-    sf::Image icon;
-    if (icon.loadFromFile("resources/Icons/icon.png"))
-    {
-        this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-        return true;
-    }
-    LOG_ERROR("File <<icon.png>> not loaded");
-    return false;
+    sf::Image icon = ResourceLoader::instance().getImage("icon.png");
+    this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    return true;
 }
 
 bool Game::initFonts() noexcept
@@ -95,12 +91,19 @@ bool Game::initFonts() noexcept
 
     ImGuiIO& io = ImGui::GetIO();
     ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
-    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenFontIcons.ttf", 20.f, &config, icon_ranges);
+    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/MedievalutionIcons.ttf", 20.f, &config, icon_ranges);
     if(io.Fonts->Build())
     {
         ImGui::SFML::UpdateFontTexture();
         io.FontDefault = font1;
     }
+    return false;
+}
+
+bool Game::initLocalization() noexcept
+{
+    if (Localization::getInstance().init("translation/rus.json"))
+        return true;
     return false;
 }
 
@@ -123,6 +126,7 @@ void Game::restartApplication()
     initWindow();
     initIcon();
     initFonts();
+    initLocalization();
     initJukebox();
     
     state_machine.run(StateMachine::build<IntroState>(state_machine.data, state_machine, *window, true));

@@ -11,7 +11,6 @@ MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 void MenuState::init()
 {
     setBackground();
-    Localization::getInstance().init();
     LOG_INFO("State Menu\t Init");
 }
 
@@ -43,22 +42,22 @@ void MenuState::updateImGui()
                                      | ImGuiWindowFlags_NoResize
                                      | ImGuiWindowFlags_NoMove);
 
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_new_game").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_new_game").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
     }
     
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_battle_scene").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_battle_scene").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<BattleState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_settings").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_settings").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
     {
         state_machine.quit();
     }
@@ -89,10 +88,7 @@ void MenuState::draw(sf::RenderTarget* target)
 
 void MenuState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/background_main.jpg"))
-    {
-        LOG_ERROR("File \"background_main.jpg\" not found");
-    }
+    background = ResourceLoader::instance().getTexture("background_2.jpg");
 
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));

@@ -5,15 +5,16 @@
 
 GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
-, camera()
 , world_map()
 , is_loaded(false)
 {
+    state_machine.is_init = true;
 }
 
 void GameState::init()
 {
-    state_machine.is_init = true;
+    data.camera.setDefaulatView();
+    world_map.init();
     LOG_INFO("State Game\t Init");
 }
 
@@ -38,8 +39,8 @@ void GameState::updateEvents()
     ImGuiIO& io = ImGui::GetIO();
     if (!io.WantCaptureMouse)
     {
-        camera.zoom();
-        camera.scroll();
+        data.camera.zoom();
+        data.camera.scroll();
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
@@ -54,14 +55,13 @@ void GameState::updateImGui()
     ImGuiIO& io = ImGui::GetIO();
     ImGui::ShowDemoWindow();
     ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
-
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
+    
+    if (ImGui::Button((Localization::getInstance().get(ICON_LOG_OUT, "T_exit")).c_str(), ImVec2(120, 0)))
     {
         state_machine.lastState();
     }
-    std::string str1 = WindowSettings::getInstance().localization.at("T_settings");
 
-    if (ImGui::Button(((char*)ICON_SETTINGS + str1).c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get(ICON_SETTINGS, "T_settings").c_str(), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
@@ -89,13 +89,13 @@ void GameState::updateImGui()
                                                                                         ImGui::NextColumn();
     ImGui::Text("Mouse View Position:");                                                ImGui::NextColumn();
     ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);   ImGui::NextColumn();
-    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_name").c_str()); ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().get("T_Province_name").c_str()); ImGui::NextColumn();
     ImGui::Text("%s", chr);                                                             ImGui::NextColumn();
-    ImGui::Text(Localization::getInstance().getStringByKey("T_Province_id").c_str());   ImGui::NextColumn();
+    ImGui::Text(Localization::getInstance().get("T_Province_id").c_str());   ImGui::NextColumn();
     ImGui::Text("%d",world_map.getProvinceID(world_map.getColor()));                    ImGui::NextColumn();
     ImGui::Separator();
     ImGui::Columns(1);
-    ImGui::SliderFloat(Localization::getInstance().getStringByKey("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
+    ImGui::SliderFloat(Localization::getInstance().get("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
     ImGui::End();
     //{
     //	// string � imgui
@@ -113,7 +113,7 @@ void GameState::update(const float& dtime)
     world_map.shader.setParameter("transparency", world_map.transparency);
 
     updateMousePositions();
-    camera.update(dtime);
+    data.camera.update(dtime);
 }
 
 void GameState::draw(sf::RenderTarget* target)
@@ -128,14 +128,4 @@ void GameState::draw(sf::RenderTarget* target)
     target->setView(common::view);
 
     ImGui::SFML::Render(window);
-}
-
-bool GameState::isLoad()
-{
-    world_map.init();
-    if (world_map.isInitProvinces())
-    {
-        is_loaded = true;
-    }
-    return is_loaded;
 }

@@ -43,13 +43,8 @@ void WorldMap::loadMapData()
 
 void WorldMap::loadProvincesMap()
 {
-    if (!map_image.loadFromFile("resources/Map/Provinces.png"))
-        LOG_ERROR("resources/Map/Provinces.png\t not found!");
-
-    if (!s_texture.loadFromFile("resources/Map/Colormap2.jpg"))
-    {
-        LOG_ERROR("Colormap2.jpg not found!");
-    }
+    map_image = ResourceLoader::instance().getImage("Provinces.png");
+    s_texture = ResourceLoader::instance().getTexture("Colormap2.jpg");
 }
 
 bool WorldMap::isInitProvinces() 

@@ -1,7 +1,5 @@
 #pragma once
 #include "State.hpp"
-#include "../Math/Math.h"
-#include "../Input/Input.h"
 
 class StateMachine;
 

@@ -4,13 +4,13 @@
 
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
-, camera()
 {
     state_machine.is_init = true;
 }
 
 void BattleState::init()
 {
+    data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
     try
     {
@@ -52,21 +52,21 @@ void BattleState::updateEvents()
     {
         pathfinding.handleInput();
     }
-    camera.scroll();
-    camera.zoom();
+    data.camera.scroll();
+    data.camera.zoom();
 }
 
 void BattleState::updateImGui()
 {
     ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    if (ImGui::Button(Localization::getInstance().getStringByKey("T_exit").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
     {
         state_machine.lastState();
     }
     ImGui::End();
 
-    ImGui::Begin("Editor", nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+    ImGui::Begin((ICON_MAP "Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
     // Create a child window with scrolling
     static int value = 32; // Initial scale value
@@ -76,6 +76,7 @@ void BattleState::updateImGui()
     ImGui::SliderInt("Scale", &value, minValue, maxValue);
 
     sf::Texture& tileset_Texture = m_sprite_sheet.getTilesetTexture();
+    int cols = 4;
     int tileset_cols = m_sprite_sheet.getSheetWidth();
     int tileset_rows = m_sprite_sheet.getSheetHeight();
 
@@ -83,12 +84,12 @@ void BattleState::updateImGui()
 
     ImVec2 scale_factor = ImVec2(value, value);
 
-    if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
+    if (ImGui::BeginTable("TilesetTable", cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
     {
         for (int row = 0; row < tileset_rows; row++)
         {
             ImGui::TableNextRow();
-            for (int col = 0; col < tileset_cols; col++)
+            for (int col = 0; col < cols; col++)
             {
                 ImGui::TableNextColumn();
 
@@ -105,7 +106,7 @@ void BattleState::updateImGui()
                 {
                     // You can adjust the border color and width here
                     ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 3.0f);
+                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
                 }
 
                 if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
@@ -125,13 +126,19 @@ void BattleState::updateImGui()
         ImGui::EndTable();
     }
     ImGui::End();
+
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::End();
 }
 
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
-    camera.update(dtime);
+    data.camera.update(dtime);
 }
 
 void BattleState::draw(sf::RenderTarget* target)

@@ -7,11 +7,15 @@ Camera::Camera()
     , pan_threshold (5.0f)
     , is_panning    (false)
 {
-    common::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width, 
-                                    WindowSettings::getInstance().resolution.height));
+}
 
-    common::view.setCenter(sf::Vector2f(WindowSettings::getInstance().resolution.width  / 2.f, 
-                                      WindowSettings::getInstance().resolution.height / 2.f));
+void Camera::setDefaulatView()
+{
+    common::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width,
+        WindowSettings::getInstance().resolution.height));
+
+    common::view.setCenter(sf::Vector2f(WindowSettings::getInstance().resolution.width / 2.f,
+        WindowSettings::getInstance().resolution.height / 2.f));
 }
 
 void Camera::update(const float& dtime)
