@@ -36,7 +36,7 @@ void Game::run()
 
 void Game::initCursor()
 {
-    im_cursor.loadFromFile("resources/Icons/cursor.png");
+    im_cursor = ResourceLoader::instance().getImage("cursor.png");
     cursor.loadFromPixels(im_cursor.getPixelsPtr(), im_cursor.getSize(), sf::Vector2u(0, 0));
 }
 
@@ -71,14 +71,9 @@ bool Game::initWindow() noexcept
 
 bool Game::initIcon() noexcept
 {
-    sf::Image icon;
-    if (icon.loadFromFile("resources/Icons/icon.png"))
-    {
-        this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-        return true;
-    }
-    LOG_ERROR("File <<icon.png>> not loaded");
-    return false;
+    sf::Image icon = ResourceLoader::instance().getImage("icon.png");
+    this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    return true;
 }
 
 bool Game::initFonts() noexcept

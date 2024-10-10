@@ -30,6 +30,7 @@
 #include <random>
 #include <stdexcept>
 #include <future>
+#include <type_traits>
 
 //SFML
 #include <SFML\OpenGL.hpp>

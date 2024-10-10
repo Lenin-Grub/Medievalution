@@ -4,13 +4,13 @@
 
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
-, camera()
 {
     state_machine.is_init = true;
 }
 
 void BattleState::init()
 {
+    data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
     try
     {
@@ -52,8 +52,8 @@ void BattleState::updateEvents()
     {
         pathfinding.handleInput();
     }
-    camera.scroll();
-    camera.zoom();
+    data.camera.scroll();
+    data.camera.zoom();
 }
 
 void BattleState::updateImGui()
@@ -126,13 +126,19 @@ void BattleState::updateImGui()
         ImGui::EndTable();
     }
     ImGui::End();
+
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::End();
 }
 
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
-    camera.update(dtime);
+    data.camera.update(dtime);
 }
 
 void BattleState::draw(sf::RenderTarget* target)

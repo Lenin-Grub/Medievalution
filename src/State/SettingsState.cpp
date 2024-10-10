@@ -214,11 +214,7 @@ void SettingsState::draw(sf::RenderTarget* target)
 
 void SettingsState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/background.jpg"))
-    {
-        LOG_ERROR("File \"background\" not found");
-    }
-
+    background = ResourceLoader::instance().getTexture("background_3.jpg");
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 }

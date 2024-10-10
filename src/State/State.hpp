@@ -1,12 +1,12 @@
 #pragma once
-#include "../Resource/Jukebox.hpp"
 #include "../Common/Common.h"
-#include "../Resource/ResourceManager.hpp"
+#include "../Camera/Camera.h"
 
 class StateMachine;
 
 struct StateData
 {
+    Camera camera;
     Jukebox jukebox = Jukebox("resources/Audio/Musics/");
 };
 

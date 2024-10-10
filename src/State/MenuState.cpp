@@ -88,10 +88,7 @@ void MenuState::draw(sf::RenderTarget* target)
 
 void MenuState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/background_main.jpg"))
-    {
-        LOG_ERROR("File \"background_main.jpg\" not found");
-    }
+    background = ResourceLoader::instance().getTexture("background_2.jpg");
 
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));

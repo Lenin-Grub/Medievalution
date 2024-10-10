@@ -31,6 +31,11 @@ void LoadingState::updateEvents()
 
 void LoadingState::updateImGui()
 {
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui::SetNextWindowBgAlpha(0.35f);
+    ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, io.Framerate);
+    ImGui::End();
 }
 
 void LoadingState::update(const float& dtime)
@@ -51,21 +56,12 @@ void LoadingState::draw(sf::RenderTarget* target)
     window.display();
 
     auto load_state = load_state_future.get();
-    if (load_state->isLoad())
-    {
-        next_state = std::move(load_state);
-    }
+    next_state = std::move(load_state);
 }
 void LoadingState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
-    {
-        LOG_ERROR("File \"background\" not found");
-    }
-    if (!font.loadFromFile("resources/Fonts/Blackmoor.ttf"))
-    {
-        LOG_ERROR("File \"font\" not found");
-    }
+    background = ResourceLoader::instance().getTexture("background_1.png");
+    font = ResourceLoader::instance().getFont("Blackmoor.ttf");
 
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));

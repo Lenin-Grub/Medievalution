@@ -70,18 +70,9 @@ void IntroState::draw(sf::RenderTarget* target)
 
 void IntroState::setBackground()
 {
-    if (!background.loadFromFile("resources/Backgrounds/ruszastavka.png"))
-    {
-        LOG_ERROR("File \"background\" not found");
-    }
-    if (!font.loadFromFile("resources/Fonts/Blackmoor.ttf"))
-    {
-        LOG_ERROR("File \"font\" not found");
-    }
-
-    //background = ResourceManager::getInstance().load<sf::Texture>("resources/Backgrounds/ruszastavka.png");
+    background = ResourceLoader::instance().getTexture("background_1.png");
+    font = ResourceLoader::instance().getFont("Blackmoor.ttf");
     
-
     shape.setTexture(&background);
     shape.setSize(sf::Vector2f(window.getSize().x, window.getSize().y));
 

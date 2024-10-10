@@ -1,24 +1,26 @@
 #pragma once
 
-class ResourceManager
-    : private sf::NonCopyable
+class ResourceLoader 
 {
 public:
-    static ResourceManager& getInstance();
+    static ResourceLoader& instance();
 
-    template <typename T>
-    T load(const std::string& file);
-    void get(const std::string& file) const {};
+    sf::Texture& getTexture(const std::string& name);
+
+    sf::Image& getImage(const std::string& name);
+
+    sf::Font& getFont(const std::string& name);
+
+    sf::SoundBuffer& getSoundBuffer(const std::string& name);
 
 private:
-    std::unordered_map<std::string, sf::Texture>     m_textures;
-    std::unordered_map<std::string, sf::Font>        m_fonts;
-    std::unordered_map<std::string, sf::SoundBuffer> m_soundBuffers;
-};
+    ResourceLoader() = default;
 
-template<typename T>
-inline T ResourceManager::load(const std::string& file)
-{
-    *T::loadFromFile(file);
-    return T();
-}
+    std::string findResource(const std::string& name);
+
+    std::unordered_map<std::string, sf::Texture>     textures;
+    std::unordered_map<std::string, sf::Image>       images;
+    std::unordered_map<std::string, sf::Font>        fonts;
+    std::unordered_map<std::string, sf::SoundBuffer> soundBuffers;
+    std::mutex                                       mutex;
+};
