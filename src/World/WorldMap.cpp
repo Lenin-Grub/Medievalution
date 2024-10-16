@@ -51,6 +51,9 @@ bool WorldMap::isInitProvinces()
 {
     std::string str;
     provinces.reserve(9000);
+    if(!file.is_open())
+        return false;
+
     while (std::getline(file, str))
     {
         std::stringstream ss(str);
@@ -73,7 +76,7 @@ bool WorldMap::isInitProvinces()
         provinces.emplace(province.color, province);
         ++load_progress;
     }
-
+    file.close();
     if (!provinces.empty())
         return true;
     else
@@ -187,90 +190,3 @@ sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const
         return sf::Vector2f(0, 0);
     }
 }
-
-#pragma region Fixe it
-//void WorldMap::findAllProvinceCenters()
-//{
-//	const sf::Uint8* pixels = map_image.getPixelsPtr();
-//	sf::Vector2u mapSize = map_image.getSize();
-//
-//	std::vector<float> pixelCounts(provinces.size(), 0.0f);
-//	std::vector<float> sumXs(provinces.size(), 0.0f);
-//	std::vector<float> sumYs(provinces.size(), 0.0f);
-//
-//	std::vector<bool> visited(mapSize.x * mapSize.y, false);
-//
-//	auto addPixelToProvince = [&](size_t k, int j, int i) {
-//		sumXs[k] += j;
-//		sumYs[k] += i;
-//		pixelCounts[k]++;
-//		};
-//
-//	for (unsigned int i = 0; i < mapSize.y; ++i) {
-//		unsigned int rowStart = i * mapSize.x * 4;
-//		for (unsigned int j = 0; j < mapSize.x; ++j) {
-//			unsigned int index = rowStart + j * 4;
-//
-//			if (visited[i * mapSize.x + j]) {
-//				continue;
-//			}
-//
-//			bool isProvinceFound = false;
-//			sf::Color currentColor(pixels[index], pixels[index + 1], pixels[index + 2], pixels[index + 3]);
-//
-//			for (size_t k = 0; k < provinces.size(); ++k) {
-//				if (currentColor == provinces[k].color) {
-//					addPixelToProvince(k, j, i);
-//					isProvinceFound = true;
-//					visited[i * mapSize.x + j] = true;
-//				}
-//			}
-//
-//			if (isProvinceFound) {
-//				std::queue<size_t> toVisit;
-//				toVisit.push(i * mapSize.x + j);
-//
-//				while (!toVisit.empty()) {
-//					size_t currentIndex = toVisit.front();
-//					toVisit.pop();
-//
-//					int x = currentIndex % mapSize.x;
-//					int y = currentIndex / mapSize.x;
-//
-//					for (int k = -1; k <= 1; ++k) {
-//						for (int l = -1; l <= 1; ++l) {
-//							if (k == 0 && l == 0) {
-//								continue;
-//							}
-//
-//							size_t neighborIndex = currentIndex + k * mapSize.x + l;
-//
-//							if (neighborIndex < 0 || neighborIndex >= mapSize.x * mapSize.y || visited[neighborIndex]) {
-//								continue;
-//							}
-//
-//							sf::Color neighborColor(pixels[neighborIndex * 4], pixels[neighborIndex * 4 + 1], pixels[neighborIndex * 4 + 2], pixels[neighborIndex * 4 + 3]);
-//							if (neighborColor == currentColor) {
-//								addPixelToProvince(k, x, y);
-//								toVisit.push(neighborIndex);
-//								visited[neighborIndex] = true;
-//							}
-//						}
-//					}
-//				}
-//			}
-//		}
-//	}
-//
-//	for (size_t i = 0; i < provinces.size(); ++i)
-//	{
-//		if (pixelCounts[i] > 0.0f)
-//		{
-//			float centerX = sumXs[i] / pixelCounts[i];
-//			float centerY = sumYs[i] / pixelCounts[i];
-//			provinces.at(i).centre = sf::Vector2f(centerX, centerY);
-//			LOG_INFO("{0} - {1}", (int)provinces.at(i).centre.x, (int)provinces.at(i).centre.y);
-//		}
-//	}
-//}
-#pragma endregion
