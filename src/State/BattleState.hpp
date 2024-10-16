@@ -3,6 +3,7 @@
 #include "../Pathfinding/Pathfinding.h"
 #include "../World/Editor/Board.hpp"
 #include "../World/Editor/SpriteSheet.hpp"
+#include "../Animation/Animation.hpp"
 
 class StateMachine;
 
@@ -23,6 +24,9 @@ public:
 private:
     Pathfinding pathfinding;
     SpriteSheet m_sprite_sheet;
-    Board m_board{ 32, 50, 50 };
-    int m_selected_tile_id = 0;
+    Board m_board;
+    std::unique_ptr<Animator> animator;
+    int m_selected_tile_id;
+    sf::Sprite sprite;
+    sf::Texture texture;
 };
