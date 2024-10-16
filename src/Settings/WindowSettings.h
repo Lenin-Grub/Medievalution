@@ -35,6 +35,8 @@ public:
 /// @return True if the settings were successfully loaded; false otherwise.
     bool loadFromFIle(const std::string path) noexcept;
 
+    float getFPS();
+
 public:
     std::string                title;             ///< @brief The window title.
     sf::VideoMode              resolution;        ///< @brief The window resolution.
@@ -51,4 +53,8 @@ public:
     bool                       is_sound_play;     ///< @brief Flag indicating whether sound effects are playing.
     bool                       is_music_play;     ///< @brief Flag indicating whether music is playing.
     std::string                language;          ///< @brief The language setting.
+
+private:
+    sf::Time lastFrameTime;
+    float    fps;
 };

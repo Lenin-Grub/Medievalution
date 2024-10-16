@@ -1,6 +1,7 @@
 #define ICON_MIN 0xe900
 #define ICON_MAX 0xe99d
 
+#define ICON_INSTAGRAM (char*)u8"\ue947"
 #define ICON_MENU      (char*)u8"\ue957"
 #define ICON_LOG_IN	   (char*)u8"\ue950"
 #define ICON_LOG_OUT   (char*)u8"\ue951"
