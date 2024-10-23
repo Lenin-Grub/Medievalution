@@ -15,11 +15,14 @@ public:
     Board(int tileSize, sf::Vector2i board_size);
 
     void initBoard();
+    void update();
+    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
+    sf::Color grid_outline_color;
+    sf::Color grid_cell_color;
     sf::Vector2i board_size;
     const int tile_size;
 
 private:
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    sf::VertexArray background;
+    sf::VertexArray tile_map;
 };

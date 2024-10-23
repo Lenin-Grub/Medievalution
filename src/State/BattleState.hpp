@@ -1,9 +1,10 @@
 #pragma once
 #include "State.hpp"
-#include "../Pathfinding/Pathfinding.h"
-#include "../World/Editor/Board.hpp"
-#include "../World/Editor/SpriteSheet.hpp"
-#include "../Animation/Animation.hpp"
+#include "Pathfinding/Pathfinding.h"
+#include "World/Editor/Board.hpp"
+#include "World/Editor/Editor.hpp"
+#include "World/Editor/SpriteSheet.hpp"
+#include "Animation/Animation.hpp"
 
 class StateMachine;
 
@@ -29,4 +30,5 @@ private:
     int m_selected_tile_id;
     sf::Sprite sprite;
     sf::Texture texture;
+    Editor editor;
 };

@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "StateMachine.hpp"
 #include "BattleState.hpp"
 
@@ -15,8 +15,9 @@ void BattleState::init()
 {
     data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
-    m_sprite_sheet.import(m_board);
     m_board.initBoard();
+    m_sprite_sheet.import(m_board);
+    editor.addLayer();
 
     texture = ResourceLoader::instance().getTexture("Skeleton_archer.png");
     sprite.setTexture(texture);
@@ -83,6 +84,17 @@ void BattleState::updateImGui()
 #pragma region Editor
     {
         ImGui::Begin((ICON_MAP "Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+
+        sf::Color color(m_board.grid_cell_color);
+        static float colorf[3] = { static_cast<float>(color.r) / 255.0f, static_cast<float>(color.g) / 255.0f, static_cast<float>(color.b) / 255.0f };
+
+        // Color edit
+        ImGui::ColorEdit3("Color_grid_outline", colorf, ImGuiColorEditFlags_NoInputs);
+
+        m_board.grid_cell_color.r = static_cast<sf::Uint8>(colorf[0] * 255.0f);
+        m_board.grid_cell_color.g = static_cast<sf::Uint8>(colorf[1] * 255.0f);
+        m_board.grid_cell_color.b = static_cast<sf::Uint8>(colorf[2] * 255.0f);
+        // Color edit end
 
         // Create a child window with scrolling
         static int value = m_sprite_sheet.getTileSize(); // Initial scale value
@@ -218,6 +230,7 @@ void BattleState::update(const float& dtime)
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
     animator->update(0.1f);
+    m_board.update();
     data.camera.update(dtime);
 }
 
@@ -229,6 +242,7 @@ void BattleState::draw(sf::RenderTarget* target)
 
     target->draw(m_board);
     m_sprite_sheet.mergeTiles();
+    target->draw(editor);
     target->draw(m_sprite_sheet);
     pathfinding.draw(window);
 
