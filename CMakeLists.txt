@@ -11,6 +11,8 @@ add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} resources.rc)
 
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${HEADERS} ${SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/)

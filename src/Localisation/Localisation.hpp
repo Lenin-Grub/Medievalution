@@ -1,7 +1,7 @@
 #pragma once
-#include "../Common/Common.h"
-#include "../Json/json.hpp"
-#include "../Settings/WindowSettings.h"
+#include "Common/Common.h"
+#include "Json/json.hpp"
+#include "Settings/WindowSettings.h"
 
 /// @brief Interface for localization.
 class ILocalization

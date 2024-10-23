@@ -1,4 +1,4 @@
-﻿#include "../stdafx.h"
+﻿#include "stdafx.h"
 #include "WindowSettings.h"
 
 // если settings.json не обнаружено, то будут приняты эти настройки

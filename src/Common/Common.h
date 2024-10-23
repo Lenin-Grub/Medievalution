@@ -1,10 +1,10 @@
 ﻿#pragma once
-#include "../stdafx.h"
-#include "../Input/Input.h"
-#include "../Resource/ResourceManager.hpp"
-#include "../Localisation/Localisation.hpp"
-#include "../Resource/Jukebox.hpp"
-#include "../Math/Math.h"
+#include "stdafx.h"
+#include "Input/Input.h"
+#include "Resource/ResourceManager.hpp"
+#include "Localisation/Localisation.hpp"
+#include "Resource/Jukebox.hpp"
+#include "Math/Math.h"
 
 class Common
 {

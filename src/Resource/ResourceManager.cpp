@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "ResourceManager.hpp"
 
 ResourceLoader& ResourceLoader::instance()

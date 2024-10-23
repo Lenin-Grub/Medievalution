@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "IntroState.hpp"
 #include "MenuState.hpp"
 #include "StateMachine.hpp"

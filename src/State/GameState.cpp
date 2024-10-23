@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "StateMachine.hpp"
 #include "GameState.hpp"
 #include "MenuState.hpp"

@@ -1,7 +1,7 @@
 #pragma once
 #include "State.hpp"
 #include "SettingsState.hpp"
-#include "../World/WorldMap.h"
+#include "World/WorldMap.h"
 
 class StateMachine;
 
