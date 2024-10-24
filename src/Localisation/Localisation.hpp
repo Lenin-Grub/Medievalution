@@ -1,6 +1,6 @@
 #pragma once
 #include "Common/Common.h"
-#include "Json/json.hpp"
+#include "json.hpp"
 #include "Settings/WindowSettings.h"
 
 /// @brief Interface for localization.

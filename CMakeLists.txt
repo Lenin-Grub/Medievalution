@@ -4,21 +4,30 @@ project(Medievalution)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
+# Сбор всех заголовочных файлов и исходных файлов
 FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/src/*.hpp ${PROJECT_SOURCE_DIR}/src/*.h ${PROJECT_SOURCE_DIR}/src/*.inl)
 FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/*.cpp)
 
+# Определение макроса для отладочного режима
 add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
+# Создание исполняемого файла
 add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} resources.rc)
 
+# Указание директории заголовочных файлов
 target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
+# Группировка файлов в Solution Explorer
 source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${HEADERS} ${SOURCES})
 
+# Установка директории выходных файтов
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin/)
 
+# Отключение создания общих библиотек
 set(BUILD_SHARED_LIBS OFF)
-set(EXTERNAL_DIR $ENV{External})
+
+# Установка пути к внешним библиотекам
+set(EXTERNAL_DIR "D:/External")
 
 include(FetchContent)
 
@@ -31,6 +40,7 @@ if(NOT SFML_FOUND)
         GIT_TAG 2.6.0
     )
     FetchContent_MakeAvailable(SFML)
+    message("SFML not found and it was downloaded")
 endif()
 
 # Spdlog
@@ -42,6 +52,7 @@ if(NOT Spdlog_FOUND)
         GIT_TAG v1.14.1
     )
     FetchContent_MakeAvailable(Spdlog)
+    message("Spdlog not found and it was downloaded")
 endif()
 
 # ImGui
@@ -59,6 +70,10 @@ FetchContent_Declare(ImGui-SFML
 )
 FetchContent_MakeAvailable(ImGui-SFML)
 
+# Включение внешних библиотек
+add_subdirectory(${PROJECT_SOURCE_DIR}/ext_libs)
+
+# Подключение библиотек к проекту
 target_link_libraries(${PROJECT_NAME}
     sfml-graphics
     sfml-window
@@ -66,13 +81,16 @@ target_link_libraries(${PROJECT_NAME}
     sfml-audio
     spdlog
     ImGui-SFML::ImGui-SFML
+    JSON
 )
 
+# Установка стандарта C++
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
-#precompile headers
+# Предкомпиляция заголовочных файлов
 target_precompile_headers(${PROJECT_NAME} PRIVATE src/stdafx.h)
 
+# Копирование ресурсов в директорию выходных файтов
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/config       $<TARGET_FILE_DIR:${PROJECT_NAME}>/config
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/translation  $<TARGET_FILE_DIR:${PROJECT_NAME}>/translation
