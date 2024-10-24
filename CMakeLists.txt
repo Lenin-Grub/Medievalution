@@ -71,7 +71,7 @@ FetchContent_Declare(ImGui-SFML
 FetchContent_MakeAvailable(ImGui-SFML)
 
 # Включение внешних библиотек
-add_subdirectory(${PROJECT_SOURCE_DIR}/ext_libs)
+add_subdirectory(${PROJECT_SOURCE_DIR}/ext_libs/json)
 
 # Подключение библиотек к проекту
 target_link_libraries(${PROJECT_NAME}
@@ -81,7 +81,7 @@ target_link_libraries(${PROJECT_NAME}
     sfml-audio
     spdlog
     ImGui-SFML::ImGui-SFML
-    JSON
+    json
 )
 
 # Установка стандарта C++
