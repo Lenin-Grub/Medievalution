@@ -1,9 +1,7 @@
 #pragma once
 #include "State.hpp"
 #include "Pathfinding/Pathfinding.h"
-#include "World/Editor/Board.hpp"
 #include "World/Editor/Editor.hpp"
-#include "World/Editor/SpriteSheet.hpp"
 #include "Animation/Animation.hpp"
 
 class StateMachine;
@@ -23,12 +21,10 @@ public:
     void draw(sf::RenderTarget* target = nullptr) override;
 
 private:
-    Pathfinding pathfinding;
-    SpriteSheet m_sprite_sheet;
-    Board m_board;
-    std::unique_ptr<Animator> animator;
-    int m_selected_tile_id;
-    sf::Sprite sprite;
-    sf::Texture texture;
-    Editor editor;
+    Pathfinding               pathfinding;
+    Editor                    editor;
+    Animator                  animator;
+    sf::Sprite                sprite;
+    sf::Texture               texture;
+    int                       m_selected_tile_id;
 };

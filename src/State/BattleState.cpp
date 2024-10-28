@@ -4,9 +4,8 @@
 
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
-, m_board{ 32,sf::Vector2i(50, 50) }
-, m_sprite_sheet{ "tileset.png", 32 }
 , m_selected_tile_id { 0 }
+, animator(sprite)
 {
     state_machine.is_init = true;
 }
@@ -15,31 +14,20 @@ void BattleState::init()
 {
     data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
-    m_board.initBoard();
-    m_sprite_sheet.import(m_board);
-    editor.addLayer();
+    editor.init();
+    editor.addLayer("layer 1");
 
     texture = ResourceLoader::instance().getTexture("Skeleton_archer.png");
     sprite.setTexture(texture);
 
     int a = 0;
-    animator = std::make_unique<Animator>(sprite);
-    animator->addFrame(sf::IntRect(a, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    animator->setFrameTime(0.5f);
-    animator->pause();
+    animator.addFrame(sf::IntRect(a, 0, 128, 128));
+    for (size_t i = 0; i < 14; i++)
+    {
+        animator.addFrame(sf::IntRect(a += 128, 0, 128, 128));
+    }
+    animator.setFrameTime(0.5f);
+    animator.pause();
 
     LOG_INFO("State Battle\t Init");
 }
@@ -60,7 +48,9 @@ void BattleState::updateEvents()
         state_machine.lastState();
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
-        m_sprite_sheet.addTileId(m_selected_tile_id, common::mouse_pos_view);
+        editor.addTile(m_selected_tile_id, common::mouse_pos_view);
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && !ImGui::GetIO().WantCaptureMouse)
+        editor.removeTile(m_selected_tile_id, common::mouse_pos_view);
 
     if (!ImGui::GetIO().WantCaptureMouse)
         pathfinding.handleInput();
@@ -82,43 +72,69 @@ void BattleState::updateImGui()
 #pragma endregion
 
 #pragma region Editor
+    ImGui::Begin((ICON_MAP "Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+
+    if (ImGui::CollapsingHeader((ICON_STACK_FILES "Layers")))
     {
-        ImGui::Begin((ICON_MAP "Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+        ImGui::Text("Current layer: %d", editor.current_layer);
 
-        sf::Color color(m_board.grid_cell_color);
-        static float colorf[3] = { static_cast<float>(color.r) / 255.0f, static_cast<float>(color.g) / 255.0f, static_cast<float>(color.b) / 255.0f };
+        if (ImGui::Button((ICON_ADD_FILES "Add")))
+        {
+            editor.addLayer("Layer " + std::to_string(editor.layers.size() + 1));
+            editor.current_layer++;
+        }
 
-        // Color edit
-        ImGui::ColorEdit3("Color_grid_outline", colorf, ImGuiColorEditFlags_NoInputs);
+        ImGui::SameLine();
 
-        m_board.grid_cell_color.r = static_cast<sf::Uint8>(colorf[0] * 255.0f);
-        m_board.grid_cell_color.g = static_cast<sf::Uint8>(colorf[1] * 255.0f);
-        m_board.grid_cell_color.b = static_cast<sf::Uint8>(colorf[2] * 255.0f);
-        // Color edit end
+        if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
+        {
+            editor.removeLayer("Layer " + std::to_string(editor.layers.size() + 1));
+            editor.current_layer--;
+        }
+        ImGui::Separator();
+        if (ImGui::BeginTable("LayersTable", 2)) // 2 столбца: один для метки слоя, другой для чекбокса
+        {
+            for (size_t i = 0; i < editor.layers.size(); ++i)
+            {
+                bool visible = &editor.layers[i]->visible;
+                std::string layerName = (ICON_EMPTY_FILES "Layer ") + std::to_string(i);
 
-        // Create a child window with scrolling
-        static int value = m_sprite_sheet.getTileSize(); // Initial scale value
-        const int  minValue = 8;                         // Minimum scale value
-        const int  maxValue = 64;                        // Maximum scale value
+                ImGui::TableNextRow();
+                ImGui::TableSetColumnIndex(0); // Первый столбец для метки слоя
+                if (ImGui::Selectable(layerName.c_str(), editor.current_layer == i))
+                {
+                    editor.current_layer = i;
+                }
+
+                ImGui::TableSetColumnIndex(1); // Второй столбец для чекбокса
+                ImGui::Checkbox("Visible", &visible);
+            }
+
+            ImGui::EndTable();
+        }
+    }
+
+    if (ImGui::CollapsingHeader((ICON_FOUR_QUADS "Tiles")))
+    {
+        static int value = editor.getTileSize(); // Initial scale value
+        const int minValue = 8;                  // Minimum scale value
+        const int maxValue = 64;                 // Maximum scale value
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
+        ImGui::Separator();
 
-        sf::Texture& tileset_Texture = m_sprite_sheet.getTilesetTexture();
-        //int cols = 4;
-        int tileset_cols = m_sprite_sheet.getSheetWidth();
-        int tileset_rows = m_sprite_sheet.getSheetHeight();
+        sf::Texture& tileset_Texture = editor.getTilesetTexture();
+        int tileset_cols = editor.getSheetWidth();
+        int tileset_rows = editor.getSheetHeight();
 
         ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle(); // Cast the texture ID to ImTextureID
 
         ImVec2 scale_factor = ImVec2(value, value);
 
-        if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
-        {
-            for (int row = 0; row < tileset_rows; row++)
-            {
+        if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY)) {
+            for (int row = 0; row < tileset_rows; row++) {
                 ImGui::TableNextRow();
-                for (int col = 0; col < tileset_cols; col++)
-                {
+                for (int col = 0; col < tileset_cols; col++) {
                     ImGui::TableNextColumn();
 
                     // Create a unique ID for the button using row and column indices
@@ -130,19 +146,18 @@ void BattleState::updateImGui()
                     int current_id = row * tileset_cols + col;
                     bool selected = m_selected_tile_id == current_id;
 
-                    if (selected)
+                    if (selected) 
                     {
                         // You can adjust the border color and width here
                         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
                         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
                     }
 
-                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
-                    {
+                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
                         m_selected_tile_id = row * tileset_cols + col;
                     }
 
-                    if (selected)
+                    if (selected) 
                     {
                         ImGui::PopStyleColor();
                         ImGui::PopStyleVar();
@@ -153,8 +168,8 @@ void BattleState::updateImGui()
             }
             ImGui::EndTable();
         }
-        ImGui::End();
     }
+    ImGui::End();
 #pragma endregion 
 
 #pragma region Metrics
@@ -171,15 +186,15 @@ void BattleState::updateImGui()
         ImGui::Begin(ICON_INSTAGRAM " Animation", nullptr);
         ImGui::Image(sprite, sf::Vector2f(256, 256));
         ImGui::Separator();
-        auto ft = animator->getFrameTime();
-        auto cf = animator->getCurrentFrame();
-        auto pl = animator->isPlayed();
+        auto ft = animator.getFrameTime();
+        auto cf = animator.getCurrentFrame();
+        auto pl = animator.isPlayed();
         ImGui::SliderFloat("time per frame", &ft, 0.0f, 1.0f);
-        ImGui::SliderInt("frame", &cf, 0, animator->getFrames().size() - 1);
+        ImGui::SliderInt("frame", &cf, 0, animator.getFrames().size() - 1);
         ImGui::Checkbox("play", &pl);
-        animator->setFrameTime(ft);
-        animator->setCurrentFrame(cf);
-        animator->play(pl);
+        animator.setFrameTime(ft);
+        animator.setCurrentFrame(cf);
+        animator.play(pl);
 
         // Create a child window with scrolling
         static int value    = 128; // Initial scale value
@@ -229,8 +244,7 @@ void BattleState::update(const float& dtime)
 {
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
-    animator->update(0.1f);
-    m_board.update();
+    animator.update(0.1f);
     data.camera.update(dtime);
 }
 
@@ -239,11 +253,8 @@ void BattleState::draw(sf::RenderTarget* target)
     if (!target)
         target = &window;
     target->setView(common::view);
-
-    target->draw(m_board);
-    m_sprite_sheet.mergeTiles();
+    
     target->draw(editor);
-    target->draw(m_sprite_sheet);
     pathfinding.draw(window);
 
     target->setView(window.getDefaultView());

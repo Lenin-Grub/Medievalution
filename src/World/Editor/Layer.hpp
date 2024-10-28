@@ -7,22 +7,28 @@
     larger square is a unique color to create a grid line effect.
 */
 
-class Board 
+class Layer 
     : public sf::Drawable
     , public sf::Transformable
 {
 public:
-    Board(int tileSize, sf::Vector2i board_size);
+    Layer(int tileSize, sf::Vector2i board_size);
 
-    void initBoard();
-    void update();
+    void init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
-    sf::Color grid_outline_color;
-    sf::Color grid_cell_color;
-    sf::Vector2i board_size;
-    const int tile_size;
+    void addTile(const int& id, sf::Vector2f pos);
+    void removeTile(const int& id, sf::Vector2f pos);
+    bool visible;
+public:
+    sf::Vector2i layer_size;
+    const int    tile_size;
+    int          tileset_cols;
+    int          tileset_rows;
+    int          board_tile_width;
+    sf::Texture& tileset_texture;
 
-private:
     sf::VertexArray tile_map;
+    std::vector<int> tile_ids;
+private:
 };
