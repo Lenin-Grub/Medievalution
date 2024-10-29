@@ -8,7 +8,7 @@ Editor::Editor()
 
 void Editor::init()
 {
-    layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50)));
+    layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("tileset.png")));
     layers.back()->init();
 }
 
@@ -16,25 +16,34 @@ void Editor::init()
 void Editor::addTile(const int& id, sf::Vector2f pos)
 {
     if (current_layer >= 0 && current_layer < layers.size())
+    {
         layers.at(current_layer)->addTile(id, pos);
+    }
 }
 
 void Editor::removeTile(const int& id, sf::Vector2f pos)
 {
-    layers.at(current_layer)->removeTile(id, pos);
+    if (!layers.empty())
+        layers.at(current_layer)->removeTile(id, pos);
 }
 
 void Editor::addLayer(const std::string& name)
 {
-   layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50)));
+   layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name)));
    layers.back()->init();
+   current_layer++;
 }
 
-void Editor::removeLayer(const std::string& name)
+void Editor::removeLayer()
 {
-    if (!layers.empty())
+    if (!layers.empty() && current_layer > 0)
     {
-        layers.pop_back();
+        layers.erase(layers.begin() + current_layer);
+        current_layer--;
+    }
+    else
+    {
+        LOG_ERROR("You can`t remove default layer! Layers: {0}", layers.size());
     }
 }
 
@@ -63,6 +72,22 @@ const int Editor::getSheetHeight() const
     return layers.at(current_layer)->tileset_rows;
 }
 
+unsigned int Editor::getCurrentLayer() const 
+{
+    return current_layer;
+}
+
+void Editor::setCurrentLayer(size_t index) 
+{
+    if (index < layers.size()) 
+        current_layer = index;
+}
+
+const std::vector<std::unique_ptr<Layer>>& Editor::getLayers() const 
+{
+    return layers;
+}
+
 void Editor::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     size_t initialSize = layers.size();
@@ -70,7 +95,7 @@ void Editor::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         if (layers.size() != initialSize)
         {
-            std::cerr << "Error: Size of layers vector changed during iteration!" << std::endl;
+            LOG_CRITICAL("Size of layers vector changed during iteration!");
             break;
         }
         states.transform *= getTransform();
@@ -78,5 +103,5 @@ void Editor::draw(sf::RenderTarget& target, sf::RenderStates states) const
     }
 
     if (layers.size() != initialSize)
-        std::cerr << "Error: Size of layers vector changed during iteration!" << std::endl;
+        LOG_CRITICAL("Size of layers vector changed during iteration!");
 }

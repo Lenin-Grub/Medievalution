@@ -15,7 +15,7 @@ void BattleState::init()
     data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
     editor.init();
-    editor.addLayer("layer 1");
+    //editor.addLayer("tileset.png");
 
     texture = ResourceLoader::instance().getTexture("Skeleton_archer.png");
     sprite.setTexture(texture);
@@ -76,44 +76,40 @@ void BattleState::updateImGui()
 
     if (ImGui::CollapsingHeader((ICON_STACK_FILES "Layers")))
     {
-        ImGui::Text("Current layer: %d", editor.current_layer);
+        ImGui::Text("Current layer: %d", editor.getCurrentLayer());
 
         if (ImGui::Button((ICON_ADD_FILES "Add")))
-        {
-            editor.addLayer("Layer " + std::to_string(editor.layers.size() + 1));
-            editor.current_layer++;
-        }
+            editor.addLayer("Skeleton_archer.png");
 
         ImGui::SameLine();
 
         if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
-        {
-            editor.removeLayer("Layer " + std::to_string(editor.layers.size() + 1));
-            editor.current_layer--;
-        }
+            editor.removeLayer();
+
         ImGui::Separator();
-        if (ImGui::BeginTable("LayersTable", 2)) // 2 столбца: один для метки слоя, другой для чекбокса
+        //______________________________________
+        if (ImGui::BeginTable("LayersTable", 2)) 
         {
-            for (size_t i = 0; i < editor.layers.size(); ++i)
+            const auto& layers = editor.getLayers();
+            for (size_t i = 0; i < layers.size(); ++i)
             {
-                bool visible = &editor.layers[i]->visible;
+                Layer* layer = layers[i].get();
                 std::string layerName = (ICON_EMPTY_FILES "Layer ") + std::to_string(i);
 
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0); // Первый столбец для метки слоя
-                if (ImGui::Selectable(layerName.c_str(), editor.current_layer == i))
-                {
-                    editor.current_layer = i;
-                }
+                if (ImGui::Selectable(layerName.c_str(), editor.getCurrentLayer() == i))
+                    editor.setCurrentLayer(i);
 
                 ImGui::TableSetColumnIndex(1); // Второй столбец для чекбокса
-                ImGui::Checkbox("Visible", &visible);
+                ImGui::Checkbox("Visible", &layer->visible);
             }
 
             ImGui::EndTable();
         }
     }
 
+    //______________________________________
     if (ImGui::CollapsingHeader((ICON_FOUR_QUADS "Tiles")))
     {
         static int value = editor.getTileSize(); // Initial scale value
@@ -146,7 +142,7 @@ void BattleState::updateImGui()
                     int current_id = row * tileset_cols + col;
                     bool selected = m_selected_tile_id == current_id;
 
-                    if (selected) 
+                    if (selected)
                     {
                         // You can adjust the border color and width here
                         ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
@@ -157,7 +153,7 @@ void BattleState::updateImGui()
                         m_selected_tile_id = row * tileset_cols + col;
                     }
 
-                    if (selected) 
+                    if (selected)
                     {
                         ImGui::PopStyleColor();
                         ImGui::PopStyleVar();
@@ -170,13 +166,31 @@ void BattleState::updateImGui()
         }
     }
     ImGui::End();
+
 #pragma endregion 
 
 #pragma region Metrics
     ImGuiIO& io = ImGui::GetIO();
     ImGui::SetNextWindowBgAlpha(0.35f);
-    ImGui::Begin("T2", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav | ImGuiWindowFlags_NoMove);
+    ImGui::Begin("T2#", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, WindowSettings::getInstance().getFPS());
+    
+    ImGui::Columns(3, "table_columns");
+    ImGui::Separator();
+
+    ImGui::Text("Coordinates"); ImGui::SameLine();
+    ImGui::NextColumn();
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Red);
+    ImGui::Button("X"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("%f", common::mouse_pos_view.x);
+    ImGui::NextColumn();
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Green);
+    ImGui::Button("Y"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("%f", common::mouse_pos_view.y);
+
+    ImGui::Columns(1);
     ImGui::End();
 #pragma endregion
 

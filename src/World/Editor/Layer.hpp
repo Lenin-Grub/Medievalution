@@ -12,23 +12,22 @@ class Layer
     , public sf::Transformable
 {
 public:
-    Layer(int tileSize, sf::Vector2i board_size);
+    Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture);
 
     void init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void addTile(const int& id, sf::Vector2f pos);
     void removeTile(const int& id, sf::Vector2f pos);
-    bool visible;
-public:
-    sf::Vector2i layer_size;
-    const int    tile_size;
-    int          tileset_cols;
-    int          tileset_rows;
-    int          board_tile_width;
-    sf::Texture& tileset_texture;
 
-    sf::VertexArray tile_map;
+public:
     std::vector<int> tile_ids;
-private:
+    sf::VertexArray  tile_map;
+    sf::Vector2i     layer_size;
+    sf::Texture&     tileset_texture;
+    const int        tile_size;
+    int              tileset_cols;
+    int              tileset_rows;
+    bool             visible;
+
 };

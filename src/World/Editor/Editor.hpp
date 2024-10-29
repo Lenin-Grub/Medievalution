@@ -14,7 +14,7 @@ public:
     void removeTile(const int& id, sf::Vector2f pos);
 
     void addLayer(const std::string& name);
-    void removeLayer(const std::string& name);
+    void removeLayer();
 
     int switchTo(const int& id);
 
@@ -24,9 +24,14 @@ public:
     const int getSheetWidth() const;
     const int getSheetHeight() const;
 
+    unsigned int getCurrentLayer() const;
+    void setCurrentLayer(size_t index);
+
+    const std::vector<std::unique_ptr<Layer>>& getLayers() const;
+
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
-    int current_layer;
     std::vector<std::unique_ptr<Layer>> layers;
 private:
+    unsigned int current_layer;
 };

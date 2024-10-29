@@ -1,13 +1,13 @@
-#include "../../stdafx.h"
+#include "stdafx.h"
 #include "Layer.hpp"
 
-Layer::Layer(int tileSize, sf::Vector2i board_size)
+Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture)
     : tile_size(tileSize)
     , layer_size (board_size)
-    , tileset_texture(ResourceLoader::instance().getTexture("tileset.png"))
-    , board_tile_width(0)
+    , tileset_texture(texture)
     , tileset_cols(0)
     , tileset_rows(0)
+    , visible(true)
 {
 }
 
@@ -19,7 +19,6 @@ void Layer::init()
     {
         for (int y = 0; y < layer_size.y; y++)
         {
-            // Define the vertices of the current cell
             sf::Vector2f topLeft     ( y *      tile_size,  x *      tile_size);
             sf::Vector2f topRight    ((y + 1) * tile_size,  x *      tile_size);
             sf::Vector2f bottomRight ((y + 1) * tile_size, (x + 1) * tile_size);
@@ -48,7 +47,7 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
 {
     if (id < 0 || id >= tileset_cols * tileset_rows)
     {
-        LOG_CRITICAL("Tile ID: {0} is out of range", id);
+        LOG_ERROR("Tile ID: {0} is out of range", id);
         return;
     }
 
@@ -78,16 +77,16 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
                 int tv = id / tileset_cols;
 
                 // define its 4 corners
-                quad[0].position = sf::Vector2f(i * tile_size, j * tile_size);
-                quad[1].position = sf::Vector2f((i + 1) * tile_size, j * tile_size);
+                quad[0].position = sf::Vector2f( i       * tile_size, j      * tile_size);
+                quad[1].position = sf::Vector2f((i + 1) * tile_size,  j      * tile_size);
                 quad[2].position = sf::Vector2f((i + 1) * tile_size, (j + 1) * tile_size);
-                quad[3].position = sf::Vector2f(i * tile_size, (j + 1) * tile_size);
+                quad[3].position = sf::Vector2f( i       * tile_size,(j + 1) * tile_size);
 
                 // define its 4 texture coordinates
-                quad[0].texCoords = sf::Vector2f(tu * tile_size, tv * tile_size);
-                quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size, tv * tile_size);
+                quad[0].texCoords = sf::Vector2f( tu      * tile_size,  tv      * tile_size);
+                quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size,  tv      * tile_size);
                 quad[2].texCoords = sf::Vector2f((tu + 1) * tile_size, (tv + 1) * tile_size);
-                quad[3].texCoords = sf::Vector2f(tu * tile_size, (tv + 1) * tile_size);
+                quad[3].texCoords = sf::Vector2f( tu      * tile_size, (tv + 1) * tile_size);
             }
         }
     }
