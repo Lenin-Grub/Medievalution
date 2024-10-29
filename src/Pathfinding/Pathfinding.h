@@ -34,6 +34,8 @@ public:
     /// @return The estimated cost of reaching the end node from the start node.
     int  heuristic(Node* start, Node* end);
 
+    void resetWallble();
+
     Node* start_node;
     Node* end_node;
 

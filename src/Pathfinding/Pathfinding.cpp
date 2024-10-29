@@ -122,12 +122,12 @@ void Pathfinding::handleInput()
 
     if (x >= 0 && x < width && y >= 0 && y < height)
     {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
         {
             nodes[x][y].walkable = false;
         }
 
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
         {
             nodes[x][y].walkable = true;
         }
@@ -140,6 +140,10 @@ void Pathfinding::handleInput()
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
         {
             end_node = &nodes[x][y];
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
+        {
+            resetWallble();
         }
     }
 }
@@ -207,9 +211,9 @@ void Pathfinding::resetNodes()
         for (int y = 0; y < height; y++)
         {
             nodes[x][y].is_visited = false;
-            nodes[x][y].gCost = INFINITY;
-            nodes[x][y].fCost = INFINITY;
-            nodes[x][y].parent = nullptr;
+            nodes[x][y].gCost      = INFINITY;
+            nodes[x][y].fCost      = INFINITY;
+            nodes[x][y].parent     = nullptr;
         }
     }
 }
@@ -217,4 +221,16 @@ void Pathfinding::resetNodes()
 int Pathfinding::heuristic(Node* start, Node* end)
 {
     return std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
+}
+
+void Pathfinding::resetWallble()
+{
+    for (int x = 0; x < width; x++)
+    {
+        for (int y = 0; y < height; y++)
+        {
+            nodes[x][y].walkable = true;
+        }
+    }
+
 }
