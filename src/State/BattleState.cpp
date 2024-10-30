@@ -4,7 +4,8 @@
 
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
-, m_selected_tile_id { 0 }
+, m_selected_tile_id (0)
+, m_animator_tile_selected_id (0)
 , animator(sprite)
 {
     state_machine.is_init = true;
@@ -15,17 +16,9 @@ void BattleState::init()
     data.camera.setDefaulatView();
     pathfinding.initNodes(50, 50);
     editor.init();
-    //editor.addLayer("tileset.png");
 
-    texture = ResourceLoader::instance().getTexture("Skeleton_archer.png");
+    texture = ResourceLoader::instance().getTexture("Spearman.png");
     sprite.setTexture(texture);
-
-    int a = 0;
-    animator.addFrame(sf::IntRect(a, 0, 128, 128));
-    for (size_t i = 0; i < 14; i++)
-    {
-        animator.addFrame(sf::IntRect(a += 128, 0, 128, 128));
-    }
     animator.setFrameTime(0.5f);
     animator.pause();
 
@@ -78,8 +71,13 @@ void BattleState::updateImGui()
     {
         ImGui::Text("Current layer: %d", editor.getCurrentLayer());
 
+        static std::vector<const char*> items = { "Tileset1.png", "Tileset2.png" };
+        static int current_item = 0;
+
+        ImGui::Combo("Select Item", &current_item, items.data(), items.size());
+
         if (ImGui::Button((ICON_ADD_FILES "Add")))
-            editor.addLayer("Skeleton_archer.png");
+            editor.addLayer(items.at(current_item));
 
         ImGui::SameLine();
 
@@ -88,6 +86,8 @@ void BattleState::updateImGui()
 
         ImGui::Separator();
         //______________________________________
+        ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+        ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 100));
         if (ImGui::BeginTable("LayersTable", 2)) 
         {
             const auto& layers = editor.getLayers();
@@ -104,8 +104,8 @@ void BattleState::updateImGui()
                 ImGui::TableSetColumnIndex(1); // Второй столбец для чекбокса
                 ImGui::Checkbox("Visible", &layer->visible);
             }
-
             ImGui::EndTable();
+            ImGui::EndChild();
         }
     }
 
@@ -196,30 +196,68 @@ void BattleState::updateImGui()
 
 #pragma  region Animator
     {
-        int selcted_id;
         ImGui::Begin(ICON_INSTAGRAM " Animation", nullptr);
+
+        static std::vector<const char*> items = { "Spearman.png", "Archer.png" };
+        static int current_item = 0;
+
+        ImGui::Combo("Select sprite", &current_item, items.data(), items.size());
+
+        if (ImGui::Button((ICON_ADD_FILES "Change")))
+            animator.init(items.at(current_item));
+
         ImGui::Image(sprite, sf::Vector2f(256, 256));
+
         ImGui::Separator();
+
         auto ft = animator.getFrameTime();
         auto cf = animator.getCurrentFrame();
         auto pl = animator.isPlayed();
-        ImGui::SliderFloat("time per frame", &ft, 0.0f, 1.0f);
-        ImGui::SliderInt("frame", &cf, 0, animator.getFrames().size() - 1);
-        ImGui::Checkbox("play", &pl);
+
+        static int value    = 96; // Initial scale value
+        const int  minValue = 32;  // Minimum scale value
+        const int  maxValue = 128; // Maximum scale value
+
+        ImVec2 scale_factor = ImVec2(value, value);
+        int tileset_cols = std::round(texture.getSize().x / 64);
+        int tileset_rows = std::round(texture.getSize().y / 64);
+
+        ImGui::Text("Current frame: %d", animator.getCurrentFrame());
+        ImGui::SliderFloat("Time per frame", &ft, 0.0f, 1.0f);
+        ImGui::SliderInt("Frame", &cf, 0, animator.getFrames().empty() ? 0 : animator.getFrames().size() - 1);
+        ImGui::Checkbox("Play", &pl);
+
         animator.setFrameTime(ft);
         animator.setCurrentFrame(cf);
         animator.play(pl);
 
-        // Create a child window with scrolling
-        static int value    = 128; // Initial scale value
-        const int  minValue = 32;  // Minimum scale value
-        const int  maxValue = 384; // Maximum scale value
+        if (ImGui::Button((ICON_ADD_FILES "Add")))
+            {
+                int tile_x = m_animator_tile_selected_id % tileset_cols;
+                int tile_y = m_animator_tile_selected_id / tileset_cols;
+                sf::IntRect rect(tile_x * 64, tile_y * 64, 64, 64);
+                animator.addFrame(rect);
+            }
+
+        ImGui::SameLine();
+
+        if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
+        {
+            animator.removeFrmae(animator.getCurrentFrame());
+        }
+        ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+        ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 150));
+        const auto& frames = animator.getFrames();
+        for (size_t i = 0; i < frames.size(); ++i)
+        {
+            auto m_anim = animator.getFrames().at(i);
+            std::string frame_name = (ICON_EMPTY_FILES "Frame ") + std::to_string(i);
+            if (ImGui::Selectable(frame_name.c_str(), animator.getCurrentFrame() == i))
+                animator.setCurrentFrame(i);
+        }
+        ImGui::EndChild();
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
-
-        ImVec2 scale_factor = ImVec2(value, value);
-        int tileset_cols = std::round(texture.getSize().x / 128);
-        int tileset_rows = std::round(texture.getSize().y / 128);
 
         ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)texture.getNativeHandle(); // Cast the texture ID to ImTextureID
 
@@ -240,9 +278,24 @@ void BattleState::updateImGui()
 
                     int current_id = row * tileset_cols + col;
 
+                    bool selected = m_animator_tile_selected_id == current_id;
+
+                    if (selected)
+                    {
+                        // You can adjust the border color and width here
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
+                    }
+
                     if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
                     {
-                        selcted_id = row * tileset_cols + col;
+                        m_animator_tile_selected_id = row * tileset_cols + col;
+                    }
+
+                    if (selected)
+                    {
+                        ImGui::PopStyleColor();
+                        ImGui::PopStyleVar();
                     }
                     ImGui::PopID();
                 }

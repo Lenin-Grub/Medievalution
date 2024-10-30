@@ -8,7 +8,7 @@ Editor::Editor()
 
 void Editor::init()
 {
-    layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("tileset.png")));
+    layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
     layers.back()->init();
 }
 
@@ -36,10 +36,11 @@ void Editor::addLayer(const std::string& name)
 
 void Editor::removeLayer()
 {
-    if (!layers.empty() && current_layer > 0)
+    if (!layers.empty())
     {
         layers.erase(layers.begin() + current_layer);
-        current_layer--;
+        if (current_layer >0)
+            current_layer--;
     }
     else
     {

@@ -7,12 +7,33 @@ Animator::Animator(sf::Sprite& sprite)
     , current_frame (0)
     , frame_time    (0.0f)
     , current_time  (0.0f)
+    //,frames{ sf::IntRect(0,0,0,0)}
 {
+}
+
+void Animator::init(const std::string& name)
+{
+    sprite.setTexture(ResourceLoader::instance().getTexture(name));
 }
 
 void Animator::addFrame(sf::IntRect rect)
 {
     frames.push_back(rect);
+}
+
+void Animator::removeFrmae(const int& id)
+{
+    if (!frames.empty())
+    {
+        frames.erase(frames.begin() + id);
+        if (current_frame > 0)
+        {
+            current_frame--;
+        }
+         //   current_frame = 0;
+    }
+    else 
+       LOG_ERROR("You can't remove frame. Frames are empty!");
 }
 
 void Animator::setFrameTime(float time)
@@ -22,11 +43,20 @@ void Animator::setFrameTime(float time)
 
 void Animator::setCurrentFrame(int frame)
 {
-    current_frame = frame;
+    if (!frames.empty()) 
+        current_frame = frame;
+    else 
+        LOG_ERROR("Frames are empty! Cannot set current frame.");
 }
 
 void Animator::update(float deltaTime)
 {
+    if (frames.empty())
+    {
+        //LOG_ERROR("Frames are empty! Cannot update animator.");
+        return;
+    }
+
     current_time += deltaTime;
     if (!played)
     {
@@ -55,7 +85,13 @@ void Animator::pause()
 
 const int Animator::getCurrentFrame() const
 {
-    return current_frame;
+    if (!frames.empty()) 
+        return current_frame;
+    else 
+    {
+        LOG_ERROR("Frames are empty! Cannot get current frame.");
+        return 0;
+    }
 }
 
 const float Animator::getCurrentTime() const
@@ -73,7 +109,7 @@ const bool Animator::isPlayed() const
     return played;
 }
 
-const std::vector<sf::IntRect> Animator::getFrames() const
+const std::vector<sf::IntRect>& Animator::getFrames() const
 {
     return frames;
 }

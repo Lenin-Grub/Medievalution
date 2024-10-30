@@ -27,4 +27,5 @@ private:
     sf::Sprite                sprite;
     sf::Texture               texture;
     int                       m_selected_tile_id;
+    int                       m_animator_tile_selected_id;
 };

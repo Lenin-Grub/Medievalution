@@ -14,9 +14,13 @@ public:
     Animator (sf::Sprite& sprite);
     virtual ~Animator () = default;
 
+    void init(const std::string& name);
+
 /// @brief Adds a frame to the animation sequence
 /// @param rect The rectangle defining the frame within the sprite's texture.
     void addFrame (sf::IntRect rect);
+
+    void removeFrmae(const int& id);
 
 /// @brief Sets the display time for each frame
 /// @param time The time to display each frame, in seconds.
@@ -56,10 +60,10 @@ public:
 
 /// @brief Gets the frames of the animation
 /// @return A vector of rectangles defining the frames of the animation.
-    const std::vector<sf::IntRect> getFrames() const;
+    const std::vector<sf::IntRect>& getFrames() const;
 
 private:
-    int                      current_frame = 0;    ///< The index of the current frame.
+    unsigned int             current_frame;    ///< The index of the current frame.
     bool                     played        = true; ///< Flag indicating whether the animation is playing.
     float                    current_time  = 0.0f; ///< The current time elapsed for the current frame.
     float                    frame_time;           ///< The display time for each frame, in seconds.
