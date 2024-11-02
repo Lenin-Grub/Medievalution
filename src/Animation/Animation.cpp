@@ -7,7 +7,7 @@ Animator::Animator(sf::Sprite& sprite)
     , current_frame (0)
     , frame_time    (0.0f)
     , current_time  (0.0f)
-    //,frames{ sf::IntRect(0,0,0,0)}
+    , frame_size    {64,64}
 {
 }
 
@@ -21,7 +21,7 @@ void Animator::addFrame(sf::IntRect rect)
     frames.push_back(rect);
 }
 
-void Animator::removeFrmae(const int& id)
+void Animator::removeFrame(const int& id)
 {
     if (!frames.empty())
     {
@@ -30,10 +30,39 @@ void Animator::removeFrmae(const int& id)
         {
             current_frame--;
         }
-         //   current_frame = 0;
     }
     else 
-       LOG_ERROR("You can't remove frame. Frames are empty!");
+       LOG_ERROR("You can't remove this frame. Frames are empty!");
+}
+
+void Animator::addAnimation(const std::string& name)
+{
+    if (frames.empty())
+    {
+        LOG_ERROR("You can`t add animation. Frames are empty");
+        return;
+    }
+    animations.emplace(name, frames);
+    LOG_INFO("Size animation {}", animations.size());
+}
+
+void Animator::removeAnimation(const std::string& name)
+{
+    if (animations.empty())
+    {
+        LOG_ERROR("You can`t remove animation: \"{}\" not founded", name);
+        return;
+    }
+    animations.erase(name);
+}
+
+std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const
+{
+    //TODO
+    if (!animations.empty())
+    {
+        return animations.find(name)->second;
+    }
 }
 
 void Animator::setFrameTime(float time)
@@ -45,15 +74,12 @@ void Animator::setCurrentFrame(int frame)
 {
     if (!frames.empty()) 
         current_frame = frame;
-    else 
-        LOG_ERROR("Frames are empty! Cannot set current frame.");
 }
 
 void Animator::update(float deltaTime)
 {
     if (frames.empty())
     {
-        //LOG_ERROR("Frames are empty! Cannot update animator.");
         return;
     }
 
@@ -85,13 +111,56 @@ void Animator::pause()
 
 const int Animator::getCurrentFrame() const
 {
-    if (!frames.empty()) 
+    if (!frames.empty() && current_frame < frames.size()) 
         return current_frame;
     else 
+        return 0;
+}
+
+const int Animator::getNextFrame() const
+{
+    if (!frames.empty() && current_frame < frames.size()-1)
     {
-        LOG_ERROR("Frames are empty! Cannot get current frame.");
+        return current_frame + 1;
+    }
+}
+
+int Animator::getPrevFrame() const
+{
+    if (!frames.empty() && current_frame <= 0)
+    {
         return 0;
     }
+       
+    if (!frames.empty() && current_frame > 0)
+    {
+        return current_frame - 1;
+    }
+}
+
+const int Animator::getLastFrame()
+{
+    if (!frames.empty())
+    {
+        return current_frame = frames.size()-1;
+    }
+}
+
+const int Animator::getFirstFrame()
+{
+    if (!frames.empty() && current_frame < frames.size())
+    {
+        return current_frame = 0;
+    }
+}
+
+sf::Vector2i Animator::getFrameSize() const
+{
+    return sf::Vector2i();
+}
+
+void Animator::setFrameSize(const sf::Vector2i size)
+{
 }
 
 const float Animator::getCurrentTime() const

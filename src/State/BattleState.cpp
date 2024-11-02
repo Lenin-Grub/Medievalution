@@ -202,8 +202,7 @@ void BattleState::updateImGui()
         static int current_item = 0;
 
         ImGui::Combo("Select sprite", &current_item, items.data(), items.size());
-
-        if (ImGui::Button((ICON_ADD_FILES "Change")))
+        if (ImGui::Button((ICON_UPDATE "Change")))
             animator.init(items.at(current_item));
 
         ImGui::Image(sprite, sf::Vector2f(256, 256));
@@ -214,18 +213,75 @@ void BattleState::updateImGui()
         auto cf = animator.getCurrentFrame();
         auto pl = animator.isPlayed();
 
-        static int value    = 96; // Initial scale value
+        static int value    = 96;  // Initial scale value
         const int  minValue = 32;  // Minimum scale value
         const int  maxValue = 128; // Maximum scale value
 
         ImVec2 scale_factor = ImVec2(value, value);
-        int tileset_cols = std::round(texture.getSize().x / 64);
-        int tileset_rows = std::round(texture.getSize().y / 64);
+        int tileset_cols    = std::round(texture.getSize().x / 64);
+        int tileset_rows    = std::round(texture.getSize().y / 64);
+
+       static bool m_show_popup = false;
+
+        if (ImGui::Button((ICON_ADD_FILES "Add animation")))
+            m_show_popup = true;
+
+        if (m_show_popup)
+            ImGui::OpenPopup("Add Animation Popup");
+
+        if (ImGui::BeginPopup("Add Animation Popup")) 
+        {
+            static char animationName[64] = "";
+
+            ImGui::InputText("Animation Name", animationName, IM_ARRAYSIZE(animationName));
+
+            if (ImGui::Button("Add")) 
+            {
+                animator.addAnimation(animationName);
+                m_show_popup = false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::SameLine();
+            if (ImGui::Button("Cancel")) 
+            {
+                m_show_popup = false;
+                ImGui::CloseCurrentPopup();
+            }
+            ImGui::EndPopup();
+        }
 
         ImGui::Text("Current frame: %d", animator.getCurrentFrame());
         ImGui::SliderFloat("Time per frame", &ft, 0.0f, 1.0f);
         ImGui::SliderInt("Frame", &cf, 0, animator.getFrames().empty() ? 0 : animator.getFrames().size() - 1);
-        ImGui::Checkbox("Play", &pl);
+
+        if (ImGui::Button((ICON_BEGIN "##Begin")))
+        {
+            cf = animator.getFirstFrame();
+            animator.setCurrentFrame(cf);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button((ICON_PREV "##Prev")))
+        {
+            cf = animator.getPrevFrame();
+            animator.setCurrentFrame(cf);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button(pl ? (ICON_PLAY"##Play") : (ICON_PAUSE"##Pause")))
+        {
+            pl = !pl;
+        }
+        ImGui::SameLine();
+        if (ImGui::Button((ICON_NEXT "##Next")))
+        {
+            cf = animator.getNextFrame();
+            animator.setCurrentFrame(cf);
+        }
+        ImGui::SameLine();
+        if (ImGui::Button((ICON_END "##End")))
+        {
+            cf = animator.getLastFrame();
+            animator.setCurrentFrame(cf);
+        }
 
         animator.setFrameTime(ft);
         animator.setCurrentFrame(cf);
@@ -241,21 +297,22 @@ void BattleState::updateImGui()
 
         ImGui::SameLine();
 
-        if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
-        {
-            animator.removeFrmae(animator.getCurrentFrame());
-        }
-        ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-        ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 150));
-        const auto& frames = animator.getFrames();
-        for (size_t i = 0; i < frames.size(); ++i)
-        {
-            auto m_anim = animator.getFrames().at(i);
-            std::string frame_name = (ICON_EMPTY_FILES "Frame ") + std::to_string(i);
-            if (ImGui::Selectable(frame_name.c_str(), animator.getCurrentFrame() == i))
-                animator.setCurrentFrame(i);
-        }
-        ImGui::EndChild();
+         if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
+                animator.removeFrame(animator.getCurrentFrame());
+         if (ImGui::CollapsingHeader("Frames"))
+         {
+             ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
+             ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 150));
+             const auto& frames = animator.getFrames();
+             for (size_t i = 0; i < frames.size(); ++i)
+             {
+                 auto m_anim = animator.getFrames().at(i);
+                 std::string frame_name = (ICON_EMPTY_FILES "Frame ") + std::to_string(i);
+                 if (ImGui::Selectable(frame_name.c_str(), animator.getCurrentFrame() == i))
+                     animator.setCurrentFrame(i);
+             }
+             ImGui::EndChild();
+         }
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
 
