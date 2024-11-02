@@ -1,6 +1,7 @@
 #define ICON_MIN 0xe900
 #define ICON_MAX 0xe99d
 
+#define ICON_END          (char*)u8"\ue934"
 #define ICON_EMPTY_FILES  (char*)u8"\ue935"
 #define ICON_REMOVE_FILES (char*)u8"\ue936"
 #define ICON_ADD_FILES    (char*)u8"\ue937"
@@ -13,5 +14,11 @@
 #define ICON_LOG_OUT      (char*)u8"\ue951"
 #define ICON_MAP          (char*)u8"\ue953"
 #define ICON_MONITOR      (char*)u8"\ue95f"
+#define ICON_PAUSE        (char*)u8"\ue965"
+#define ICON_UPDATE       (char*)u8"\ue970"
+#define ICON_BEGIN        (char*)u8"\ue972"
+#define ICON_PREV         (char*)u8"\ue97f"
 #define ICON_SAVE         (char*)u8"\ue976"
 #define ICON_SETTINGS     (char*)u8"\ue979"
+#define ICON_NEXT         (char*)u8"\ue980"
+#define ICON_PLAY         (char*)u8"\ue96B"
