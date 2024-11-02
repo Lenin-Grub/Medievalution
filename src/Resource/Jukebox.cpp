@@ -44,7 +44,7 @@ void Jukebox::play()
     assert(currentTrackIndex >= 0);
     assert(currentTrackIndex < playlist.size());
 
-    setVolume(getVolume());
+    setVolume(volume);
 
     playlist[currentTrackIndex].second->play();
     status = sf::SoundSource::Playing;
@@ -111,7 +111,7 @@ void Jukebox::update()
 
         assert(currentTrackIndex >= 0);
         assert(currentTrackIndex < playlist.size());
-
+        
         if (status == sf::SoundSource::Playing
             && playlist[currentTrackIndex].second->getStatus() == sf::SoundSource::Stopped) 
         {
