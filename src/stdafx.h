@@ -43,6 +43,9 @@
 #include <imgui.h>
 #include <imgui-SFML.h>
 
+//EnTT
+#include <entt/entt.hpp>
+
 //SPDLOG
 #include "Common/Log.h"
 

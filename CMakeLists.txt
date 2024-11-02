@@ -70,6 +70,18 @@ FetchContent_Declare(ImGui-SFML
 )
 FetchContent_MakeAvailable(ImGui-SFML)
 
+# entt
+find_package(Entt 3.14.0 PATHS ${EXTERNAL_DIR}/entt NO_DEFAULT_PATH)
+
+if(NOT Entt_FOUND)
+FetchContent_Declare(entt
+    GIT_REPOSITORY https://github.com/skypjack/entt
+    GIT_TAG v3.14.0
+)
+FetchContent_MakeAvailable(entt)
+message("Entt not found and it was downloaded")
+endif()
+
 # Включение внешних библиотек
 add_subdirectory(${PROJECT_SOURCE_DIR}/ext_libs/json)
 
@@ -82,6 +94,7 @@ target_link_libraries(${PROJECT_NAME}
     spdlog
     ImGui-SFML::ImGui-SFML
     json
+	EnTT::EnTT
 )
 
 # Установка стандарта C++
@@ -104,3 +117,24 @@ add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/shaders      ${CMAKE_CURRENT_BINARY_DIR}/shaders
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/ext_libs/openal32.dll  ${CMAKE_CURRENT_BINARY_DIR}/openal32.dll
 )
+
+# Проверка наличия Doxygen
+find_package(Doxygen)
+
+if(DOXYGEN_FOUND)
+    set(DOXYGEN_OUTPUT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/docs)
+    
+    # Настройка конфигурации Doxygen
+    set(DOXYGEN_CONFIG ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+    configure_file(${CMAKE_CURRENT_SOURCE_DIR}/Doxyfile ${DOXYGEN_CONFIG} @ONLY)
+
+    # Добавление команды для генерации документации
+    add_custom_target(doc ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_CONFIG}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        COMMENT "Generating API documentation with Doxygen"
+        VERBATIM)
+else()
+    message(WARNING "Doxygen is not found, documentation will not be generated.")
+endif()
