@@ -88,7 +88,7 @@ void BattleState::updateImGui()
         //______________________________________
         ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
         ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 100));
-        if (ImGui::BeginTable("LayersTable", 2)) 
+        if (ImGui::BeginTable("LayersTable", 2))
         {
             const auto& layers = editor.getLayers();
             for (size_t i = 0; i < layers.size(); ++i)
@@ -105,8 +105,8 @@ void BattleState::updateImGui()
                 ImGui::Checkbox("Visible", &layer->visible);
             }
             ImGui::EndTable();
-            ImGui::EndChild();
         }
+        ImGui::EndChild();
     }
 
     //______________________________________
