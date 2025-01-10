@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "Animation.hpp"
 
 Animator::Animator(sf::Sprite& sprite)
@@ -7,12 +7,62 @@ Animator::Animator(sf::Sprite& sprite)
     , current_frame (0)
     , frame_time    (0.0f)
     , current_time  (0.0f)
+    , frame_size    {64,64}
 {
+}
+
+void Animator::init(const std::string& name)
+{
+    sprite.setTexture(ResourceLoader::instance().getTexture(name));
 }
 
 void Animator::addFrame(sf::IntRect rect)
 {
     frames.push_back(rect);
+}
+
+void Animator::removeFrame(const int& id)
+{
+    if (!frames.empty())
+    {
+        frames.erase(frames.begin() + id);
+        if (current_frame > 0)
+        {
+            current_frame--;
+        }
+    }
+    else 
+       LOG_ERROR("You can't remove this frame. Frames are empty!");
+}
+
+void Animator::addAnimation(const std::string& name)
+{
+    if (frames.empty())
+    {
+        LOG_ERROR("You can`t add animation. Frames are empty");
+        return;
+    }
+    animations.emplace(name, frames);
+    LOG_INFO("Size animation {}", animations.size());
+}
+
+void Animator::removeAnimation(const std::string& name)
+{
+    if (animations.empty())
+    {
+        LOG_ERROR("You can`t remove animation: \"{}\" not founded", name);
+        return;
+    }
+    animations.erase(name);
+}
+
+std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const
+{
+    //TODO
+    if (!animations.empty())
+    {
+        return animations.find(name)->second;
+    }
 }
 
 void Animator::setFrameTime(float time)
@@ -22,11 +72,17 @@ void Animator::setFrameTime(float time)
 
 void Animator::setCurrentFrame(int frame)
 {
-    current_frame = frame;
+    if (!frames.empty()) 
+        current_frame = frame;
 }
 
 void Animator::update(float deltaTime)
 {
+    if (frames.empty())
+    {
+        return;
+    }
+
     current_time += deltaTime;
     if (!played)
     {
@@ -55,7 +111,56 @@ void Animator::pause()
 
 const int Animator::getCurrentFrame() const
 {
-    return current_frame;
+    if (!frames.empty() && current_frame < frames.size()) 
+        return current_frame;
+    else 
+        return 0;
+}
+
+const int Animator::getNextFrame() const
+{
+    if (!frames.empty() && current_frame < frames.size()-1)
+    {
+        return current_frame + 1;
+    }
+}
+
+int Animator::getPrevFrame() const
+{
+    if (!frames.empty() && current_frame <= 0)
+    {
+        return 0;
+    }
+       
+    if (!frames.empty() && current_frame > 0)
+    {
+        return current_frame - 1;
+    }
+}
+
+const int Animator::getLastFrame()
+{
+    if (!frames.empty())
+    {
+        return current_frame = frames.size()-1;
+    }
+}
+
+const int Animator::getFirstFrame()
+{
+    if (!frames.empty() && current_frame < frames.size())
+    {
+        return current_frame = 0;
+    }
+}
+
+sf::Vector2i Animator::getFrameSize() const
+{
+    return sf::Vector2i();
+}
+
+void Animator::setFrameSize(const sf::Vector2i size)
+{
 }
 
 const float Animator::getCurrentTime() const
@@ -73,7 +178,7 @@ const bool Animator::isPlayed() const
     return played;
 }
 
-const std::vector<sf::IntRect> Animator::getFrames() const
+const std::vector<sf::IntRect>& Animator::getFrames() const
 {
     return frames;
 }

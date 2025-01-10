@@ -1,4 +1,4 @@
-﻿#include "../stdafx.h"
+﻿#include "stdafx.h"
 #include "Input.h"
 
 static const int    MAX_DOUBLE_CLICK_TIME = 200;

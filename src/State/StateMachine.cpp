@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "StateMachine.hpp"
 
 StateMachine::StateMachine()
@@ -110,7 +110,7 @@ void StateMachine::draw()
 {
     if (!states.empty())
     {
-        states.top()->window.clear();
+        states.top()->window.clear(sf::Color(30, 48, 74));
         states.top()->draw();
         states.top()->window.display();
     }

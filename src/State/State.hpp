@@ -1,6 +1,6 @@
 #pragma once
-#include "../Common/Common.h"
-#include "../Camera/Camera.h"
+#include "Common/Common.h"
+#include "Camera/Camera.h"
 
 class StateMachine;
 

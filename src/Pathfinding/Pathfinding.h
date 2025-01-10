@@ -1,5 +1,5 @@
 #pragma once
-#include "../Common/Common.h"
+#include "Common/Common.h"
 #include "Node.h"
 
 class Pathfinding
@@ -33,6 +33,8 @@ public:
     /// @param end The ending node.
     /// @return The estimated cost of reaching the end node from the start node.
     int  heuristic(Node* start, Node* end);
+
+    void resetWallble();
 
     Node* start_node;
     Node* end_node;

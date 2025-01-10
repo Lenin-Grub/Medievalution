@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "../Settings/WindowSettings.h"
-#include "../Input/Input.h"
+#include "Settings/WindowSettings.h"
+#include "Input/Input.h"
 
 /**
  * @class Camera

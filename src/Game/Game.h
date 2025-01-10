@@ -1,7 +1,7 @@
 ﻿#pragma once
-#include "../State/IntroState.hpp"
-#include "../State/StateMachine.hpp"
-#include "../Settings/WindowSettings.h"
+#include "State/IntroState.hpp"
+#include "State/StateMachine.hpp"
+#include "Settings/WindowSettings.h"
 
 /**
  * @class Game

@@ -1,4 +1,4 @@
-﻿#include "../stdafx.h"
+﻿#include "stdafx.h"
 #include "WindowSettings.h"
 
 // если settings.json не обнаружено, то будут приняты эти настройки
@@ -85,4 +85,19 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
     ifs.close();
     LOG_INFO("Settings\t Init");
     return true;
+}
+
+
+float WindowSettings::getFPS()
+{
+    sf::Time currentTime = common::clock.getElapsedTime();
+    float timeDifference = currentTime.asSeconds() - lastFrameTime.asSeconds();
+
+    if (timeDifference > 0)
+        fps = 1.0f / timeDifference;
+    else
+        fps = 0.0f;
+
+    lastFrameTime = currentTime;
+    return fps;
 }

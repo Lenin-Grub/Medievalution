@@ -1,4 +1,4 @@
-#include "../stdafx.h"
+#include "stdafx.h"
 #include "State.hpp"
 
 State::State (StateData& data, StateMachine& machine, sf::RenderWindow &window, const bool replace)
