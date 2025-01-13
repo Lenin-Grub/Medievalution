@@ -54,6 +54,10 @@ void BattleState::updateEvents()
 
 void BattleState::updateImGui()
 {
+    ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+    ImGui::Begin("Docking window", nullptr, ImGuiWindowFlags_NoTitleBar);
+    ImGui::End();
+
 #pragma region Exit
     ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
@@ -149,7 +153,7 @@ void BattleState::updateImGui()
                         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
                     }
 
-                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
+                    if (ImGui::ImageButton("", (ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
                         m_selected_tile_id = row * tileset_cols + col;
                     }
 
@@ -201,9 +205,8 @@ void BattleState::updateImGui()
         static std::vector<const char*> items = { "Spearman.png", "Archer.png" };
         static int current_item = 0;
 
-        ImGui::Combo("Select sprite", &current_item, items.data(), items.size());
-        if (ImGui::Button((ICON_UPDATE "Change")))
-            animator.init(items.at(current_item));
+       if(ImGui::Combo("Select sprite", &current_item, items.data(), items.size()))
+           animator.init(items.at(current_item));
 
         ImGui::Image(sprite, sf::Vector2f(256, 256));
 
@@ -316,7 +319,7 @@ void BattleState::updateImGui()
 
         ImGui::SliderInt("Scale", &value, minValue, maxValue);
 
-        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)texture.getNativeHandle(); // Cast the texture ID to ImTextureID
+        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)sprite.getTexture()->getNativeHandle(); // Cast the texture ID to ImTextureID
 
         if (ImGui::BeginTable("Animation Table", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
         {
@@ -344,7 +347,7 @@ void BattleState::updateImGui()
                         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
                     }
 
-                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
+                    if (ImGui::ImageButton("1",(ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
                     {
                         m_animator_tile_selected_id = row * tileset_cols + col;
                     }

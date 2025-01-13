@@ -58,7 +58,8 @@ endif()
 # ImGui
 FetchContent_Declare(ImGui
     GIT_REPOSITORY https://github.com/ocornut/imgui
-    GIT_TAG v1.90.2
+    #GIT_TAG v1.90.2
+    GIT_TAG docking
 )
 FetchContent_MakeAvailable(ImGui)
 FetchContent_GetProperties(ImGui SOURCE_DIR IMGUI_DIR)
