@@ -55,8 +55,6 @@ void BattleState::updateEvents()
 void BattleState::updateImGui()
 {
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
-    ImGui::Begin("Docking window", nullptr, ImGuiWindowFlags_NoTitleBar);
-    ImGui::End();
 
 #pragma region Exit
     ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
@@ -77,11 +75,36 @@ void BattleState::updateImGui()
 
         static std::vector<const char*> items = { "Tileset1.png", "Tileset2.png" };
         static int current_item = 0;
-
-        ImGui::Combo("Select Item", &current_item, items.data(), items.size());
+        static bool show_tileset_selector = false;
 
         if (ImGui::Button((ICON_ADD_FILES "Add")))
-            editor.addLayer(items.at(current_item));
+            show_tileset_selector = true;
+
+        if (show_tileset_selector) 
+            ImGui::OpenPopup("Select Tileset");
+
+        if (ImGui::BeginPopupModal("Select Tileset", NULL, ImGuiWindowFlags_AlwaysAutoResize)) 
+        {
+            ImGui::Combo("Select Item", &current_item, items.data(), items.size());
+
+            ImGui::SameLine();
+
+            if (ImGui::Button("OK")) {
+                editor.addLayer(items.at(current_item));
+                show_tileset_selector = false;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SameLine();
+
+            if (ImGui::Button("Cancel")) 
+            {
+                show_tileset_selector = false;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
+        }
 
         ImGui::SameLine();
 
@@ -105,8 +128,10 @@ void BattleState::updateImGui()
                 if (ImGui::Selectable(layerName.c_str(), editor.getCurrentLayer() == i))
                     editor.setCurrentLayer(i);
 
-                ImGui::TableSetColumnIndex(1); // Второй столбец для чекбокса
+                ImGui::TableSetColumnIndex(1);
+                ImGui::PushID(i);
                 ImGui::Checkbox("Visible", &layer->visible);
+                ImGui::PopID();
             }
             ImGui::EndTable();
         }
@@ -216,13 +241,14 @@ void BattleState::updateImGui()
         auto cf = animator.getCurrentFrame();
         auto pl = animator.isPlayed();
 
+        static int size     = 64;  // Tile    scale value
         static int value    = 96;  // Initial scale value
         const int  minValue = 32;  // Minimum scale value
         const int  maxValue = 128; // Maximum scale value
 
         ImVec2 scale_factor = ImVec2(value, value);
-        int tileset_cols    = std::round(texture.getSize().x / 64);
-        int tileset_rows    = std::round(texture.getSize().y / 64);
+        int tileset_cols    = std::round(texture.getSize().x / size);
+        int tileset_rows    = std::round(texture.getSize().y / size);
 
        static bool m_show_popup = false;
 
@@ -294,7 +320,7 @@ void BattleState::updateImGui()
             {
                 int tile_x = m_animator_tile_selected_id % tileset_cols;
                 int tile_y = m_animator_tile_selected_id / tileset_cols;
-                sf::IntRect rect(tile_x * 64, tile_y * 64, 64, 64);
+                sf::IntRect rect(tile_x * size, tile_y * size, size, size);
                 animator.addFrame(rect);
             }
 
@@ -379,9 +405,16 @@ void BattleState::draw(sf::RenderTarget* target)
 {
     if (!target)
         target = &window;
+
     target->setView(common::view);
-    
-    target->draw(editor);
+
+    const auto& layers = editor.getLayers();
+    for (const auto& layer : layers)
+    {
+        if (layer->visible)
+            target->draw(*layer);
+    }
+
     pathfinding.draw(window);
 
     target->setView(window.getDefaultView());
