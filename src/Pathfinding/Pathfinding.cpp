@@ -6,6 +6,7 @@ Pathfinding::Pathfinding()
     , height(50)
     , start_node(nullptr)
     , end_node(nullptr)
+    , current_node(nullptr)
     , tile_size(sf::Vector2f(32, 32))
 {
 }
@@ -83,10 +84,10 @@ void Pathfinding::draw(sf::RenderWindow& window)
         Node* p = end_node;
         while (p->parent != nullptr)
         {
-            line[0].position = sf::Vector2f(p->position.x * tile_size.x + tile_size.x / 2, p->position.y * tile_size.y + tile_size.y / 2);
+            line[0].position = sf::Vector2f(p->position.x         * tile_size.x + tile_size.x / 2, p->position.y         * tile_size.y + tile_size.y / 2);
             line[1].position = sf::Vector2f(p->parent->position.x * tile_size.x + tile_size.x / 2, p->parent->position.y * tile_size.y + tile_size.y / 2);
-            line[0].color = sf::Color::Blue;
-            line[1].color = sf::Color::Blue;
+            line[0].color    = sf::Color::Blue;
+            line[1].color    = sf::Color::Blue;
             window.draw(line, 2, sf::Lines);
             p = p->parent;
         }
@@ -233,4 +234,18 @@ void Pathfinding::resetWallble()
         }
     }
 
+}
+
+void Pathfinding::move(float deltaTime)
+{
+    if (end_node == nullptr || end_node->parent == nullptr)
+        return;
+
+    if (current_node == nullptr)
+        current_node = start_node;
+
+    Node* next_node = current_node->parent;
+
+    if (next_node != nullptr)
+        current_node = next_node;
 }

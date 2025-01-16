@@ -21,7 +21,6 @@ void BattleState::init()
     sprite.setTexture(texture);
     animator.setFrameTime(0.5f);
     animator.pause();
-
     LOG_INFO("State Battle\t Init");
 }
 
@@ -47,6 +46,13 @@ void BattleState::updateEvents()
 
     if (!ImGui::GetIO().WantCaptureMouse)
         pathfinding.handleInput();
+
+    if (pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
+    {
+        sprite.setPosition(pathfinding.start_node->position.x * pathfinding.tile_size.x,
+            pathfinding.start_node->position.y * pathfinding.tile_size.y);
+
+    }
 
     data.camera.scroll();
     data.camera.zoom();
@@ -397,6 +403,14 @@ void BattleState::update(const float& dtime)
 {
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
+    pathfinding.move(dtime);
+
+    // Обновляем позицию квадрата
+    if (pathfinding.current_node != nullptr && pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
+    {
+        sprite.setPosition(pathfinding.current_node->position.x * pathfinding.tile_size.x,
+                           pathfinding.current_node->position.y * pathfinding.tile_size.y);
+    }
     animator.update(0.1f);
     data.camera.update(dtime);
 }
@@ -416,6 +430,7 @@ void BattleState::draw(sf::RenderTarget* target)
     }
 
     pathfinding.draw(window);
+    target->draw(sprite);
 
     target->setView(window.getDefaultView());
     target->setView(common::view);

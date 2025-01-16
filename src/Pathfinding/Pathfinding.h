@@ -36,12 +36,16 @@ public:
 
     void resetWallble();
 
+    void move(float deltaTime);
+
+
     Node* start_node;
     Node* end_node;
 
+    sf::Vector2f tile_size;
+    Node* current_node;
 private:
     std::vector<std::vector<Node>> nodes;
-    sf::Vector2f tile_size;
     int width;
     int height;
 };
