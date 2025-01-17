@@ -3,32 +3,30 @@
 uniform sampler2D map_texture;
 uniform float transparency;
 uniform vec4 select_color;
+uniform vec4 hover_color;
 uniform float height;
 uniform float width;
+uniform bool is_selected; // New uniform to indicate if the province is selected
 
 vec4 map = texture2D(map_texture, gl_TexCoord[0].xy);
 vec4 color = vec4(0.0f,0.0f,0.0f,1.0f);
 
-
-float threshold(in float thr1, in float thr2 , in float val) 
+float threshold(in float thr1, in float thr2 , in float val)
 {
  if (val < thr1) {return 0.0;}
  if (val > thr2) {return 1.0;}
  return val;
 }
 
-
-float avg_intensity(in vec4 pix) 
+float avg_intensity(in vec4 pix)
 {
  return (pix.r + pix.g + pix.b)/3.;
 }
 
-
-vec4 get_pixel(in vec2 coords, in float dx, in float dy) 
+vec4 get_pixel(in vec2 coords, in float dx, in float dy)
 {
  return texture2D(map_texture,coords + vec2(dx, dy));
 }
-
 
 float IsEdge(in vec2 coords)
 {
@@ -39,17 +37,15 @@ float IsEdge(in vec2 coords)
   int k = -1;
   float delta;
 
-  
-  for (int i=-1; i<2; i++) 
+  for (int i=-1; i<2; i++)
   {
-   for(int j=-1; j<2; j++) 
+   for(int j=-1; j<2; j++)
    {
     k++;
     pix[k] = avg_intensity(get_pixel(coords, float(i)*dxtex, float(j)*dytex));
    }
   }
 
- 
   delta = (abs(pix[1]-pix[7]) +
            abs(pix[5]-pix[3]) +
            abs(pix[0]-pix[8]) +
@@ -69,7 +65,19 @@ void main()
   if (isEdgeValue > 0.0f)
     gl_FragColor = vec4(borderColor, 1);
   else if (select_color.rgb == map.rgb)
-    gl_FragColor = vec4(selectionColor, 0.5);
+  {
+    if (is_selected)
+    {
+      // Draw diagonal black lines
+      float pattern = mod(gl_FragCoord.x + gl_FragCoord.y, 10.0);
+      if (pattern < 5.0)
+        gl_FragColor = vec4(borderColor, 1);
+      else
+        gl_FragColor = vec4(map.rgb, transparency);
+    }
+  }
+  else if (hover_color.rgb == map.rgb)
+      gl_FragColor = vec4(selectionColor, 0.5);
   else
     gl_FragColor = vec4(map.rgb, transparency);
 }

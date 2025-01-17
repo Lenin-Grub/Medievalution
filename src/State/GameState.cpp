@@ -64,6 +64,13 @@ void GameState::updateEvents()
             sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
             world_map.shape.setPosition(provinceCenter);
             pathfinding.addNode(provinceCenter);
+
+            sf::Color selectedColor = world_map.getColor();
+            if (selectedColor != world_map.selected_province_color)
+            {
+                world_map.selected_province_color = selectedColor;
+                world_map.is_selected = true;
+            }
         }
 
         pathfinding.handleInput();
@@ -151,7 +158,7 @@ void GameState::updateImGui()
     static char                                         searchBuffer[128] = ""; // Buffer for search input
 
     // Search input field
-    ImGui::InputText("Search", searchBuffer, IM_ARRAYSIZE(searchBuffer));
+    ImGui::InputText((ICON_SEARCH "Search"), searchBuffer, IM_ARRAYSIZE(searchBuffer));
 
     // Reset button
     ImGui::SameLine();
@@ -217,9 +224,12 @@ void GameState::update(const float& dtime)
 {
     sf::Color color = world_map.getColor();
 
-    world_map.select_color = color;
+    world_map.hover_color  = color;
+    world_map.select_color = world_map.selected_province_color;
     world_map.shader.setParameter("select_color", world_map.select_color);
     world_map.shader.setParameter("transparency", world_map.transparency);
+    world_map.shader.setParameter("is_selected", world_map.is_selected);
+    world_map.shader.setParameter("hover_color", world_map.hover_color);
 
     updateMousePositions();
     data.camera.update(dtime);

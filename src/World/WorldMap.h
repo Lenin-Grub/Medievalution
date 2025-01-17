@@ -53,6 +53,10 @@ public:
     sf::Color             select_color;  ///< @brief The color used for selecting provinces.
     sf::Image             map_image;     ///< @brief The image of the world map. 
     sf::CircleShape       shape;         ///< @brief The shape of the world map
+
+    bool is_selected;
+    sf::Color selected_province_color;
+    sf::Color             hover_color;
     
 private:
 

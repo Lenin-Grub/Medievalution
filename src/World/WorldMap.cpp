@@ -6,6 +6,8 @@ WorldMap::WorldMap()
 , load_progress(0)
 , height       (0)
 , width        (0)
+, is_selected(false)
+, selected_province_color(sf::Color::White)
 {
 // Do nothing
 }
