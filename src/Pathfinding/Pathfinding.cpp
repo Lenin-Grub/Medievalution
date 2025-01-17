@@ -2,9 +2,7 @@
 #include "Pathfinding.h"
 
 Pathfinding::Pathfinding()
-    : width(50)
-    , height(50)
-    , start_node(nullptr)
+    : start_node(nullptr)
     , end_node(nullptr)
     , current_node(nullptr)
     , tile_size(sf::Vector2f(32, 32))
@@ -13,160 +11,109 @@ Pathfinding::Pathfinding()
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width  = width;
-    this->height = height;
-
-    nodes.resize(width, std::vector<Node>(height));
-
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            nodes[x][y].position   = sf::Vector2f(x, y);
-            nodes[x][y].walkable   = true;
-            nodes[x][y].is_visited = false;
-            nodes[x][y].parent     = nullptr;
-            nodes[x][y].gCost      = 0;
-
-            if (x > 0)
-                nodes[x][y].neighbors.push_back(&nodes[x - 1][y]);
-            if (x < width - 1)
-                nodes[x][y].neighbors.push_back(&nodes[x + 1][y]);
-            if (y > 0)
-                nodes[x][y].neighbors.push_back(&nodes[x][y - 1]);
-            if (y < height - 1)
-                nodes[x][y].neighbors.push_back(&nodes[x][y + 1]);
-
-            // diagonal
-            if (x > 0 && y > 0)
-                nodes[x][y].neighbors.push_back(&nodes[x - 1][y - 1]);
-            if (x > 0 && y < height - 1)
-                nodes[x][y].neighbors.push_back(&nodes[x - 1][y + 1]);
-            if (x < width - 1 && y > 0)
-                nodes[x][y].neighbors.push_back(&nodes[x + 1][y - 1]);
-            if (x < width - 1 && y < height - 1)
-                nodes[x][y].neighbors.push_back(&nodes[x + 1][y + 1]);
-        }
-    }
 }
 
-void Pathfinding::draw(sf::RenderWindow& window)
+void Pathfinding::draw(sf::RenderWindow& window) 
 {
     sf::Vertex line[] = {
        sf::Vertex(sf::Vector2f(0, 0)),
        sf::Vertex(sf::Vector2f(0, 0))
     };
 
-    // Draw grid lines
-    for (int x = 0; x <= width; x++)
+    // Draw nodes
+    for (const auto& pair : nodes) 
     {
-        line[0].position = sf::Vector2f(x * tile_size.x, 0);
-        line[1].position = sf::Vector2f(x * tile_size.x, height * tile_size.y);
-        line[0].color = sf::Color::Black;
-        line[1].color = sf::Color::Black;
-        window.draw(line, 2, sf::Lines);
+        const Node& node = pair.second;
+        sf::RectangleShape rect(tile_size);
+        rect.setPosition(node.position.x, node.position.y);
+
+        if (&node == start_node)
+            rect.setFillColor(sf::Color::Green);
+        else if (&node == end_node)
+            rect.setFillColor(sf::Color::Red);
+        else
+            rect.setFillColor(sf::Color::Transparent);
+
+        window.draw(rect);
+
+        // Draw a black circle if the node has no neighbors
+        if (node.neighbors.empty()) 
+        {
+            float radius = 3.0f;
+            sf::CircleShape circle(radius);
+            circle.setFillColor(sf::Color::Black);
+            circle.setPosition(node.position.x + radius, node.position.y  + radius);
+            window.draw(circle);
+        }
     }
 
-    for (int y = 0; y <= height; y++)
+    // Draw lines between neighbors
+    for (const auto& pair : nodes) 
     {
-        line[0].position = sf::Vector2f(0, y * tile_size.y);
-        line[1].position = sf::Vector2f(width * tile_size.x, y * tile_size.y);
-        line[0].color = sf::Color::Black;
-        line[1].color = sf::Color::Black;
-        window.draw(line, 2, sf::Lines);
+        const Node& node = pair.second;
+        for (const Node* neighbor : node.neighbors) 
+        {
+            line[0].position = sf::Vector2f(node.position.x, node.position.y);
+            line[1].position = sf::Vector2f(neighbor->position.x, neighbor->position.y);
+            line[0].color = sf::Color::Cyan;
+            line[1].color = sf::Color::Cyan;
+            window.draw(line, 4, sf::Lines);
+        }
     }
 
-    glLineWidth(1.0f);
     // Draw path
-    if (end_node != nullptr)
+    if (end_node != nullptr) 
     {
         glLineWidth(5.0f);
         Node* p = end_node;
-        while (p->parent != nullptr)
+        while (p->parent != nullptr) 
         {
-            line[0].position = sf::Vector2f(p->position.x         * tile_size.x + tile_size.x / 2, p->position.y         * tile_size.y + tile_size.y / 2);
-            line[1].position = sf::Vector2f(p->parent->position.x * tile_size.x + tile_size.x / 2, p->parent->position.y * tile_size.y + tile_size.y / 2);
-            line[0].color    = sf::Color::Blue;
-            line[1].color    = sf::Color::Blue;
-            window.draw(line, 2, sf::Lines);
+            line[0].position = sf::Vector2f(p->position.x, p->position.y);
+            line[1].position = sf::Vector2f(p->parent->position.x, p->parent->position.y);
+            line[0].color = sf::Color::Blue;
+            line[1].color = sf::Color::Blue;
+            window.draw(line, 10, sf::Lines);
             p = p->parent;
         }
         glLineWidth(1.0f);
     }
-
-    sf::RectangleShape rect(tile_size);
-
-    for (int x = 0; x < width; x++)
-    {
-        for (int y = 0; y < height; y++)
-        {
-            if (&nodes[x][y] == start_node)
-                rect.setFillColor(sf::Color::Green);
-            else if (&nodes[x][y] == end_node)
-                rect.setFillColor(sf::Color::Red);
-            else
-            {
-                rect.setFillColor(sf::Color::Transparent);
-                rect.setOutlineColor(sf::Color::Transparent);
-            }
-
-            rect.setPosition(x * tile_size.x, y * tile_size.y);
-            window.draw(rect);
-        }
-    }
 }
 
-void Pathfinding::handleInput()
+void Pathfinding::handleInput() 
 {
-    int x = common::mouse_pos_view.x / tile_size.x;
-    int y = common::mouse_pos_view.y / tile_size.y;
+    int x = common::mouse_pos_view.x;
+    int y = common::mouse_pos_view.y;
 
-    if (x >= 0 && x < width && y >= 0 && y < height)
+    sf::Vector2f position(x, y);
+    Node* node = getNode(position);
+
+    if (node) 
     {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-        {
-            nodes[x][y].walkable = false;
-        }
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) 
+            node->walkable = false;
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-        {
-            nodes[x][y].walkable = true;
-        }
+            node->walkable = true;
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1))
-        {
-            start_node = &nodes[x][y];
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-        {
-            end_node = &nodes[x][y];
-        }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
-        {
-            resetWallble();
-        }
+            resetWalkable();
     }
 }
 
-void Pathfinding::findPath(Node* start, Node* end)
+void Pathfinding::findPath(Node* start, Node* end) 
 {
     resetNodes();
     start_node = start;
-    end_node   = end;
+    end_node = end;
 
     std::priority_queue<Node*, std::vector<Node*>, Node> openList;
     std::vector<Node*> closedList;
 
     if (start_node == nullptr || end_node == nullptr)
-    {
         return;
-    }
 
     if (start_node == end_node)
-    {
         return;
-    }
 
     start_node->gCost = 0.0f;
     start_node->hCost = heuristic(start_node, end_node);
@@ -174,7 +121,7 @@ void Pathfinding::findPath(Node* start, Node* end)
 
     openList.push(start_node);
 
-    while (!openList.empty())
+    while (!openList.empty()) 
     {
         Node* current = openList.top();
         openList.pop();
@@ -182,21 +129,19 @@ void Pathfinding::findPath(Node* start, Node* end)
         closedList.push_back(current);
 
         if (current == end_node)
-        {
             return;
-        }
 
-        for (Node* neighbor : current->neighbors)
+        for (Node* neighbor : current->neighbors) 
         {
-            if (neighbor->walkable && !neighbor->is_visited)
+            if (neighbor->walkable && !neighbor->is_visited) 
             {
                 float tentativeGCost = current->gCost + 1;
-                if (tentativeGCost < neighbor->gCost)
+                if (tentativeGCost < neighbor->gCost) 
                 {
-                    neighbor->gCost = tentativeGCost;
-                    neighbor->hCost = heuristic(neighbor, end_node);
-                    neighbor->fCost = neighbor->gCost + neighbor->hCost;
-                    neighbor->parent = current;
+                    neighbor-> gCost  = tentativeGCost;
+                    neighbor-> hCost  = heuristic(neighbor, end_node);
+                    neighbor-> fCost  = neighbor-> gCost + neighbor-> hCost;
+                    neighbor-> parent = current;
                     openList.push(neighbor);
                     neighbor->is_visited = true;
                 }
@@ -205,38 +150,37 @@ void Pathfinding::findPath(Node* start, Node* end)
     }
 }
 
-void Pathfinding::resetNodes()
+void Pathfinding::resetNodes() 
 {
-    for (int x = 0; x < width; x++)
+    for (auto& pair : nodes) 
     {
-        for (int y = 0; y < height; y++)
-        {
-            nodes[x][y].is_visited = false;
-            nodes[x][y].gCost      = INFINITY;
-            nodes[x][y].fCost      = INFINITY;
-            nodes[x][y].parent     = nullptr;
-        }
+        Node&           node = pair.second;
+        node.is_visited      = false;
+        node.gCost           = INFINITY;
+        node.fCost           = INFINITY;
+        node.parent          = nullptr;
     }
 }
 
-int Pathfinding::heuristic(Node* start, Node* end)
+int Pathfinding::heuristic(Node* start, Node* end) 
 {
-    return std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
+    //return std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
+
+    int manhattanDistance = std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
+    int nodePenalty = 1; // You can adjust this penalty value as needed
+    return manhattanDistance + nodePenalty;
 }
 
-void Pathfinding::resetWallble()
+void Pathfinding::resetWalkable() 
 {
-    for (int x = 0; x < width; x++)
+    for (auto& pair : nodes) 
     {
-        for (int y = 0; y < height; y++)
-        {
-            nodes[x][y].walkable = true;
-        }
+        Node& node = pair.second;
+        node.walkable = true;
     }
-
 }
 
-void Pathfinding::move(float deltaTime)
+void Pathfinding::move(float deltaTime) 
 {
     if (end_node == nullptr || end_node->parent == nullptr)
         return;
@@ -248,4 +192,52 @@ void Pathfinding::move(float deltaTime)
 
     if (next_node != nullptr)
         current_node = next_node;
+}
+
+void Pathfinding::addNode(const sf::Vector2f& position) 
+{
+    if (nodes.find(position) != nodes.end()) 
+        return;
+
+    Node node;
+    node.position = position;
+    node.walkable = true;
+    node.is_visited = false;
+    node.parent = nullptr;
+    node.gCost = 0;
+    nodes[position] = node;
+}
+
+void Pathfinding::connect(Node* node1, Node* node2) 
+{
+    if (node1 && node2 && node1 != node2) 
+    {
+        if (std::find(node1->neighbors.begin(), node1->neighbors.end(), node2) == node1->neighbors.end()) 
+            node1->neighbors.push_back(node2);
+
+        if (std::find(node2->neighbors.begin(), node2->neighbors.end(), node1) == node2->neighbors.end()) 
+            node2->neighbors.push_back(node1);
+    }
+}
+
+void Pathfinding::disconnect(Node* node1, Node* node2) 
+{
+    if (node1 && node2 && node1 != node2) {
+        auto it1 = std::find(node1->neighbors.begin(), node1->neighbors.end(), node2);
+        if (it1 != node1->neighbors.end())
+            node1->neighbors.erase(it1);
+
+        auto it2 = std::find(node2->neighbors.begin(), node2->neighbors.end(), node1);
+        if (it2 != node2->neighbors.end())
+            node2->neighbors.erase(it2);
+    }
+}
+
+Node* Pathfinding::getNode(const sf::Vector2f& position) 
+{
+    auto it = nodes.find(position);
+    if (it != nodes.end()) {
+        return &it->second;
+    }
+    return nullptr;
 }
