@@ -29,5 +29,5 @@ public:
     int              tileset_cols;
     int              tileset_rows;
     bool             visible;
-
+    std::string      name;
 };
