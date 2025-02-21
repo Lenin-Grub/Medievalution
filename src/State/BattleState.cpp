@@ -79,8 +79,8 @@ void BattleState::updateImGui()
     {
         ImGui::Text("Current layer: %d", editor.getCurrentLayer());
 
-        static std::vector<const char*> items = { "Tileset1.png", "Tileset2.png" };
-        static int current_item = 0;
+        static std::vector<const char*> items = { "Tileset1.png", "Tileset2.png", "Door1.png", "Door2.png", "DoubleDoor1.png", "DoubleDoor2.png"};
+        static int  current_item          = 0;
         static bool show_tileset_selector = false;
 
         if (ImGui::Button((ICON_ADD_FILES "Add")))
@@ -119,24 +119,44 @@ void BattleState::updateImGui()
 
         ImGui::Separator();
         //______________________________________
-        ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-        ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 100));
-        if (ImGui::BeginTable("LayersTable", 2))
+        ImVec2 content_region_avail = ImGui::GetContentRegionAvail();
+        ImGui::BeginChild("FrameSelector", ImVec2(content_region_avail.x,100));
+        if (ImGui::BeginTable("LayersTable", 3))
         {
+            ImGui::TableSetupColumn(0, ImGuiTableColumnFlags_WidthFixed, 25.0f);
             const auto& layers = editor.getLayers();
             for (size_t i = 0; i < layers.size(); ++i)
             {
                 Layer* layer = layers[i].get();
-                std::string layerName = (ICON_EMPTY_FILES "Layer ") + std::to_string(i);
+                std::string default_layer_name = "Layer " + std::to_string(i);
+                std::string display_layer_name = ICON_EMPTY_FILES + (layer->name.empty() ? default_layer_name : layer->name);
 
                 ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0); // Первый столбец для метки слоя
-                if (ImGui::Selectable(layerName.c_str(), editor.getCurrentLayer() == i))
-                    editor.setCurrentLayer(i);
+                ImGui::TableSetColumnIndex(0);
+                ImGui::PushID(static_cast<int>(i));
+                ImGui::Checkbox("##Visible", &layer->visible);
+                ImGui::PopID();
 
                 ImGui::TableSetColumnIndex(1);
-                ImGui::PushID(i);
-                ImGui::Checkbox("Visible", &layer->visible);
+                if (ImGui::Selectable(display_layer_name.c_str(), editor.getCurrentLayer() == i))
+                    editor.setCurrentLayer(i);
+
+                ImGui::TableSetColumnIndex(2);
+                ImGui::PushID(static_cast<int>(i));
+                if (ImGui::Button(ICON_EDIT))
+                    ImGui::OpenPopup("Rename Layer");
+
+                if (ImGui::BeginPopup("Rename Layer"))
+                {
+                    static char layer_name_buffer[128] = "";
+                    strcpy(layer_name_buffer, layer->name.empty() ? default_layer_name.c_str() : layer->name.c_str());
+                    if (ImGui::InputText("##LayerName", layer_name_buffer, sizeof(layer_name_buffer), ImGuiInputTextFlags_EnterReturnsTrue))
+                    {
+                        layer->name = layer_name_buffer;
+                        ImGui::CloseCurrentPopup();
+                    }
+                    ImGui::EndPopup();
+                }
                 ImGui::PopID();
             }
             ImGui::EndTable();
@@ -148,17 +168,17 @@ void BattleState::updateImGui()
     if (ImGui::CollapsingHeader((ICON_FOUR_QUADS "Tiles")))
     {
         static int value = editor.getTileSize(); // Initial scale value
-        const int minValue = 8;                  // Minimum scale value
-        const int maxValue = 64;                 // Maximum scale value
+        const int min_value = 8;                  // Minimum scale value
+        const int max_value = 64;                 // Maximum scale value
 
-        ImGui::SliderInt("Scale", &value, minValue, maxValue);
+        ImGui::SliderInt("Scale", &value, min_value, max_value);
         ImGui::Separator();
 
         sf::Texture& tileset_Texture = editor.getTilesetTexture();
         int tileset_cols = editor.getSheetWidth();
         int tileset_rows = editor.getSheetHeight();
 
-        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle(); // Cast the texture ID to ImTextureID
+        ImTextureID tileset_texture_id = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle(); // Cast the texture ID to ImTextureID
 
         ImVec2 scale_factor = ImVec2(value, value);
 
@@ -184,7 +204,7 @@ void BattleState::updateImGui()
                         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
                     }
 
-                    if (ImGui::ImageButton("", (ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
+                    if (ImGui::ImageButton("", (ImTextureID)tileset_texture_id, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
                         m_selected_tile_id = row * tileset_cols + col;
                     }
 

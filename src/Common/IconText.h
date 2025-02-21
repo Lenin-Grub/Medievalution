@@ -1,6 +1,7 @@
 #define ICON_MIN 0xe900
 #define ICON_MAX 0xe99d
 
+#define ICON_EDIT         (char*)u8"\ue930"
 #define ICON_END          (char*)u8"\ue934"
 #define ICON_EMPTY_FILES  (char*)u8"\ue935"
 #define ICON_REMOVE_FILES (char*)u8"\ue936"
