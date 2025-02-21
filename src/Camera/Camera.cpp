@@ -25,14 +25,16 @@ void Camera::update(const float& dtime)
 
 void Camera::move(const float& dtime)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(-WindowSettings::getInstance().camera_speed * dtime, 0); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(WindowSettings::getInstance().camera_speed * dtime, 0);  }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { common::view.move(0, -WindowSettings::getInstance().camera_speed * dtime); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { common::view.move(0, WindowSettings::getInstance().camera_speed * dtime);  }
+    float zoom_factor = common::view.getSize().x / WindowSettings::getInstance().resolution.width;
+    float adjusted_speed = WindowSettings::getInstance().camera_speed * zoom_factor;
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {common::view.move(-adjusted_speed * dtime, 0);}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {common::view.move(adjusted_speed * dtime, 0);}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {common::view.move(0, -adjusted_speed * dtime);}
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {common::view.move(0, adjusted_speed * dtime);}
 }
 
-void Camera::zoom() const
+void Camera::zoom() 
 {
     if (!ImGui::GetIO().WantCaptureMouse)
     {
