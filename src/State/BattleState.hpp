@@ -3,6 +3,7 @@
 #include "Pathfinding/Pathfinding.h"
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
+#include "GUI/GUIBattleState.h" 
 
 class StateMachine;
 
@@ -20,12 +21,12 @@ public:
     void update(const float& dtime)               override;
     void draw(sf::RenderTarget* target = nullptr) override;
 
-private:
-    Pathfinding               pathfinding;
-    Editor                    editor;
-    Animator                  animator;
-    sf::Sprite                sprite;
-    sf::Texture               texture;
-    int                       m_selected_tile_id;
-    int                       m_animator_tile_selected_id;
+public:
+    Pathfinding pathfinding;
+    Editor      editor;
+    Animator    animator;
+    sf::Sprite  sprite;
+    sf::Texture texture;
+    int         m_selected_tile_id;
+    int         m_animator_tile_selected_id;
 };

@@ -84,8 +84,6 @@ bool Game::initFonts() noexcept
     config.GlyphMinAdvanceX    = 6.0f;
     config.OversampleH         = 3;
     config.OversampleV         = 3;
-    config.GlyphExtraSpacing.x = 10.0f;
-    config.GlyphExtraSpacing.y = 10.0f;
 
     static const ImWchar icon_ranges[] = { ICON_MIN, ICON_MAX, 0 };
 
