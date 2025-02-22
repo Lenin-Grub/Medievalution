@@ -51,19 +51,19 @@ bool Game::initGraphicSettings() noexcept
 
 bool Game::initWindow() noexcept
 {
-    if (WindowSettings::getInstance().fullscreen)
+    if (WindowSettings::getInstance().settings.fullscreen)
         window = std::make_unique<sf::RenderWindow>(
-         WindowSettings::getInstance().resolution,
-         WindowSettings::getInstance().title, sf::Style::Fullscreen,
-         WindowSettings::getInstance().context_settings);
+         WindowSettings::getInstance().settings.resolution,
+         WindowSettings::getInstance().settings.title, sf::Style::Fullscreen,
+         WindowSettings::getInstance().settings.context_settings);
     else
         window = std::make_unique<sf::RenderWindow>(
-         WindowSettings::getInstance().resolution,
-         WindowSettings::getInstance().title, sf::Style::Close,
-         WindowSettings::getInstance().context_settings);
+         WindowSettings::getInstance().settings.resolution,
+         WindowSettings::getInstance().settings.title, sf::Style::Close,
+         WindowSettings::getInstance().settings.context_settings);
 
-    window->setFramerateLimit       (WindowSettings::getInstance().fps_limit);
-    window->setVerticalSyncEnabled  (WindowSettings::getInstance().vertical_sync);
+    window->setFramerateLimit       (WindowSettings::getInstance().settings.fps_limit);
+    window->setVerticalSyncEnabled  (WindowSettings::getInstance().settings.vertical_sync);
     ImGui::SFML::Init(*window);
 
     return true;
@@ -109,7 +109,7 @@ bool Game::initJukebox() noexcept
 {
     state_machine.data.jukebox.requestAll();
     state_machine.data.jukebox.play();
-    state_machine.data.jukebox.setVolume(WindowSettings::getInstance().music_volume);
+    state_machine.data.jukebox.setVolume(WindowSettings::getInstance().settings.music_volume);
     return false;
 }
 
