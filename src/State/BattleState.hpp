@@ -4,6 +4,7 @@
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
 #include "GUI/GUIBattleState.h" 
+#include "Entity/Entity.hpp"
 
 class StateMachine;
 
@@ -29,4 +30,5 @@ public:
     sf::Texture texture;
     int         m_selected_tile_id;
     int         m_animator_tile_selected_id;
+    EntityManager entity_manager;
 };

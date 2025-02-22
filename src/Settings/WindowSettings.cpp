@@ -2,27 +2,30 @@
 #include "WindowSettings.h"
 
 // если settings.json не обнаружено, то будут приняты эти настройки
-WindowSettings::WindowSettings():
-    title("Uninitialized"),
-    resolution(sf::VideoMode::getDesktopMode()),
-    video_modes(sf::VideoMode::getFullscreenModes()),
-    fullscreen(false),
-    vertical_sync(false),
-    fps_limit(0),
-    music_volume(100),
-    sound_volume(100),
-    camera_speed(1),
-    zoom_speed(0),
-    language("rus"),
-    is_sound_play(true),
-    is_music_play(true),
-    id_resolution(0)
+WindowSettings::WindowSettings()
+    : fps(50)
+    , lastFrameTime (common::clock.getElapsedTime())
 {
-    context_settings.depthBits         = 24;
-    context_settings.stencilBits       = 8;
-    context_settings.antialiasingLevel = 4;
-    context_settings.majorVersion      = 3;
-    context_settings.minorVersion      = 0;
+    settings.title                              = "Uninitialized";
+    settings.resolution                         = sf::VideoMode::getDesktopMode();
+    settings.video_modes                        = sf::VideoMode::getFullscreenModes();
+    settings.fullscreen                         = false;
+    settings.vertical_sync                      = false;
+    settings.fps_limit                          = 0;
+    settings.music_volume                       = 100;
+    settings.sound_volume                       = 100;
+    settings.camera_speed                       = 1;
+    settings.zoom_speed                         = 0;
+    settings.language                           = "rus";
+    settings.is_sound_play                      = true;
+    settings.is_music_play                      = true;
+    settings.id_resolution                      = 0;
+
+    settings.context_settings.depthBits         = 24;
+    settings.context_settings.stencilBits       = 8;
+    settings.context_settings.antialiasingLevel = 4;
+    settings.context_settings.majorVersion      = 3;
+    settings.context_settings.minorVersion      = 0;
 }
 
 bool WindowSettings::saveToFile(const std::string path) noexcept
@@ -33,15 +36,15 @@ bool WindowSettings::saveToFile(const std::string path) noexcept
     if (ofs.is_open())
     {
         //TODO json ругается на синхронизацию, т.к. она int, а требуется bool
-        j["title"]         = title;
-        j["resolution"]    = { { "x", resolution.width }, { "y", resolution.height } };
-        j["id_resolution"] = id_resolution;
-        j["fullscreen"]    = fullscreen;
-        j["fps_limit"]     = fps_limit;
-        j["music_volume"]  = music_volume;
-        j["camera_speed"]  = camera_speed;
-        j["zoom_speed"]    = zoom_speed;
-        j["language"]      = language;
+        j["title"]         = settings.title;
+        j["resolution"]    = { { "x", settings.resolution.width }, { "y", settings.resolution.height } };
+        j["id_resolution"] = settings.id_resolution;
+        j["fullscreen"]    = settings.fullscreen;
+        j["fps_limit"]     = settings.fps_limit;
+        j["music_volume"]  = settings.music_volume;
+        j["camera_speed"]  = settings.camera_speed;
+        j["zoom_speed"]    = settings.zoom_speed;
+        j["language"]      = settings.language;
         file << std::setw(4) << j;
         ofs.close();
         LOG_INFO("Settings\t Saved");
@@ -72,16 +75,16 @@ bool WindowSettings::loadFromFIle(const std::string path) noexcept
         }
     }
     //TODO json ругается на синхронизацию, т.к. она int, а требуется bool
-    j["title"].get_to(title);
-    j["resolution"]["x"].get_to(resolution.width);
-    j["resolution"]["y"].get_to(resolution.height);
-    j["id_resolution"].get_to(id_resolution);
-    j["fullscreen"].get_to(fullscreen);
-    j["fps_limit"].get_to(fps_limit);
-    j["music_volume"].get_to(music_volume);
-    j["camera_speed"].get_to(camera_speed);
-    j["zoom_speed"].get_to(zoom_speed);
-    j["language"].get_to(language);
+    j["title"].get_to          (settings.title);
+    j["resolution"]["x"].get_to(settings.resolution.width);
+    j["resolution"]["y"].get_to(settings.resolution.height);
+    j["id_resolution"].get_to  (settings.id_resolution);
+    j["fullscreen"].get_to     (settings.fullscreen);
+    j["fps_limit"].get_to      (settings.fps_limit);
+    j["music_volume"].get_to   (settings.music_volume);
+    j["camera_speed"].get_to   (settings.camera_speed);
+    j["zoom_speed"].get_to     (settings.zoom_speed);
+    j["language"].get_to       (settings.language);
     ifs.close();
     LOG_INFO("Settings\t Init");
     return true;

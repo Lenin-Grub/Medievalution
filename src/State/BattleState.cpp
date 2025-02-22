@@ -21,6 +21,9 @@ void BattleState::init()
     sprite.setTexture(texture);
     animator.setFrameTime(0.5f);
     animator.pause();
+
+    entity_manager.createEntity(sf::Vector2f(0, 300), "rus.png");
+
     LOG_INFO("State Battle\t Init");
 }
 
@@ -69,6 +72,8 @@ void BattleState::update(const float& dtime)
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
     pathfinding.move(dtime);
 
+    entity_manager.update(1.0f / 60.0f);
+
     // Обновляем позицию квадрата
     if (pathfinding.current_node != nullptr && pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
     {
@@ -95,6 +100,7 @@ void BattleState::draw(sf::RenderTarget* target)
 
     pathfinding.draw(window);
     target->draw(sprite);
+    entity_manager.draw(window);
 
     target->setView(window.getDefaultView());
     target->setView(common::view);
