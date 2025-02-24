@@ -11,9 +11,10 @@ Animator::Animator(sf::Sprite& sprite)
 {
 }
 
-void Animator::init(const std::string& name)
+bool Animator::init(const std::string& name)
 {
-    sprite.setTexture(ResourceLoader::instance().getTexture(name));
+   sprite.setTexture(ResourceLoader::instance().getTexture(name));
+   return true;
 }
 
 void Animator::addFrame(sf::IntRect rect)
@@ -182,3 +183,12 @@ const std::vector<sf::IntRect>& Animator::getFrames() const
 {
     return frames;
 }
+
+const sf::IntRect& Animator::getCurrentFrameRect() const
+{
+    if (frames.empty())
+        return sf::IntRect(0, 0, 64, 64);
+
+    return frames.at(getCurrentFrame());
+}
+
