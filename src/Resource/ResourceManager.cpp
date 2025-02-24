@@ -16,16 +16,17 @@ sf::Texture& ResourceLoader::getTexture(const std::string& name)
     else
     {
         auto path = findResource(name);
-        if (path.empty())
-            throw std::runtime_error("Resource not found: " + name);
-
         sf::Texture texture;
-        if (!texture.loadFromFile(path))
-            throw std::runtime_error("Failed to load texture: " + path);
-
-        return textures.emplace(name, std::move(texture)).first->second;
+        if (path.empty() || !texture.loadFromFile(path))
+        {
+            LOG_ERROR("Texture {0} not found!", name);
+            return textures.emplace(name, generateTexture()).first->second;
+        }
+        else
+            return textures.emplace(name, std::move(texture)).first->second;
     }
 }
+
 
 sf::Image& ResourceLoader::getImage(const std::string& name)
 {
@@ -101,4 +102,27 @@ std::string ResourceLoader::findResource(const std::string& name)
             return file.path().string();
         }
     return std::filesystem::path().string();
+}
+
+sf::Texture ResourceLoader::generateTexture()
+{
+    int size = 32;
+    sf::Image image;
+    image.create(size, size);
+
+    sf::Color color1(47, 47, 46);
+    sf::Color color2(31, 30, 30);
+
+    for (int y = 0; y < size; ++y)
+    {
+        for (int x = 0; x < size; ++x)
+        {
+            bool white = (x / 8 + y / 8) % 2 == 0;
+            image.setPixel(x, y, white ? color1 : color2);
+        }
+    }
+
+    sf::Texture texture;
+    texture.loadFromImage(image);
+    return texture;
 }
