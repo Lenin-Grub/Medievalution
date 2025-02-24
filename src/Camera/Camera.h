@@ -35,20 +35,15 @@ public:
     /// zoom level is typically adjusted based on user input.
     void zoom();
 
-    void interpolateZoom(const float& dtime);
-
     /// @brief Scrolls the camera view.
     /// This method handles the scrolling of the camera view, typically
     /// based on user input such as mouse wheel scrolling.
     void scroll();
 
 private:
-    int          max_zoom;       ///< The maximum zoom level for the camera.
-    int          min_zoom;       ///< The minimum zoom level for the camera.
-    float        pan_threshold;  ///< The threshold for initiating a pan action.
-    bool         is_panning;     ///< Indicates whether the camera is currently panning.
-    sf::Vector2f prev_mouse_pos; ///< Stores the previous mouse position for panning calculations.
-    float targetZoom;
-    float currentZoom;
-    float interpolationSpeed;
+    int          max_zoom;           ///< The maximum zoom level for the camera.
+    int          min_zoom;           ///< The minimum zoom level for the camera.
+    float        pan_threshold;      ///< The threshold for initiating a pan action.
+    bool         is_panning;         ///< Indicates whether the camera is currently panning.
+    sf::Vector2f prev_mouse_pos;     ///< Stores the previous mouse position for panning calculations.
 };
