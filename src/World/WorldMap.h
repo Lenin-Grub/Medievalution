@@ -9,12 +9,12 @@
     This class inherits from sf::Drawable and provides methods for initializing, drawing, and interacting with the world map. 
     */
 
-class WorldMap 
+class WorldMap
     :public sf::Drawable
 {
 public:
-    WorldMap ();
-    virtual ~WorldMap ();
+    WorldMap();
+    virtual ~WorldMap();
 
     /// @fn bool init()
     /// @brief Initializes the world map and its provinces.
@@ -47,17 +47,17 @@ public:
     bool isInitProvinces();
 
 public:
-    int                   load_progress; ///< @brief The load progress of the world map. 
-    float                 transparency;  ///< @brief The transparency of the world map.
-    sf::Shader            shader;        ///< @brief The shader used for rendering the world map.
-    sf::Color             select_color;  ///< @brief The color used for selecting provinces.
-    sf::Image             map_image;     ///< @brief The image of the world map. 
-    sf::CircleShape       shape;         ///< @brief The shape of the world map
+    int                   load_progress;            ///< @brief The load progress of the world map. 
+    float                 transparency;             ///< @brief The transparency of the world map.
+    sf::Shader            shader;                   ///< @brief The shader used for rendering the world map.
+    sf::Color             select_color;             ///< @brief The color used for selecting provinces.
+    sf::Image             map_image;                ///< @brief The image of the world map. 
+    sf::CircleShape       shape;                    ///< @brief The shape of the world map
 
-    bool is_selected;
-    sf::Color selected_province_color;
-    sf::Color             hover_color;
-    
+    bool                  is_selected;             ///< @brief Indicates whether the province is selected.
+    sf::Color             selected_province_color; ///< @brief The color of the selected province.
+    sf::Color             hover_color;             ///< @brief The color displayed when hovering over a province.
+
 private:
 
     /// @brief Loads the provinces map.
@@ -66,20 +66,20 @@ private:
 
     /// @brief Loads the map data.
     /// @private
-    void loadMapData     ();
+    void loadMapData();
 
     /// @brief Sets the uniforms for the shader.
     /// @private
-    void setUniforms     ();
+    void setUniforms();
 
     /// @brief Loads the shader.
     /// @private
-    void loadShader      ();
+    void loadShader();
 
     /// @brief Checks if the mouse is on the map.
     /// @return True if the mouse is on the map, false otherwise.
     /// @private
-    bool isMouseOnMap    () const;
+    bool isMouseOnMap() const;
 
 private:
     Province      province;
@@ -95,9 +95,9 @@ private:
     float         height;
     float         width;
 
-    struct ColorHash 
+    struct ColorHash
     {
-        size_t operator()(const sf::Color& c) const noexcept 
+        size_t operator()(const sf::Color& c) const noexcept
         {
             size_t hash = 0;
             hash = combine(hash, c.r);
@@ -107,14 +107,30 @@ private:
             return hash;
         }
 
-        static size_t combine(size_t seed, size_t v) noexcept 
+        static size_t combine(size_t seed, size_t v) noexcept
         {
             return seed ^ (v + 0x9e3779b9 + (seed << 6) + (seed >> 2));
         }
     };
-    public:
+public:
     /// @brief A unordered map of provinces on the world map.
-    /// @param sf::Color - is a key
+    /// @param sf::Color  - is a key
     /// @param Province - is a value
     std::unordered_map<sf::Color, Province, ColorHash> provinces;
+
+    ///@brief Finds and returns the centers of all provinces on the world map.
+    /* This function calculates and returns an unordered map where each key is a
+    * color representing a province, and each value is a vector representing the
+    * center coordinates of that province.
+    */
+    /*@return std::unordered_map<sf::Color, sf::Vector2f, WorldMap::ColorHash>
+              An unordered map containing the center coordinates of all provinces.
+              The key is the color of the province, and the value is the vector
+              representing the center coordinates.*/
+    std::unordered_map<sf::Color, sf::Vector2f, WorldMap::ColorHash> findAllProvinceCenters() const;
+
+    /// @brief Prints the center coordinates of all provinces on the world map.
+    /* This function iterates through all provinces and prints their center
+      coordinates. It is useful for debugging*/
+    void printAllProvinceCenters() const;
 };
