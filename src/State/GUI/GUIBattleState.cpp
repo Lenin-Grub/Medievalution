@@ -173,7 +173,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
     ImGui::Begin("T2#", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
     ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, WindowSettings::getInstance().getFPS());
 
-    ImGui::Columns(3, "table_columns");
+    ImGui::Columns(4, "table_columns");
     ImGui::Separator();
 
     ImGui::Text("Coordinates"); ImGui::SameLine();
@@ -183,10 +183,17 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
     ImGui::PopStyleColor();
     ImGui::Text("%f", common::mouse_pos_view.x);
     ImGui::NextColumn();
-    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Green);
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(40, 159, 49));
     ImGui::Button("Y"); ImGui::SameLine();
     ImGui::PopStyleColor();
     ImGui::Text("%f", common::mouse_pos_view.y);
+    ImGui::NextColumn();
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(23, 68, 210));
+    ImGui::Button("Z"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("%f", 1);
+
+
 
     ImGui::Columns(1);
     ImGui::End();
