@@ -23,12 +23,12 @@ public:
     void draw(sf::RenderTarget* target = nullptr) override;
 
 public:
-    Pathfinding pathfinding;
-    Editor      editor;
-    Animator    animator;
-    sf::Sprite  sprite;
-    sf::Texture texture;
-    int         m_selected_tile_id;
-    int         m_animator_tile_selected_id;
+    Pathfinding   pathfinding;
+    Editor        editor;
+    Animator      animator;
+    sf::Sprite    sprite;
+    sf::Texture   texture;
+    int           m_selected_tile_id;
+    int           m_animator_tile_selected_id;
     EntityManager entity_manager;
 };
