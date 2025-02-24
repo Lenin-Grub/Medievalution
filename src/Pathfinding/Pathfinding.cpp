@@ -6,6 +6,8 @@ Pathfinding::Pathfinding()
     , end_node(nullptr)
     , current_node(nullptr)
     , tile_size(sf::Vector2f(32, 32))
+    , width(50)
+    , height(50)
 {
 }
 
@@ -15,16 +17,20 @@ void Pathfinding::initNodes(int width, int height)
 
 void Pathfinding::draw(sf::RenderWindow& window) 
 {
-    sf::Vertex line[] = {
+    sf::Vertex line[] = 
+    {
        sf::Vertex(sf::Vector2f(0, 0)),
        sf::Vertex(sf::Vector2f(0, 0))
     };
 
+    sf::RectangleShape rect(tile_size);
+    sf::CircleShape    circle(3.0f);
+    circle.setFillColor(sf::Color::Black);
+
     // Draw nodes
-    for (const auto& pair : nodes) 
+    for (const auto& pair : nodes)
     {
         const Node& node = pair.second;
-        sf::RectangleShape rect(tile_size);
         rect.setPosition(node.position.x, node.position.y);
 
         if (&node == start_node)
@@ -33,46 +39,42 @@ void Pathfinding::draw(sf::RenderWindow& window)
             rect.setFillColor(sf::Color::Red);
         else
             rect.setFillColor(sf::Color::Transparent);
-
-        window.draw(rect);
+            window.draw(rect);
 
         // Draw a black circle if the node has no neighbors
-        if (node.neighbors.empty()) 
-        {
-            float radius = 3.0f;
-            sf::CircleShape circle(radius);
-            circle.setFillColor(sf::Color::Black);
-            circle.setPosition(node.position.x + radius, node.position.y  + radius);
-            window.draw(circle);
-        }
+        //if (node.neighbors.empty())
+        //{
+        //    circle.setPosition(node.position.x + circle.getRadius(), node.position.y + circle.getRadius());
+        //        window.draw(circle);
+        //}
     }
 
     // Draw lines between neighbors
-    for (const auto& pair : nodes) 
+    for (const auto& pair : nodes)
     {
         const Node& node = pair.second;
-        for (const Node* neighbor : node.neighbors) 
+        for (const Node* neighbor : node.neighbors)
         {
             line[0].position = sf::Vector2f(node.position.x, node.position.y);
             line[1].position = sf::Vector2f(neighbor->position.x, neighbor->position.y);
             line[0].color = sf::Color::Cyan;
             line[1].color = sf::Color::Cyan;
-            window.draw(line, 4, sf::Lines);
+            window.draw(line, 2, sf::Lines);
         }
     }
 
     // Draw path
-    if (end_node != nullptr) 
+    if (end_node != nullptr)
     {
         glLineWidth(5.0f);
         Node* p = end_node;
-        while (p->parent != nullptr) 
+        while (p->parent != nullptr)
         {
             line[0].position = sf::Vector2f(p->position.x, p->position.y);
             line[1].position = sf::Vector2f(p->parent->position.x, p->parent->position.y);
             line[0].color = sf::Color::Blue;
             line[1].color = sf::Color::Blue;
-            window.draw(line, 10, sf::Lines);
+            window.draw(line, 2, sf::Lines);
             p = p->parent;
         }
         glLineWidth(1.0f);
@@ -104,7 +106,7 @@ void Pathfinding::findPath(Node* start, Node* end)
 {
     resetNodes();
     start_node = start;
-    end_node = end;
+    end_node   = end;
 
     std::priority_queue<Node*, std::vector<Node*>, Node> openList;
     std::vector<Node*> closedList;
@@ -138,10 +140,10 @@ void Pathfinding::findPath(Node* start, Node* end)
                 float tentativeGCost = current->gCost + 1;
                 if (tentativeGCost < neighbor->gCost) 
                 {
-                    neighbor-> gCost  = tentativeGCost;
-                    neighbor-> hCost  = heuristic(neighbor, end_node);
-                    neighbor-> fCost  = neighbor-> gCost + neighbor-> hCost;
-                    neighbor-> parent = current;
+                    neighbor-> gCost     = tentativeGCost;
+                    neighbor-> hCost     = heuristic(neighbor, end_node);
+                    neighbor-> fCost     = neighbor-> gCost + neighbor-> hCost;
+                    neighbor-> parent    = current;
                     openList.push(neighbor);
                     neighbor->is_visited = true;
                 }
@@ -154,7 +156,7 @@ void Pathfinding::resetNodes()
 {
     for (auto& pair : nodes) 
     {
-        Node&           node = pair.second;
+        Node& node           = pair.second;
         node.is_visited      = false;
         node.gCost           = INFINITY;
         node.fCost           = INFINITY;
@@ -164,11 +166,9 @@ void Pathfinding::resetNodes()
 
 int Pathfinding::heuristic(Node* start, Node* end) 
 {
-    //return std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
-
     int manhattanDistance = std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
-    int nodePenalty = 1; // You can adjust this penalty value as needed
-    return manhattanDistance + nodePenalty;
+    int node_penalty = 1; // You can adjust this penalty value as needed
+    return manhattanDistance + node_penalty;
 }
 
 void Pathfinding::resetWalkable() 
@@ -200,11 +200,11 @@ void Pathfinding::addNode(const sf::Vector2f& position)
         return;
 
     Node node;
-    node.position = position;
-    node.walkable = true;
+    node.position   = position;
+    node.walkable   = true;
     node.is_visited = false;
-    node.parent = nullptr;
-    node.gCost = 0;
+    node.parent     = nullptr;
+    node.gCost      = 0;
     nodes[position] = node;
 }
 
@@ -222,7 +222,8 @@ void Pathfinding::connect(Node* node1, Node* node2)
 
 void Pathfinding::disconnect(Node* node1, Node* node2) 
 {
-    if (node1 && node2 && node1 != node2) {
+    if (node1 && node2 && node1 != node2) 
+    {
         auto it1 = std::find(node1->neighbors.begin(), node1->neighbors.end(), node2);
         if (it1 != node1->neighbors.end())
             node1->neighbors.erase(it1);
@@ -236,8 +237,7 @@ void Pathfinding::disconnect(Node* node1, Node* node2)
 Node* Pathfinding::getNode(const sf::Vector2f& position) 
 {
     auto it = nodes.find(position);
-    if (it != nodes.end()) {
+    if (it != nodes.end())
         return &it->second;
-    }
     return nullptr;
 }
