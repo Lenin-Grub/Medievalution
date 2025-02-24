@@ -19,6 +19,13 @@ void GameState::init()
     texture = ResourceLoader::instance().getTexture("Spearman.png");
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0,0,64,64));
+
+    auto provinceCenters = world_map.provinces;
+
+    for (const auto& entry : provinceCenters)
+    {
+        pathfinding.addNode(entry.second.centre);
+    }
 }
 
 void GameState::onDeactivate()
@@ -61,10 +68,6 @@ void GameState::updateEvents()
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
-            sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
-            world_map.shape.setPosition(provinceCenter);
-            pathfinding.addNode(provinceCenter);
-
             sf::Color selectedColor = world_map.getColor();
             if (selectedColor != world_map.selected_province_color)
             {
@@ -150,6 +153,7 @@ void GameState::updateImGui()
 #pragma endregion
         
 #pragma region Nodes_and_neighbors_tree
+    // дорогостоящая операция
 
     ImGui::Begin("Nodes Tree");
 
@@ -167,12 +171,14 @@ void GameState::updateImGui()
 
     // Filter nodes based on the search query
     std::vector<const Node*> filteredNodes;
+    std::string searchQuery = searchBuffer;
 
-    for (const auto& pair : pathfinding.nodes) 
+    
+    for (const auto& pair : pathfinding.nodes)
     {
         const Node& node = pair.second;
 
-        if (nodeNames.find(&node) == nodeNames.end()) 
+        if (nodeNames.find(&node) == nodeNames.end())
         {
             sf::Color nodeColor = world_map.getColor();
             std::string provinceName = world_map.getProvinceName(nodeColor);
@@ -180,23 +186,22 @@ void GameState::updateImGui()
             nodeIDs[&node] = world_map.getProvinceID(nodeColor);
         }
 
-        std::string nodeName = nodeNames[&node];
+        std::string_view nodeName = nodeNames[&node];
         int nodeID = nodeIDs[&node];
-        std::string searchQuery = searchBuffer;
 
         // Check if the node name or ID matches the search query
-        if (nodeName.find(searchQuery) != std::string::npos || std::to_string(nodeID).find(searchQuery) != std::string::npos)
+        if (nodeName.find(searchQuery) != std::string_view::npos || std::to_string(nodeID).find(searchQuery) != std::string::npos)
             filteredNodes.push_back(&node);
     }
 
     // Display filtered nodes
-    for (const Node* node : filteredNodes) 
+    for (const Node* node : filteredNodes)
     {
-        if (ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", nodeNames[node].c_str(), nodeIDs[node])) 
+        if (ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", nodeNames[node].c_str(), nodeIDs[node]))
         {
-            for (const Node* neighbor : node->neighbors) 
+            for (const Node* neighbor : node->neighbors)
             {
-                if (nodeNames.find(neighbor) == nodeNames.end()) 
+                if (nodeNames.find(neighbor) == nodeNames.end())
                 {
                     sf::Color neighborColor          = world_map.getColor();
                     std::string neighborProvinceName = world_map.getProvinceName(neighborColor);
@@ -216,6 +221,7 @@ void GameState::updateImGui()
         }
     }
     ImGui::End();
+
 #pragma endregion
 
 }
