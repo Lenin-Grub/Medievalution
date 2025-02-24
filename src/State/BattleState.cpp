@@ -19,10 +19,11 @@ void BattleState::init()
 
     texture = ResourceLoader::instance().getTexture("Spearman.png");
     sprite.setTexture(texture);
+    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
     animator.setFrameTime(0.5f);
     animator.pause();
 
-    entity_manager.createEntity(sf::Vector2f(0, 300), "rus.png");
+    entity_manager.createEntity(sf::Vector2f(0, 300), sprite);
 
     LOG_INFO("State Battle\t Init");
 }
@@ -72,7 +73,7 @@ void BattleState::update(const float& dtime)
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
     pathfinding.move(dtime);
 
-    entity_manager.update(1.0f / 60.0f);
+    entity_manager.update(1.0f / 60.0f, animator);
 
     // Обновляем позицию квадрата
     if (pathfinding.current_node != nullptr && pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
