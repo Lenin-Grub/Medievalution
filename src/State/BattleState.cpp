@@ -23,18 +23,18 @@ void BattleState::init()
     animator.setFrameTime(0.5f);
     animator.pause();
 
+    ///-------------
     auto entity = entity_manager.createEntity();
     entity_manager.addComponent<Component_Position>(entity, sf::Vector2f(0.0f, 0.0f));
     entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f));
     entity_manager.addComponent<Component_Sprite>(entity, sprite);
     entity_manager.addComponent<Control>(entity);
-
+    entity_manager.addComponent<Control>(entity);
     entity_manager.setSprite(entity, "Spearman.png");
-
+    ///-------------
     auto entity2 = entity_manager.createEntity();
     entity_manager.addComponent<Component_Position>(entity2, sf::Vector2f(300.0f, 300.0f));
     entity_manager.addComponent<Component_Sprite>(entity2, sprite);
-
     entity_manager.setSprite(entity2, "Archer.png");
     ///-------------
 

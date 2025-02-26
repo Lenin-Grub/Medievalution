@@ -73,10 +73,10 @@ void EntityManager::draw(sf::RenderWindow& window)
 
 void EntityManager::setSprite(entt::entity entity, const std::string& path)
 {
-    auto& spriteComponent = getComponent<Component_Sprite>(entity);
+    auto& sprite_component = getComponent<Component_Sprite>(entity);
 
-    spriteComponent.texture = ResourceLoader::instance().getTexture(path);
-    spriteComponent.sprite.setTexture(spriteComponent.texture);
-    spriteComponent.int_rect = sf::IntRect(0, 0, spriteComponent.texture.getSize().x, spriteComponent.texture.getSize().y);
-    spriteComponent.sprite.setTextureRect(spriteComponent.int_rect);
+    sprite_component.texture = ResourceLoader::instance().getTexture(path);
+    sprite_component.sprite.setTexture(sprite_component.texture);
+    sprite_component.int_rect = sf::IntRect(0, 0, sprite_component.texture.getSize().x, sprite_component.texture.getSize().y);
+    sprite_component.sprite.setTextureRect(sprite_component.int_rect);
 }
