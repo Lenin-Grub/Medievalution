@@ -120,13 +120,12 @@ public:
 
     ///@brief Finds and returns the centers of all provinces on the world map.
     /* This function calculates and returns an unordered map where each key is a
-    * color representing a province, and each value is a vector representing the
-    * center coordinates of that province.
-    */
+       color representing a province, and each value is a vector representing the
+       center coordinates of that province.*/
     /*@return std::unordered_map<sf::Color, sf::Vector2f, WorldMap::ColorHash>
-              An unordered map containing the center coordinates of all provinces.
-              The key is the color of the province, and the value is the vector
-              representing the center coordinates.*/
+      An unordered map containing the center coordinates of all provinces.
+      The key is the color of the province, and the value is the vector
+      representing the center coordinates.*/
     std::unordered_map<sf::Color, sf::Vector2f, WorldMap::ColorHash> findAllProvinceCenters() const;
 
     /// @brief Prints the center coordinates of all provinces on the world map.

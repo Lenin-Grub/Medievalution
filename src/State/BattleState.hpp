@@ -4,7 +4,7 @@
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
 #include "GUI/GUIBattleState.h" 
-#include "Entity/Entity.hpp"
+#include "ECS/Entity/Entity.hpp"
 
 class StateMachine;
 
