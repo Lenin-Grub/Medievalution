@@ -20,27 +20,31 @@ jobs:
       run: |
         git clone https://github.com/microsoft/vcpkg.git
         .\vcpkg\bootstrap-vcpkg.bat
+
     - name: Install SFML
       run: |
         .\vcpkg\vcpkg install sfml:x64-windows
+
     - name: Install spdlog
       run: |
         .\vcpkg\vcpkg install spdlog:x64-windows
-    - name: Install ImGui
-      run: |
-        .\vcpkg\vcpkg install imgui:x64-windows
+
     - name: Install ImGui-SFML
       run: |
         .\vcpkg\vcpkg install imgui-sfml:x64-windows
+
     - name: Install entt
       run: |
         .\vcpkg\vcpkg install entt:x64-windows
+
     - name: Configure CMake
       run: |
         cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=./vcpkg/scripts/buildsystems/vcpkg.cmake
+
     - name: Build
       run: |
         cmake --build build --config Release
+
     - name: Create Release
       id: create_release
       uses: softprops/action-gh-release@v1
@@ -52,62 +56,22 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
 
-    - name: Upload Release Asset - Executable
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release/Medievalution.exe
-        asset_name: Medievalution.exe
-        asset_content_type: application/octet-stream
+    - name: Prepare Release Assets
+      run: |
+        mkdir release
+        copy bin\Release\Medievalution.exe release\
+        xcopy /E /I config release\config\
+        xcopy /E /I resources release\resources\
+        xcopy /E /I shaders release\shaders\
+        xcopy /E /I translation release\translation\
+        copy openal32.dll release\
 
-    - name: Upload Release Asset - Config
+    - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release/config
-        asset_name: config.zip
+        asset_path: release
+        asset_name: Medievalution.zip
         asset_content_type: application/zip
-
-    - name: Upload Release Asset - Resources
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release/resources
-        asset_name: resources.zip
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset - Shaders
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release/shaders
-        asset_name: shaders.zip
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset - Translation
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release/translation
-        asset_name: translation.zip
-        asset_content_type: application/zip
-
-    - name: Upload Release Asset - openal32.dll
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ext_libs/openal32.dll
-        asset_name: openal32.dll
-        asset_content_type: application/octet-stream
