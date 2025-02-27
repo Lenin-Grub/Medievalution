@@ -19,7 +19,7 @@ jobs:
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
-          cmake-version: '3.16'
+          cmake-version: '3.21.2'  # Update to a newer version if needed
 
       - name: Check installed Visual Studio versions
         run: |
@@ -34,13 +34,13 @@ jobs:
       - name: Create build directory
         run: |
           mkdir build
-          cd build
           cmake .. -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake -DWARNINGS_AS_ERRORS=OFF
+        working-directory: build
 
       - name: Build project
         run: |
-          cd build
           cmake --build . --config Release --verbose
+        working-directory: build
 
       - name: Create Release
         id: create_release
@@ -65,8 +65,13 @@ jobs:
 
       - name: Copy Resource Files
         run: |
-          mkdir -p $GITHUB_WORKSPACE/{config,translation,resources,shaders}
-          cp -r build/config build/translation build/resources build/shaders build/openal32.dll $GITHUB_WORKSPACE/
+          mkdir config translation resources shaders
+          xcopy /E /I build\config config
+          xcopy /E /I build\translation translation
+          xcopy /E /I build\resources resources
+          xcopy /E /I build\shaders shaders
+          copy build\openal32.dll .
+        working-directory: $GITHUB_WORKSPACE
 
       - name: Upload Resource Files to Release
         uses: actions/upload-release-asset@v1
