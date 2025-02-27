@@ -21,9 +21,9 @@ jobs:
       - name: Find Visual Studio
         id: vs
         run: |
-          echo "Finding Visual Studio installation..."
-          VS_PATH=$(vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath)
-          echo "VS_PATH=${VS_PATH}" >> $GITHUB_ENV
+          Write-Host "Finding Visual Studio installation..."
+          $VS_PATH = & 'C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe' -latest -products * -requires Microsoft.Component.MSBuild -property installationPath
+          Write-Host "VS_PATH=$VS_PATH" >> $GITHUB_ENV
 
       - name: Configure CMake
         run: |
