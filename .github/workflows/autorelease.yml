@@ -1,4 +1,4 @@
-name: CMake Build and Release
+name: CMake Build and Release for Windows
 
 on:
   push:
@@ -7,27 +7,31 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libsfml-dev libx11-dev libxrandr-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libxcursor-dev libfreetype6-dev
+      - name: Set up MSBuild
+        uses: microsoft/setup-msbuild@v1
 
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
           cmake-version: '3.21.2'
 
+      - name: Install dependencies
+        run: |
+          choco install -y --no-progress vcpkg
+          vcpkg integrate install
+          vcpkg install sfml spdlog entt
+
       - name: Create build directory
         run: |
           mkdir build
           cd build
-          cmake .. -DCMAKE_BUILD_TYPE=Release
+          cmake .. -G "Visual Studio 17 2022" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build project
         run: |
@@ -51,8 +55,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/Release
-          asset_name: Medievalution
+          asset_path: ./bin/Release/Medievalution.exe
+          asset_name: Medievalution.exe
           asset_content_type: application/octet-stream
 
       - name: Copy Resource Files
