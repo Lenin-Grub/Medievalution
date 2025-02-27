@@ -13,23 +13,27 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up CMake
-        uses: jwlawson/actions-setup-cmake@v1
+      - name: Set up Visual Studio
+        uses: microsoft/setup-msbuild@v1
         with:
-          cmake-version: '3.16'
+          vs-version: 'latest'  # Укажите нужную версию Visual Studio, если необходимо
 
       - name: Configure CMake
-        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+          cmake -S . -B build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
-        run: cmake --build build --config Release
+        run: |
+          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+          cmake --build build --config Release
 
       - name: Create Release
         id: create_release
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v0.0.1
-          release_name: Release v0.0.1
+          tag_name: v1.0.0
+          release_name: Release v1.0.0
           draft: false
           prerelease: false
         env:
