@@ -16,16 +16,23 @@ jobs:
       - name: Set up Visual Studio
         uses: microsoft/setup-msbuild@v1
         with:
-          vs-version: 'latest'  # Укажите нужную версию Visual Studio, если необходимо
+          vs-version: 'latest'  # Убедитесь, что у вас установлена последняя версия Visual Studio
+
+      - name: Find Visual Studio
+        id: vs
+        run: |
+          echo "Finding Visual Studio installation..."
+          VS_PATH=$(vswhere -latest -products * -requires Microsoft.Component.MSBuild -property installationPath)
+          echo "VS_PATH=${VS_PATH}" >> $GITHUB_ENV
 
       - name: Configure CMake
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+          call "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
           cmake -S . -B build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: |
-          "C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvarsall.bat" x64
+          call "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
           cmake --build build --config Release
 
       - name: Create Release
