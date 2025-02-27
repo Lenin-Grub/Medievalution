@@ -43,7 +43,7 @@ void BattleState::init()
     std::uniform_real_distribution<float> posDist(0.0f, 1000.0f);
     std::uniform_real_distribution<float> velDist(-50.0f, 50.0f); // Adjust velocity range as needed
 
-    for (int i = 0; i < 10; ++i)
+    for (int i = 0; i < 100; ++i)
     {
         auto entity = entity_manager.createEntity();
         sf::Vector2f randomPosition(posDist(gen), posDist(gen));
