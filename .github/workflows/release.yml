@@ -1,0 +1,69 @@
+name: Release Build
+
+on:
+  push:
+    branches:
+      - Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Install SFML
+      run: |
+        vcpkg install sfml:x64-windows
+
+    - name: Install spdlog
+      run: |
+        vcpkg install spdlog:x64-windows
+
+    - name: Install ImGui
+      run: |
+        vcpkg install imgui[sfml-binding]:x64-windows
+
+    - name: Install entt
+      run: |
+        vcpkg install entt:x64-windows
+
+    - name: Configure CMake
+      run: |
+        cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=$env:VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake
+
+    - name: Build
+      run: |
+        cmake --build build --config Release
+
+    - name: Get next version number
+      id: version
+      run: |
+        $tagCount = git tag --list "v*" | Measure-Object | Select-Object -ExpandProperty Count
+        $nextVersion = "0.0.$($tagCount + 1)"
+        echo "::set-output name=version::$nextVersion"
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: v${{ steps.version.outputs.version }}
+        release_name: Release v${{ steps.version.outputs.version }}
+        draft: false
+        prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: bin/Release/Medievalution.exe
+        asset_name: Medievalution.exe
+        asset_content_type: application/octet-stream
