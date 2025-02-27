@@ -68,7 +68,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: config
+        asset_path: bin/Release/config
         asset_name: config.zip
         asset_content_type: application/zip
 
@@ -78,7 +78,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: resources
+        asset_path: bin/Release/resources
         asset_name: resources.zip
         asset_content_type: application/zip
 
@@ -88,7 +88,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: shaders
+        asset_path: bin/Release/shaders
         asset_name: shaders.zip
         asset_content_type: application/zip
 
@@ -98,7 +98,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: translation
+        asset_path: bin/Release/translation
         asset_name: translation.zip
         asset_content_type: application/zip
 
