@@ -27,12 +27,12 @@ jobs:
 
       - name: Configure CMake
         run: |
-          call "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
+          cmd /c "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
           cmake -S . -B build -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=Release
 
       - name: Build
         run: |
-          call "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
+          cmd /c "${{ env.VS_PATH }}\VC\Auxiliary\Build\vcvarsall.bat" x64
           cmake --build build --config Release
 
       - name: Create Release
