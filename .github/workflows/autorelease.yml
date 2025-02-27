@@ -1,4 +1,4 @@
-name: CMake Build and Release for Windows
+name: Release
 
 on:
   push:
@@ -13,81 +13,32 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Set up MSBuild
-        uses: microsoft/setup-msbuild@v1
-
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
           cmake-version: '3.16'
 
-      - name: Check installed Visual Studio versions
-        run: |
-          cmd /c '"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -all -products * -requires Microsoft.Component.MSBuild -property installationPath'
+      - name: Configure CMake
+        run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
 
-      - name: Install Chocolatey
-        run: |
-          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
-
-      - name: Install dependencies
-        run: |
-          choco install -y --no-progress vcpkg
-          vcpkg integrate install
-          vcpkg install sfml spdlog entt
-
-      - name: Create build directory
-        run: |
-          mkdir build
-          cd build
-          cmake .. -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake -DWARNINGS_AS_ERRORS=OFF
-
-      - name: Build project
-        run: |
-          cd build
-          cmake --build . --config Release --verbose
+      - name: Build
+        run: cmake --build build --config Release
 
       - name: Create Release
         id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
-          tag_name: 'v${{ github.run_number }}'
-          release_name: 'Release ${{ github.run_number }}'
+          tag_name: v0.0.1
+          release_name: Release v0.0.1
           draft: false
           prerelease: false
-
-      - name: Upload Release Asset
-        uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Release Assets
+        uses: softprops/action-gh-release@v1
         with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/Release/Medievalution.exe
-          asset_name: Medievalution.exe
-          asset_content_type: application/octet-stream
-
-      - name: Copy Resource Files
-        run: |
-          mkdir -p $GITHUB_WORKSPACE/{config,translation,resources,shaders}
-          cp -r build/config build/translation build/resources build/shaders build/openal32.dll $GITHUB_WORKSPACE/
-
-      - name: Upload Resource Files to Release
-        uses: actions/upload-release-asset@v1
+          upload_artifact: true
+          asset_path: build/bin/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: |
-            $GITHUB_WORKSPACE/config
-            $GITHUB_WORKSPACE/translation
-            $GITHUB_WORKSPACE/resources
-            $GITHUB_WORKSPACE/shaders
-            $GITHUB_WORKSPACE/openal32.dll
-          asset_name: |
-            config
-            translation
-            resources
-            shaders
-            openal32.dll
-          asset_content_type: application/octet-stream
