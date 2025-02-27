@@ -66,12 +66,16 @@ jobs:
         xcopy /E /I translation release\translation\
         copy ext_libs\openal32.dll release\
 
+    - name: Create ZIP Archive
+      run: |
+        Compress-Archive -Path release\* -DestinationPath Medievalution.zip
+
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.RELEASE }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: release
+        asset_path: Medievalution.zip
         asset_name: Medievalution.zip
         asset_content_type: application/zip
