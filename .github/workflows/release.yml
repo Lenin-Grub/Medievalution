@@ -64,7 +64,7 @@ jobs:
         xcopy /E /I resources release\resources\
         xcopy /E /I shaders release\shaders\
         xcopy /E /I translation release\translation\
-        copy openal32.dll release\
+        copy ext_libs\openal32.dll release\
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
