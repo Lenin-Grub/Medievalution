@@ -36,7 +36,7 @@ jobs:
       - name: Build project
         run: |
           cd build
-          cmake --build . --config Release
+          cmake --build . --config Release --verbose
 
       - name: Create Release
         id: create_release
@@ -55,7 +55,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./bin/Release/Medievalution.exe
+          asset_path: ./build/bin/Release/Medievalution.exe
           asset_name: Medievalution.exe
           asset_content_type: application/octet-stream
 
