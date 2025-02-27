@@ -69,10 +69,10 @@ public:
     void updateMousePositions(sf::View *view = nullptr);
 
     sf::RenderWindow &window;
+    StateMachine     &state_machine;
 
 protected:
-    bool is_replace;
-    StateData &data;
-    StateMachine &state_machine;
+    bool                   is_replace;
+    StateData              &data;
     std::unique_ptr<State> next_state;
 };

@@ -30,4 +30,6 @@ private:
 
     std::vector<sf::VideoMode> video_modes;
     std::string                string_resolution;
+
+    Settings initial_settings;
 };

@@ -19,8 +19,41 @@ void BattleState::init()
 
     texture = ResourceLoader::instance().getTexture("Spearman.png");
     sprite.setTexture(texture);
+    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
     animator.setFrameTime(0.5f);
     animator.pause();
+
+    ///-------------
+    auto entity = entity_manager.createEntity();
+    entity_manager.addComponent<Component_Position>(entity, sf::Vector2f(0.0f, 0.0f));
+    entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f));
+    entity_manager.addComponent<Component_Sprite>(entity, sprite);
+    entity_manager.addComponent<Control>(entity);
+    entity_manager.addComponent<Control>(entity);
+    entity_manager.setSprite(entity, "Spearman.png");
+    ///-------------
+    auto entity2 = entity_manager.createEntity();
+    entity_manager.addComponent<Component_Position>(entity2, sf::Vector2f(300.0f, 300.0f));
+    entity_manager.addComponent<Component_Sprite>(entity2, sprite);
+    entity_manager.setSprite(entity2, "Archer.png");
+    ///-------------
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> posDist(0.0f, 1000.0f);
+    std::uniform_real_distribution<float> velDist(-50.0f, 50.0f); // Adjust velocity range as needed
+
+    for (int i = 0; i < 10; ++i)
+    {
+        auto entity = entity_manager.createEntity();
+        sf::Vector2f randomPosition(posDist(gen), posDist(gen));
+        sf::Vector2f randomVelocity(velDist(gen), velDist(gen));
+
+        entity_manager.addComponent<Component_Position>(entity, randomPosition);
+        entity_manager.addComponent<Component_Velocity>(entity, randomVelocity);
+        entity_manager.addComponent<Component_Sprite>(entity, sprite);
+        entity_manager.setSprite(entity, "Archer.png");
+    }
 
     LOG_INFO("State Battle\t Init");
 }
@@ -48,326 +81,37 @@ void BattleState::updateEvents()
     if (!ImGui::GetIO().WantCaptureMouse)
         pathfinding.handleInput();
 
+    if (pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
+    {
+        sprite.setPosition(pathfinding.start_node->position.x * pathfinding.tile_size.x,
+            pathfinding.start_node->position.y * pathfinding.tile_size.y);
+
+    }
+
     data.camera.scroll();
     data.camera.zoom();
 }
 
-void BattleState::updateImGui()
+void BattleState::updateImGui() 
 {
-#pragma region Exit
-    ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
-
-    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
-    {
-        state_machine.lastState();
-    }
-    ImGui::End();
-#pragma endregion
-
-#pragma region Editor
-    ImGui::Begin((ICON_MAP "Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
-
-    if (ImGui::CollapsingHeader((ICON_STACK_FILES "Layers")))
-    {
-        ImGui::Text("Current layer: %d", editor.getCurrentLayer());
-
-        static std::vector<const char*> items = { "Tileset1.png", "Tileset2.png" };
-        static int current_item = 0;
-
-        ImGui::Combo("Select Item", &current_item, items.data(), items.size());
-
-        if (ImGui::Button((ICON_ADD_FILES "Add")))
-            editor.addLayer(items.at(current_item));
-
-        ImGui::SameLine();
-
-        if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
-            editor.removeLayer();
-
-        ImGui::Separator();
-        //______________________________________
-        ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-        ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 100));
-        if (ImGui::BeginTable("LayersTable", 2))
-        {
-            const auto& layers = editor.getLayers();
-            for (size_t i = 0; i < layers.size(); ++i)
-            {
-                Layer* layer = layers[i].get();
-                std::string layerName = (ICON_EMPTY_FILES "Layer ") + std::to_string(i);
-
-                ImGui::TableNextRow();
-                ImGui::TableSetColumnIndex(0); // Первый столбец для метки слоя
-                if (ImGui::Selectable(layerName.c_str(), editor.getCurrentLayer() == i))
-                    editor.setCurrentLayer(i);
-
-                ImGui::TableSetColumnIndex(1); // Второй столбец для чекбокса
-                ImGui::Checkbox("Visible", &layer->visible);
-            }
-            ImGui::EndTable();
-        }
-        ImGui::EndChild();
-    }
-
-    //______________________________________
-    if (ImGui::CollapsingHeader((ICON_FOUR_QUADS "Tiles")))
-    {
-        static int value = editor.getTileSize(); // Initial scale value
-        const int minValue = 8;                  // Minimum scale value
-        const int maxValue = 64;                 // Maximum scale value
-
-        ImGui::SliderInt("Scale", &value, minValue, maxValue);
-        ImGui::Separator();
-
-        sf::Texture& tileset_Texture = editor.getTilesetTexture();
-        int tileset_cols = editor.getSheetWidth();
-        int tileset_rows = editor.getSheetHeight();
-
-        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle(); // Cast the texture ID to ImTextureID
-
-        ImVec2 scale_factor = ImVec2(value, value);
-
-        if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY)) {
-            for (int row = 0; row < tileset_rows; row++) {
-                ImGui::TableNextRow();
-                for (int col = 0; col < tileset_cols; col++) {
-                    ImGui::TableNextColumn();
-
-                    // Create a unique ID for the button using row and column indices
-                    ImGui::PushID(row * tileset_cols + col);
-
-                    ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
-                    ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
-
-                    int current_id = row * tileset_cols + col;
-                    bool selected = m_selected_tile_id == current_id;
-
-                    if (selected)
-                    {
-                        // You can adjust the border color and width here
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
-                    }
-
-                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) {
-                        m_selected_tile_id = row * tileset_cols + col;
-                    }
-
-                    if (selected)
-                    {
-                        ImGui::PopStyleColor();
-                        ImGui::PopStyleVar();
-                    }
-
-                    ImGui::PopID();
-                }
-            }
-            ImGui::EndTable();
-        }
-    }
-    ImGui::End();
-
-#pragma endregion 
-
-#pragma region Metrics
-    ImGuiIO& io = ImGui::GetIO();
-    ImGui::SetNextWindowBgAlpha(0.35f);
-    ImGui::Begin("T2#", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
-    ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms/frame (%.1f FPS)", 1000.0f / io.Framerate, WindowSettings::getInstance().getFPS());
-    
-    ImGui::Columns(3, "table_columns");
-    ImGui::Separator();
-
-    ImGui::Text("Coordinates"); ImGui::SameLine();
-    ImGui::NextColumn();
-    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Red);
-    ImGui::Button("X"); ImGui::SameLine();
-    ImGui::PopStyleColor();
-    ImGui::Text("%f", common::mouse_pos_view.x);
-    ImGui::NextColumn();
-    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Green);
-    ImGui::Button("Y"); ImGui::SameLine();
-    ImGui::PopStyleColor();
-    ImGui::Text("%f", common::mouse_pos_view.y);
-
-    ImGui::Columns(1);
-    ImGui::End();
-#pragma endregion
-
-#pragma  region Animator
-    {
-        ImGui::Begin(ICON_INSTAGRAM " Animation", nullptr);
-
-        static std::vector<const char*> items = { "Spearman.png", "Archer.png" };
-        static int current_item = 0;
-
-        ImGui::Combo("Select sprite", &current_item, items.data(), items.size());
-        if (ImGui::Button((ICON_UPDATE "Change")))
-            animator.init(items.at(current_item));
-
-        ImGui::Image(sprite, sf::Vector2f(256, 256));
-
-        ImGui::Separator();
-
-        auto ft = animator.getFrameTime();
-        auto cf = animator.getCurrentFrame();
-        auto pl = animator.isPlayed();
-
-        static int value    = 96;  // Initial scale value
-        const int  minValue = 32;  // Minimum scale value
-        const int  maxValue = 128; // Maximum scale value
-
-        ImVec2 scale_factor = ImVec2(value, value);
-        int tileset_cols    = std::round(texture.getSize().x / 64);
-        int tileset_rows    = std::round(texture.getSize().y / 64);
-
-       static bool m_show_popup = false;
-
-        if (ImGui::Button((ICON_ADD_FILES "Add animation")))
-            m_show_popup = true;
-
-        if (m_show_popup)
-            ImGui::OpenPopup("Add Animation Popup");
-
-        if (ImGui::BeginPopup("Add Animation Popup")) 
-        {
-            static char animationName[64] = "";
-
-            ImGui::InputText("Animation Name", animationName, IM_ARRAYSIZE(animationName));
-
-            if (ImGui::Button("Add")) 
-            {
-                animator.addAnimation(animationName);
-                m_show_popup = false;
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("Cancel")) 
-            {
-                m_show_popup = false;
-                ImGui::CloseCurrentPopup();
-            }
-            ImGui::EndPopup();
-        }
-
-        ImGui::Text("Current frame: %d", animator.getCurrentFrame());
-        ImGui::SliderFloat("Time per frame", &ft, 0.0f, 1.0f);
-        ImGui::SliderInt("Frame", &cf, 0, animator.getFrames().empty() ? 0 : animator.getFrames().size() - 1);
-
-        if (ImGui::Button((ICON_BEGIN "##Begin")))
-        {
-            cf = animator.getFirstFrame();
-            animator.setCurrentFrame(cf);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button((ICON_PREV "##Prev")))
-        {
-            cf = animator.getPrevFrame();
-            animator.setCurrentFrame(cf);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button(pl ? (ICON_PLAY"##Play") : (ICON_PAUSE"##Pause")))
-        {
-            pl = !pl;
-        }
-        ImGui::SameLine();
-        if (ImGui::Button((ICON_NEXT "##Next")))
-        {
-            cf = animator.getNextFrame();
-            animator.setCurrentFrame(cf);
-        }
-        ImGui::SameLine();
-        if (ImGui::Button((ICON_END "##End")))
-        {
-            cf = animator.getLastFrame();
-            animator.setCurrentFrame(cf);
-        }
-
-        animator.setFrameTime(ft);
-        animator.setCurrentFrame(cf);
-        animator.play(pl);
-
-        if (ImGui::Button((ICON_ADD_FILES "Add")))
-            {
-                int tile_x = m_animator_tile_selected_id % tileset_cols;
-                int tile_y = m_animator_tile_selected_id / tileset_cols;
-                sf::IntRect rect(tile_x * 64, tile_y * 64, 64, 64);
-                animator.addFrame(rect);
-            }
-
-        ImGui::SameLine();
-
-         if (ImGui::Button((ICON_REMOVE_FILES "Remove")))
-                animator.removeFrame(animator.getCurrentFrame());
-         if (ImGui::CollapsingHeader("Frames"))
-         {
-             ImVec2 contentRegionAvail = ImGui::GetContentRegionAvail();
-             ImGui::BeginChild("FrameSelector", ImVec2(contentRegionAvail.x, 150));
-             const auto& frames = animator.getFrames();
-             for (size_t i = 0; i < frames.size(); ++i)
-             {
-                 auto m_anim = animator.getFrames().at(i);
-                 std::string frame_name = (ICON_EMPTY_FILES "Frame ") + std::to_string(i);
-                 if (ImGui::Selectable(frame_name.c_str(), animator.getCurrentFrame() == i))
-                     animator.setCurrentFrame(i);
-             }
-             ImGui::EndChild();
-         }
-
-        ImGui::SliderInt("Scale", &value, minValue, maxValue);
-
-        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)texture.getNativeHandle(); // Cast the texture ID to ImTextureID
-
-        if (ImGui::BeginTable("Animation Table", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
-        {
-            for (int row = 0; row < tileset_rows; row++)
-            {
-                ImGui::TableNextRow();
-                for (int col = 0; col < tileset_cols; col++)
-                {
-                    ImGui::TableNextColumn();
-
-                    // Create a unique ID for the button using row and column indices
-                    ImGui::PushID(row * tileset_cols + col);
-
-                    ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
-                    ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
-
-                    int current_id = row * tileset_cols + col;
-
-                    bool selected = m_animator_tile_selected_id == current_id;
-
-                    if (selected)
-                    {
-                        // You can adjust the border color and width here
-                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
-                    }
-
-                    if (ImGui::ImageButton((ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, 0, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
-                    {
-                        m_animator_tile_selected_id = row * tileset_cols + col;
-                    }
-
-                    if (selected)
-                    {
-                        ImGui::PopStyleColor();
-                        ImGui::PopStyleVar();
-                    }
-                    ImGui::PopID();
-                }
-            }
-            ImGui::EndTable();
-        }
-    ImGui::End();
-    }
-#pragma endregion
+    GUI::updateBattleStateImGui(*this, *this);
 }
 
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
     pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
+    pathfinding.move(dtime);
+
+    entity_manager.update(1.0f / 60.0f, animator);
+
+
+    // Обновляем позицию квадрата
+    if (pathfinding.current_node != nullptr && pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
+    {
+        sprite.setPosition(pathfinding.current_node->position.x * pathfinding.tile_size.x,
+                           pathfinding.current_node->position.y * pathfinding.tile_size.y);
+    }
     animator.update(0.1f);
     data.camera.update(dtime);
 }
@@ -376,10 +120,19 @@ void BattleState::draw(sf::RenderTarget* target)
 {
     if (!target)
         target = &window;
+
     target->setView(common::view);
-    
-    target->draw(editor);
+
+    const auto& layers = editor.getLayers();
+    for (const auto& layer : layers)
+    {
+        if (layer->visible)
+            target->draw(*layer);
+    }
+
     pathfinding.draw(window);
+    target->draw(sprite);
+    entity_manager.draw(window);
 
     target->setView(window.getDefaultView());
     target->setView(common::view);

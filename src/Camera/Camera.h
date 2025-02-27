@@ -33,7 +33,7 @@ public:
     ///@brief Zooms the camera in or out
     ///This method handles the zoom functionality of the camera.The
     /// zoom level is typically adjusted based on user input.
-    void zoom() const;
+    void zoom();
 
     /// @brief Scrolls the camera view.
     /// This method handles the scrolling of the camera view, typically
@@ -41,9 +41,9 @@ public:
     void scroll();
 
 private:
-    int max_zoom = 1500;         ///< The maximum zoom level for the camera.
-    int min_zoom = 90;           ///< The minimum zoom level for the camera.
-    float pan_threshold = 5.0f;  ///< The threshold for initiating a pan action.
-    bool is_panning = false;     ///< Indicates whether the camera is currently panning.
-    sf::Vector2f prev_mouse_pos; ///< Stores the previous mouse position for panning calculations.
+    int          max_zoom;           ///< The maximum zoom level for the camera.
+    int          min_zoom;           ///< The minimum zoom level for the camera.
+    float        pan_threshold;      ///< The threshold for initiating a pan action.
+    bool         is_panning;         ///< Indicates whether the camera is currently panning.
+    sf::Vector2f prev_mouse_pos;     ///< Stores the previous mouse position for panning calculations.
 };

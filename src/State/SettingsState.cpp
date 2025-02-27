@@ -8,9 +8,10 @@ SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderW
 , play_music { true }
 , play_sound { true }
 , video_modes(sf::VideoMode::getFullscreenModes())
-, resolution_current_id(WindowSettings::getInstance().id_resolution)
+, resolution_current_id(WindowSettings::getInstance().settings.id_resolution)
 {
     state_machine.is_init = true;
+    initial_settings      = WindowSettings::getInstance().settings;
 }
 
 void SettingsState::init()
@@ -67,9 +68,9 @@ void SettingsState::updateImGui()
             if (ImGui::Selectable(modes, is_selected))
             {
                 resolution_current_id = n;
-                WindowSettings::getInstance().id_resolution		= resolution_current_id;
-                WindowSettings::getInstance().resolution.width	= video_modes.at(n).width;
-                WindowSettings::getInstance().resolution.height = video_modes.at(n).height;
+                WindowSettings::getInstance().settings.id_resolution		= resolution_current_id;
+                WindowSettings::getInstance().settings.resolution.width	= video_modes.at(n).width;
+                WindowSettings::getInstance().settings.resolution.height = video_modes.at(n).height;
             }
 
             if (is_selected)
@@ -81,8 +82,8 @@ void SettingsState::updateImGui()
     }
 
     //------------------------------------------------------------------------------------
-    if (ImGui::Checkbox(Localization::getInstance().get(ICON_MONITOR, "T_full_window").c_str(), &WindowSettings::getInstance().fullscreen))
-        WindowSettings::getInstance().fullscreen;
+    if (ImGui::Checkbox(Localization::getInstance().get(ICON_MONITOR, "T_full_window").c_str(), &WindowSettings::getInstance().settings.fullscreen))
+        WindowSettings::getInstance().settings.fullscreen;
 
     if (ImGui::IsItemHovered())
     {
@@ -92,7 +93,7 @@ void SettingsState::updateImGui()
     }
 
     ImGui::BeginDisabled();
-    ImGui::Checkbox(Localization::getInstance().get("T_vertical_sync").c_str(), &WindowSettings::getInstance().vertical_sync);
+    ImGui::Checkbox(Localization::getInstance().get("T_vertical_sync").c_str(), &WindowSettings::getInstance().settings.vertical_sync);
     ImGui::EndDisabled();
 
     if (ImGui::IsItemHovered())
@@ -102,7 +103,7 @@ void SettingsState::updateImGui()
         ImGui::EndTooltip();
     }
 
-    ImGui::InputInt(Localization::getInstance().get("T_fps_limit").c_str(), &WindowSettings::getInstance().fps_limit, 0, 1);
+    ImGui::InputInt(Localization::getInstance().get("T_fps_limit").c_str(), &WindowSettings::getInstance().settings.fps_limit, 0, 1);
 
     if (ImGui::IsItemHovered())
     {
@@ -119,15 +120,15 @@ void SettingsState::updateImGui()
     ImGui::TableNextRow();
     //------------------------------------------------------------------------------------
     ImGui::TableNextColumn();
-    ImGui::SliderInt(Localization::getInstance().get("T_sound_volume").c_str(), &WindowSettings::getInstance().sound_volume, 0, 100, "%d%%");
+    ImGui::SliderInt(Localization::getInstance().get("T_sound_volume").c_str(), &WindowSettings::getInstance().settings.sound_volume, 0, 100, "%d%%");
     //------------------------------------------------------------------------------------
     ImGui::TableNextColumn();
     ImGui::Checkbox(Localization::getInstance().get("T_sound").c_str(), &play_sound);
     //------------------------------------------------------------------------------------
     ImGui::TableNextRow();
     ImGui::TableNextColumn();
-    if (ImGui::SliderInt(Localization::getInstance().get("T_music_volume").c_str(), &WindowSettings::getInstance().music_volume, 0, 100, "%d%%"))
-        state_machine.data.jukebox.setVolume((int)WindowSettings::getInstance().music_volume);
+    if (ImGui::SliderInt(Localization::getInstance().get("T_music_volume").c_str(), &WindowSettings::getInstance().settings.music_volume, 0, 100, "%d%%"))
+        state_machine.data.jukebox.setVolume((int)WindowSettings::getInstance().settings.music_volume);
     //------------------------------------------------------------------------------------
     ImGui::TableNextColumn();
      if (ImGui::Checkbox(Localization::getInstance().get("T_music").c_str(), &play_music))
@@ -143,8 +144,8 @@ void SettingsState::updateImGui()
 #pragma region Camera settings 
     ImGui::Separator();
     ImGui::BeginDisabled();
-    ImGui::SliderFloat(Localization::getInstance().get("T_zoom_speed").c_str(), &WindowSettings::getInstance().zoom_speed, 0, 1, "%.1f");
-    ImGui::SliderInt(Localization::getInstance().get("T_camera_speed").c_str(), &WindowSettings::getInstance().camera_speed, 1, 100, "%d%%");
+    ImGui::SliderFloat(Localization::getInstance().get("T_zoom_speed").c_str(), &WindowSettings::getInstance().settings.zoom_speed, 0, 1, "%.1f");
+    ImGui::SliderInt(Localization::getInstance().get("T_camera_speed").c_str(), &WindowSettings::getInstance().settings.camera_speed, 1, 100, "%d%%");
     ImGui::EndDisabled();
 #pragma endregion
 
@@ -158,23 +159,41 @@ void SettingsState::updateImGui()
 
 #pragma region Apply  settings
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    if (ImGui::BeginPopupModal(Localization::getInstance().get("T_apply").c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
-    {
-        ImGui::Text(Localization::getInstance().get("T_changed_game_settings").c_str());
-        ImGui::Separator();
 
-        if (ImGui::Button(Localization::getInstance().get("T_yes").c_str(), ImVec2(120, 0)))
+    bool settings_changed = false;
+    if(initial_settings != WindowSettings::getInstance().settings)
+        settings_changed = true;
+
+        if (ImGui::BeginPopupModal(Localization::getInstance().get("T_apply").c_str(), nullptr, ImGuiWindowFlags_AlwaysAutoResize))
         {
-            state_machine.restart(true);
-            WindowSettings::getInstance().saveToFile("config/settings.json");
-            ImGui::CloseCurrentPopup();
-            LOG_INFO("Settings\t Changed");
-        }
+            ImGui::Text(Localization::getInstance().get("T_changed_game_settings").c_str());
+            ImGui::Separator();
 
-        ImGui::SetItemDefaultFocus();
-        ImGui::SameLine();
-        if (ImGui::Button(Localization::getInstance().get("T_cancel").c_str(), ImVec2(120, 0))) { ImGui::CloseCurrentPopup(); }
-        ImGui::EndPopup();
+            if (ImGui::Button(Localization::getInstance().get("T_yes").c_str(), ImVec2(120, 0)))
+            {
+                if (settings_changed)
+                {
+                    if (initial_settings.resolution != WindowSettings::getInstance().settings.resolution ||
+                        initial_settings.language   != WindowSettings::getInstance().settings.language)
+                    {
+                        state_machine.restart(true);
+                    }
+
+                    WindowSettings::getInstance().saveToFile("config/settings.json");
+                    LOG_INFO("Settings\t Changed");
+                }
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::SetItemDefaultFocus();
+            ImGui::SameLine();
+            if (ImGui::Button(Localization::getInstance().get("T_cancel").c_str(), ImVec2(120, 0)))
+            {
+                WindowSettings::getInstance().settings = initial_settings;
+                ImGui::CloseCurrentPopup();
+            }
+
+            ImGui::EndPopup();
     }
 #pragma endregion
 
@@ -183,7 +202,10 @@ void SettingsState::updateImGui()
     ImGui::SameLine();
     if (ImGui::Button(Localization::getInstance().get("T_exit").c_str()))
     {
-        state_machine.lastState();
+        //if (settings_changed)
+        //    ImGui::OpenPopup(Localization::getInstance().get("T_apply").c_str());
+        //else
+            state_machine.lastState();
     }
     ImGui::End();
 

@@ -1,11 +1,13 @@
 #define ICON_MIN 0xe900
 #define ICON_MAX 0xe99d
 
+#define ICON_EDIT         (char*)u8"\ue930"
 #define ICON_END          (char*)u8"\ue934"
 #define ICON_EMPTY_FILES  (char*)u8"\ue935"
 #define ICON_REMOVE_FILES (char*)u8"\ue936"
 #define ICON_ADD_FILES    (char*)u8"\ue937"
 #define ICON_FILES        (char*)u8"\ue938"
+#define ICON_FILTER       (char*)u8"\ue939"
 #define ICON_FOUR_QUADS   (char*)u8"\ue93F"
 #define ICON_INSTAGRAM    (char*)u8"\ue947"
 #define ICON_STACK_FILES  (char*)u8"\ue94A"
@@ -19,6 +21,7 @@
 #define ICON_BEGIN        (char*)u8"\ue972"
 #define ICON_PREV         (char*)u8"\ue97f"
 #define ICON_SAVE         (char*)u8"\ue976"
+#define ICON_SEARCH       (char*)u8"\ue978"
 #define ICON_SETTINGS     (char*)u8"\ue979"
 #define ICON_NEXT         (char*)u8"\ue980"
 #define ICON_PLAY         (char*)u8"\ue96B"

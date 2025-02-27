@@ -2,6 +2,7 @@
 #include "State.hpp"
 #include "SettingsState.hpp"
 #include "World/WorldMap.h"
+#include "Pathfinding/Pathfinding.h"
 
 class StateMachine;
 
@@ -26,4 +27,7 @@ private:
     std::stringstream cords;
     WorldMap          world_map;
     bool              is_loaded;
+    Pathfinding       pathfinding;
+    Node* firstNode = nullptr;
+    Node* secondNode = nullptr;
 };

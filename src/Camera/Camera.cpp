@@ -11,11 +11,11 @@ Camera::Camera()
 
 void Camera::setDefaulatView()
 {
-    common::view.setSize(sf::Vector2f(WindowSettings::getInstance().resolution.width,
-        WindowSettings::getInstance().resolution.height));
+    common::view.setSize(sf::Vector2f(WindowSettings::getInstance().settings.resolution.width,
+        WindowSettings::getInstance().settings.resolution.height));
 
-    common::view.setCenter(sf::Vector2f(WindowSettings::getInstance().resolution.width / 2.f,
-        WindowSettings::getInstance().resolution.height / 2.f));
+    common::view.setCenter(sf::Vector2f(WindowSettings::getInstance().settings.resolution.width / 2.f,
+        WindowSettings::getInstance().settings.resolution.height / 2.f));
 }
 
 void Camera::update(const float& dtime)
@@ -25,14 +25,16 @@ void Camera::update(const float& dtime)
 
 void Camera::move(const float& dtime)
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(-WindowSettings::getInstance().camera_speed * dtime, 0); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(WindowSettings::getInstance().camera_speed * dtime, 0);  }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { common::view.move(0, -WindowSettings::getInstance().camera_speed * dtime); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { common::view.move(0, WindowSettings::getInstance().camera_speed * dtime);  }
+    float zoom_factor    = common::view.getSize().x / WindowSettings::getInstance().settings.resolution.width;
+    float adjusted_speed = WindowSettings::getInstance().settings.camera_speed * zoom_factor;
 
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(  -adjusted_speed * dtime, 0); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(   adjusted_speed * dtime, 0); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { common::view.move(0,-adjusted_speed * dtime   ); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { common::view.move(0, adjusted_speed * dtime   ); }
 }
 
-void Camera::zoom() const
+void Camera::zoom() 
 {
     if (!ImGui::GetIO().WantCaptureMouse)
     {
@@ -41,12 +43,12 @@ void Camera::zoom() const
             if (common::sfml_event.mouseWheelScroll.delta > 0)
             {
                 if (common::view.getSize().x <= max_zoom || common::view.getSize().y <= max_zoom)
-                    common::view.zoom(1.1 + WindowSettings::getInstance().zoom_speed);
+                    common::view.zoom(1.1 + WindowSettings::getInstance().settings.zoom_speed);
             }
             else if (common::sfml_event.mouseWheelScroll.delta < 0)
             {
                 if (common::view.getSize().x >= min_zoom || common::view.getSize().y >= min_zoom)
-                    common::view.zoom(0.9 - WindowSettings::getInstance().zoom_speed);
+                    common::view.zoom(0.9 - WindowSettings::getInstance().settings.zoom_speed);
             }
         }
     }
