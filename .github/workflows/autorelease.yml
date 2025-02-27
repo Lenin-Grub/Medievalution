@@ -19,28 +19,32 @@ jobs:
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
-          cmake-version: '3.21.2'  # Update to a newer version if needed
+          cmake-version: '3.16'
 
       - name: Check installed Visual Studio versions
         run: |
           "C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe" -all -products * -requires Microsoft.Component.MSBuild -property installationPath
 
+      - name: Install Chocolatey
+        run: |
+          Set-ExecutionPolicy Bypass -Scope Process -Force; [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls12; iex ((New-Object System.Net.WebClient).DownloadString('https://chocolatey.org/install.ps1'))
+
       - name: Install dependencies
         run: |
           choco install -y --no-progress vcpkg
           vcpkg integrate install
-          vcpkg install sfml spdlog entt imgui
+          vcpkg install sfml spdlog entt
 
       - name: Create build directory
         run: |
           mkdir build
+          cd build
           cmake .. -G "Visual Studio 16 2019" -A x64 -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=c:/vcpkg/scripts/buildsystems/vcpkg.cmake -DWARNINGS_AS_ERRORS=OFF
-        working-directory: build
 
       - name: Build project
         run: |
+          cd build
           cmake --build . --config Release --verbose
-        working-directory: build
 
       - name: Create Release
         id: create_release
@@ -65,13 +69,8 @@ jobs:
 
       - name: Copy Resource Files
         run: |
-          mkdir config translation resources shaders
-          xcopy /E /I build\config config
-          xcopy /E /I build\translation translation
-          xcopy /E /I build\resources resources
-          xcopy /E /I build\shaders shaders
-          copy build\openal32.dll .
-        working-directory: $GITHUB_WORKSPACE
+          mkdir -p $GITHUB_WORKSPACE/{config,translation,resources,shaders}
+          cp -r build/config build/translation build/resources build/shaders build/openal32.dll $GITHUB_WORKSPACE/
 
       - name: Upload Resource Files to Release
         uses: actions/upload-release-asset@v1
