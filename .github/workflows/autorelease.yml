@@ -19,13 +19,13 @@ jobs:
       - name: Set up CMake
         uses: jwlawson/actions-setup-cmake@v1
         with:
-          cmake-version: '3.21.2'
+          cmake-version: '3.16'
 
       - name: Install dependencies
         run: |
           choco install -y --no-progress vcpkg
           vcpkg integrate install
-          vcpkg install sfml spdlog entt
+          vcpkg install sfml spdlog entt imgui
 
       - name: Create build directory
         run: |
