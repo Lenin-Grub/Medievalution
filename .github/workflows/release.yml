@@ -53,19 +53,26 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v1.0.0
+        tag_name: v1.0.0  # Фиксированный номер версии
         name: Release v1.0.0
         draft: false
         prerelease: false
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE }}  # Используйте ваш PAT
+
+    - name: Save Release URL
+      run: echo "upload_url=${{ steps.create_release.outputs.upload_url }}" >> $GITHUB_ENV
+
+    - name: Create ZIP Archive
+      run: |
+        Compress-Archive -Path build/Release/Medievalution.exe, config, resources, shaders, translation, ext_libs/openal32.dll -DestinationPath Medievalution_Release.zip
 
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.RELEASE }}
+        GITHUB_TOKEN: ${{ secrets.RELEASE }}  # Используйте ваш PAT
       with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bin/Release
-        asset_name: Medievalution.exe
-        asset_content_type: application/octet-stream
+        upload_url: ${{ env.upload_url }}
+        asset_path: Medievalution_Release.zip
+        asset_name: Medievalution_Release.zip
+        asset_content_type: application/zip
