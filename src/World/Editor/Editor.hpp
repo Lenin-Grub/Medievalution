@@ -20,8 +20,8 @@ public:
 
     sf::Texture& getTilesetTexture();
 
-    const int getTileSize() const;
-    const int getSheetWidth() const;
+    const int getTileSize()    const;
+    const int getSheetWidth()  const;
     const int getSheetHeight() const;
 
     unsigned int getCurrentLayer() const;
@@ -32,6 +32,7 @@ public:
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     std::vector<std::unique_ptr<Layer>> layers;
+
 private:
     unsigned int current_layer;
 };

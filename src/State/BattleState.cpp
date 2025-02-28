@@ -85,7 +85,6 @@ void BattleState::updateEvents()
     {
         sprite.setPosition(pathfinding.start_node->position.x * pathfinding.tile_size.x,
             pathfinding.start_node->position.y * pathfinding.tile_size.y);
-
     }
 
     data.camera.scroll();
@@ -94,6 +93,17 @@ void BattleState::updateEvents()
 
 void BattleState::updateImGui() 
 {
+#pragma region Exit
+    ImGui::Begin("GameMenu###", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
+
+    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
+        state_machine.lastState();
+    ImGui::SameLine();
+    if (ImGui::Button((ICON::iconToUnicode(ICON_SETTINGS)).c_str()))
+        next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
+    ImGui::End();
+#pragma endregion
+
     GUI::updateBattleStateImGui(*this, *this);
 }
 
@@ -123,15 +133,9 @@ void BattleState::draw(sf::RenderTarget* target)
 
     target->setView(common::view);
 
-    const auto& layers = editor.getLayers();
-    for (const auto& layer : layers)
-    {
-        if (layer->visible)
-            target->draw(*layer);
-    }
+    editor.draw(*target, sf::RenderStates::Default);
 
     pathfinding.draw(window);
-    target->draw(sprite);
     entity_manager.draw(window);
 
     target->setView(window.getDefaultView());

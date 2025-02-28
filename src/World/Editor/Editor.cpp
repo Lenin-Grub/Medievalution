@@ -36,10 +36,10 @@ void Editor::addLayer(const std::string& name)
 
 void Editor::removeLayer()
 {
-    if (!layers.empty())
+    if (layers.size() > 1)
     {
         layers.erase(layers.begin() + current_layer);
-        if (current_layer >0)
+        if (current_layer > 0)
             current_layer--;
     }
     else
@@ -91,18 +91,16 @@ const std::vector<std::unique_ptr<Layer>>& Editor::getLayers() const
 
 void Editor::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    size_t initialSize = layers.size();
-    for (size_t i = 0; i < initialSize; ++i)
+    if (layers.empty())
     {
-        if (layers.size() != initialSize)
-        {
-            LOG_CRITICAL("Size of layers vector changed during iteration!");
-            break;
-        }
-        states.transform *= getTransform();
-        target.draw(*layers.at(i), states);
+        LOG_CRITICAL("Size of layers vector is empty!");
+        return;
     }
 
-    if (layers.size() != initialSize)
-        LOG_CRITICAL("Size of layers vector changed during iteration!");
+    const auto& layers = getLayers();
+    for (const auto& layer : layers)
+    {
+        if (layer->visible)
+            target.draw(*layer);
+    }
 }

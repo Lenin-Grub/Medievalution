@@ -22,6 +22,3 @@ public:
 };
 
 typedef Common common;
-typedef sf::Vector2i vec2i;
-typedef sf::Vector2f vec2f;
-typedef sf::Vector2u vec2u;

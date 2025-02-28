@@ -28,9 +28,7 @@ void Animator::removeFrame(const int& id)
     {
         frames.erase(frames.begin() + id);
         if (current_frame > 0)
-        {
             current_frame--;
-        }
     }
     else 
        LOG_ERROR("You can't remove this frame. Frames are empty!");
@@ -61,9 +59,7 @@ std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const
 {
     //TODO
     if (!animations.empty())
-    {
         return animations.find(name)->second;
-    }
 }
 
 void Animator::setFrameTime(float time)
@@ -80,15 +76,11 @@ void Animator::setCurrentFrame(int frame)
 void Animator::update(float deltaTime)
 {
     if (frames.empty())
-    {
         return;
-    }
 
     current_time += deltaTime;
     if (!played)
-    {
         sprite.setTextureRect(frames.at(current_frame));
-    }
     else
     {
         if (current_time >= frame_time)
@@ -121,38 +113,28 @@ const int Animator::getCurrentFrame() const
 const int Animator::getNextFrame() const
 {
     if (!frames.empty() && current_frame < frames.size()-1)
-    {
         return current_frame + 1;
-    }
 }
 
 int Animator::getPrevFrame() const
 {
     if (!frames.empty() && current_frame <= 0)
-    {
         return 0;
-    }
        
     if (!frames.empty() && current_frame > 0)
-    {
         return current_frame - 1;
-    }
 }
 
 const int Animator::getLastFrame()
 {
     if (!frames.empty())
-    {
         return current_frame = frames.size()-1;
-    }
 }
 
 const int Animator::getFirstFrame()
 {
     if (!frames.empty() && current_frame < frames.size())
-    {
         return current_frame = 0;
-    }
 }
 
 sf::Vector2i Animator::getFrameSize() const
@@ -191,4 +173,3 @@ const sf::IntRect& Animator::getCurrentFrameRect() const
 
     return frames.at(getCurrentFrame());
 }
-

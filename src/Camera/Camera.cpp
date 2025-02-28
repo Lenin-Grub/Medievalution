@@ -72,9 +72,7 @@ void Camera::scroll()
         prev_mouse_pos = mousePos;
         
         if (offset.x * offset.x + offset.y * offset.y > pan_threshold * pan_threshold)
-        {
             common::view.move(offset);
-        }
     }
     else if (common::sfml_event.type == sf::Event::MouseButtonReleased && common::sfml_event.mouseButton.button == sf::Mouse::Middle) 
     {

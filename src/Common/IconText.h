@@ -1,27 +1,51 @@
-#define ICON_MIN 0xe900
-#define ICON_MAX 0xe99d
+#pragma once
+#include <iostream>
+#include <string>
+#include <codecvt>
+#include <locale>
 
-#define ICON_EDIT         (char*)u8"\ue930"
-#define ICON_END          (char*)u8"\ue934"
-#define ICON_EMPTY_FILES  (char*)u8"\ue935"
-#define ICON_REMOVE_FILES (char*)u8"\ue936"
-#define ICON_ADD_FILES    (char*)u8"\ue937"
-#define ICON_FILES        (char*)u8"\ue938"
-#define ICON_FILTER       (char*)u8"\ue939"
-#define ICON_FOUR_QUADS   (char*)u8"\ue93F"
-#define ICON_INSTAGRAM    (char*)u8"\ue947"
-#define ICON_STACK_FILES  (char*)u8"\ue94A"
-#define ICON_MENU         (char*)u8"\ue957"
-#define ICON_LOG_IN       (char*)u8"\ue950"
-#define ICON_LOG_OUT      (char*)u8"\ue951"
-#define ICON_MAP          (char*)u8"\ue953"
-#define ICON_MONITOR      (char*)u8"\ue95f"
-#define ICON_PAUSE        (char*)u8"\ue965"
-#define ICON_UPDATE       (char*)u8"\ue970"
-#define ICON_BEGIN        (char*)u8"\ue972"
-#define ICON_PREV         (char*)u8"\ue97f"
-#define ICON_SAVE         (char*)u8"\ue976"
-#define ICON_SEARCH       (char*)u8"\ue978"
-#define ICON_SETTINGS     (char*)u8"\ue979"
-#define ICON_NEXT         (char*)u8"\ue980"
-#define ICON_PLAY         (char*)u8"\ue96B"
+// Define the enum for icons
+enum Icon 
+{
+    ICON_MIN          = 0xe900,
+    ICON_MAX          = 0xe99d,
+    ICON_EDIT         = 0xe930,
+    ICON_END          = 0xe934,
+    ICON_EMPTY_FILES  = 0xe935,
+    ICON_REMOVE_FILES = 0xe936,
+    ICON_ADD_FILES    = 0xe937,
+    ICON_FILES        = 0xe938,
+    ICON_FILTER       = 0xe939,
+    ICON_FOUR_QUADS   = 0xe93F,
+    ICON_INSTAGRAM    = 0xe947,
+    ICON_STACK_FILES  = 0xe94A,
+    ICON_MENU         = 0xe957,
+    ICON_LOG_IN       = 0xe950,
+    ICON_LOG_OUT      = 0xe951,
+    ICON_MAP          = 0xe953,
+    ICON_MONITOR      = 0xe95f,
+    ICON_PAUSE        = 0xe965,
+    ICON_UPDATE       = 0xe970,
+    ICON_BEGIN        = 0xe972,
+    ICON_PREV         = 0xe97f,
+    ICON_SAVE         = 0xe976,
+    ICON_SEARCH       = 0xe978,
+    ICON_SETTINGS     = 0xe979,
+    ICON_NEXT         = 0xe980,
+    ICON_PLAY         = 0xe96B
+    };
+
+
+/// Function to get the Unicode string for a given icon enum
+namespace ICON
+{
+    inline std::string iconToUnicode(Icon icon)
+    {
+        // Convert the enum value to a wide string
+        wchar_t wideChar = static_cast<wchar_t>(icon);
+
+        // Convert the wide string to a UTF-8 encoded string
+        std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
+        return converter.to_bytes(wideChar);
+    }
+}

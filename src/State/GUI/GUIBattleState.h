@@ -6,6 +6,7 @@
 #include "../../Settings/WindowSettings.h"
 #include "../StateMachine.hpp"
 #include "../BattleState.hpp"
+#include "../SettingsState.hpp"
 
 class BattleState;
 class State;
