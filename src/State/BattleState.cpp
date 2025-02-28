@@ -99,7 +99,7 @@ void BattleState::updateImGui()
     if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
         state_machine.lastState();
     ImGui::SameLine();
-    if (ImGui::Button((ICON::iconToUnicode(ICON_SETTINGS)).c_str()))
+    if (ImGui::Button((ICON::toUtf8(ICON_SETTINGS)).c_str()))
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     ImGui::End();
 #pragma endregion

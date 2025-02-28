@@ -4,11 +4,11 @@
 #include <codecvt>
 #include <locale>
 
-// Define the enum for icons
 enum Icon 
 {
     ICON_MIN          = 0xe900,
     ICON_MAX          = 0xe99d,
+
     ICON_EDIT         = 0xe930,
     ICON_END          = 0xe934,
     ICON_EMPTY_FILES  = 0xe935,
@@ -39,13 +39,10 @@ enum Icon
 /// Function to get the Unicode string for a given icon enum
 namespace ICON
 {
-    inline std::string iconToUnicode(Icon icon)
+    inline std::string toUtf8(Icon icon)
     {
-        // Convert the enum value to a wide string
-        wchar_t wideChar = static_cast<wchar_t>(icon);
-
-        // Convert the wide string to a UTF-8 encoded string
+        wchar_t w_char = static_cast<wchar_t>(icon);
         std::wstring_convert<std::codecvt_utf8<wchar_t>, wchar_t> converter;
-        return converter.to_bytes(wideChar);
+        return converter.to_bytes(w_char);
     }
 }
