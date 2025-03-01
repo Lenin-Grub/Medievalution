@@ -85,7 +85,7 @@ bool Game::initFonts() noexcept
     config.OversampleH         = 3;
     config.OversampleV         = 3;
 
-    static const ImWchar icon_ranges[] = { ICON_MIN, ICON_MAX, 0 };
+    static const ImWchar icon_ranges[] = { static_cast<ImWchar> (Icon::MIN), static_cast<ImWchar>(Icon::MAX), 0};
 
     ImGuiIO& io = ImGui::GetIO();
     ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());

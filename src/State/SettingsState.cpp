@@ -43,7 +43,7 @@ void SettingsState::updateImGui()
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    ImGui::Begin(Localization::getInstance().get(ICON::toUtf8(ICON_SETTINGS), "T_settings").c_str(), nullptr, ImGuiWindowFlags_NoCollapse
+    ImGui::Begin(Localization::getInstance().get(ICON::getStr(Icon::SETTINGS), "T_settings").c_str(), nullptr, ImGuiWindowFlags_NoCollapse
                                                                                                                    | ImGuiWindowFlags_AlwaysAutoResize 
                                                                                                                    | ImGuiWindowFlags_NoMove);
 
@@ -53,7 +53,7 @@ void SettingsState::updateImGui()
 
     const char* combo_preview_value = str_preview.c_str();
 
-    if (ImGui::BeginCombo(Localization::getInstance().get(ICON::toUtf8(ICON_MONITOR), "T_resolution").c_str(), combo_preview_value, 0))
+    if (ImGui::BeginCombo(Localization::getInstance().get(ICON::getStr(Icon::MONITOR), "T_resolution").c_str(), combo_preview_value, 0))
     {
         for (int n = 0; n < video_modes.size(); n++)
         {
@@ -81,7 +81,7 @@ void SettingsState::updateImGui()
     }
 
     //------------------------------------------------------------------------------------
-    if (ImGui::Checkbox(Localization::getInstance().get(ICON::toUtf8(ICON_MONITOR), "T_full_window").c_str(), &WindowSettings::getInstance().settings.fullscreen))
+    if (ImGui::Checkbox(Localization::getInstance().get(ICON::getStr(Icon::MONITOR), "T_full_window").c_str(), &WindowSettings::getInstance().settings.fullscreen))
         WindowSettings::getInstance().settings.fullscreen;
 
     if (ImGui::IsItemHovered())

@@ -112,7 +112,7 @@ void GameState::updateImGui()
     if (ImGui::Button((Localization::getInstance().get("T_exit")).c_str(), ImVec2(120, 0)))
         state_machine.lastState();
     ImGui::SameLine();
-    if (ImGui::Button((ICON::toUtf8(ICON_SETTINGS)).c_str()))
+    if (ImGui::Button((ICON::getChar(Icon::SETTINGS))))
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     ImGui::End();
 #pragma endregion
@@ -162,7 +162,7 @@ void GameState::updateImGui()
     static char                                         searchBuffer[128] = ""; // Buffer for search input
 
     // Search input field
-    ImGui::InputText((ICON::toUtf8(ICON_SEARCH) + " Search").c_str(), searchBuffer, IM_ARRAYSIZE(searchBuffer));
+    ImGui::InputText((ICON::getStr(Icon::SEARCH) + " Search").c_str(), searchBuffer, IM_ARRAYSIZE(searchBuffer));
 
     // Reset button
     ImGui::SameLine();

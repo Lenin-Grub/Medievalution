@@ -7,9 +7,9 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
     ImGui::GetIO().ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
 #pragma region Editor
-    ImGui::Begin((ICON::toUtf8(ICON_MAP) + " Editor").c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+    ImGui::Begin((ICON::getStr(Icon::MAP) + " Editor").c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-    if (ImGui::CollapsingHeader((std::string(ICON::toUtf8(ICON_STACK_FILES)) + " Layers").c_str()))
+    if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::STACK_FILES)) + " Layers").c_str()))
     {
         ImGui::Text("Current layer: %d", battleState.editor.getCurrentLayer());
 
@@ -17,7 +17,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
         static int  current_item = 0;
         static bool show_tileset_selector = false;
 
-        if (ImGui::Button((ICON::toUtf8(ICON_ADD_FILES) + " Add").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add").c_str()))
             show_tileset_selector = true;
 
         if (show_tileset_selector)
@@ -48,7 +48,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
 
         ImGui::SameLine();
 
-        if (ImGui::Button((ICON::toUtf8(ICON_REMOVE_FILES) + " Remove").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::REMOVE_FILES) + " Remove").c_str()))
             battleState.editor.removeLayer();
 
         ImGui::Separator();
@@ -63,7 +63,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
             {
                 Layer* layer = layers[i].get();
                 std::string default_layer_name = "Layer " + std::to_string(i);
-                std::string display_layer_name = ICON::toUtf8(ICON_MAP).c_str() + (layer->name.empty() ? default_layer_name : layer->name);
+                std::string display_layer_name = ICON::getStr(Icon::MAP).c_str() + (layer->name.empty() ? default_layer_name : layer->name);
 
                 ImGui::TableNextRow();
                 ImGui::TableSetColumnIndex(0);
@@ -77,7 +77,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
 
                 ImGui::TableSetColumnIndex(2);
                 ImGui::PushID(static_cast<int>(i));
-                if (ImGui::Button((ICON::toUtf8(ICON_EDIT)).c_str()))
+                if (ImGui::Button((ICON::getStr(Icon::EDIT)).c_str()))
                     ImGui::OpenPopup("Rename Layer");
 
                 if (ImGui::BeginPopup("Rename Layer"))
@@ -99,7 +99,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
     }
 
     //______________________________________
-    if (ImGui::CollapsingHeader((ICON::toUtf8(ICON_FOUR_QUADS) + " Tiles").c_str()))
+    if (ImGui::CollapsingHeader((ICON::getStr(Icon::FOUR_QUADS) + " Tiles").c_str()))
     {
         static int value = battleState.editor.getTileSize(); // Initial scale value
         const int min_value = 8;                  // Minimum scale value
@@ -191,7 +191,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
 
 #pragma  region Animator
     {
-        ImGui::Begin((ICON::toUtf8(ICON_INSTAGRAM) + " Animation").c_str(), nullptr);
+        ImGui::Begin((ICON::getStr(Icon::INSTAGRAM) + " Animation").c_str(), nullptr);
 
         static std::vector<const char*> items = { "Spearman.png", "Archer.png" };
         static int current_item = 0;
@@ -218,7 +218,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
 
         static bool m_show_popup = false;
 
-        if (ImGui::Button((ICON::toUtf8(ICON_ADD_FILES) + " Add animation").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add animation").c_str()))
             m_show_popup = true;
 
         if (m_show_popup)
@@ -249,32 +249,32 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
         ImGui::SliderFloat("Time per frame", &ft, 0.0f, 1.0f);
         ImGui::SliderInt("Frame", &cf, 0, battleState.animator.getFrames().empty() ? 0 : battleState.animator.getFrames().size() - 1);
 
-        if (ImGui::Button((ICON::toUtf8(ICON_BEGIN) + "##Begin").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::BEGIN) + "##Begin").c_str()))
         {
             cf = battleState.animator.getFirstFrame();
             battleState.animator.setCurrentFrame(cf);
         }
         ImGui::SameLine();
-        if (ImGui::Button((ICON::toUtf8(ICON_PREV) + "##Prev").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::PREV) + "##Prev").c_str()))
         {
             cf = battleState.animator.getPrevFrame();
             battleState.animator.setCurrentFrame(cf);
         }
         ImGui::SameLine();
-        if (ImGui::Button(pl ? (ICON::toUtf8(ICON_PLAY)  + "##Play" ).c_str()
-                             : (ICON::toUtf8(ICON_PAUSE) + "##Pause").c_str()))
+        if (ImGui::Button(pl ? (ICON::getStr(Icon::PLAY)  + "##Play" ).c_str()
+                             : (ICON::getStr(Icon::PAUSE) + "##Pause").c_str()))
         {
             pl = !pl;
         }
         ImGui::SameLine();
-        if (ImGui::Button((ICON::toUtf8(ICON_NEXT) + "##Next").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::NEXT) + "##Next").c_str()))
 
         {
             cf = battleState.animator.getNextFrame();
             battleState.animator.setCurrentFrame(cf);
         }
         ImGui::SameLine();
-        if (ImGui::Button((ICON::toUtf8(ICON_END) + "##End").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::END) + "##End").c_str()))
         {
             cf = battleState.animator.getLastFrame();
             battleState.animator.setCurrentFrame(cf);
@@ -284,7 +284,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
         battleState.animator.setCurrentFrame(cf);
         battleState.animator.play(pl);
 
-        if (ImGui::Button((ICON::toUtf8(ICON_ADD_FILES) + "Add").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + "Add").c_str()))
         {
             int tile_x = battleState.m_animator_tile_selected_id % tileset_cols;
             int tile_y = battleState.m_animator_tile_selected_id / tileset_cols;
@@ -294,7 +294,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
 
         ImGui::SameLine();
 
-        if (ImGui::Button((ICON::toUtf8(ICON_REMOVE_FILES) + "Remove").c_str()))
+        if (ImGui::Button((ICON::getStr(Icon::REMOVE_FILES) + "Remove").c_str()))
             battleState.animator.removeFrame(battleState.animator.getCurrentFrame());
         if (ImGui::CollapsingHeader("Frames"))
         {
@@ -304,7 +304,7 @@ void GUI::updateBattleStateImGui(BattleState& battleState, State& state)
             for (size_t i = 0; i < frames.size(); ++i)
             {
                 auto m_anim = battleState.animator.getFrames().at(i);
-                std::string frame_name = ((ICON::toUtf8(ICON_EMPTY_FILES) + "Frame").c_str()) + std::to_string(i);
+                std::string frame_name = ((ICON::getStr(Icon::EMPTY_FILES) + "Frame").c_str()) + std::to_string(i);
                 if (ImGui::Selectable(frame_name.c_str(), battleState.animator.getCurrentFrame() == i))
                     battleState.animator.setCurrentFrame(i);
             }
