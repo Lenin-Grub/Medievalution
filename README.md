@@ -13,7 +13,7 @@
 - [О проекте](#о-проекте)
 - [Сторонние библиотеки](#сторонние-библиотеки)
 - [Установка библиотек](#установка-библиотек)
-- [Сборка с CMake](#сборка-cmake)
+- [Сборка CMake](#cборка-cmake)
 ---
 
 ## О проекте
@@ -56,20 +56,21 @@ git clone https://github.com/SFML/SFML.git
 #### Установка ImGui
 * sfml ImGui
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
 ```
+>git tag docking
 ---
 
 #### Установка EnTT
 * entt
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone [https://github.com/SFML/SFML.git](https://github.com/skypjack/entt.git)
 ```
 ---
 #### Установка SpdLog
 * spdlog
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone git clone https://github.com/gabime/spdlog.git
 ```
 ---
 
@@ -132,20 +133,21 @@ git clone https://github.com/SFML/SFML.git
 #### Install ImGui
 * sfml ImGui
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
 ```
+>git tag docking
 ---
 
 #### Install EnTT
 * entt
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone [https://github.com/SFML/SFML.git](https://github.com/skypjack/entt.git)
 ```
 ---
 #### Install SpdLog
 * spdlog
 ```sh
-git clone https://github.com/SFML/SFML.git
+git clone git clone https://github.com/gabime/spdlog.git
 ```
 ---
 
