@@ -1,14 +1,13 @@
 #pragma once
-#include "State.hpp"
-#include "GameState.hpp"
+#include "../State/State.hpp"
 
 class StateMachine;
 
-class LoadingState final 
+class IntroState final 
     : public State
 {
 public:
-    LoadingState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
+    IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, bool replace = true);
 
     void init()                                   override;
     void onDeactivate()                           override;

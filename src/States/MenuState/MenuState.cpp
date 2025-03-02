@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "StateMachine.hpp"
 #include "MenuState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 MenuState::MenuState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }

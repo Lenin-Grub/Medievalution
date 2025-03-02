@@ -1,8 +1,8 @@
 #pragma once
-#include "State.hpp"
-#include "LoadingState.hpp"
-#include "SettingsState.hpp"
-#include "BattleState.hpp"
+#include "../State/State.hpp"
+#include "../LoadingState/LoadingState.hpp"
+#include "../SettingsState/SettingsState.hpp"
+#include "../BattleState/BattleState.hpp"
 
 class StateMachine;
 

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "StateMachine.hpp"
 #include "LoadingState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 LoadingState::LoadingState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }

@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "StateMachine.hpp"
 #include "SettingsState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 
 SettingsState::SettingsState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)

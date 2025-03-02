@@ -1,6 +1,6 @@
 #pragma once
-#include "State.hpp"
-#include "SettingsState.hpp"
+#include "../State/State.hpp"
+#include "../SettingsState/SettingsState.hpp"
 #include "World/WorldMap.h"
 #include "Pathfinding/Pathfinding.h"
 
@@ -21,6 +21,11 @@ public:
     void draw(sf::RenderTarget* target = nullptr) override;
 
 private:
+    void renderMenu();
+    void renderHelp();
+    void renderNodesTree();
+
+private:
     sf::Text          province_name;
     sf::Sprite        sprite;
     sf::Texture       texture;
@@ -28,6 +33,6 @@ private:
     WorldMap          world_map;
     bool              is_loaded;
     Pathfinding       pathfinding;
-    Node* firstNode = nullptr;
+    Node* firstNode  = nullptr;
     Node* secondNode = nullptr;
 };

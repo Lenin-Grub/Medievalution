@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "IntroState.hpp"
-#include "MenuState.hpp"
-#include "StateMachine.hpp"
+#include "../MenuState/MenuState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 IntroState::IntroState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }

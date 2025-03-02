@@ -1,9 +1,8 @@
 #pragma once
-#include "State.hpp"
+#include "../State/State.hpp"
 #include "Pathfinding/Pathfinding.h"
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
-#include "GUI/GUIBattleState.h" 
 #include "ECS/Entity/Entity.hpp"
 
 class StateMachine;
@@ -22,7 +21,12 @@ public:
     void update(const float& dtime)               override;
     void draw(sf::RenderTarget* target = nullptr) override;
 
-public:
+private:
+    void renderEditor();
+    void renderMetrics();
+    void renderAnimator();
+
+private:
     Pathfinding   pathfinding;
     Editor        editor;
     Animator      animator;
