@@ -55,12 +55,12 @@ void Animator::removeAnimation(const std::string& name)
     animations.erase(name);
 }
 
-std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const
-{
-    //TODO
-    if (!animations.empty())
-        return animations.find(name)->second;
-}
+//std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const
+//{
+//    //TODO
+//    if (!animations.empty())
+//        return animations.find(name)->second;
+//}
 
 void Animator::setFrameTime(float time)
 {
@@ -172,4 +172,105 @@ const sf::IntRect& Animator::getCurrentFrameRect() const
         return sf::IntRect(0, 0, 64, 64);
 
     return frames.at(getCurrentFrame());
+}
+
+
+std::map<std::string, std::vector<sf::IntRect>> Animator::getAnimations() const 
+{
+    return animations;
+}
+
+void Animator::saveAnimation(const std::string& path, const std::string& name) const 
+{
+    auto it = animations.find(name);
+    if (it != animations.end()) {
+        nlohmann::json j;
+
+        // Попробуем загрузить существующие данные из файла
+        std::ifstream file(path);
+        if (file.is_open()) {
+            file >> j;
+            file.close();
+        }
+
+        // Добавляем новую анимацию
+        nlohmann::json newAnimation;
+        newAnimation["name"] = name;
+        newAnimation["frames"] = nlohmann::json::array();
+
+        for (const auto& frame : it->second) {
+            newAnimation["frames"].push_back({ {"left", frame.left}, {"top", frame.top}, {"width", frame.width}, {"height", frame.height} });
+        }
+
+        // Добавляем новую анимацию в основной JSON объект
+        j["animations"].push_back(newAnimation);
+
+        // Перезаписываем файл с обновленными данными
+        std::ofstream outFile(path);
+        if (outFile.is_open()) {
+            outFile << j.dump(4); // Записываем JSON в файл с отступами для удобства чтения
+            outFile.close();
+        }
+        else {
+            LOG_ERROR("Failed to open file for loading animation: {}", path);
+        }
+    }
+    else {
+        LOG_ERROR("Animation not found: {}", name);
+    }
+}
+
+bool Animator::loadAnimation(const std::string& path, const std::string& name) 
+{
+    std::ifstream file(path);
+    if (file.is_open()) 
+    {
+        nlohmann::json j;
+        file >> j;
+        file.close();
+
+        // Проходим по всем анимациям в файле
+        for (const auto& animation : j["animations"]) 
+        {
+            std::string animationName = animation["name"];
+            if (animationName == name) 
+            {
+                std::vector<sf::IntRect> loadedFrames;
+                for (const auto& frame : animation["frames"]) {
+                    loadedFrames.emplace_back(frame["left"], frame["top"], frame["width"], frame["height"]);
+                }
+                animations[name] = loadedFrames;
+                return true;
+            }
+        }
+        LOG_ERROR("Animation with name '{}' not found in file: {}", name, path);
+    }
+    else {
+        LOG_ERROR("Failed to open file for loading animation: {}", path);
+    }
+    return false;
+}
+
+std::vector<sf::IntRect> Animator::getAnimation(const std::string& name) const 
+{
+    auto it = animations.find(name);
+    if (it != animations.end()) 
+    {
+        return it->second;
+    }
+    else 
+    {
+        LOG_ERROR("Animation not found: {}", name);
+        return {};
+    }
+}
+
+std::vector<std::string> Animator::getAnimationNames() const
+{
+    std::vector<std::string> names;
+    for (const auto& pair : animations)
+    {
+        names.push_back(pair.first);
+    }
+    return names;
 }

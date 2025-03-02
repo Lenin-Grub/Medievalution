@@ -38,4 +38,6 @@ private:
     int           m_selected_tile_id;
     int           m_animator_tile_selected_id;
     EntityManager entity_manager;
+
+    char animation_name[64] = "";
 };

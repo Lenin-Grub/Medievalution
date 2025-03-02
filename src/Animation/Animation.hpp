@@ -46,6 +46,8 @@ public:
     /// @return std::vector<sf::IntRect> A vector containing the frame rectangles of the animation.
     std::vector<sf::IntRect> getAnimation(const std::string& name) const;
 
+    std::vector<std::string> getAnimationNames() const;
+
     /// @brief Sets the display time for each frame
     /// @param time The time to display each frame, in seconds.
     void setFrameTime(float time);
@@ -113,6 +115,13 @@ public:
     /// @brief Retrieves the current frame rectangle of the sprite or animation.
     /// @return const sf::IntRect& A constant reference to the current frame rectangle.
     const sf::IntRect& getCurrentFrameRect() const;
+
+    std::map<std::string, std::vector<sf::IntRect>> getAnimations() const;
+
+    void saveAnimation(const std::string& path, const std::string& name) const;
+
+    bool loadAnimation(const std::string& path, const std::string& name);
+
 
 private:
     unsigned int             current_frame;       ///< The index of the current frame.

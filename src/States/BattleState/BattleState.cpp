@@ -342,13 +342,11 @@ void BattleState::renderAnimator()
 
     if (ImGui::BeginPopup("Add Animation Popup")) 
     {
-        static char animationName[64] = "";
-
-        ImGui::InputText("Animation Name", animationName, IM_ARRAYSIZE(animationName));
+        ImGui::InputText("Animation Name", animation_name, IM_ARRAYSIZE(animation_name));
 
         if (ImGui::Button("Add")) 
         {
-            animator.addAnimation(animationName);
+            animator.addAnimation(animation_name);
             m_show_popup = false;
             ImGui::CloseCurrentPopup();
         }
@@ -361,6 +359,27 @@ void BattleState::renderAnimator()
             ImGui::CloseCurrentPopup();
         }
         ImGui::EndPopup();
+    }
+
+    if (ImGui::Button((ICON::getStr(Icon::SAVE) + "Save").c_str()))
+    {
+        animator.saveAnimation("../resources/Animations/Archer.json", animation_name);
+    }
+
+    if (ImGui::Button((ICON::getStr(Icon::CLOUD_LOAD) + "Load").c_str()))
+    {
+        if (animator.loadAnimation("resources/Animations/Spearman.json", "Walck"))
+        {
+            auto size = animator.getAnimation("Walck").size();
+            for (size_t i = 0; i < size; i++)
+            {
+                animator.addFrame(animator.getAnimation("Walck").at(i));
+            }
+        }
+        else
+        {
+            LOG_ERROR("Fail load");
+        }
     }
 
     ImGui::Text("Current frame: %d", animator.getCurrentFrame());

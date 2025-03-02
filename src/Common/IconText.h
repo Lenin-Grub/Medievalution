@@ -11,6 +11,7 @@ enum class Icon
     MAX          = 0xe99d,
 
     // Icons.
+    CLOUD_LOAD   = 0xe92C,
     EDIT         = 0xe930,
     END          = 0xe934,
     EMPTY_FILES  = 0xe935,

@@ -50,3 +50,8 @@ struct Component_Sprite
     sf::IntRect int_rect;
     sf::Texture texture;
 };
+
+struct Component_Animation
+{
+    // содержит анимации
+};
