@@ -133,19 +133,30 @@ void GameState::update(const float& dtime)
 
 void GameState::draw(sf::RenderTarget* target)
 {
-    if (!target)
-        target = &window;
-    target->setView(common::view);
+    beginView(target);
 
     world_map.draw(*target, sf::RenderStates::Default);
     pathfinding.draw(window);
-
     target->draw(sprite);
 
+    endView(target);
+    ImGui::SFML::Render(window);
+}
+
+
+
+
+void GameState::endView(sf::RenderTarget* target)
+{
     target->setView(window.getDefaultView());
     target->setView(common::view);
+}
 
-    ImGui::SFML::Render(window);
+void GameState::beginView(sf::RenderTarget*& target)
+{
+    if (!target)
+        target = &window;
+    target->setView(common::view);
 }
 
 
@@ -156,9 +167,12 @@ void GameState::renderMenu()
 
     if (ImGui::Button((Localization::getInstance().get("T_exit")).c_str(), ImVec2(120, 0)))
         state_machine.lastState();
+
     ImGui::SameLine();
+
     if (ImGui::Button((ICON::getChar(Icon::SETTINGS))))
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
+
     ImGui::End();
 }
 
@@ -178,19 +192,36 @@ void GameState::renderHelp()
 
     ImGui::Columns(2, "table_columns");
     ImGui::Separator();
-    ImGui::Text("Mouse Window Position:");                                              ImGui::NextColumn();
+    ImGui::Text("Mouse Window Position:"); 
+    ImGui::NextColumn();
+
     if (ImGui::IsMousePosValid())
         ImGui::Text("(%.1f , %.1f)", ImGui::GetIO().MousePos.x, ImGui::GetIO().MousePos.y);
-    else ImGui::Text("Mouse Position: <invalid>");
+    else 
+        ImGui::Text("Mouse Position: <invalid>");
     ImGui::NextColumn();
-    ImGui::Text("Mouse View Position:");                                                ImGui::NextColumn();
-    ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);   ImGui::NextColumn();
-    ImGui::Text(Localization::getInstance().get("T_Province_name").c_str()); ImGui::NextColumn();
-    ImGui::Text("%s", chr);                                                             ImGui::NextColumn();
-    ImGui::Text(Localization::getInstance().get("T_Province_id").c_str());   ImGui::NextColumn();
-    ImGui::Text("%d", world_map.getProvinceID(world_map.getColor()));                    ImGui::NextColumn();
+
+    ImGui::Text("Mouse View Position:");
+    ImGui::NextColumn();
+
+    ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);
+    ImGui::NextColumn();
+
+    ImGui::Text(Localization::getInstance().get("T_Province_name").c_str()); 
+    ImGui::NextColumn();
+
+    ImGui::Text("%s", chr);
+    ImGui::NextColumn();
+
+    ImGui::Text(Localization::getInstance().get("T_Province_id").c_str());
+    ImGui::NextColumn();
+
+    ImGui::Text("%d", world_map.getProvinceID(world_map.getColor()));
+    ImGui::NextColumn();
+
     ImGui::Separator();
     ImGui::Columns(1);
+
     ImGui::SliderFloat(Localization::getInstance().get("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
     ImGui::End();
 }
@@ -212,31 +243,37 @@ void GameState::renderNodesTree()
     std::vector<const Node*> filteredNodes;
     std::string searchQuery = searchBuffer;
 
-    for (const auto& pair : pathfinding.nodes) {
+    for (const auto& pair : pathfinding.nodes) 
+    {
         const Node& node = pair.second;
 
-        if (nodeNames.find(&node) == nodeNames.end()) {
-            sf::Color nodeColor = world_map.getColor();
-            std::string provinceName = world_map.getProvinceName(nodeColor);
-            nodeNames[&node] = provinceName;
-            nodeIDs[&node] = world_map.getProvinceID(nodeColor);
+        if (nodeNames.find(&node) == nodeNames.end()) 
+        {
+            sf::Color        nodeColor    = world_map.getColor();
+            std::string      provinceName = world_map.getProvinceName(nodeColor);
+            nodeNames[&node]              = provinceName;
+            nodeIDs[&node]                = world_map.getProvinceID(nodeColor);
         }
 
         std::string_view nodeName = nodeNames[&node];
-        int nodeID = nodeIDs[&node];
+        int              nodeID   = nodeIDs[&node];
 
         if (nodeName.find(searchQuery) != std::string_view::npos || std::to_string(nodeID).find(searchQuery) != std::string::npos)
             filteredNodes.push_back(&node);
     }
 
-    for (const Node* node : filteredNodes) {
-        if (ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", nodeNames[node].c_str(), nodeIDs[node])) {
-            for (const Node* neighbor : node->neighbors) {
-                if (nodeNames.find(neighbor) == nodeNames.end()) {
-                    sf::Color neighborColor = world_map.getColor();
+    for (const Node* node : filteredNodes) 
+    {
+        if (ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", nodeNames[node].c_str(), nodeIDs[node])) 
+        {
+            for (const Node* neighbor : node->neighbors) 
+            {
+                if (nodeNames.find(neighbor) == nodeNames.end()) 
+                {
+                    sf::Color neighborColor          = world_map.getColor();
                     std::string neighborProvinceName = world_map.getProvinceName(neighborColor);
-                    nodeNames[neighbor] = neighborProvinceName;
-                    nodeIDs[neighbor] = world_map.getProvinceID(neighborColor);
+                    nodeNames[neighbor]              = neighborProvinceName;
+                    nodeIDs[neighbor]                = world_map.getProvinceID(neighborColor);
                 }
 
                 ImGui::BulletText("Neighbor: %s \t (ID: %d)", nodeNames[neighbor].c_str(), nodeIDs[neighbor]);

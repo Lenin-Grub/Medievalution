@@ -1,6 +1,5 @@
 #pragma once
 #include "../State/State.hpp"
-#include "Pathfinding/Pathfinding.h"
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
 #include "ECS/Entity/Entity.hpp"
@@ -22,12 +21,16 @@ public:
     void draw(sf::RenderTarget* target = nullptr) override;
 
 private:
+    void endView(sf::RenderTarget* target);
+    void beginView(sf::RenderTarget*& target);
+
+    // Use for ImGui
+private:
     void renderEditor();
     void renderMetrics();
     void renderAnimator();
 
 private:
-    Pathfinding   pathfinding;
     Editor        editor;
     Animator      animator;
     sf::Sprite    sprite;

@@ -17,9 +17,16 @@ public:
     void update       (const float& dtime)                 override;
     void draw         (sf::RenderTarget* target = nullptr) override;
 
+    // Use for ImGui
 private:
     void setBackground ();
+    void renderWindowSettings();
+    void renderSoundsAndMusic();
+    void renderCameraSettings();
+    void renderApplySettings();
+    void renderExitAndMetrics();
 
+private:
     int                        resolution_current_id;
     bool                       play_music;
     bool                       play_sound;

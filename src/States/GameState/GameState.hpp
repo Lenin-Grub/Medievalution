@@ -21,6 +21,11 @@ public:
     void draw(sf::RenderTarget* target = nullptr) override;
 
 private:
+    void endView(sf::RenderTarget* target);
+    void beginView(sf::RenderTarget*& target);
+
+    // Use for ImGui
+private:
     void renderMenu();
     void renderHelp();
     void renderNodesTree();
