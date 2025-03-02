@@ -332,48 +332,29 @@ void BattleState::renderAnimator()
     int tileset_cols = std::round(texture.getSize().x / size);
     int tileset_rows = std::round(texture.getSize().y / size);
 
-    static bool m_show_popup = false;
+   ImGui::InputText("Animation path", animation_path, IM_ARRAYSIZE(animation_path));
+   ImGui::InputText("Animation name", animation_name, IM_ARRAYSIZE(animation_name));
 
-    if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add animation").c_str()))
-        m_show_popup = true;
-
-    if (m_show_popup)
-        ImGui::OpenPopup("Add Animation Popup");
-
-    if (ImGui::BeginPopup("Add Animation Popup")) 
-    {
-        ImGui::InputText("Animation Name", animation_name, IM_ARRAYSIZE(animation_name));
-
-        if (ImGui::Button("Add")) 
-        {
-            animator.addAnimation(animation_name);
-            m_show_popup = false;
-            ImGui::CloseCurrentPopup();
-        }
-
-        ImGui::SameLine();
-
-        if (ImGui::Button("Cancel")) 
-        {
-            m_show_popup = false;
-            ImGui::CloseCurrentPopup();
-        }
-        ImGui::EndPopup();
-    }
+   if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add animation").c_str()))
+   {
+        animator.addAnimation(animation_name);
+   }
 
     if (ImGui::Button((ICON::getStr(Icon::SAVE) + "Save").c_str()))
     {
-        animator.saveAnimation("../resources/Animations/Archer.json", animation_name);
+        animator.saveAnimation(animation_path, animation_name);
     }
+
+    ImGui::SameLine();
 
     if (ImGui::Button((ICON::getStr(Icon::CLOUD_LOAD) + "Load").c_str()))
     {
-        if (animator.loadAnimation("resources/Animations/Spearman.json", "Walck"))
+        if (animator.loadAnimation(animation_path, animation_name))
         {
-            auto size = animator.getAnimation("Walck").size();
+            auto size = animator.getAnimation(animation_name).size();
             for (size_t i = 0; i < size; i++)
             {
-                animator.addFrame(animator.getAnimation("Walck").at(i));
+                animator.addFrame(animator.getAnimation(animation_name).at(i));
             }
         }
         else
@@ -458,47 +439,50 @@ void BattleState::renderAnimator()
         ImGui::EndChild();
     }
 
-    ImGui::SliderInt("Scale", &value, minValue, maxValue);
-
-    ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)sprite.getTexture()->getNativeHandle();
-
-    if (ImGui::BeginTable("Animation Table", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY)) 
+    if (ImGui::CollapsingHeader("Sprite Sheet"))
     {
-        for (int row = 0; row < tileset_rows; row++) 
+        ImGui::SliderInt("Scale", &value, minValue, maxValue);
+
+        ImTextureID tilesetTextureId = (ImTextureID)(intptr_t)sprite.getTexture()->getNativeHandle();
+
+        if (ImGui::BeginTable("Animation Table", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
         {
-            ImGui::TableNextRow();
-            for (int col = 0; col < tileset_cols; col++) 
+            for (int row = 0; row < tileset_rows; row++)
             {
-                ImGui::TableNextColumn();
-
-                ImGui::PushID(row * tileset_cols + col);
-
-                ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
-                ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
-
-                int current_id = row * tileset_cols + col;
-                bool selected = m_animator_tile_selected_id == current_id;
-
-                if (selected) 
+                ImGui::TableNextRow();
+                for (int col = 0; col < tileset_cols; col++)
                 {
-                    ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
-                    ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
-                }
+                    ImGui::TableNextColumn();
 
-                if (ImGui::ImageButton("1", (ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1))) 
-                {
-                    m_animator_tile_selected_id = row * tileset_cols + col;
-                }
+                    ImGui::PushID(row * tileset_cols + col);
 
-                if (selected) 
-                {
-                    ImGui::PopStyleColor();
-                    ImGui::PopStyleVar();
+                    ImVec2 uv0 = ImVec2(col / (float)tileset_cols, row / (float)tileset_rows);
+                    ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
+
+                    int current_id = row * tileset_cols + col;
+                    bool selected = m_animator_tile_selected_id == current_id;
+
+                    if (selected)
+                    {
+                        ImGui::PushStyleColor(ImGuiCol_Border, ImVec4(1.0f, 0.0f, 0.0f, 1.0f));
+                        ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 6.0f);
+                    }
+
+                    if (ImGui::ImageButton("1", (ImTextureID)tilesetTextureId, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
+                    {
+                        m_animator_tile_selected_id = row * tileset_cols + col;
+                    }
+
+                    if (selected)
+                    {
+                        ImGui::PopStyleColor();
+                        ImGui::PopStyleVar();
+                    }
+                    ImGui::PopID();
                 }
-                ImGui::PopID();
             }
+            ImGui::EndTable();
         }
-        ImGui::EndTable();
     }
     ImGui::End();
 }

@@ -40,4 +40,5 @@ private:
     EntityManager entity_manager;
 
     char animation_name[64] = "";
+    char animation_path[64] = "Spearman.json";
 };

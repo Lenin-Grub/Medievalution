@@ -183,46 +183,52 @@ std::map<std::string, std::vector<sf::IntRect>> Animator::getAnimations() const
 void Animator::saveAnimation(const std::string& path, const std::string& name) const 
 {
     auto it = animations.find(name);
-    if (it != animations.end()) {
+    if (it != animations.end()) 
+    {
         nlohmann::json j;
 
         // Попробуем загрузить существующие данные из файла
-        std::ifstream file(path);
-        if (file.is_open()) {
+        std::ifstream file("../resources/Animations/" + path);
+        if (file.is_open())
+        {
             file >> j;
             file.close();
         }
 
         // Добавляем новую анимацию
-        nlohmann::json newAnimation;
-        newAnimation["name"] = name;
-        newAnimation["frames"] = nlohmann::json::array();
+        nlohmann::json new_animation;
+        new_animation["name"] = name;
+        new_animation["frames"] = nlohmann::json::array();
 
-        for (const auto& frame : it->second) {
-            newAnimation["frames"].push_back({ {"left", frame.left}, {"top", frame.top}, {"width", frame.width}, {"height", frame.height} });
+        for (const auto& frame : it->second) 
+        {
+            new_animation["frames"].push_back({ {"left", frame.left}, {"top", frame.top}, {"width", frame.width}, {"height", frame.height} });
         }
 
         // Добавляем новую анимацию в основной JSON объект
-        j["animations"].push_back(newAnimation);
+        j["animations"].push_back(new_animation);
 
         // Перезаписываем файл с обновленными данными
         std::ofstream outFile(path);
-        if (outFile.is_open()) {
+        if (outFile.is_open()) 
+        {
             outFile << j.dump(4); // Записываем JSON в файл с отступами для удобства чтения
             outFile.close();
         }
-        else {
+        else 
+        {
             LOG_ERROR("Failed to open file for loading animation: {}", path);
         }
     }
-    else {
+    else 
+    {
         LOG_ERROR("Animation not found: {}", name);
     }
 }
 
 bool Animator::loadAnimation(const std::string& path, const std::string& name) 
 {
-    std::ifstream file(path);
+    std::ifstream file("../resources/Animations/" + path);
     if (file.is_open()) 
     {
         nlohmann::json j;
@@ -245,7 +251,8 @@ bool Animator::loadAnimation(const std::string& path, const std::string& name)
         }
         LOG_ERROR("Animation with name '{}' not found in file: {}", name, path);
     }
-    else {
+    else 
+    {
         LOG_ERROR("Failed to open file for loading animation: {}", path);
     }
     return false;
