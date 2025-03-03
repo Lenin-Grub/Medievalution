@@ -51,51 +51,72 @@ bool Game::initGraphicSettings() noexcept
 
 bool Game::initWindow() noexcept
 {
-    if (WindowSettings::getInstance().settings.fullscreen)
-        window = std::make_unique<sf::RenderWindow>(
-         WindowSettings::getInstance().settings.resolution,
-         WindowSettings::getInstance().settings.title, sf::Style::Fullscreen,
-         WindowSettings::getInstance().settings.context_settings);
-    else
-        window = std::make_unique<sf::RenderWindow>(
-         WindowSettings::getInstance().settings.resolution,
-         WindowSettings::getInstance().settings.title, sf::Style::Close,
-         WindowSettings::getInstance().settings.context_settings);
+    try
+    {
+        if (WindowSettings::getInstance().settings.fullscreen)
+            window = std::make_unique<sf::RenderWindow>(
+                WindowSettings::getInstance().settings.resolution,
+                WindowSettings::getInstance().settings.title, sf::Style::Fullscreen,
+                WindowSettings::getInstance().settings.context_settings);
+        else
+            window = std::make_unique<sf::RenderWindow>(
+                WindowSettings::getInstance().settings.resolution,
+                WindowSettings::getInstance().settings.title, sf::Style::Close,
+                WindowSettings::getInstance().settings.context_settings);
 
-    window->setFramerateLimit       (WindowSettings::getInstance().settings.fps_limit);
-    window->setVerticalSyncEnabled  (WindowSettings::getInstance().settings.vertical_sync);
-    ImGui::SFML::Init(*window);
+        window->setFramerateLimit(WindowSettings::getInstance().settings.fps_limit);
+        window->setVerticalSyncEnabled(WindowSettings::getInstance().settings.vertical_sync);
+        ImGui::SFML::Init(*window);
 
-    return true;
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
 
 bool Game::initIcon() noexcept
 {
-    sf::Image icon = ResourceLoader::instance().getImage("icon.png");
-    this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-    return true;
+    try
+    {
+        sf::Image icon = ResourceLoader::instance().getImage("icon.png");
+        this->window->setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
 
 bool Game::initFonts() noexcept
 {
-    ImFontConfig config;
-    config.MergeMode           = true;
-    config.PixelSnapH          = true;
-    config.GlyphMinAdvanceX    = 6.0f;
-    config.OversampleH         = 3;
-    config.OversampleV         = 3;
-
-    static const ImWchar icon_ranges[] = { static_cast<ImWchar> (Icon::MIN), static_cast<ImWchar>(Icon::MAX), 0};
-
-    ImGuiIO& io = ImGui::GetIO();
-    ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
-    ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/MedievalutionIcons.ttf", 20.f, &config, icon_ranges);
-    if(io.Fonts->Build())
+    try
     {
-        ImGui::SFML::UpdateFontTexture();
-        io.FontDefault = font1;
+        ImFontConfig config;
+        config.MergeMode = true;
+        config.PixelSnapH = true;
+        config.GlyphMinAdvanceX = 6.0f;
+        config.OversampleH = 3;
+        config.OversampleV = 3;
+
+        static const ImWchar icon_ranges[] = { static_cast<ImWchar> (Icon::MIN), static_cast<ImWchar>(Icon::MAX), 0 };
+
+        ImGuiIO& io = ImGui::GetIO();
+        ImFont* font1 = io.Fonts->AddFontFromFileTTF("resources/Fonts/OpenSans-Semibold.ttf", 20.f, NULL, io.Fonts->GetGlyphRangesCyrillic());
+        ImFont* font2 = io.Fonts->AddFontFromFileTTF("resources/Fonts/MedievalutionIcons.ttf", 20.f, &config, icon_ranges);
+        if (io.Fonts->Build())
+        {
+            ImGui::SFML::UpdateFontTexture();
+            io.FontDefault = font1;
+        }
+        return true;
     }
-    return false;
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
 
 bool Game::initLocalization() noexcept
@@ -107,10 +128,17 @@ bool Game::initLocalization() noexcept
 
 bool Game::initJukebox() noexcept
 {
-    state_machine.data.jukebox.requestAll();
-    state_machine.data.jukebox.play();
-    state_machine.data.jukebox.setVolume(WindowSettings::getInstance().settings.music_volume);
-    return false;
+    try
+    {
+        state_machine.data.jukebox.requestAll();
+        state_machine.data.jukebox.play();
+        state_machine.data.jukebox.setVolume(WindowSettings::getInstance().settings.music_volume);
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
 
 void Game::restartApplication()

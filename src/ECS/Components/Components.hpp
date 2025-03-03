@@ -53,5 +53,5 @@ struct Component_Sprite
 
 struct Component_Animation
 {
-    // содержит анимации
+    std::map<std::string, std::vector<sf::IntRect>> animations;
 };

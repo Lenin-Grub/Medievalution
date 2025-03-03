@@ -6,10 +6,18 @@ Editor::Editor()
 {
 }
 
-void Editor::init()
+bool Editor::init()
 {
-    layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
-    layers.back()->init();
+    try
+    {
+        layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
+        layers.back()->init();
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
 
 
@@ -19,12 +27,6 @@ void Editor::addTile(const int& id, sf::Vector2f pos)
     {
         layers.at(current_layer)->addTile(id, pos);
     }
-}
-
-void Editor::removeTile(const int& id, sf::Vector2f pos)
-{
-    if (!layers.empty())
-        layers.at(current_layer)->removeTile(id, pos);
 }
 
 void Editor::addLayer(const std::string& name)

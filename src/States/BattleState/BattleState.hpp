@@ -26,9 +26,29 @@ private:
 
     // Use for ImGui
 private:
+    // Editor gui methods
     void renderEditor();
+    
+    void renderLayersSection();
+    void renderTilesetSelector();
+    void renderLayerControls();
+    void renderTilesSection();
+    void renderTilesetTable();
+
+    // Metrics gui method
     void renderMetrics();
+
+    // Animator gui methods
     void renderAnimator();
+
+    void renderSpriteSelector();
+    void renderAnimationControls();
+    void renderAnimationCombo();
+    void renderFrameControls();
+    void renderPlaybackButtons(int& current_frame, bool& is_payed);
+    void renderAddRemoveFrameButtons();
+    void renderFrameSelector();
+    void renderSpriteSheet();
 
 private:
     Editor        editor;
@@ -40,5 +60,6 @@ private:
     EntityManager entity_manager;
 
     char animation_name[64] = "";
-    char animation_path[64] = "Spearman.json";
+    std::vector<const char*> items { "Spearman", "Archer" };
+    int current_item { 0 };
 };

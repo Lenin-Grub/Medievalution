@@ -33,6 +33,8 @@ public:
     /// @param id The ID of the frame to be removed.
     void removeFrame(const int& id);
 
+    void removeAllFrames();
+
     /// @brief Adds a new animation with the specified name.
     /// @param name The name of the new animation to be added.
     void addAnimation(const std::string& name);
@@ -44,7 +46,7 @@ public:
     /// @brief Retrieves the frames of the animation with the specified name.
     /// @param name The name of the animation to retrieve.
     /// @return std::vector<sf::IntRect> A vector containing the frame rectangles of the animation.
-    std::vector<sf::IntRect> getAnimation(const std::string& name) const;
+    std::vector<sf::IntRect> findAnimation(const std::string& name) const;
 
     std::vector<std::string> getAnimationNames() const;
 
@@ -118,10 +120,9 @@ public:
 
     std::map<std::string, std::vector<sf::IntRect>> getAnimations() const;
 
-    void saveAnimation(const std::string& path, const std::string& name) const;
+    bool saveAnimation(const std::string& path, const std::string& name) const;
 
-    bool loadAnimation(const std::string& path, const std::string& name);
-
+    bool loadAllAnimations(const std::string& path);
 
 private:
     unsigned int             current_frame;       ///< The index of the current frame.

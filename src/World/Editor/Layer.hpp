@@ -14,7 +14,7 @@ class Layer
 public:
     Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture);
 
-    void init();
+    bool init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
     void addTile(const int& id, sf::Vector2f pos);

@@ -11,30 +11,40 @@ Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture)
 {
 }
 
-void Layer::init()
+bool Layer::init()
 {
-    tile_map.setPrimitiveType(sf::Quads);
-
-    for (int x = 0; x < layer_size.x; x++)
+    try
     {
-        for (int y = 0; y < layer_size.y; y++)
+        tile_map.setPrimitiveType(sf::Quads);
+
+        for (int x = 0; x < layer_size.x; x++)
         {
-            sf::Vector2f topLeft     ( y *      tile_size,  x *      tile_size);
-            sf::Vector2f topRight    ((y + 1) * tile_size,  x *      tile_size);
-            sf::Vector2f bottomRight ((y + 1) * tile_size, (x + 1) * tile_size);
-            sf::Vector2f bottomLeft  ( y *      tile_size, (x + 1) * tile_size);
+            for (int y = 0; y < layer_size.y; y++)
+            {
+                sf::Vector2f topLeft    ( y      * tile_size,  x      * tile_size);
+                sf::Vector2f topRight   ((y + 1) * tile_size,  x      * tile_size);
+                sf::Vector2f bottomRight((y + 1) * tile_size, (x + 1) * tile_size);
+                sf::Vector2f bottomLeft  (y      * tile_size, (x + 1) * tile_size);
 
-            tile_map.append(sf::Vertex(topLeft,     sf::Vector2f(0, 0)));
-            tile_map.append(sf::Vertex(topRight,    sf::Vector2f(tile_size, 0)));
-            tile_map.append(sf::Vertex(bottomRight, sf::Vector2f(tile_size, tile_size)));
-            tile_map.append(sf::Vertex(bottomLeft,  sf::Vector2f(0, tile_size)));
+                tile_map.append(sf::Vertex(topLeft,     sf::Vector2f(0, 0)));
+                tile_map.append(sf::Vertex(topRight,    sf::Vector2f(tile_size, 0)));
+                tile_map.append(sf::Vertex(bottomRight, sf::Vector2f(tile_size, tile_size)));
+                tile_map.append(sf::Vertex(bottomLeft,  sf::Vector2f(0, tile_size)));
+            }
         }
-    }
 
-    tileset_cols = std::round(tileset_texture.getSize().x / tile_size);
-    tileset_rows = std::round(tileset_texture.getSize().y / tile_size);
-    tile_ids.resize(static_cast<int64_t>(layer_size.x * layer_size.y), -1);
+        tileset_cols = std::round(tileset_texture.getSize().x / tile_size);
+        tileset_rows = std::round(tileset_texture.getSize().y / tile_size);
+        tile_ids.resize(static_cast<int64_t>(layer_size.x * layer_size.y), -1);
+
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        return false;
+    }
 }
+
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
