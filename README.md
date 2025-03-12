@@ -27,6 +27,9 @@ Medievalution - мой pet проект, который задуман как и
 
 ## Сторонние библиотеки
 
+Windows
+C++ 20
+
 ### Установка библиотек
 > [!WARNING]
 > Проверьте что у вас есть все сторонние библиотеки для сборки проекта
@@ -103,6 +106,8 @@ The project is inspired by games like: Victoria II, Crusader Kings II, Europa Un
 
 Genre - 4x RTStrategy.
 ---
+Windows
+C++ 20
 
 ### Install libraries
 > [!WARNING]
