@@ -33,6 +33,8 @@ public:
     /// @param id The ID of the frame to be removed.
     void removeFrame(const int& id);
 
+    /// @brief Removes all frames from all animations.
+    /// This method clears all frames from all animations, effectively resetting them.
     void removeAllFrames();
 
     /// @brief Adds a new animation with the specified name.
@@ -48,6 +50,8 @@ public:
     /// @return std::vector<sf::IntRect> A vector containing the frame rectangles of the animation.
     std::vector<sf::IntRect> findAnimation(const std::string& name) const;
 
+    /// @brief Returns a list of animation names.
+    /// @return A vector containing the names of all animations.
     std::vector<std::string> getAnimationNames() const;
 
     /// @brief Sets the display time for each frame
@@ -118,10 +122,19 @@ public:
     /// @return const sf::IntRect& A constant reference to the current frame rectangle.
     const sf::IntRect& getCurrentFrameRect() const;
 
+    /// @brief Returns a map of animations.
+    /// @return A map containing animation names and their corresponding vectors of frames.
     std::map<std::string, std::vector<sf::IntRect>> getAnimations() const;
 
+    /// @brief Saves an animation to a json file.
+    /// @param path The path to the file where the animation will be saved.
+    /// @param name The file name of the animation to be saved.
+    /// @return True if the animation was successfully saved, false otherwise.
     bool saveAnimation(const std::string& path, const std::string& name) const;
 
+    /// @brief Loads all animations from a json file.
+    /// @param path The path to the file containing the animations.
+    /// @return True if the animations were successfully loaded, false otherwise.
     bool loadAllAnimations(const std::string& path);
 
 private:

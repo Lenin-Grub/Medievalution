@@ -185,7 +185,7 @@ bool Animator::saveAnimation(const std::string& path, const std::string& name) c
     {
         nlohmann::json j;
 
-        std::ifstream file("../resources/Animations/" + path + ".json");
+        std::ifstream file("resources/Animations/" + path + ".json");
         if (file.is_open()) 
         {
             file >> j;
@@ -245,7 +245,7 @@ bool Animator::saveAnimation(const std::string& path, const std::string& name) c
 
 bool Animator::loadAllAnimations(const std::string& path) 
 {
-    std::ifstream file("../resources/Animations/" + path + ".json");
+    std::ifstream file("resources/Animations/" + path + ".json");
 
     if (file.is_open()) 
     {
