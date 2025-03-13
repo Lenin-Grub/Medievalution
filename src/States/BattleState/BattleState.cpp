@@ -22,14 +22,24 @@ void BattleState::init()
     animator.setFrameTime(0.5f);
     animator.pause();
 
+    pathfinding.initNodes(50, 50);
+
     ///-------------
-    auto entity = entity_manager.createEntity();
+    entity = entity_manager.createEntity();
     entity_manager.addComponent<Component_Position>(entity, sf::Vector2f(0.0f, 0.0f));
     entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f));
     entity_manager.addComponent<Component_Sprite>(entity, sprite);
-    entity_manager.addComponent<Control>(entity);
-    entity_manager.addComponent<Control>(entity);
+    entity_manager.addComponent<Component_Path>(entity);
     entity_manager.setSprite(entity, "Spearman.png");
+
+    auto entity2 = entity_manager.createEntity();
+    entity_manager.addComponent<Component_Position>(entity2, sf::Vector2f(64, 64));
+    entity_manager.addComponent<Component_Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
+    entity_manager.addComponent<Component_Sprite>(entity2, sprite);
+    entity_manager.addComponent<Component_Control>(entity2);
+    entity_manager.setSprite(entity2, "Archer.png");
+
+    ///-------------
 
     LOG_INFO("State Battle\t Init");
 }
@@ -52,6 +62,8 @@ void BattleState::updateEvents()
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
         editor.addTile(m_selected_tile_id, common::mouse_pos_view);
 
+    pathfinding.handleInput();
+
     data.camera.scroll();
     data.camera.zoom();
 }
@@ -69,8 +81,9 @@ void BattleState::updateImGui()
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
-    entity_manager.update(1.0f / 60.0f, animator);
+    entity_manager.update(dtime, animator, pathfinding);
     animator.update(0.1f);
+    pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
     data.camera.update(dtime);
 }
 
@@ -79,6 +92,7 @@ void BattleState::draw(sf::RenderTarget* target)
     beginView(target);
 
     editor.draw(*target, sf::RenderStates::Default);
+    pathfinding.draw(window);
     entity_manager.draw(window);
 
     endView(target);

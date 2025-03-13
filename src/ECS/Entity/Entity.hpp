@@ -2,6 +2,7 @@
 #include "../../Common/Common.h"
 #include "../../Animation/Animation.hpp"
 #include "../Components/Components.hpp"
+#include <Pathfinding/Pathfinding.h>
 
 
 /// @class EntityManager
@@ -30,7 +31,7 @@ public:
     /// @brief Updates all entities.
     /// @param delta_time The time elapsed since the last update.
     /// @param animator The animator used for updating animations.
-    void update(float delta_time, Animator animator);
+    void update(float delta_time, Animator animator, Pathfinding& pathfinding);
 
     /// @brief Draws all entities.
     /// @param window The render window to draw to.
@@ -62,6 +63,7 @@ public:
     template <typename Component>
     Component& getComponent(entt::entity entity);
 
+    entt::registry registry;
 private:
     /// @brief Checks if an entity has a specific component.
     /// @tparam Component The type of the component to check for.
@@ -70,8 +72,8 @@ private:
     template <typename Component>
     bool hasComponent(entt::entity entity);
 
+
 private:
-    entt::registry registry;
 };
 
 #include "Entity.inl"

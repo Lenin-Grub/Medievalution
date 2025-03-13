@@ -13,7 +13,42 @@ Pathfinding::Pathfinding()
 
 void Pathfinding::initNodes(int width, int height)
 {
+    this->width = width;
+    this->height = height;
+    nodes.clear();
+
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
+            sf::Vector2f position(x * tile_size.x, y * tile_size.y);
+            addNode(position);
+
+            // Connect nodes to their neighbors
+            if (x > 0)
+            {
+                Node* left = getNode(sf::Vector2f((x - 1) * tile_size.x, y * tile_size.y));
+                connect(getNode(position), left);
+            }
+            if (y > 0)
+            {
+                Node* up = getNode(sf::Vector2f(x * tile_size.x, (y - 1) * tile_size.y));
+                connect(getNode(position), up);
+            }
+            if (x > 0 && y > 0)
+            {
+                Node* leftUp = getNode(sf::Vector2f((x - 1) * tile_size.x, (y - 1) * tile_size.y));
+                connect(getNode(position), leftUp);
+            }
+            if (x < width - 1 && y > 0)
+            {
+                Node* rightUp = getNode(sf::Vector2f((x + 1) * tile_size.x, (y - 1) * tile_size.y));
+                connect(getNode(position), rightUp);
+            }
+        }
+    }
 }
+
 
 void Pathfinding::draw(sf::RenderWindow& window) 
 {
@@ -28,18 +63,18 @@ void Pathfinding::draw(sf::RenderWindow& window)
     circle.setFillColor(sf::Color::Black);
 
     // Draw nodes
-    for (const auto& pair : nodes)
-    {
-        const Node& node = pair.second;
-        rect.setPosition(node.position.x, node.position.y);
+    //for (const auto& pair : nodes)
+    //{
+    //    const Node& node = pair.second;
+    //    rect.setPosition(node.position.x, node.position.y);
 
-        if (&node == start_node)
-            rect.setFillColor(sf::Color::Green);
-        else if (&node == end_node)
-            rect.setFillColor(sf::Color::Red);
-        else
-            rect.setFillColor(sf::Color::Transparent);
-            window.draw(rect);
+    //    if (&node == start_node)
+    //        rect.setFillColor(sf::Color::Green);
+    //    else if (&node == end_node)
+    //        rect.setFillColor(sf::Color::Red);
+    //    else
+    //        rect.setFillColor(sf::Color::Transparent);
+    //        window.draw(rect);
 
         // Draw a black circle if the node has no neighbors
         //if (node.neighbors.empty())
@@ -47,21 +82,21 @@ void Pathfinding::draw(sf::RenderWindow& window)
         //    circle.setPosition(node.position.x + circle.getRadius(), node.position.y + circle.getRadius());
         //        window.draw(circle);
         //}
-    }
+    //}
 
     // Draw lines between neighbors
-    for (const auto& pair : nodes)
-    {
-        const Node& node = pair.second;
-        for (const Node* neighbor : node.neighbors)
-        {
-            line[0].position = sf::Vector2f(node.position.x, node.position.y);
-            line[1].position = sf::Vector2f(neighbor->position.x, neighbor->position.y);
-            line[0].color = sf::Color::Cyan;
-            line[1].color = sf::Color::Cyan;
-            window.draw(line, 2, sf::Lines);
-        }
-    }
+    //for (const auto& pair : nodes)
+    //{
+    //    const Node& node = pair.second;
+    //    for (const Node* neighbor : node.neighbors)
+    //    {
+    //        line[0].position = sf::Vector2f(node.position.x, node.position.y);
+    //        line[1].position = sf::Vector2f(neighbor->position.x, neighbor->position.y);
+    //        line[0].color = sf::Color::Cyan;
+    //        line[1].color = sf::Color::Cyan;
+    //        window.draw(line, 2, sf::Lines);
+    //    }
+    //}
 
     // Draw path
     if (end_node != nullptr)
@@ -239,5 +274,36 @@ Node* Pathfinding::getNode(const sf::Vector2f& position)
     auto it = nodes.find(position);
     if (it != nodes.end())
         return &it->second;
+    return nullptr;
+}
+
+std::vector<Node*> Pathfinding::path() const 
+{
+    std::vector<Node*> path;
+    if (end_node == nullptr || end_node->parent == nullptr)
+        return path;
+
+    Node* current = end_node;
+    while (current != nullptr) 
+    {
+        path.push_back(current);
+        current = current->parent;
+    }
+
+    std::reverse(path.begin(), path.end());
+    return path;
+}
+
+Node* Pathfinding::getNodeByMousePosition(const sf::Vector2f& mousePosition)
+{
+    int x = static_cast<int>(mousePosition.x / tile_size.x);
+    int y = static_cast<int>(mousePosition.y / tile_size.y);
+
+    if (x >= 0 && x < width && y >= 0 && y < height)
+    {
+        sf::Vector2f nodePosition(x * tile_size.x, y * tile_size.y);
+        return getNode(nodePosition);
+    }
+
     return nullptr;
 }

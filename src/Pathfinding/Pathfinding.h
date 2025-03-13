@@ -75,6 +75,12 @@ public:
     /// @return The node at the specified position, or nullptr if not found.
     Node* getNode(const sf::Vector2f& position);
 
+    std::vector<Node*> path() const;
+
+    Node* getNodeByMousePosition(const sf::Vector2f& mousePosition);
+
+    void findNewPath();
+
     /// @brief Map of nodes indexed by their position.
     std::unordered_map<sf::Vector2f, Node, Vector2fHash> nodes; 
 

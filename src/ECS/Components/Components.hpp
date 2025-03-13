@@ -1,4 +1,5 @@
 #pragma once
+#include "../../Pathfinding/Node.h"
 
 /// @struct Component_Position
 /// @brief Represents the position component of an entity.
@@ -16,13 +17,14 @@ struct Component_Position
 struct Component_Velocity
 {
     sf::Vector2f velocity;
+    float speed;
 };
 
 /// @enum Direction
 /// @brief Represents the possible movement directions.
 ///
 /// This enumeration defines the directions an entity can move.
-enum class Direction
+enum class Component_Direction
 {
     None,
     Up,
@@ -35,7 +37,7 @@ enum class Direction
 /// @brief Represents the control input for an entity.
 ///
 /// This structure holds the direction of control input for an entity.
-struct Control
+struct Component_Control
 {
     sf::Vector2f direction;
 };
@@ -54,4 +56,10 @@ struct Component_Sprite
 struct Component_Animation
 {
     std::map<std::string, std::vector<sf::IntRect>> animations;
+};
+
+struct Component_Path 
+{
+    std::vector<Node*> path;
+    size_t current_node_index;
 };

@@ -3,10 +3,10 @@
 
 void HandleInputSystem::update(entt::registry& registry)
 {
-    auto view = registry.view<Control>();
+    auto view = registry.view<Component_Control>();
     for (auto entity : view)
     {
-        auto& control = view.get<Control>(entity);
+        auto& control = view.get<Component_Control>(entity);
 
         control.direction = sf::Vector2f(0.0f, 0.0f);
 

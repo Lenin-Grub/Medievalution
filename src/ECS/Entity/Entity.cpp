@@ -6,6 +6,7 @@
 #include "../Systems/HandleInputSystem/HandleInputSystem.hpp"
 #include "../Systems/MovementSystem/MovementSystem.hpp"
 #include "../Systems/SpriteUpdateSystem/SpriteUpdateSystem.hpp"
+#include "../Systems/PathfindingSystem/PathfindingSystem.hpp"
 
 
 EntityManager::EntityManager() 
@@ -33,32 +34,54 @@ void EntityManager::destroyEntity(entt::entity entity)
     registry.destroy(entity);
 }
 
-void EntityManager::update(float delta_time, Animator animator)
+void EntityManager::update(float delta_time, Animator animator, Pathfinding& pathfinding)
 {
     HandleInputSystem::update(registry);
     ControlSystem::update(registry);
     MovementSystem::update(registry, delta_time);
     SpriteUpdateSystem::update(registry, animator);
+    PathfindingSystem::update(registry, pathfinding);
 
-
-    auto view = registry.view<Component_Position, Component_Velocity>();
+    auto view = registry.view<Component_Path, Component_Position>();
     for (auto entity : view)
     {
-        auto& position = view.get<Component_Position>(entity);
-        auto& velocity = view.get<Component_Velocity>(entity);
+        auto& path_component     = view.get<Component_Path>(entity);
+        auto& position_component = view.get<Component_Position>(entity);
 
-        // Check boundaries and reverse direction if needed
-        if (position.position.x <= 0 || position.position.x >= 1000)
+        // ≈сли путь не найден, инициализируем его
+        if (path_component.path.empty())
         {
-            velocity.velocity.x = -velocity.velocity.x;
-            position.position.x = std::clamp(position.position.x, 0.0f, 1000.0f);
-        }
-        if (position.position.y <= 0 || position.position.y >= 1000)
-        {
-            velocity.velocity.y = -velocity.velocity.y;
-            position.position.y = std::clamp(position.position.y, 0.0f, 1000.0f);
+            pathfinding.start_node = pathfinding.getNode(position_component.position);
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+                pathfinding.end_node = pathfinding.getNodeByMousePosition(common::mouse_pos_view);
+
+            if (pathfinding.start_node && pathfinding.end_node)
+            {
+                pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
+                path_component.path = pathfinding.path();
+                path_component.current_node_index = 0;
+            }
         }
     }
+
+    //auto view = registry.view<Component_Position, Component_Velocity>();
+    //for (auto entity : view)
+    //{
+    //    auto& position = view.get<Component_Position>(entity);
+    //    auto& velocity = view.get<Component_Velocity>(entity);
+
+    //    // Check boundaries and reverse direction if needed
+    //    if (position.position.x <= 0 || position.position.x >= 1000)
+    //    {
+    //        velocity.velocity.x = -velocity.velocity.x;
+    //        position.position.x = std::clamp(position.position.x, 0.0f, 1000.0f);
+    //    }
+    //    if (position.position.y <= 0 || position.position.y >= 1000)
+    //    {
+    //        velocity.velocity.y = -velocity.velocity.y;
+    //        position.position.y = std::clamp(position.position.y, 0.0f, 1000.0f);
+    //    }
+    //}
 }
 
 void EntityManager::draw(sf::RenderWindow& window)

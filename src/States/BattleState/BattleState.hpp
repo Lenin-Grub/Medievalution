@@ -2,7 +2,9 @@
 #include "../State/State.hpp"
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
+#include "Pathfinding/Pathfinding.h"
 #include "ECS/Entity/Entity.hpp"
+#include "ECS/Systems/PathfindingSystem/PathfindingSystem.hpp"
 
 class StateMachine;
 
@@ -53,8 +55,11 @@ private:
 private:
     Editor        editor;
     Animator      animator;
+    Pathfinding   pathfinding;
+    PathfindingSystem pathfindingSystem;
     sf::Sprite    sprite;
     sf::Texture   texture;
+    entt::entity  entity;
     int           m_selected_tile_id;
     int           m_animator_tile_selected_id;
     EntityManager entity_manager;
