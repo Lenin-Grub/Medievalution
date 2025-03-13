@@ -27,9 +27,10 @@ void BattleState::init()
     ///-------------
     entity = entity_manager.createEntity();
     entity_manager.addComponent<Component_Position>(entity, sf::Vector2f(0.0f, 0.0f));
-    entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f));
+    entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 5.0f);
     entity_manager.addComponent<Component_Sprite>(entity, sprite);
     entity_manager.addComponent<Component_Path>(entity);
+    entity_manager.addComponent<Component_Selectable>(entity, false);
     entity_manager.setSprite(entity, "Spearman.png");
 
     auto entity2 = entity_manager.createEntity();
@@ -37,6 +38,7 @@ void BattleState::init()
     entity_manager.addComponent<Component_Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
     entity_manager.addComponent<Component_Sprite>(entity2, sprite);
     entity_manager.addComponent<Component_Control>(entity2);
+    entity_manager.addComponent<Component_Selectable>(entity2, false);
     entity_manager.setSprite(entity2, "Archer.png");
 
     ///-------------
@@ -81,9 +83,8 @@ void BattleState::updateImGui()
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
-    entity_manager.update(dtime, animator, pathfinding);
+    entity_manager.update(dtime, animator, pathfinding, window);
     animator.update(0.1f);
-    pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
     data.camera.update(dtime);
 }
 

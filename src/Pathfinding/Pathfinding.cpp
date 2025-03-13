@@ -307,3 +307,16 @@ Node* Pathfinding::getNodeByMousePosition(const sf::Vector2f& mousePosition)
 
     return nullptr;
 }
+
+Node* Pathfinding::getRandomEndNode() const
+{
+    // Extract nodes into a vector
+    std::vector<Node*> nodeVector;
+    for (const auto& pair : nodes) 
+    {
+        nodeVector.push_back(const_cast<Node*>(&pair.second));
+    }
+
+    // Return a random node from the vector
+    return nodeVector[std::rand() % nodeVector.size()];
+}

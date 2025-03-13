@@ -7,6 +7,7 @@
 #include "../Systems/MovementSystem/MovementSystem.hpp"
 #include "../Systems/SpriteUpdateSystem/SpriteUpdateSystem.hpp"
 #include "../Systems/PathfindingSystem/PathfindingSystem.hpp"
+#include "../Systems/SelectSystem/SelectSystem.hpp"
 
 
 EntityManager::EntityManager() 
@@ -34,64 +35,65 @@ void EntityManager::destroyEntity(entt::entity entity)
     registry.destroy(entity);
 }
 
-void EntityManager::update(float delta_time, Animator animator, Pathfinding& pathfinding)
+void EntityManager::update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window)
 {
-    HandleInputSystem::update(registry);
-    ControlSystem::update(registry);
-    MovementSystem::update(registry, delta_time);
-    SpriteUpdateSystem::update(registry, animator);
-    PathfindingSystem::update(registry, pathfinding);
-
-    auto view = registry.view<Component_Path, Component_Position>();
-    for (auto entity : view)
-    {
-        auto& path_component     = view.get<Component_Path>(entity);
-        auto& position_component = view.get<Component_Position>(entity);
-
-        // Если путь не найден, инициализируем его
-        if (path_component.path.empty())
-        {
-            pathfinding.start_node = pathfinding.getNode(position_component.position);
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-                pathfinding.end_node = pathfinding.getNodeByMousePosition(common::mouse_pos_view);
-
-            if (pathfinding.start_node && pathfinding.end_node)
-            {
-                pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
-                path_component.path = pathfinding.path();
-                path_component.current_node_index = 0;
-            }
-        }
-    }
-
-    //auto view = registry.view<Component_Position, Component_Velocity>();
-    //for (auto entity : view)
-    //{
-    //    auto& position = view.get<Component_Position>(entity);
-    //    auto& velocity = view.get<Component_Velocity>(entity);
-
-    //    // Check boundaries and reverse direction if needed
-    //    if (position.position.x <= 0 || position.position.x >= 1000)
-    //    {
-    //        velocity.velocity.x = -velocity.velocity.x;
-    //        position.position.x = std::clamp(position.position.x, 0.0f, 1000.0f);
-    //    }
-    //    if (position.position.y <= 0 || position.position.y >= 1000)
-    //    {
-    //        velocity.velocity.y = -velocity.velocity.y;
-    //        position.position.y = std::clamp(position.position.y, 0.0f, 1000.0f);
-    //    }
-    //}
+    PathfindingSystem::  update(registry, pathfinding, delta_time);
+    HandleInputSystem::  update(registry, pathfinding);
+    MovementSystem::     update(registry, delta_time);
+    SpriteUpdateSystem:: update(registry, animator);
+    ControlSystem::      update(registry);
+    SelectSystem::       update(registry);
 }
 
 void EntityManager::draw(sf::RenderWindow& window)
 {
-    auto view = registry.view<Component_Sprite>();
+    auto view = registry.view<Component_Sprite, Component_Selectable >();
     for (auto entity : view)
     {
         const auto& spriteComponent = view.get<Component_Sprite>(entity);
         window.draw(spriteComponent.sprite);
+
+        const auto& selectComponent = view.get<Component_Selectable>(entity);
+
+        // Отрисовка рамки выделения
+        static sf::Vector2f startSelection;
+        static bool isSelecting = false;
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+        {
+            if (!isSelecting) 
+            {
+                // Устанавливаем стартовую позицию при нажатии
+                startSelection = common::mouse_pos_view;
+                isSelecting = true;
+            }
+        }
+        else 
+{
+            if (isSelecting) 
+            {
+                // Завершаем выделение, когда кнопка отпущена
+                isSelecting = false;
+            }
+        }
+
+        if (isSelecting) {
+            sf::RectangleShape selectionBox;
+            selectionBox.setFillColor(sf::Color(255, 255, 255, 5)); // Полупрозрачный цвет
+            selectionBox.setOutlineColor(sf::Color::Black);
+            selectionBox.setOutlineThickness(1);
+
+            // Устанавливаем позицию и размер рамки выделения
+            sf::Vector2f currentMousePos = common::mouse_pos_view;
+            sf::Vector2f size = currentMousePos - startSelection;
+
+            selectionBox.setPosition(startSelection);
+            selectionBox.setSize(size);
+
+            window.draw(selectionBox);
+        }
     }
+
 }
 
 void EntityManager::setSprite(entt::entity entity, const std::string& path)

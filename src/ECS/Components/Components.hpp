@@ -63,3 +63,8 @@ struct Component_Path
     std::vector<Node*> path;
     size_t current_node_index;
 };
+
+struct Component_Selectable
+{
+    bool is_selected { false };
+};

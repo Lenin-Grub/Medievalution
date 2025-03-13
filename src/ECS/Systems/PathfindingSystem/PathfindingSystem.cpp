@@ -2,35 +2,42 @@
 #include "PathfindingSystem.hpp"
 #include <Pathfinding/Pathfinding.h>
 
-void PathfindingSystem::update(entt::registry& registry, Pathfinding& pathfinding) 
+void PathfindingSystem::update(entt::registry& registry, Pathfinding& pathfinding, float deltaTime)
 {
-    auto view = registry.view<Component_Path, Component_Position>();
+    auto view = registry.view<Component_Path, Component_Position, Component_Velocity>();
 
     for (auto entity : view)
     {
-        auto& path_component    = view.get<Component_Path>(entity);
+        auto& path_component = view.get<Component_Path>(entity);
         auto& positionComponent = view.get<Component_Position>(entity);
+        auto& velocityComponent = view.get<Component_Velocity>(entity);
 
         // If the path is empty or the current node index is out of bounds, skip this entity
         if (path_component.path.empty() || path_component.current_node_index >= path_component.path.size())
             continue; // Skip this entity
 
-        Node* currentNode = path_component.path.at(path_component.current_node_index);
+        Node* nextNode = path_component.path.at(path_component.current_node_index);
 
-        // Move the entity to the current node's position
-        positionComponent.position = currentNode->position;
+        // Calculate the direction vector to the next node
+        sf::Vector2f direction = nextNode->position - positionComponent.position;
 
-        // Check if the entity has reached the current node
-        if (positionComponent.position == currentNode->position)
+        // Calculate the distance to the next node
+        float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+
+        // If the distance is smaller than the speed, move directly to the node
+        if (distance <= velocityComponent.speed * deltaTime)
         {
+            positionComponent.position = nextNode->position;
+
             // If the current node is not the last node in the path, move to the next node
             if (path_component.current_node_index < path_component.path.size() - 1)
+            {
                 path_component.current_node_index++;
+            }
             else
             {
                 // If the entity has reached the end node, you can trigger a new pathfinding operation
-                // For example, you can set a new target position based on mouse input or some other logic
-                pathfinding.start_node = currentNode; // Set the current node as the new start node
+                pathfinding.start_node = nextNode; // Set the current node as the new start node
 
                 if (pathfinding.end_node)
                 {
@@ -39,6 +46,17 @@ void PathfindingSystem::update(entt::registry& registry, Pathfinding& pathfindin
                     path_component.current_node_index = 0;    // Reset the current node index
                 }
             }
+        }
+        else
+        {
+            // Normalize the direction vector
+            direction = direction / distance;
+
+            // Calculate the velocity vector
+            sf::Vector2f velocity = direction * velocityComponent.speed * deltaTime;
+
+            // Update the position based on the velocity
+            positionComponent.position += velocity;
         }
     }
 }

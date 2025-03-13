@@ -79,7 +79,7 @@ public:
 
     Node* getNodeByMousePosition(const sf::Vector2f& mousePosition);
 
-    void findNewPath();
+    Node* getRandomEndNode() const;
 
     /// @brief Map of nodes indexed by their position.
     std::unordered_map<sf::Vector2f, Node, Vector2fHash> nodes; 

@@ -8,5 +8,5 @@ class PathfindingSystem
 {
 public:
 
-    static void update(entt::registry& registry, Pathfinding& pathfinding);
+    static void update(entt::registry& registry, Pathfinding& pathfinding, float deltaTime);
 };

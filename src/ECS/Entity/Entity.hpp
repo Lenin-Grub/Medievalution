@@ -31,7 +31,7 @@ public:
     /// @brief Updates all entities.
     /// @param delta_time The time elapsed since the last update.
     /// @param animator The animator used for updating animations.
-    void update(float delta_time, Animator animator, Pathfinding& pathfinding);
+    void update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window);
 
     /// @brief Draws all entities.
     /// @param window The render window to draw to.
