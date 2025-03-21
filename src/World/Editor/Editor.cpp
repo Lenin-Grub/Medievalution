@@ -24,9 +24,13 @@ bool Editor::init()
 void Editor::addTile(const int& id, sf::Vector2f pos)
 {
     if (current_layer >= 0 && current_layer < layers.size())
-    {
         layers.at(current_layer)->addTile(id, pos);
-    }
+}
+
+void Editor::removeTile(sf::Vector2f pos)
+{
+    if (current_layer >= 0 && current_layer < layers.size())
+        layers.at(current_layer)->addTile(0, pos);
 }
 
 void Editor::addLayer(const std::string& name)

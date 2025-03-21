@@ -9,6 +9,7 @@ Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture)
     , tileset_rows(0)
     , visible(true)
 {
+    texture.setSmooth(true);
 }
 
 bool Layer::init()

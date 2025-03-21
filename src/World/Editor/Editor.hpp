@@ -25,6 +25,8 @@ public:
     /// @param pos The position where the tile should be added.
     void addTile(const int& id, sf::Vector2f pos);
 
+    void removeTile(sf::Vector2f pos);
+
     /// @brief Adds a new layer with the specified name.
     /// @param name The name of the new layer.
     void addLayer(const std::string& name);
