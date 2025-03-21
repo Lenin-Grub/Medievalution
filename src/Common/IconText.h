@@ -8,7 +8,7 @@ enum class Icon
 {
     // Used only for init ranged.
     MIN          = 0xe900,
-    MAX          = 0xe99d,
+    MAX          = 0xe9A1,
 
     // Icons.
     CLOUD_LOAD   = 0xe92C,
@@ -26,6 +26,8 @@ enum class Icon
     LOG_IN       = 0xe950,
     LOG_OUT      = 0xe951,
     MAP          = 0xe953,
+    SELECT       = 0xe955,
+    UNWRAP       = 0xe956,
     MONITOR      = 0xe95f,
     PAUSE        = 0xe965,
     UPDATE       = 0xe970,
@@ -35,7 +37,12 @@ enum class Icon
     SEARCH       = 0xe978,
     SETTINGS     = 0xe979,
     NEXT         = 0xe980,
-    PLAY         = 0xe96B
+    TOOL         = 0xe989,
+    PLAY         = 0xe96B,
+    OPEN_WITHIN  = 0xe99E,
+    PALETTE      = 0xe99F,
+    FILL         = 0xe9A0,
+    BRUSH        = 0xe9A1
     };
 
 
