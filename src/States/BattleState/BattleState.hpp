@@ -1,10 +1,12 @@
 #pragma once
 #include "../State/State.hpp"
+
 #include "World/Editor/Editor.hpp"
 #include "Animation/Animation.hpp"
 #include "Pathfinding/Pathfinding.h"
 #include "ECS/Entity/Entity.hpp"
 #include "ECS/Systems/PathfindingSystem/PathfindingSystem.hpp"
+#include "../../Common/Gizmos/Gizmos.h"
 
 class StateMachine;
 
@@ -30,7 +32,8 @@ private:
 private:
     // Editor gui methods
     void renderEditor();
-    
+
+    void renderTools();
     void renderLayersSection();
     void renderTilesetSelector();
     void renderLayerControls();
@@ -53,6 +56,7 @@ private:
     void renderSpriteSheet();
 
 private:
+    Gizmos        gizmos;
     Editor        editor;
     Animator      animator;
     Pathfinding   pathfinding;
@@ -67,4 +71,6 @@ private:
     char animation_name[64] = "";
     std::vector<const char*> items { "Spearman", "Archer" };
     int current_item { 0 };
+
+    bool is_brash;
 };

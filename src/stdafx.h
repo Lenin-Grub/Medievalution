@@ -31,6 +31,7 @@
 #include <stdexcept>
 #include <future>
 #include <type_traits>
+#include <numbers>
 
 //SFML
 #include <SFML\OpenGL.hpp>

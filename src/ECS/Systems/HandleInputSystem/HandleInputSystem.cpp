@@ -3,10 +3,10 @@
 
 void HandleInputSystem::update(entt::registry& registry, Pathfinding& pathfinding)
 {
-    auto view = registry.view<Component_Control>();
+    auto view = registry.view<Components::Control>();
     for (auto entity : view)
     {
-        auto& control = view.get<Component_Control>(entity);
+        auto& control = view.get<Components::Control>(entity);
 
         control.direction = sf::Vector2f(0.0f, 0.0f);
 
@@ -22,11 +22,11 @@ void HandleInputSystem::update(entt::registry& registry, Pathfinding& pathfindin
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
     {
-        auto view2 = registry.view<Component_Path, Component_Position>();
+        auto view2 = registry.view<Components::Pathfinding, Components::Position>();
         for (auto entity : view2)
         {
-            auto& path_component = view2.get<Component_Path>(entity);
-            auto& position_component = view2.get<Component_Position>(entity);
+            auto& path_component = view2.get<Components::Pathfinding>(entity);
+            auto& position_component = view2.get<Components::Position>(entity);
 
             // Set the new end node based on the mouse position
             pathfinding.end_node = pathfinding.getNodeByMousePosition(common::mouse_pos_view);

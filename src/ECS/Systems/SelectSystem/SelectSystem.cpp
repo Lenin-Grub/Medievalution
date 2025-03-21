@@ -29,16 +29,20 @@ void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f&
 {
     sf::FloatRect selection_rect(start, end - start);
 
-    auto view = registry.view<Component_Sprite, Component_Position>();
+    auto view = registry.view<Components::Sprite, Components::Position>();
     for (auto entity : view)
     {
-        auto& sprite_component = view.get<Component_Sprite>(entity);
-        auto& position_component = view.get<Component_Position>(entity);
+        auto& sprite_component      = view.get<Components::Sprite>(entity);
+        auto& position_component    = view.get<Components::Position>(entity);
+
         sf::FloatRect entity_bounds = sprite_component.sprite.getGlobalBounds();
-        entity_bounds.left = position_component.position.x;
-        entity_bounds.top = position_component.position.y;
+
+        entity_bounds.left          = position_component.position.x;
+        entity_bounds.top           = position_component.position.y;
 
         if (selection_rect.intersects(entity_bounds))
+            sprite_component.sprite.setColor(sf::Color::Red);
+        else if (entity_bounds.contains(common::mouse_pos_view))
             sprite_component.sprite.setColor(sf::Color::Red);
         else
             sprite_component.sprite.setColor(sf::Color::White);

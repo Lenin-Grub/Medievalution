@@ -4,13 +4,13 @@
 
 void PathfindingSystem::update(entt::registry& registry, Pathfinding& pathfinding, float deltaTime)
 {
-    auto view = registry.view<Component_Path, Component_Position, Component_Velocity>();
+    auto view = registry.view<Components::Pathfinding, Components::Position, Components::Velocity>();
 
     for (auto entity : view)
     {
-        auto& path_component = view.get<Component_Path>(entity);
-        auto& positionComponent = view.get<Component_Position>(entity);
-        auto& velocityComponent = view.get<Component_Velocity>(entity);
+        auto& path_component    = view.get<Components::Pathfinding>(entity);
+        auto& positionComponent = view.get<Components::Position>(entity);
+        auto& velocityComponent = view.get<Components::Velocity>(entity);
 
         // If the path is empty or the current node index is out of bounds, skip this entity
         if (path_component.path.empty() || path_component.current_node_index >= path_component.path.size())

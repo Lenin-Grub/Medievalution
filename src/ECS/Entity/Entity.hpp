@@ -37,6 +37,8 @@ public:
     /// @param window The render window to draw to.
     void draw(sf::RenderWindow& window);
 
+    void selectionBox(sf::RenderWindow& window);
+
     /// @brief Sets the sprite for an entity.
     /// @param entity The entity to set the sprite for.
     /// @param path The file path to the sprite image.

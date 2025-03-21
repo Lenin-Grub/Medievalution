@@ -7,6 +7,8 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
 , m_selected_tile_id (0)
 , m_animator_tile_selected_id (0)
 , animator(sprite)
+, gizmos(window, sf::Vector2f(10,10))
+, is_brash(false)
 {
     state_machine.is_init = true;
 }
@@ -26,19 +28,17 @@ void BattleState::init()
 
     ///-------------
     entity = entity_manager.createEntity();
-    entity_manager.addComponent<Component_Position>(entity, sf::Vector2f(0.0f, 0.0f));
-    entity_manager.addComponent<Component_Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 5.0f);
-    entity_manager.addComponent<Component_Sprite>(entity, sprite);
-    entity_manager.addComponent<Component_Path>(entity);
-    entity_manager.addComponent<Component_Selectable>(entity, false);
+    entity_manager.addComponent<Components::Position>(entity, sf::Vector2f(0.0f, 0.0f));
+    entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 5.0f);
+    entity_manager.addComponent<Components::Sprite>(entity, sprite);
+    entity_manager.addComponent<Components::Pathfinding>(entity);
     entity_manager.setSprite(entity, "Spearman.png");
 
     auto entity2 = entity_manager.createEntity();
-    entity_manager.addComponent<Component_Position>(entity2, sf::Vector2f(64, 64));
-    entity_manager.addComponent<Component_Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
-    entity_manager.addComponent<Component_Sprite>(entity2, sprite);
-    entity_manager.addComponent<Component_Control>(entity2);
-    entity_manager.addComponent<Component_Selectable>(entity2, false);
+    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
+    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
+    entity_manager.addComponent<Components::Sprite>(entity2, sprite);
+    entity_manager.addComponent<Components::Control>(entity2);
     entity_manager.setSprite(entity2, "Archer.png");
 
     ///-------------
@@ -61,13 +61,22 @@ void BattleState::updateEvents()
     if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
         state_machine.lastState();
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
-        editor.addTile(m_selected_tile_id, common::mouse_pos_view);
+    if (is_brash)
+    {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
+            editor.addTile(m_selected_tile_id, common::mouse_pos_view);
+
+
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && !ImGui::GetIO().WantCaptureMouse)
+            editor.removeTile(common::mouse_pos_view);
+    }
 
     pathfinding.handleInput();
 
     data.camera.scroll();
     data.camera.zoom();
+
+    gizmos.update();
 }
 
 void BattleState::updateImGui() 
@@ -95,6 +104,7 @@ void BattleState::draw(sf::RenderTarget* target)
     editor.draw(*target, sf::RenderStates::Default);
     pathfinding.draw(window);
     entity_manager.draw(window);
+    gizmos.draw();
 
     endView(target);
     ImGui::SFML::Render(window);
@@ -119,10 +129,90 @@ void BattleState::renderEditor()
 {
     ImGui::Begin((ICON::getStr(Icon::MAP) + " Editor").c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
+    renderTools();
     renderLayersSection();
     renderTilesSection();
 
     ImGui::End();
+}
+
+void BattleState::renderTools()
+{
+    if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::TOOL)) + " Tools").c_str()))
+    {
+        sf::Color green(40, 159, 49, 255);
+        ImVec4 imVecColor(
+            green.r / 255.0f,
+            green.g / 255.0f,
+            green.b / 255.0f,
+            green.a / 255.0f);
+
+        // Select Button
+        bool selectPressed = gizmos.mode == GizmoMode::None;
+
+        if (selectPressed) 
+            ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
+
+        if (ImGui::Button((ICON::getStr(Icon::SELECT) + " ##Select").c_str()))
+        {
+            is_brash = false;
+            gizmos.mode = selectPressed ? GizmoMode::None : GizmoMode::None;
+        }
+        if (selectPressed) ImGui::PopStyleColor();
+        ImGui::SameLine(0.0f, 1.0f);
+
+        // Move Button
+        bool movePressed = gizmos.mode == GizmoMode::Translate;
+        if (movePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
+        if (ImGui::Button((ICON::getStr(Icon::OPEN_WITHIN) + " ##Move").c_str()))
+        {
+            is_brash = false;
+            gizmos.mode = movePressed ? GizmoMode::None : GizmoMode::Translate;
+        }
+        if (movePressed) ImGui::PopStyleColor();
+        ImGui::SameLine(0.0f, 1.0f);
+
+        // Scale Button
+        bool scalePressed = gizmos.mode == GizmoMode::Scale;
+        if (scalePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
+        if (ImGui::Button((ICON::getStr(Icon::UNWRAP) + " ##Scale").c_str()))
+        {
+            is_brash = false;
+            gizmos.mode = scalePressed ? GizmoMode::None : GizmoMode::Scale;
+        }
+        if (scalePressed) ImGui::PopStyleColor();
+        ImGui::SameLine(0.0f, 1.0f);
+
+        // Rotate Button
+        bool rotatePressed = gizmos.mode == GizmoMode::Rotate;
+        if (rotatePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
+        if (ImGui::Button((ICON::getStr(Icon::UPDATE) + " ##Rotate").c_str()))
+        {
+            is_brash = false;
+            gizmos.mode = rotatePressed ? GizmoMode::None : GizmoMode::Rotate;
+        }
+        if (rotatePressed) ImGui::PopStyleColor();
+        ImGui::SameLine();
+
+        ImGui::Dummy(ImVec2(50.0f, 0.0f));
+        ImGui::SameLine();
+
+        // Brush Button
+        if (ImGui::Button((ICON::getStr(Icon::BRUSH) + " ##Brush").c_str()))
+        {
+            gizmos.mode = GizmoMode::None;
+            is_brash = !is_brash;
+        }
+        ImGui::SameLine(0.0f, 1.0f);
+
+        // Fill Button
+        if (ImGui::Button((ICON::getStr(Icon::FILL) + " ##Fill").c_str()))
+        {
+            gizmos.mode = GizmoMode::None;
+        }
+
+        gizmos.drawImGui();
+    }
 }
 
 void BattleState::renderLayersSection()
@@ -467,7 +557,7 @@ void BattleState::renderPlaybackButtons(int& current_frame, bool& is_payed)
         animator.setCurrentFrame(current_frame);
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine(0.0f, 1.0f);
 
     if (ImGui::Button((ICON::getStr(Icon::PREV) + "##Prev").c_str()))
     {
@@ -475,14 +565,14 @@ void BattleState::renderPlaybackButtons(int& current_frame, bool& is_payed)
         animator.setCurrentFrame(current_frame);
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine(0.0f, 1.0f);
 
     if (ImGui::Button(is_payed ? (ICON::getStr(Icon::PLAY) + "##Play").c_str() : (ICON::getStr(Icon::PAUSE) + "##Pause").c_str()))
     {
         is_payed = !is_payed;
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine(0.0f, 1.0f);
 
     if (ImGui::Button((ICON::getStr(Icon::NEXT) + "##Next").c_str()))
     {
@@ -490,7 +580,7 @@ void BattleState::renderPlaybackButtons(int& current_frame, bool& is_payed)
         animator.setCurrentFrame(current_frame);
     }
 
-    ImGui::SameLine();
+    ImGui::SameLine(0.0f, 1.0f);
 
     if (ImGui::Button((ICON::getStr(Icon::END) + "##End").c_str()))
     {
@@ -507,7 +597,7 @@ void BattleState::renderAddRemoveFrameButtons()
     int tileset_cols = std::round(texture.getSize().x / size);
     int tileset_rows = std::round(texture.getSize().y / size);
 
-    if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + "Add").c_str()))
+    if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add").c_str()))
     {
         int tile_x = m_animator_tile_selected_id % tileset_cols;
         int tile_y = m_animator_tile_selected_id / tileset_cols;
@@ -517,7 +607,7 @@ void BattleState::renderAddRemoveFrameButtons()
 
     ImGui::SameLine();
 
-    if (ImGui::Button((ICON::getStr(Icon::REMOVE_FILES) + "Remove").c_str()))
+    if (ImGui::Button((ICON::getStr(Icon::REMOVE_FILES) + " Remove").c_str()))
     {
         animator.removeFrame(animator.getCurrentFrame());
     }

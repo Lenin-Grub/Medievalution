@@ -3,11 +3,11 @@
 
 void ControlSystem::update(entt::registry& registry)
 {
-    auto view = registry.view<Component_Velocity, Component_Control>();
+    auto view = registry.view<Components::Velocity, Components::Control>();
     for (auto entity : view)
     {
-        auto& velocity      = view.get<Component_Velocity>(entity);
-        const auto& control = view.get<Component_Control>(entity);
+        auto& velocity      = view.get<Components::Velocity>(entity);
+        const auto& control = view.get<Components::Control>(entity);
 
         velocity.velocity = control.direction * velocity.speed;
     }
