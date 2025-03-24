@@ -118,11 +118,26 @@ const sf::Color WorldMap::getColor()
         return sf::Color::White;
 }
 
+const sf::Color WorldMap::getColor(sf::Vector2f pos)
+{
+    current_color = map_image.getPixel(pos.x, pos.y);
+    //LOG_INFO("Color {0} {1} {2}", current_color.r, current_color.g, current_color.b);
+    return current_color;
+}
+
 int WorldMap::getProvinceID(const sf::Color& color) const
 {
     if (!isMouseOnMap())
         return 0;
     if (color == map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
+        return provinces.find(color)->second.id;
+    else
+        return 0;
+}
+
+int WorldMap::getProvinceID(const sf::Color& color, sf::Vector2f pos) const
+{
+    if (color == map_image.getPixel(pos.x, pos.y))
         return provinces.find(color)->second.id;
     else
         return 0;
@@ -136,6 +151,12 @@ const std::string WorldMap::getProvinceName(const sf::Color& color) const
         return provinces.find(color)->second.name;
     else
         return "not found";
+}
+
+const std::string WorldMap::getProvinceName(const sf::Color& color, sf::Vector2f pos) const
+{
+    if (color == map_image.getPixel(pos.x,pos.y))
+        return provinces.find(color)->second.name;
 }
 
 bool WorldMap::isMouseOnMap() const

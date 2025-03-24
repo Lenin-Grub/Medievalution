@@ -6,4 +6,5 @@ class SpriteUpdateSystem
 {
 public:
     static void update(entt::registry& registry, Animator animator);
+    static void update(entt::registry& registry);
 };

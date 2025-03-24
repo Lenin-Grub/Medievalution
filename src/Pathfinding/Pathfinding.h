@@ -90,4 +90,9 @@ public:
     sf::Vector2f tile_size;     ///< The size of each tile in the grid.
     int          width;         ///< The width of the grid.
     int          height;        ///< The height of the grid.
+
+    bool        is_path_visible;
+    bool        is_nodes_visible;
+    bool        is_connections_visible;
+    bool        is_beginend_visible;
 };

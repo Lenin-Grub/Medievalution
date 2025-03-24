@@ -22,7 +22,7 @@ public:
 
     /// @brief Creates a new entity.
     /// @return The created entity.
-    entt::entity createEntity();
+    entt::entity createEntity(const std::string& name, const std::string& group = "None");
 
     /// @brief Destroys an existing entity.
     /// @param entity The entity to destroy
@@ -31,18 +31,13 @@ public:
     /// @brief Updates all entities.
     /// @param delta_time The time elapsed since the last update.
     /// @param animator The animator used for updating animations.
-    void update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window);
+    void update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window); 
+    
+    void update(float delta_time, Pathfinding& pathfinding, sf::RenderWindow& window);
 
     /// @brief Draws all entities.
     /// @param window The render window to draw to.
     void draw(sf::RenderWindow& window);
-
-    void selectionBox(sf::RenderWindow& window);
-
-    /// @brief Sets the sprite for an entity.
-    /// @param entity The entity to set the sprite for.
-    /// @param path The file path to the sprite image.
-    void setSprite(entt::entity entity, const std::string& path);
 
     /// @brief Adds a component to an entity.
     /// @tparam Component The type of the component to add.
@@ -65,8 +60,19 @@ public:
     template <typename Component>
     Component& getComponent(entt::entity entity);
 
-    entt::registry registry;
+    const entt::registry& getRegistry();
+
+    void findEntityByName(const std::string& name);
+
+    void findEntityByGroup(const std::string& group);
+
+    void findEntityByID(const int id);
+
+    void selectionBox(sf::RenderWindow& window);
+
 private:
+    entt::registry registry;
+
     /// @brief Checks if an entity has a specific component.
     /// @tparam Component The type of the component to check for.
     /// @param entity The entity to check.

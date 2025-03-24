@@ -8,12 +8,16 @@ Pathfinding::Pathfinding()
     , tile_size(sf::Vector2f(32, 32))
     , width(50)
     , height(50)
+    , is_path_visible{true}
+    , is_nodes_visible(false)
+    , is_connections_visible(false)
+    , is_beginend_visible(false)
 {
 }
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width = width;
+    this->width  = width;
     this->height = height;
     nodes.clear();
 
@@ -50,65 +54,71 @@ void Pathfinding::initNodes(int width, int height)
 }
 
 
-void Pathfinding::draw(sf::RenderWindow& window) 
+void Pathfinding::draw(sf::RenderWindow& window)
 {
-    sf::Vertex line[] = 
-    {
-       sf::Vertex(sf::Vector2f(0, 0)),
-       sf::Vertex(sf::Vector2f(0, 0))
-    };
-
+    sf::Vertex line[2];
     sf::RectangleShape rect(tile_size);
-    sf::CircleShape    circle(3.0f);
-    circle.setFillColor(sf::Color::Black);
-
-    // Draw nodes
-    //for (const auto& pair : nodes)
-    //{
-    //    const Node& node = pair.second;
-    //    rect.setPosition(node.position.x, node.position.y);
-
-    //    if (&node == start_node)
-    //        rect.setFillColor(sf::Color::Green);
-    //    else if (&node == end_node)
-    //        rect.setFillColor(sf::Color::Red);
-    //    else
-    //        rect.setFillColor(sf::Color::Transparent);
-    //        window.draw(rect);
-
-        // Draw a black circle if the node has no neighbors
-        //if (node.neighbors.empty())
-        //{
-        //    circle.setPosition(node.position.x + circle.getRadius(), node.position.y + circle.getRadius());
-        //        window.draw(circle);
-        //}
-    //}
 
     // Draw lines between neighbors
-    //for (const auto& pair : nodes)
-    //{
-    //    const Node& node = pair.second;
-    //    for (const Node* neighbor : node.neighbors)
-    //    {
-    //        line[0].position = sf::Vector2f(node.position.x, node.position.y);
-    //        line[1].position = sf::Vector2f(neighbor->position.x, neighbor->position.y);
-    //        line[0].color = sf::Color::Cyan;
-    //        line[1].color = sf::Color::Cyan;
-    //        window.draw(line, 2, sf::Lines);
-    //    }
-    //}
+    if (is_connections_visible)
+    {
+        for (const auto& pair : nodes)
+        {
+            const Node& node = pair.second;
+            for (const Node* neighbor : node.neighbors)
+            {
+                line[0].position = node.position + sf::Vector2f(16, 16);
+                line[1].position = neighbor->position + sf::Vector2f(16, 16);
+                line[0].color = sf::Color::Cyan;
+                line[1].color = sf::Color::Cyan;
 
+                window.draw(line, 2, sf::Lines);
+            }
+        }
+    }
+
+    // Draw nodes
+    if (is_beginend_visible || is_nodes_visible)
+    {
+        for (const auto& pair : nodes)
+        {
+            const Node& node = pair.second;
+            rect.setPosition(node.position);
+
+            if (is_beginend_visible)
+            {
+                if (&node == start_node)
+                    rect.setFillColor(sf::Color::Green);
+                else if (&node == end_node)
+                    rect.setFillColor(sf::Color::Red);
+                else if (is_nodes_visible && !node.walkable)
+                    rect.setFillColor(sf::Color::Red);
+                else
+                    continue;
+
+                window.draw(rect);
+            }
+            else if (is_nodes_visible && !node.walkable)
+            {
+                rect.setFillColor(sf::Color::Red);
+                window.draw(rect);
+            }
+        }
+    }
+
+  
     // Draw path
-    if (end_node != nullptr)
+    if (is_path_visible && end_node != nullptr)
     {
         glLineWidth(5.0f);
         Node* p = end_node;
         while (p->parent != nullptr)
         {
-            line[0].position = sf::Vector2f(p->position.x, p->position.y);
-            line[1].position = sf::Vector2f(p->parent->position.x, p->parent->position.y);
+            line[0].position = p->position + sf::Vector2f(16, 16);
+            line[1].position = p->parent->position + sf::Vector2f(16, 16);
             line[0].color = sf::Color::Blue;
             line[1].color = sf::Color::Blue;
+
             window.draw(line, 2, sf::Lines);
             p = p->parent;
         }
@@ -116,17 +126,14 @@ void Pathfinding::draw(sf::RenderWindow& window)
     }
 }
 
+
 void Pathfinding::handleInput() 
 {
-    int x = common::mouse_pos_view.x;
-    int y = common::mouse_pos_view.y;
-
-    sf::Vector2f position(x, y);
-    Node* node = getNode(position);
+    Node* node = getNodeByMousePosition(common::mouse_pos_view);
 
     if (node) 
     {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift)) 
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             node->walkable = false;
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))

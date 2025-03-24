@@ -24,22 +24,30 @@ void BattleState::init()
     animator.setFrameTime(0.5f);
     animator.pause();
 
+    std::string selected_item = items.at(current_item);
+    auto file = selected_item;
+    selected_item += ".png";
+
+    animator.init(selected_item.c_str());
+    animator.loadAllAnimations(file);
+
     pathfinding.initNodes(50, 50);
 
     ///-------------
-    entity = entity_manager.createEntity();
-    entity_manager.addComponent<Components::Position>(entity, sf::Vector2f(0.0f, 0.0f));
-    entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 5.0f);
+    entity = entity_manager.createEntity("Spearman", "Units");
     entity_manager.addComponent<Components::Sprite>(entity, sprite);
+    entity_manager.addComponent<Components::Position>(entity, sf::Vector2f(0.0f, 0.0f));
+    entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity);
-    entity_manager.setSprite(entity, "Spearman.png");
 
-    auto entity2 = entity_manager.createEntity();
+    auto& pos = entity_manager.getComponent<Components::Sprite>(entity).sprite;
+    pos.setOrigin(8, 32);
+
+    auto entity2 = entity_manager.createEntity("Archer", "Units");
     entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
     entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
     entity_manager.addComponent<Components::Sprite>(entity2, sprite);
     entity_manager.addComponent<Components::Control>(entity2);
-    entity_manager.setSprite(entity2, "Archer.png");
 
     ///-------------
 
@@ -426,6 +434,13 @@ void BattleState::renderMetrics()
     ImGui::Text("%f", 1);
 
     ImGui::Columns(1);
+
+
+    ImGui::Checkbox("Show path", &pathfinding.is_path_visible);
+    ImGui::Checkbox("Show connections", &pathfinding.is_connections_visible);
+    ImGui::Checkbox("Show nodes", &pathfinding.is_nodes_visible);
+    ImGui::Checkbox("Show begin & end", &pathfinding.is_beginend_visible);
+
     ImGui::End();
 }
 
@@ -450,20 +465,7 @@ void BattleState::renderSpriteSelector()
         auto file = selected_item;
         selected_item += ".png";
         animator.init(selected_item.c_str());
-
-
-        if (animator.loadAllAnimations(file))
-        {
-            auto size = animator.findAnimation(animation_name).size();
-            for (size_t i = 0; i < size; i++)
-            {
-                animator.addFrame(animator.findAnimation(animation_name).at(i));
-            }
-        }
-        else
-        {
-            LOG_ERROR("Fail load");
-        }
+        animator.loadAllAnimations(file);
     }
 
     ImGui::Image(sprite, sf::Vector2f(256, 256));
@@ -515,14 +517,16 @@ void BattleState::renderAnimationCombo()
         animationNamesCStr.push_back(name.c_str());
     }
 
-    static int selectedAnimationIndex = 0;
-    if (ImGui::Combo("Select animation", &selectedAnimationIndex, animationNamesCStr.data(), animationNamesCStr.size()))
+    if (ImGui::Combo("Select animation", &selected_animation_item, animationNamesCStr.data(), animationNamesCStr.size()))
     {
         animator.removeAllFrames();
-        std::vector<sf::IntRect> frames = animator.findAnimation(animationNamesCStr.at(selectedAnimationIndex));
-        for (const auto& frame : frames)
+        std::vector<sf::IntRect> frames = animator.findAnimation(animationNamesCStr.at(selected_animation_item));
+        if (!frames.empty())
         {
-            animator.addFrame(frame);
+            for (const auto& frame : frames)
+            {
+                animator.addFrame(frame);
+            }
         }
     }
 }

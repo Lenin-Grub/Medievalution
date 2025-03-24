@@ -13,8 +13,19 @@ Animator::Animator(sf::Sprite& sprite)
 
 bool Animator::init(const std::string& name)
 {
-   sprite.setTexture(ResourceLoader::instance().getTexture(name));
-   return true;
+    try
+    {
+        sprite.setTexture(ResourceLoader::instance().getTexture(name));
+        sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
+        LOG_INFO("Animation {} loaded", name);
+        return true;
+    }
+    catch (const std::exception& e)
+    {
+        LOG_ERROR("fail init animations: {} !", name);
+        return false;
+    }
+
 }
 
 void Animator::addFrame(sf::IntRect rect)

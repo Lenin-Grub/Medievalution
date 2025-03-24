@@ -56,21 +56,23 @@ private:
     void renderSpriteSheet();
 
 private:
-    Gizmos        gizmos;
-    Editor        editor;
-    Animator      animator;
-    Pathfinding   pathfinding;
-    PathfindingSystem pathfindingSystem;
-    sf::Sprite    sprite;
-    sf::Texture   texture;
-    entt::entity  entity;
-    int           m_selected_tile_id;
-    int           m_animator_tile_selected_id;
-    EntityManager entity_manager;
+    Gizmos            gizmos;
+    Editor            editor;
+    Animator          animator;
+    Pathfinding       pathfinding;
+    EntityManager     entity_manager;
+
+    sf::Sprite        sprite;
+    sf::Texture       texture;
+    entt::entity      entity;
+
+    int               m_selected_tile_id;
+    int               m_animator_tile_selected_id;
 
     char animation_name[64] = "";
     std::vector<const char*> items { "Spearman", "Archer" };
     int current_item { 0 };
+    int selected_animation_item { -1 };
 
     bool is_brash;
 };

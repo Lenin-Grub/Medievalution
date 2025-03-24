@@ -29,13 +29,19 @@ public:
     /// @return The sf::Color of the current province.
     const sf::Color getColor();
 
+    const sf::Color getColor(sf::Vector2f pos);
+
     /// @brief Gets the ID of the current province.
     /// @return The ID of the current province. */
     int getProvinceID(const sf::Color& color) const;
 
+    int getProvinceID(const sf::Color& color, sf::Vector2f pos) const;
+
     /// @brief Gets the name of the current province.
     /// @return The name of the current province.
     const std::string getProvinceName(const sf::Color& color) const;
+
+    const std::string getProvinceName(const sf::Color& color, sf::Vector2f pos) const;
 
     /// @brief Finds the center of a province by its color.
     /// @param provinceColor The color of the province to find.

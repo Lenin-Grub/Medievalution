@@ -22,6 +22,7 @@ enum class Icon
     FOUR_QUADS   = 0xe93F,
     INSTAGRAM    = 0xe947,
     STACK_FILES  = 0xe94A,
+    DOT_MENU     = 0xe94D,
     MENU         = 0xe957,
     LOG_IN       = 0xe950,
     LOG_OUT      = 0xe951,
