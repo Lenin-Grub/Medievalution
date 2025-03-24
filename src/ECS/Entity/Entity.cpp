@@ -2,31 +2,19 @@
 #include "Entity.hpp"
 
 #include "../../Resource/ResourceManager.hpp"
+
 #include "../Systems/ControlSystem/ControlSystem.hpp"
 #include "../Systems/HandleInputSystem/HandleInputSystem.hpp"
 #include "../Systems/MovementSystem/MovementSystem.hpp"
 #include "../Systems/SpriteUpdateSystem/SpriteUpdateSystem.hpp"
 #include "../Systems/PathfindingSystem/PathfindingSystem.hpp"
 #include "../Systems/SelectSystem/SelectSystem.hpp"
-
-
-EntityManager::EntityManager() 
-{
-}
-
-EntityManager::~EntityManager()
-{
-}
-
-bool EntityManager::init()
-{
-    return false;
-}
+#include "../Systems/RenderSystem/RenderSystem.hpp"
 
 
 entt::entity EntityManager::createEntity(const std::string& name, const std::string& group)
 {
-    auto entity = registry.create();
+    auto   entity = registry.create();
     return entity;
 }
 
@@ -43,57 +31,16 @@ void EntityManager::update(float delta_time, Animator animator, Pathfinding& pat
     MovementSystem::     update(registry, delta_time);
     ControlSystem::      update(registry);
     SelectSystem::       update(registry);
+    
 }
 
 void EntityManager::draw(sf::RenderWindow& window)
 {
-    auto view = registry.view<Components::Sprite>();
-    for (auto entity : view)
-    {
-        const auto& spriteComponent = view.get<Components::Sprite>(entity);
-        window.draw(spriteComponent.sprite);
-    }
-    
-    selectionBox(window);
-}
-
-void EntityManager::selectionBox(sf::RenderWindow& window)
-{
-    static sf::Vector2f startSelection;
-    static bool         isSelecting = false;
-
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (!isSelecting)
-        {
-            startSelection = common::mouse_pos_view;
-            isSelecting = true;
-        }
-    }
-    else
-    {
-        if (isSelecting)
-            isSelecting = false;
-    }
-
-    if (isSelecting)
-    {
-        sf::RectangleShape selectionBox;
-        selectionBox.setFillColor(sf::Color(255, 255, 255, 5));
-        selectionBox.setOutlineColor(sf::Color::Black);
-        selectionBox.setOutlineThickness(1);
-
-        sf::Vector2f currentMousePos = common::mouse_pos_view;
-        sf::Vector2f size = currentMousePos - startSelection;
-
-        selectionBox.setPosition(startSelection);
-        selectionBox.setSize(size);
-
-        window.draw(selectionBox);
-    }
+    RenderSystem::render(registry, window);    
 }
 
 const entt::registry& EntityManager::getRegistry()
 {
     return registry;
 }
+

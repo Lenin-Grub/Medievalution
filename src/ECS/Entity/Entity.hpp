@@ -11,14 +11,14 @@ class EntityManager
 {
 public:
     /// @brief Constructs a new EntityManager object.
-    EntityManager();
+    EntityManager() = default;
 
     /// @brief Destroys the EntityManager object.
-    virtual ~EntityManager();
+    virtual ~EntityManager() = default;
 
     /// @brief Initializes the EntityManager.
     /// @return True if initialization is successful, false otherwise.
-    bool init();
+    // bool init();
 
     /// @brief Creates a new entity.
     /// @return The created entity.
@@ -33,8 +33,6 @@ public:
     /// @param animator The animator used for updating animations.
     void update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window); 
     
-    void update(float delta_time, Pathfinding& pathfinding, sf::RenderWindow& window);
-
     /// @brief Draws all entities.
     /// @param window The render window to draw to.
     void draw(sf::RenderWindow& window);
@@ -67,8 +65,6 @@ public:
     void findEntityByGroup(const std::string& group);
 
     void findEntityByID(const int id);
-
-    void selectionBox(sf::RenderWindow& window);
 
 private:
     entt::registry registry;
