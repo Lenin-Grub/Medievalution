@@ -45,16 +45,6 @@ void EntityManager::update(float delta_time, Animator animator, Pathfinding& pat
     SelectSystem::       update(registry);
 }
 
-void EntityManager::update(float delta_time, Pathfinding& pathfinding, sf::RenderWindow& window)
-{
-    SpriteUpdateSystem::update(registry);
-    HandleInputSystem::update(registry, pathfinding);
-    PathfindingSystem::update(registry, pathfinding, delta_time);
-    MovementSystem::update(registry, delta_time);
-    ControlSystem::update(registry);
-    SelectSystem::update(registry);
-}
-
 void EntityManager::draw(sf::RenderWindow& window)
 {
     auto view = registry.view<Components::Sprite>();
@@ -69,9 +59,8 @@ void EntityManager::draw(sf::RenderWindow& window)
 
 void EntityManager::selectionBox(sf::RenderWindow& window)
 {
-    // Отрисовка рамки выделения
     static sf::Vector2f startSelection;
-    static bool isSelecting = false;
+    static bool         isSelecting = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
     {

@@ -1,12 +1,18 @@
 #include "../../../stdafx.h"
 #include "HandleInputSystem.hpp"
 
-void HandleInputSystem::update(entt::registry& registry, Pathfinding& pathfinding)
+void HandleInputSystem::update(entt::registry& registry, Pathfinding& global_pathfinding) 
 {
-    auto view = registry.view<Components::Control>();
-    for (auto entity : view)
+    auto view = registry.view<Components::Control, Components::Selectable, Components::Pathfinding, Components::Position>();
+
+    for (auto entity : view) 
     {
-        auto& control = view.get<Components::Control>(entity);
+        auto& control            = view.get<Components::Control>    (entity);
+        auto& selectable         = view.get<Components::Selectable> (entity);
+        auto& path_component     = view.get<Components::Pathfinding>(entity);
+        auto& position_component = view.get<Components::Position>   (entity);
+
+        if (selectable.is_selected = false) continue;
 
         control.direction = sf::Vector2f(0.0f, 0.0f);
 
@@ -20,29 +26,27 @@ void HandleInputSystem::update(entt::registry& registry, Pathfinding& pathfindin
             control.direction.x += 1.0f;
     }
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Right)) 
     {
-        auto view2 = registry.view<Components::Pathfinding, Components::Position>();
-        for (auto entity : view2)
+        auto view = registry.view<Components::Pathfinding, Components::Position, Components::Selectable>();
+
+        for (auto entity : view) 
         {
-            auto& path_component     = view2.get<Components::Pathfinding>(entity);
-            auto& position_component = view2.get<Components::Position>(entity);
+            auto& path_component     = view.get<Components::Pathfinding>(entity);
+            auto& position_component = view.get<Components::Position>   (entity);
+            auto& selectable         = view.get<Components::Selectable> (entity);
 
-          // if (pathfinding.current_node != nullptr && pathfinding.start_node != nullptr && pathfinding.end_node != nullptr)
+            if (selectable.is_selected = false) continue;
+
+            // New path
+            path_component.end_node   = global_pathfinding.getNodeByMousePosition(common::mouse_pos_view);
+            path_component.start_node = global_pathfinding.getNode(position_component.position);
+
+            if (path_component.start_node && path_component.end_node) 
             {
-                // Set the new end node based on the mouse position
-                pathfinding.end_node = pathfinding.getNodeByMousePosition(common::mouse_pos_view);
-
-                // Update the start node to the current position of the entity
-                pathfinding.start_node = pathfinding.getNode(position_component.position);
-            }
-
-            // If start and end nodes are valid, find a new path
-            if (pathfinding.start_node && pathfinding.end_node)
-            {
-                pathfinding.findPath(pathfinding.start_node, pathfinding.end_node);
-                path_component.path = pathfinding.path();
-                path_component.current_node_index = 0; // Reset the current node index
+                global_pathfinding.findPath(path_component.start_node, path_component.end_node);
+                path_component.path = global_pathfinding.path();
+                path_component.current_node_index = 0;
             }
         }
     }

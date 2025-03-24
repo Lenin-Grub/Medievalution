@@ -1,38 +1,25 @@
 #pragma once
 #include "../../Pathfinding/Node.h"
 
-//enum class Components
-//{
-//    None,
-//    Position,
-//    Velocity,
-//    Direction,
-//    Control,
-//    Sprite,
-//    Animation,
-//    Pathfindig,
-//    Selectable
-//};
-
 namespace Components
 {
 
     struct Position
     {
-        sf::Vector2f position;
+        sf::Vector2f position { 0.0f, 0.0f };
     };
 
 
     struct Velocity
     {
-        sf::Vector2f velocity;
-        float speed;
+        sf::Vector2f velocity { 0.0f, 0.0f };
+        float        speed = 1.0f;
     };
 
 
     enum class Direction
     {
-        None,
+        None = 0,
         Up,
         Down,
         Left,
@@ -41,7 +28,7 @@ namespace Components
 
     struct Control
     {
-        sf::Vector2f direction;
+        sf::Vector2f direction { 0.0f, 0.0f };
     };
 
     struct Sprite
@@ -56,14 +43,16 @@ namespace Components
         std::map<std::string, std::vector<sf::IntRect>> animations;
     };
 
-    struct Pathfinding
+    struct Pathfinding 
     {
         std::vector<Node*> path;
-        size_t current_node_index;
+        Node*              start_node         = nullptr;
+        Node*              end_node           = nullptr;
+        size_t             current_node_index = 0;
     };
 
     struct Selectable
     {
-        bool is_selected{ false };
+        bool is_selected = false;
     };
 }

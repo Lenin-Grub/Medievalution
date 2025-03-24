@@ -2,7 +2,7 @@
 #include "SelectSystem.hpp"
 
 
-void SelectSystem::update(entt::registry& registry)
+void SelectSystem::update(entt::registry& registry) 
 {
     static sf::Vector2f start_selection;
     static bool is_selecting = false;
@@ -13,11 +13,18 @@ void SelectSystem::update(entt::registry& registry)
         {
             start_selection = common::mouse_pos_view;
             is_selecting = true;
+
+            auto view = registry.view<Components::Selectable>();
+            for (auto entity : view) 
+            {
+                auto& selectable = view.get<Components::Selectable>(entity);
+                selectable.is_selected = false;
+            }
         }
     }
-    else
+    else 
     {
-        if (is_selecting)
+        if (is_selecting) 
         {
             is_selecting = false;
             selectRectangle(registry, start_selection, common::mouse_pos_view);
@@ -25,26 +32,22 @@ void SelectSystem::update(entt::registry& registry)
     }
 }
 
-void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f& start, const sf::Vector2f& end)
+void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f& start, const sf::Vector2f& end) 
 {
     sf::FloatRect selection_rect(start, end - start);
 
-    auto view = registry.view<Components::Sprite, Components::Position>();
-    for (auto entity : view)
+    auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
+    for (auto entity : view) 
     {
-        auto& sprite_component      = view.get<Components::Sprite>(entity);
-        auto& position_component    = view.get<Components::Position>(entity);
+        auto& sprite_component      = view.get<Components::Sprite>    (entity);
+        auto& position_component    = view.get<Components::Position>  (entity);
+        auto& selectable_component  = view.get<Components::Selectable>(entity);
 
         sf::FloatRect entity_bounds = sprite_component.sprite.getGlobalBounds();
-
         entity_bounds.left          = position_component.position.x;
         entity_bounds.top           = position_component.position.y;
 
-        if (selection_rect.intersects(entity_bounds))
-            sprite_component.sprite.setColor(sf::Color::Red);
-        else if (entity_bounds.contains(common::mouse_pos_view))
-            sprite_component.sprite.setColor(sf::Color::Red);
-        else
-            sprite_component.sprite.setColor(sf::Color::White);
+        if (selection_rect.intersects(entity_bounds)) 
+            selectable_component.is_selected = true;
     }
 }

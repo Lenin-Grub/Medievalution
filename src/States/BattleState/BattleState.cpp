@@ -39,15 +39,17 @@ void BattleState::init()
     entity_manager.addComponent<Components::Position>(entity, sf::Vector2f(0.0f, 0.0f));
     entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity);
+    entity_manager.addComponent<Components::Selectable>(entity);
 
     auto& pos = entity_manager.getComponent<Components::Sprite>(entity).sprite;
     pos.setOrigin(8, 32);
 
     auto entity2 = entity_manager.createEntity("Archer", "Units");
     entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
-    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(1.0f, 1.0f), 1.0f);
+    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(0.0f, 0.0f), 0.5f);
     entity_manager.addComponent<Components::Sprite>(entity2, sprite);
-    entity_manager.addComponent<Components::Control>(entity2);
+    entity_manager.addComponent<Components::Pathfinding>(entity2);
+    entity_manager.addComponent<Components::Selectable>(entity2);
 
     ///-------------
 
