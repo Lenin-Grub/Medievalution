@@ -12,7 +12,7 @@ void HandleInputSystem::update(entt::registry& registry, Pathfinding& global_pat
         auto& path_component     = view.get<Components::Pathfinding>(entity);
         auto& position_component = view.get<Components::Position>   (entity);
 
-        if (selectable.is_selected = false) continue;
+        if (selectable.is_selected == false) continue;
 
         control.direction = sf::Vector2f(0.0f, 0.0f);
 
@@ -36,7 +36,7 @@ void HandleInputSystem::update(entt::registry& registry, Pathfinding& global_pat
             auto& position_component = view.get<Components::Position>   (entity);
             auto& selectable         = view.get<Components::Selectable> (entity);
 
-            if (selectable.is_selected = false) continue;
+            if (selectable.is_selected == false) continue;
 
             // New path
             path_component.end_node   = global_pathfinding.getNodeByMousePosition(common::mouse_pos_view);
