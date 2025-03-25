@@ -2,6 +2,13 @@
 #include "Common/Common.h"
 #include "Node.h"
 
+enum class HeuristicType 
+{ 
+    Manhattan,
+    Euclidean,
+    Diagonal 
+};
+
 /// @brief Custom hash function for sf::Vector2f to use in unordered_map.
 struct Vector2fHash
 {
@@ -47,7 +54,7 @@ public:
     /// @param start The start node.
     /// @param end The end node.
     /// @return The heuristic value.
-    int heuristic(Node* start, Node* end);
+    int heuristic(Node* start, Node* end, HeuristicType type = HeuristicType::Manhattan);
 
     /// @brief Resets the walkable state of all nodes.
     void resetWalkable();

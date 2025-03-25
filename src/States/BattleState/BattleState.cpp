@@ -51,6 +51,9 @@ void BattleState::init()
     entity_manager.addComponent<Components::Pathfinding>(entity2);
     entity_manager.addComponent<Components::Selectable>(entity2);
 
+    auto& pos2 = entity_manager.getComponent<Components::Sprite>(entity2).sprite;
+    pos2.setOrigin(8, 32);
+
     ///-------------
 
     LOG_INFO("State Battle\t Init");

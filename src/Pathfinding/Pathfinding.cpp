@@ -179,7 +179,8 @@ void Pathfinding::findPath(Node* start, Node* end)
         {
             if (neighbor->walkable && !neighbor->is_visited) 
             {
-                float tentativeGCost = current->gCost + 1;
+                float tentativeGCost = current->gCost + 1; // edge.weight
+
                 if (tentativeGCost < neighbor->gCost) 
                 {
                     neighbor-> gCost     = tentativeGCost;
@@ -206,11 +207,21 @@ void Pathfinding::resetNodes()
     }
 }
 
-int Pathfinding::heuristic(Node* start, Node* end) 
+int Pathfinding::heuristic(Node* start, Node* end, HeuristicType type)
 {
-    int manhattanDistance = std::abs(start->position.x - end->position.x) + std::abs(start->position.y - end->position.y);
-    int node_penalty = 1; // You can adjust this penalty value as needed
-    return manhattanDistance + node_penalty;
+    int dx = std::abs(start->position.x - end->position.x);
+    int dy = std::abs(start->position.y - end->position.y);
+
+    switch (type) {
+    case HeuristicType::Manhattan:
+        return dx + dy;
+    case HeuristicType::Euclidean:
+        return static_cast<int>(std::sqrt(dx * dx + dy * dy));
+    case HeuristicType::Diagonal:
+        return std::max(dx, dy);
+    default:
+        return dx + dy;
+    }
 }
 
 void Pathfinding::resetWalkable() 

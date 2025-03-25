@@ -12,6 +12,13 @@ struct Node
     sf::Vector2f       position;                ///< @brief The position of this node in 2D space.
     std::vector<Node*> neighbors;               ///< @brief A list of neighboring nodes.
 
+    struct Edge 
+    {
+        Node*         neighbor    = nullptr;
+        float         weight      = 1;
+    };
+    std::vector<Edge> edges;
+
     bool operator()(Node* a, Node* b)
     {
         return a->fCost > b->fCost;

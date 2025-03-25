@@ -3,15 +3,37 @@
 
 void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
 {
-    auto view = registry.view<Components::Sprite, Components::Position>();
+    auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
 
     for (auto entity : view)
     {
         auto& sprite_component     = view.get<Components::Sprite>     (entity);
         auto& position_component   = view.get<Components::Position>   (entity);
+        auto& selectable_component = view.get<Components::Selectable> (entity);
 
         // Draw entityes
         window.draw(sprite_component.sprite);
+
+        if (selectable_component.is_selected)
+        {
+            // Создаем ромбик
+            int size = 5;
+            sf::ConvexShape diamond(4);
+            diamond.setFillColor(sf::Color::Green);
+            diamond.setPoint(0, sf::Vector2f(0, -size));          // Верхняя точка
+            diamond.setPoint(1, sf::Vector2f(size, 0));           // Правая точка
+            diamond.setPoint(2, sf::Vector2f(0, size));           // Нижняя точка
+            diamond.setPoint(3, sf::Vector2f(-size, 0));          // Левая точка
+
+            // Центрируем ромбик над сущностью
+            sf::Vector2f marker_position = position_component.position;
+            marker_position.x -= sprite_component.sprite.getGlobalBounds().width / 2 - 48; // Выше спрайта
+            marker_position.y -= sprite_component.sprite.getGlobalBounds().height / 2 - 12; // Выше спрайта
+            diamond.setPosition(marker_position);
+
+            window.draw(diamond);
+        }
+
         selectionBox(window);
     }
 }
