@@ -44,10 +44,12 @@ void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f&
         auto& selectable_component  = view.get<Components::Selectable>(entity);
 
         sf::FloatRect entity_bounds = sprite_component.sprite.getGlobalBounds();
-        entity_bounds.left          = position_component.position.x;
-        entity_bounds.top           = position_component.position.y;
+        entity_bounds.left          = position_component.position.x - 8;
+        entity_bounds.top           = position_component.position.y - 32;
 
         if (selection_rect.intersects(entity_bounds)) 
+            selectable_component.is_selected = true;
+        else if (entity_bounds.contains(common::mouse_pos_view))
             selectable_component.is_selected = true;
     }
 }
