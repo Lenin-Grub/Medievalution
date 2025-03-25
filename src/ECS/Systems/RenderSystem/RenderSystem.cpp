@@ -5,30 +5,52 @@ void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
 {
     auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
 
-    for (auto entity : view)
-    {
-        auto& sprite_component     = view.get<Components::Sprite>     (entity);
-        auto& position_component   = view.get<Components::Position>   (entity);
-        auto& selectable_component = view.get<Components::Selectable> (entity);
+    std::vector<std::tuple<entt::entity, float, float>> sorted_entities;
 
-        // Draw entityes
+    for (auto entity : view) 
+    {
+        auto& position_component = view.get<Components::Position>(entity);
+        sorted_entities.emplace_back(entity, position_component.position.x, position_component.position.y);
+    }
+
+    // Сортируем по позиции Y, а затем по X (если Y одинаковые)
+    std::sort(sorted_entities.begin(), sorted_entities.end(), [](const auto& a, const auto& b)
+        {
+            auto [entity_a, x_a, y_a] = a;
+            auto [entity_b, x_b, y_b] = b;
+
+            if (y_a != y_b)
+            {
+                return y_a < y_b;
+            }
+            return x_a < x_b;
+        });
+
+    for (const auto& [entity, x, y] : sorted_entities) 
+    {
+        auto& sprite_component = view.get<Components::Sprite>(entity);
         window.draw(sprite_component.sprite);
+    }
+
+    for (const auto& [entity, x, y] : sorted_entities) 
+    {
+        auto& position_component   = view.get<Components::Position>  (entity);
+        auto& selectable_component = view.get<Components::Selectable>(entity);
 
         if (selectable_component.is_selected)
         {
-            // Создаем ромбик
             int size = 5;
             sf::ConvexShape diamond(4);
             diamond.setFillColor(sf::Color::Green);
-            diamond.setPoint(0, sf::Vector2f(0, -size));          // Верхняя точка
-            diamond.setPoint(1, sf::Vector2f(size, 0));           // Правая точка
-            diamond.setPoint(2, sf::Vector2f(0, size));           // Нижняя точка
-            diamond.setPoint(3, sf::Vector2f(-size, 0));          // Левая точка
+            diamond.setPoint(0, sf::Vector2f(0, -size));
+            diamond.setPoint(1, sf::Vector2f(size, 0));
+            diamond.setPoint(2, sf::Vector2f(0, size));
+            diamond.setPoint(3, sf::Vector2f(-size, 0));
 
-            // Центрируем ромбик над сущностью
+            auto& sprite_component = view.get<Components::Sprite>(entity);
             sf::Vector2f marker_position = position_component.position;
-            marker_position.x -= sprite_component.sprite.getGlobalBounds().width / 2 - 48; // Выше спрайта
-            marker_position.y -= sprite_component.sprite.getGlobalBounds().height / 2 - 12; // Выше спрайта
+            marker_position.x -= sprite_component.sprite.getGlobalBounds().width / 2 - 48;
+            marker_position.y -= sprite_component.sprite.getGlobalBounds().height / 2 - 12;
             diamond.setPosition(marker_position);
 
             window.draw(diamond);
