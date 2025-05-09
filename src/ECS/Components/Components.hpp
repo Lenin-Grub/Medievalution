@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Pathfinding/Node.h"
+#include "../../Animation/Animation.hpp"
 
 namespace Components
 {
@@ -41,6 +42,16 @@ namespace Components
     struct Animation
     {
         std::map<std::string, std::vector<sf::IntRect>> animations;
+    };
+
+    struct Animator
+    {
+        std::string current_animation;
+        float       frame_time    = 0.1f;
+        float       current_time  = 0.0f;
+        int         current_frame = 0;
+        bool        is_playing    = false;
+        bool        is_looping    = true;
     };
 
     struct Pathfinding 

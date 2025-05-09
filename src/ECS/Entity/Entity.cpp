@@ -2,14 +2,7 @@
 #include "Entity.hpp"
 
 #include "../../Resource/ResourceManager.hpp"
-
-#include "../Systems/ControlSystem/ControlSystem.hpp"
-#include "../Systems/HandleInputSystem/HandleInputSystem.hpp"
-#include "../Systems/MovementSystem/MovementSystem.hpp"
-#include "../Systems/SpriteUpdateSystem/SpriteUpdateSystem.hpp"
-#include "../Systems/PathfindingSystem/PathfindingSystem.hpp"
-#include "../Systems/SelectSystem/SelectSystem.hpp"
-#include "../Systems/RenderSystem/RenderSystem.hpp"
+#include "../Systems/AllSystems.hpp"
 
 
 entt::entity EntityManager::createEntity(const std::string& name, const std::string& group)
