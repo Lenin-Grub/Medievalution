@@ -3,7 +3,8 @@
 ![image](https://github.com/Lenin-Grub/Medievalution/assets/71728612/1fb4eda4-2caf-4551-9202-437eef591480)
 <div align="center">
 
-[![Image 1](https://github.com/user-attachments/assets/50f5e26f-7dc4-48b5-8d80-c58cc26f97a3)](#русский) [![Image 2](https://github.com/user-attachments/assets/2096b39c-b88c-4657-ae19-7ac93c850331)](#english)
+## About
+Mdeivalution - мой pet проект, который задуман как игра мечты. Управляйте государством на глобальной карте и сражайтесь на полях битвы в реальном времени. Игра будет охватывать период времени с падения Западной римской империи до падения Константинополя в 1453. Сражайтесь в битвах, торгуйте, заключайте союзы и объявляйте войны.
 
 </div>
 
@@ -23,9 +24,19 @@ Medievalution - мой pet проект, который задуман как и
 Проект вдохновлен такими играми как: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War. 
 * Жанр - 4x RTStrategy.
 
----
-
-## Сторонние библиотеки
+## Development
+- [x] Поддержка английского и русского языка
+- [x] Конфигурационный файл настроек
+- [x] Экран загрузки между сценами
+- [x] 2D анимации
+- [x] Музыкальный автомат
+- [x] Загрузка карты 
+- [x] Рисование границ с помощью шейдера
+- [x] Поиск пути (временно отключено)
+- [x] Управление камерой WSAD
+- [x] Cкролинг колесиком мышки
+- [ ] Примитивный редактор карт (в разработке)
+  
 
 Windows
 C++ 20
@@ -41,36 +52,7 @@ C++ 20
 > Библиотеки должны скачаться автоматически через fetchcontent в cmake
 
 #### Сторонние библиотеки: 
-* SFML 
-* SpdLog
-* ImGui
-* EnTT
-
----
-
-#### Установка SFML
-
-* sfml 2.6.0
-```sh
-git clone https://github.com/SFML/SFML.git
-```
----
-
-#### Установка ImGui
-* sfml ImGui
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
-```
->git tag docking
----
-
-#### Установка EnTT
-* entt
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/skypjack/entt.git)
-```
----
-#### Установка SpdLog
+* sfml 
 * spdlog
 ```sh
 git clone git clone https://github.com/gabime/spdlog.git
