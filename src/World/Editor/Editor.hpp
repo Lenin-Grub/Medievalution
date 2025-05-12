@@ -72,6 +72,10 @@ public:
     /// @param states The render states to use for drawing.
     void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 
+    void saveMap(const std::string& filePath) const;
+
+    void loadMap(const std::string& filePath);
+
 private:
     std::vector<std::unique_ptr<Layer>> layers; ///< Vector of layers managed by the editor.
     unsigned int current_layer;                 ///< Index of the current layer.

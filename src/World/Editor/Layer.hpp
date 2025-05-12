@@ -20,6 +20,8 @@ public:
     void addTile(const int& id, sf::Vector2f pos);
     void removeTile(const int& id, sf::Vector2f pos);
 
+    const std::string& getTextureName();
+
 public:
     std::vector<int> tile_ids;
     sf::VertexArray  tile_map;
@@ -29,5 +31,6 @@ public:
     int              tileset_cols;
     int              tileset_rows;
     bool             visible;
-    std::string      name;
+    std::string      layer_name;
+    std::string      texture_name;
 };
