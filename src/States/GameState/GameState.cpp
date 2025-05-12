@@ -91,7 +91,7 @@ void GameState::updateEvents()
                 secondNode = pathfinding.getNode(provinceCenter);
                 if (firstNode && secondNode && firstNode != secondNode)
                 {
-                    pathfinding.connect(firstNode, secondNode);
+                    pathfinding.connect(firstNode, secondNode, 1);
                     firstNode  = nullptr;
                     secondNode = nullptr;
                 }

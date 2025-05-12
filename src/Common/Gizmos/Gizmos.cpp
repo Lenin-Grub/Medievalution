@@ -230,9 +230,9 @@ void Gizmos::mouseDragging(const sf::Vector2f& center)
             {
                 sf::FloatRect arrowXBounds(center + sf::Vector2f(90.0f, -10.0f), sf::Vector2f(20.0f, 20.0f));
                 sf::FloatRect arrowYBounds(center + sf::Vector2f(-10.0f, 90.0f), sf::Vector2f(20.0f, 20.0f));
-                sf::FloatRect rectBounds(center, sf::Vector2f(25.0f, 25.0f));
-                sf::FloatRect lineXBounds(line_x.getGlobalBounds());
-                sf::FloatRect lineYBounds(line_y.getGlobalBounds());
+                sf::FloatRect rectBounds  (center, sf::Vector2f(25.0f, 25.0f));
+                sf::FloatRect lineXBounds (line_x.getGlobalBounds());
+                sf::FloatRect lineYBounds (line_y.getGlobalBounds());
 
                 if (arrowXBounds.contains(mousePos) || lineXBounds.contains(mousePos)) 
                 {
@@ -251,15 +251,15 @@ void Gizmos::mouseDragging(const sf::Vector2f& center)
         else 
         {
             sf::Vector2f delta = mousePos - drag_start;
-            if (mode == GizmoMode::Translate) 
+            if (mode == GizmoMode::Translate)
             {
                 position += sf::Vector2f(delta.x * drag_axis.x, delta.y * drag_axis.y);
             }
-            else if (mode == GizmoMode::Scale) 
+            else if (mode == GizmoMode::Scale)
             {
                 scale += sf::Vector2f(delta.x * 0.01f * drag_axis.x, delta.y * 0.01f * drag_axis.y);
             }
-            else if (mode == GizmoMode::Rotate) 
+            else if (mode == GizmoMode::Rotate)
             {
                 float deltaAngle = atan2(mousePos.y - center.y, mousePos.x - center.x) - atan2(drag_start.y - center.y, drag_start.x - center.x);
                 angle += deltaAngle * 180.0f / std::numbers::pi;
@@ -310,13 +310,13 @@ void Gizmos::drawDashedLine(sf::RenderWindow& window, const sf::Vector2f& start,
 
     while (currentLength < length)
     {
-        sf::Vector2f dashStart = start + direction * currentLength;
-        sf::Vector2f dashEnd = dashStart + direction * dashLength;
+        sf::Vector2f dashStart = start     + direction * currentLength;
+        sf::Vector2f dashEnd   = dashStart + direction * dashLength;
 
         dashes.append(sf::Vertex(dashStart + perpendicular, gray));
         dashes.append(sf::Vertex(dashStart - perpendicular, gray));
-        dashes.append(sf::Vertex(dashEnd - perpendicular, gray));
-        dashes.append(sf::Vertex(dashEnd + perpendicular, gray));
+        dashes.append(sf::Vertex(dashEnd   - perpendicular, gray));
+        dashes.append(sf::Vertex(dashEnd   + perpendicular, gray));
 
         currentLength += dashLength + gapLength;
     }

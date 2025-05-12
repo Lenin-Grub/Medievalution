@@ -8,6 +8,16 @@
 #include "ECS/Systems/PathfindingSystem/PathfindingSystem.hpp"
 #include "../../Common/Gizmos/Gizmos.h"
 
+enum class ToolState
+{
+    None = 0,
+    Translate,
+    Rotate,
+    Scale,
+    Brush,
+    Fill
+};
+
 class StateMachine;
 
 class BattleState final 
@@ -56,6 +66,7 @@ private:
     void renderSpriteSheet();
 
 private:
+    ToolState         tools;
     Gizmos            gizmos;
     Editor            editor;
     Animator          animator;

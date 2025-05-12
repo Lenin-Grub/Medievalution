@@ -40,19 +40,35 @@ void BattleState::init()
     entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity);
     entity_manager.addComponent<Components::Selectable>(entity);
+    entity_manager.addComponent<Components::Animation>(entity);
 
     auto& pos = entity_manager.getComponent<Components::Sprite>(entity).sprite;
     pos.setOrigin(8, 32);
 
+    auto& animation = entity_manager.getComponent<Components::Animation>(entity);
+    animation.animations["Idle"] = { sf::IntRect(0, 0, 64, 64), sf::IntRect(64, 0, 64, 64) };
+    animation.animations["Run"] = { sf::IntRect(0, 64, 64, 64), sf::IntRect(64, 64, 64, 64) };
+    animation.animations["Dead"] = { sf::IntRect(0, 128, 64, 64), sf::IntRect(64, 128, 64, 64) };
+
     auto entity2 = entity_manager.createEntity("Archer", "Units");
-    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
-    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(0.0f, 0.0f), 0.5f);
     entity_manager.addComponent<Components::Sprite>(entity2, sprite);
+    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
+    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity2);
     entity_manager.addComponent<Components::Selectable>(entity2);
 
     auto& pos2 = entity_manager.getComponent<Components::Sprite>(entity2).sprite;
     pos2.setOrigin(8, 32);
+
+    auto entity3 = entity_manager.createEntity("Archer", "Units");
+    entity_manager.addComponent<Components::Sprite>(entity3, sprite);
+    entity_manager.addComponent<Components::Position>(entity3, sf::Vector2f(0, 64));
+    entity_manager.addComponent<Components::Velocity>(entity3, sf::Vector2f(0.0f, 0.0f), 0.2f);
+    entity_manager.addComponent<Components::Pathfinding>(entity3);
+    entity_manager.addComponent<Components::Selectable>(entity3);
+
+    auto& pos3 = entity_manager.getComponent<Components::Sprite>(entity3).sprite;
+    pos3.setOrigin(8, 32);
 
     ///-------------
 
@@ -160,70 +176,55 @@ void BattleState::renderTools()
             green.b / 255.0f,
             green.a / 255.0f);
 
-        // Select Button
-        bool selectPressed = gizmos.mode == GizmoMode::None;
+        auto renderToolButton = [&](Icon icon, const char* id, ToolState tool, GizmoMode mode)
+            {
+                bool isPressed = tools == tool;
+                if (isPressed)
+                    ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
 
-        if (selectPressed) 
-            ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
+                if (ImGui::Button((ICON::getStr(icon) + std::string(" ##") + id).c_str()))
+                {
+                    if (tool == ToolState::Brush)
+                        is_brash = !is_brash;
+                    else
+                        is_brash = false;
 
-        if (ImGui::Button((ICON::getStr(Icon::SELECT) + " ##Select").c_str()))
-        {
-            is_brash = false;
-            gizmos.mode = selectPressed ? GizmoMode::None : GizmoMode::None;
-        }
-        if (selectPressed) ImGui::PopStyleColor();
+                    tools       = tool;
+                    gizmos.mode = mode;
+                }
+
+                if (isPressed)
+                    ImGui::PopStyleColor();
+            };
+
+        // Select
+        renderToolButton(Icon::SELECT, "Select", ToolState::None, GizmoMode::None);
         ImGui::SameLine(0.0f, 1.0f);
 
-        // Move Button
-        bool movePressed = gizmos.mode == GizmoMode::Translate;
-        if (movePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
-        if (ImGui::Button((ICON::getStr(Icon::OPEN_WITHIN) + " ##Move").c_str()))
-        {
-            is_brash = false;
-            gizmos.mode = movePressed ? GizmoMode::None : GizmoMode::Translate;
-        }
-        if (movePressed) ImGui::PopStyleColor();
+        // Move
+        renderToolButton(Icon::OPEN_WITHIN, "Move", ToolState::Translate, GizmoMode::Translate);
         ImGui::SameLine(0.0f, 1.0f);
 
-        // Scale Button
-        bool scalePressed = gizmos.mode == GizmoMode::Scale;
-        if (scalePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
-        if (ImGui::Button((ICON::getStr(Icon::UNWRAP) + " ##Scale").c_str()))
-        {
-            is_brash = false;
-            gizmos.mode = scalePressed ? GizmoMode::None : GizmoMode::Scale;
-        }
-        if (scalePressed) ImGui::PopStyleColor();
+        // Scale
+        renderToolButton(Icon::UNWRAP, "Scale", ToolState::Scale, GizmoMode::Scale);
         ImGui::SameLine(0.0f, 1.0f);
 
-        // Rotate Button
-        bool rotatePressed = gizmos.mode == GizmoMode::Rotate;
-        if (rotatePressed) ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
-        if (ImGui::Button((ICON::getStr(Icon::UPDATE) + " ##Rotate").c_str()))
-        {
-            is_brash = false;
-            gizmos.mode = rotatePressed ? GizmoMode::None : GizmoMode::Rotate;
-        }
-        if (rotatePressed) ImGui::PopStyleColor();
-        ImGui::SameLine();
+        // Rotate
+        renderToolButton(Icon::UPDATE, "Rotate", ToolState::Rotate, GizmoMode::Rotate);
+        ImGui::SameLine(0.0f, 1.0f);
 
+        // Space
         ImGui::Dummy(ImVec2(50.0f, 0.0f));
         ImGui::SameLine();
 
-        // Brush Button
-        if (ImGui::Button((ICON::getStr(Icon::BRUSH) + " ##Brush").c_str()))
-        {
-            gizmos.mode = GizmoMode::None;
-            is_brash = !is_brash;
-        }
+        // Brush
+        renderToolButton(Icon::BRUSH, "Brush", ToolState::Brush, GizmoMode::None);
         ImGui::SameLine(0.0f, 1.0f);
 
-        // Fill Button
-        if (ImGui::Button((ICON::getStr(Icon::FILL) + " ##Fill").c_str()))
-        {
-            gizmos.mode = GizmoMode::None;
-        }
+        // Fill
+        renderToolButton(Icon::FILL, "Fill", ToolState::Fill, GizmoMode::None);
 
+        // Gizmo
         gizmos.drawImGui();
     }
 }
@@ -301,7 +302,7 @@ void BattleState::renderLayerControls()
         {
             Layer* layer = layers[i].get();
             std::string default_layer_name = " Layer " + std::to_string(i);
-            std::string display_layer_name = ICON::getStr(Icon::EMPTY_FILES).c_str() + (layer->name.empty() ? default_layer_name : layer->name);
+            std::string display_layer_name = ICON::getStr(Icon::EMPTY_FILES).c_str() + (layer->layer_name.empty() ? default_layer_name : layer->layer_name);
 
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
@@ -325,10 +326,10 @@ void BattleState::renderLayerControls()
             if (ImGui::BeginPopup("Rename Layer"))
             {
                 static char layer_name_buffer[128] = "";
-                strcpy(layer_name_buffer, layer->name.empty() ? default_layer_name.c_str() : layer->name.c_str());
+                strcpy(layer_name_buffer, layer->layer_name.empty() ? default_layer_name.c_str() : layer->layer_name.c_str());
                 if (ImGui::InputText("##LayerName", layer_name_buffer, sizeof(layer_name_buffer), ImGuiInputTextFlags_EnterReturnsTrue))
                 {
-                    layer->name = layer_name_buffer;
+                    layer->layer_name = layer_name_buffer;
                     ImGui::CloseCurrentPopup();
                 }
                 ImGui::EndPopup();
@@ -445,6 +446,18 @@ void BattleState::renderMetrics()
     ImGui::Checkbox("Show connections", &pathfinding.is_connections_visible);
     ImGui::Checkbox("Show nodes", &pathfinding.is_nodes_visible);
     ImGui::Checkbox("Show begin & end", &pathfinding.is_beginend_visible);
+
+    static char filePath[256] = "map_save.json";
+    ImGui::InputText("File Path", filePath, IM_ARRAYSIZE(filePath));
+    if (ImGui::Button("Save map"))
+    {
+        editor.saveMap(filePath);
+    }
+
+    if (ImGui::Button("Load map"))
+    {
+        editor.loadMap(filePath);
+    }
 
     ImGui::End();
 }

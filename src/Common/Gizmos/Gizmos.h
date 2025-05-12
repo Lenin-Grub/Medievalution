@@ -23,11 +23,6 @@ public:
 
     void drawImGui();
 
-    void getPosition();
-
-    void getAngle();
-
-    void getScale();
 private:
 
     void drawAxes(const sf::Vector2f& center);
