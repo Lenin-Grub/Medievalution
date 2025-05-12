@@ -2,10 +2,13 @@
 #define NOMINMAX
 
 #include <stdlib.h>
-#include <crtdbg.h>
 #include <cassert>
 
+#ifdef _WIN32
 #include <Windows.h>
+#include <crtdbg.h>
+#endif
+
 #include <algorithm>
 #include <deque>
 #include <queue>
@@ -34,11 +37,11 @@
 #include <numbers>
 
 //SFML
-#include <SFML\OpenGL.hpp>
-#include <SFML\System.hpp>
-#include <SFML\Window.hpp>
-#include <SFML\Graphics.hpp>
-#include <SFML\Audio.hpp>
+#include <SFML/OpenGL.hpp>
+#include <SFML/System.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 //ImGui
 #include <imgui.h>
