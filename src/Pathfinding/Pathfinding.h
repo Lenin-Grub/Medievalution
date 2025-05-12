@@ -67,10 +67,12 @@ public:
     /// @param position The position of the new node.
     void addNode(const sf::Vector2f& position);
 
+    void connect(Node* node1, Node* node2, float cost);
+
     /// @brief Connects two nodes, allowing pathfinding between them.
     /// @param node1 The first node to connect.
     /// @param node2 The second node to connect.
-    void connect(Node* node1, Node* node2);
+ /*   void connect(Node* node1, Node* node2);*/
 
     /// @brief Disconnects two nodes, preventing pathfinding between them.
     /// @param node1 The first node to disconnect.

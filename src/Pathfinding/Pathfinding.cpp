@@ -17,37 +17,39 @@ Pathfinding::Pathfinding()
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width  = width;
+    this->width = width;
     this->height = height;
     nodes.clear();
 
-    for (int y = 0; y < height; ++y)
+    for (int y = 0; y < height; ++y) 
     {
-        for (int x = 0; x < width; ++x)
+        for (int x = 0; x < width; ++x) 
         {
             sf::Vector2f position(x * tile_size.x, y * tile_size.y);
             addNode(position);
 
-            // Connect nodes to their neighbors
-            if (x > 0)
+            // Direct connections (cost = 1)
+            if (x > 0) 
             {
                 Node* left = getNode(sf::Vector2f((x - 1) * tile_size.x, y * tile_size.y));
-                connect(getNode(position), left);
+                connect(getNode(position), left, 1);
             }
-            if (y > 0)
+            if (y > 0) 
             {
                 Node* up = getNode(sf::Vector2f(x * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), up);
+                connect(getNode(position), up , 1);
             }
-            if (x > 0 && y > 0)
+
+            // Diagonal connections (cost = sqrt(2))
+            if (x > 0 && y > 0) 
             {
                 Node* leftUp = getNode(sf::Vector2f((x - 1) * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), leftUp);
+                connect(getNode(position), leftUp, std::sqrt(2.0f));
             }
-            if (x < width - 1 && y > 0)
+            if (x < width - 1 && y > 0) 
             {
                 Node* rightUp = getNode(sf::Vector2f((x + 1) * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), rightUp);
+                connect(getNode(position), rightUp, std::sqrt(2.0f));
             }
         }
     }
@@ -60,17 +62,18 @@ void Pathfinding::draw(sf::RenderWindow& window)
     sf::RectangleShape rect(tile_size);
 
     // Draw lines between neighbors
-    if (is_connections_visible)
+    if (is_connections_visible) 
     {
         for (const auto& pair : nodes)
         {
             const Node& node = pair.second;
-            for (const Node* neighbor : node.neighbors)
+            for (const auto& [neighbor, cost] : node.edge_costs) 
             {
+                sf::Color color = (cost > 1.0f) ? sf::Color::Yellow : sf::Color::Cyan; // colors for diagonal
                 line[0].position = node.position + sf::Vector2f(16, 16);
                 line[1].position = neighbor->position + sf::Vector2f(16, 16);
-                line[0].color = sf::Color::Cyan;
-                line[1].color = sf::Color::Cyan;
+                line[0].color = color;
+                line[1].color = color;
 
                 window.draw(line, 2, sf::Lines);
             }
@@ -144,51 +147,54 @@ void Pathfinding::handleInput()
     }
 }
 
-void Pathfinding::findPath(Node* start, Node* end) 
+bool compareNodes(Node* a, Node* b)
+{
+    return a->fCost > b->fCost; // Minimum fCost has the highest priority
+}
+
+void Pathfinding::findPath(Node* start, Node* end)
 {
     resetNodes();
     start_node = start;
-    end_node   = end;
+    end_node = end;
 
-    std::priority_queue<Node*, std::vector<Node*>, Node> openList;
-    std::vector<Node*> closedList;
+    if (!start || !end || start == end) return;
 
-    if (start_node == nullptr || end_node == nullptr)
-        return;
+    std::priority_queue<Node*, std::vector<Node*>, decltype(&compareNodes)> openList(compareNodes);
+    std::unordered_set<Node*> closedSet;
 
-    if (start_node == end_node)
-        return;
-
-    start_node->gCost = 0.0f;
-    start_node->hCost = heuristic(start_node, end_node);
-    start_node->fCost = start_node->gCost + start_node->hCost;
-
-    openList.push(start_node);
+    start->gCost = 0.0f;
+    start->hCost = heuristic(start, end);
+    start->fCost = start->gCost + start->hCost;
+    openList.push(start);
 
     while (!openList.empty()) 
     {
         Node* current = openList.top();
         openList.pop();
 
-        closedList.push_back(current);
+        if (current == end) 
+            break;
 
-        if (current == end_node)
-            return;
+        closedSet.insert(current);
 
         for (Node* neighbor : current->neighbors) 
         {
-            if (neighbor->walkable && !neighbor->is_visited) 
-            {
-                float tentativeGCost = current->gCost + 1; // edge.weight
+            if (!neighbor->walkable || closedSet.count(neighbor)) continue;
 
-                if (tentativeGCost < neighbor->gCost) 
+            float edgeCost       = current->edge_costs[neighbor];
+            float tentativeGCost = current->gCost + edgeCost;
+
+            if (tentativeGCost < neighbor->gCost) 
+            {
+                neighbor->gCost  = tentativeGCost;
+                neighbor->hCost  = heuristic(neighbor, end);
+                neighbor->fCost  = neighbor->gCost + neighbor->hCost;
+                neighbor->parent = current;
+
+                if (!closedSet.count(neighbor)) 
                 {
-                    neighbor-> gCost     = tentativeGCost;
-                    neighbor-> hCost     = heuristic(neighbor, end_node);
-                    neighbor-> fCost     = neighbor-> gCost + neighbor-> hCost;
-                    neighbor-> parent    = current;
                     openList.push(neighbor);
-                    neighbor->is_visited = true;
                 }
             }
         }
@@ -212,7 +218,8 @@ int Pathfinding::heuristic(Node* start, Node* end, HeuristicType type)
     int dx = std::abs(start->position.x - end->position.x);
     int dy = std::abs(start->position.y - end->position.y);
 
-    switch (type) {
+    switch (type) 
+    {
     case HeuristicType::Manhattan:
         return dx + dy;
     case HeuristicType::Euclidean:
@@ -261,15 +268,15 @@ void Pathfinding::addNode(const sf::Vector2f& position)
     nodes[position] = node;
 }
 
-void Pathfinding::connect(Node* node1, Node* node2) 
+void Pathfinding::connect(Node* node1, Node* node2, float cost = 1.0f)
 {
     if (node1 && node2 && node1 != node2) 
     {
-        if (std::find(node1->neighbors.begin(), node1->neighbors.end(), node2) == node1->neighbors.end()) 
-            node1->neighbors.push_back(node2);
+        node1->neighbors.push_back(node2);
+        node1->edge_costs[node2] = cost;
 
-        if (std::find(node2->neighbors.begin(), node2->neighbors.end(), node1) == node2->neighbors.end()) 
-            node2->neighbors.push_back(node1);
+        node2->neighbors.push_back(node1);
+        node2->edge_costs[node1] = cost;
     }
 }
 

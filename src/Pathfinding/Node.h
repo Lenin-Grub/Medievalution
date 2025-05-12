@@ -11,6 +11,7 @@ struct Node
     Node*              parent     = nullptr;    ///< @brief The parent node of this node.
     sf::Vector2f       position;                ///< @brief The position of this node in 2D space.
     std::vector<Node*> neighbors;               ///< @brief A list of neighboring nodes.
+    std::unordered_map<Node*, float> edge_costs;
 
     struct Edge 
     {
