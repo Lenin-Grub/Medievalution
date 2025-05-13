@@ -22,8 +22,9 @@ bool Layer::init()
         {
             for (int y = 0; y < layer_size.y; y++)
             {
-                float base_x = (x - y) * tile_size;
-                float base_y = (x + y) * tile_size / 2.0f;
+                // Используем ту же формулу, что и в addTile
+                float base_x = x * (tile_size / 2) - y * (tile_size / 2); // tile_size/2 = 32
+                float base_y = (x + y) * 16.0f; // половина высоты тайла
 
                 sf::Vertex topLeft(sf::Vector2f(base_x, base_y), sf::Vector2f(0, 0));
                 sf::Vertex topRight(sf::Vector2f(base_x + tile_size, base_y), sf::Vector2f(tile_size, 0));
@@ -50,11 +51,10 @@ bool Layer::init()
     }
 }
 
-
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    float offset_x = -1.0f * layer_index + 12.0f;
-    float offset_y = -32.0f * layer_index;
+    float offset_x = -1.0f * layer_index;
+    float offset_y = -(tile_size / 2) * layer_index;
 
     states.transform.translate(offset_x, offset_y);
     states.texture = &tileset_texture;
@@ -69,7 +69,6 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
         return;
     }
 
-    // Преобразуем координаты мыши в индексы тайла
     sf::Vector2i tile_coords = getTileCoordinates(pos);
     int x = tile_coords.x;
     int y = tile_coords.y;
@@ -85,11 +84,7 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
 
     sf::Vertex* quad = &tile_map[static_cast<int64_t>(index * 4)];
 
-    // Дополнительное вертикальное смещение
-    int additional_offset = 16;
-
-    // Базовые координаты тайла
-    float base_x = x * 32.0f - y * 32.0f;
+    float base_x = x * (tile_size / 2) - y * (tile_size / 2);
     float base_y = (x + y) * 16.0f;
 
     if (id == -1)
@@ -112,7 +107,6 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
         quad[3].texCoords = sf::Vector2f(tu * tile_size, (tv + 1) * tile_size);
     }
 
-    // Установка позиций вершин с учетом смещения
     quad[0].position = sf::Vector2f(base_x, base_y);
     quad[1].position = sf::Vector2f(base_x + tile_size, base_y);
     quad[2].position = sf::Vector2f(base_x + tile_size, base_y + tile_size);
@@ -134,16 +128,15 @@ sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const
     float mx = mouse_pos.x;
     float my = mouse_pos.y;
 
-    // Обратное преобразование
-    float x_f = ((my / 16.0f) + (mx / 32.0f)) / 2.0f;
-    float y_f = ((my / 16.0f) - (mx / 32.0f)) / 2.0f;
+    float x_f = ((my / 16.0f) + (mx / (tile_size / 2))) / 2.0f;
+    float y_f = ((my / 16.0f) - (mx / (tile_size / 2))) / 2.0f;
 
     int tile_x = static_cast<int>(x_f);
     int tile_y = static_cast<int>(y_f);
 
     if (tile_x < 0 || tile_y < 0 || tile_x >= layer_size.x || tile_y >= layer_size.y)
     {
-        return sf::Vector2i(-1, -1); // Вне диапазона
+        return sf::Vector2i(-1, -1);
     }
 
     return sf::Vector2i(tile_x, tile_y);

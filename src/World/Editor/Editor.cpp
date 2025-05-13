@@ -120,13 +120,16 @@ void Editor::saveMap(const std::string& file_path) const
     for (const auto& layer : layers)
     {
         nlohmann::json json_layer;
-        json_layer["tile_size"]       = layer->tile_size;
-        json_layer["layer_size_x"]    = layer->layer_size.x;
-        json_layer["layer_size_y"]    = layer->layer_size.y;
-        json_layer["visible"]         = layer->visible;
-        json_layer["tileset_texture"] = "Tileset1.png"; // TO DO layer->texture_name
-        json_layer["tile_ids"]        = layer->tile_ids;
-        json_map  ["layers"].push_back(json_layer);
+
+        json_layer["tile_size"] = layer->tile_size;
+        json_layer["layer_size_x"] = layer->layer_size.x;
+        json_layer["layer_size_y"] = layer->layer_size.y;
+        json_layer["visible"] = layer->visible;
+        json_layer["layer_index"] = layer->layer_index;
+        json_layer["tileset_texture"] = "Tileset1.png"; // TODO: сделать динамическое им€
+        json_layer["tile_ids"] = layer->tile_ids;
+
+        json_map["layers"].push_back(json_layer);
     }
 
     std::ofstream file(file_path);
@@ -164,64 +167,74 @@ void Editor::loadMap(const std::string& file_path)
 
     layers.clear();
 
-    //if (!json_map.contains("tile_size")       || !json_map["tile_size"].is_number_integer()    ||
-    //    !json_map.contains("layer_size_x")    || !json_map["layer_size_x"].is_number_integer() ||
-    //    !json_map.contains("layer_size_y")    || !json_map["layer_size_y"].is_number_integer() ||
-    //    !json_map.contains("visible")         || !json_map["visible"].is_boolean()             ||
-    //    !json_map.contains("tileset_texture") || !json_map["tileset_texture"].is_string()      ||
-    //    !json_map.contains("tile_ids")        || !json_map["tile_ids"].is_array())
-    //{
-    //    LOG_ERROR("Invalid layer structure in JSON");
-    //    return;
-    //}
-
     current_layer = json_map.value("current_layer", 0);
 
-    const int default_tile_size  = 64;
-    const int default_map_size   = 50;
+    const int default_tile_size = 64;
+    const int default_map_size = 50;
 
     for (const auto& json_layer : json_map["layers"])
     {
         int tile_size = json_layer.value("tile_size", default_tile_size);
-        sf::Vector2i layer_size(json_layer.value("layer_size_x", default_map_size), json_layer.value("layer_size_y", default_map_size));
+        sf::Vector2i layer_size(
+            json_layer.value("layer_size_x", default_map_size),
+            json_layer.value("layer_size_y", default_map_size)
+        );
 
-        std::string texturePath = json_layer.value("tileset_texture", "");
-        bool visible            = json_layer.value("visible", true);
+        bool visible = json_layer.value("visible", true);
+        int layer_index = json_layer.value("layer_index", 0);
 
-        sf::Texture default_texture;
-        sf::Texture* texture = nullptr;
+        std::string texturePath = json_layer.value("tileset_texture", "Tileset1.png");
 
-        if (!texturePath.empty())
+        sf::Texture* texture = &ResourceLoader::instance().getTexture(texturePath);
+        if (!texture || !texture->getSize().x || !texture->getSize().y)
         {
-            texture = &ResourceLoader::instance().getTexture(texturePath);
-            if (!texture || !texture->getSize().x || !texture->getSize().y)
-            {
-                LOG_ERROR("Failed to load texture: {0}", texturePath);
-                continue;
-            }
-        }
-        else
-        {
-            LOG_WARN("No texture specified for layer. Using default texture.");
-            texture = &default_texture;
+            LOG_ERROR("Failed to load texture: {0}", texturePath);
+            continue;
         }
 
-
-        auto new_layer = std::make_unique<Layer>(tile_size, layer_size, *texture, 0);
+        auto new_layer = std::make_unique<Layer>(tile_size, layer_size, *texture, layer_index);
         new_layer->init();
         new_layer->visible = visible;
 
         const auto& tile_ids_array = json_layer["tile_ids"];
-        new_layer->tile_ids.reserve(tile_ids_array.size());
+        new_layer->tile_ids = tile_ids_array.get<std::vector<int>>();
 
+        // ¬осстанови вершины на основе tile_ids
         for (int y = 0; y < layer_size.y; ++y)
         {
             for (int x = 0; x < layer_size.x; ++x)
             {
-                int index  = x + y * layer_size.x;
-                int tileId = tile_ids_array[index].get<int>();
-                new_layer->tile_ids.push_back(tileId);
-                new_layer->addTile(tileId, sf::Vector2f(x * tile_size, y * tile_size));
+                int index = x + y * layer_size.x;
+                int tileId = new_layer->tile_ids[index];
+
+                // »спользуем те же формулы, что и в init()
+                float base_x = x * (tile_size / 2) - y * (tile_size / 2); // tile_size/2 == 32
+                float base_y = (x + y) * 16.0f;
+
+                sf::Vertex* quad = &new_layer->tile_map[index * 4];
+
+                quad[0].position = sf::Vector2f(base_x, base_y);
+                quad[1].position = sf::Vector2f(base_x + tile_size, base_y);
+                quad[2].position = sf::Vector2f(base_x + tile_size, base_y + tile_size);
+                quad[3].position = sf::Vector2f(base_x, base_y + tile_size);
+
+                if (tileId == -1)
+                {
+                    quad[0].texCoords = sf::Vector2f(0, 0);
+                    quad[1].texCoords = sf::Vector2f(0, 0);
+                    quad[2].texCoords = sf::Vector2f(0, 0);
+                    quad[3].texCoords = sf::Vector2f(0, 0);
+                }
+                else
+                {
+                    int tu = tileId % new_layer->tileset_cols;
+                    int tv = tileId / new_layer->tileset_cols;
+
+                    quad[0].texCoords = sf::Vector2f(tu * tile_size, tv * tile_size);
+                    quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size, tv * tile_size);
+                    quad[2].texCoords = sf::Vector2f((tu + 1) * tile_size, (tv + 1) * tile_size);
+                    quad[3].texCoords = sf::Vector2f(tu * tile_size, (tv + 1) * tile_size);
+                }
             }
         }
 
