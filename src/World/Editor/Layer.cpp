@@ -1,13 +1,14 @@
 #include "stdafx.h"
 #include "Layer.hpp"
 
-Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture)
+Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture, int index)
     : tile_size(tileSize)
     , layer_size (board_size)
     , tileset_texture(texture)
     , tileset_cols(0)
     , tileset_rows(0)
     , visible(true)
+    , layer_index(index)
 {
 }
 
@@ -21,17 +22,9 @@ bool Layer::init()
         {
             for (int y = 0; y < layer_size.y; y++)
             {
-                // Базовые координаты тайла
-                float base_x = x * tile_size;
-                float base_y = y * (tile_size / 2); // Уменьшаем шаг по вертикали
+                float base_x = (x - y) * tile_size;
+                float base_y = (x + y) * tile_size / 2.0f;
 
-                // Смещение для четных рядов
-                if (y % 2 == 0)
-                {
-                    base_x += tile_size / 2 ; // Смещение вправо
-                }
-
-                // Создаем вершины для тайла
                 sf::Vertex topLeft(sf::Vector2f(base_x, base_y), sf::Vector2f(0, 0));
                 sf::Vertex topRight(sf::Vector2f(base_x + tile_size, base_y), sf::Vector2f(tile_size, 0));
                 sf::Vertex bottomRight(sf::Vector2f(base_x + tile_size, base_y + tile_size), sf::Vector2f(tile_size, tile_size));
@@ -60,7 +53,10 @@ bool Layer::init()
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    states.transform *= getTransform();
+    float offset_x = -1.0f * layer_index + 12.0f;
+    float offset_y = -32.0f * layer_index;
+
+    states.transform.translate(offset_x, offset_y);
     states.texture = &tileset_texture;
     target.draw(tile_map, states);
 }
@@ -93,14 +89,8 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
     int additional_offset = 16;
 
     // Базовые координаты тайла
-    float base_x = x * tile_size;
-    float base_y = y * (tile_size / 2) - y * additional_offset;
-
-    // Смещение для четных рядов
-    if (y % 2 == 0)
-    {
-        base_x += tile_size / 2; // Смещение вправо
-    }
+    float base_x = x * 32.0f - y * 32.0f;
+    float base_y = (x + y) * 16.0f;
 
     if (id == -1)
     {
@@ -141,27 +131,19 @@ const std::string& Layer::getTextureName()
 
 sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const
 {
-    int additional_offset = 16;
-    // Корректируем координаты мыши с учетом вертикального смещения
-    float corrected_mouse_x = mouse_pos.x;
-    float corrected_mouse_y = mouse_pos.y;
+    float mx = mouse_pos.x;
+    float my = mouse_pos.y;
 
-    // Вычисляем предполагаемый индекс строки
-    int tile_y = static_cast<int>((corrected_mouse_y + (tile_size / 4)) / ((tile_size / 2) - additional_offset));
+    // Обратное преобразование
+    float x_f = ((my / 16.0f) + (mx / 32.0f)) / 2.0f;
+    float y_f = ((my / 16.0f) - (mx / 32.0f)) / 2.0f;
 
-    // Корректируем горизонтальное смещение для четных и нечетных рядов
-    if (tile_y % 2 == 0)
-    {
-        corrected_mouse_x -= tile_size / 2; // Смещаем влево для четных рядов
-    }
+    int tile_x = static_cast<int>(x_f);
+    int tile_y = static_cast<int>(y_f);
 
-    // Вычисляем индексы тайла
-    int tile_x = static_cast<int>(corrected_mouse_x / tile_size);
-
-    // Проверяем границы
     if (tile_x < 0 || tile_y < 0 || tile_x >= layer_size.x || tile_y >= layer_size.y)
     {
-        return sf::Vector2i(-1, -1); // Возвращаем недействительные координаты
+        return sf::Vector2i(-1, -1); // Вне диапазона
     }
 
     return sf::Vector2i(tile_x, tile_y);

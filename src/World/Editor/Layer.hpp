@@ -12,7 +12,7 @@ class Layer
     , public sf::Transformable
 {
 public:
-    Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture);
+    Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture, int index);
 
     bool init();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
@@ -32,6 +32,7 @@ public:
     const int        tile_size;
     int              tileset_cols;
     int              tileset_rows;
+    int              layer_index;
     bool             visible;
     std::string      layer_name;
     std::string      texture_name;

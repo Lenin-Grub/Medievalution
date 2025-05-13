@@ -10,7 +10,7 @@ bool Editor::init()
 {
     try
     {
-        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
+        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png"), 0));
         layers.back()->init();
         return true;
     }
@@ -35,9 +35,9 @@ void Editor::removeTile(sf::Vector2f pos)
 
 void Editor::addLayer(const std::string& name)
 {
-   layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name)));
+   //current_layer++;
+   layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name), ++current_layer));
    layers.back()->init();
-   current_layer++;
 }
 
 void Editor::removeLayer()
@@ -207,7 +207,7 @@ void Editor::loadMap(const std::string& file_path)
         }
 
 
-        auto new_layer = std::make_unique<Layer>(tile_size, layer_size, *texture);
+        auto new_layer = std::make_unique<Layer>(tile_size, layer_size, *texture, 0);
         new_layer->init();
         new_layer->visible = visible;
 
