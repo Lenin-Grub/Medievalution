@@ -22,6 +22,8 @@ public:
 
     const std::string& getTextureName();
 
+    sf::Vector2i getTileCoordinates(const sf::Vector2f& mouse_pos) const;
+
 public:
     std::vector<int> tile_ids;
     sf::VertexArray  tile_map;

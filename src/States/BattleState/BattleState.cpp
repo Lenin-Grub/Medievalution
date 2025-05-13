@@ -213,6 +213,10 @@ void BattleState::renderTools()
         renderToolButton(Icon::UPDATE, "Rotate", ToolState::Rotate, GizmoMode::Rotate);
         ImGui::SameLine(0.0f, 1.0f);
 
+        // Flip
+        renderToolButton(Icon::FLIP_HORiZONTAL, "Flip", ToolState::Flip, GizmoMode::None);
+        ImGui::SameLine(0.0f, 1.0f);
+
         // Space
         ImGui::Dummy(ImVec2(50.0f, 0.0f));
         ImGui::SameLine();
@@ -610,6 +614,13 @@ void BattleState::renderPlaybackButtons(int& current_frame, bool& is_payed)
         animator.setCurrentFrame(current_frame);
     }
 
+    ImGui::SameLine(0.0f, 5.0f);
+
+    if (ImGui::Button((ICON::getStr(Icon::FLIP_HORiZONTAL) + "##Flip").c_str()))
+    {
+        animator.flipFramesHorizontally();
+    }
+
     ImGui::Separator();
 }
 
@@ -659,7 +670,7 @@ void BattleState::renderSpriteSheet()
 {
     static int size     = 64;
     static int value    = 96;
-    const int  minValue = 32;
+    const int  minValue = 64;
     const int  maxValue = 128;
 
     ImVec2 scale_factor = ImVec2(value, value);

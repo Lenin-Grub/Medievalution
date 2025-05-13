@@ -10,7 +10,7 @@ bool Editor::init()
 {
     try
     {
-        layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
+        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png")));
         layers.back()->init();
         return true;
     }
@@ -35,7 +35,7 @@ void Editor::removeTile(sf::Vector2f pos)
 
 void Editor::addLayer(const std::string& name)
 {
-   layers.push_back(std::make_unique<Layer>(32, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name)));
+   layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name)));
    layers.back()->init();
    current_layer++;
 }
@@ -177,7 +177,7 @@ void Editor::loadMap(const std::string& file_path)
 
     current_layer = json_map.value("current_layer", 0);
 
-    const int default_tile_size  = 32;
+    const int default_tile_size  = 64;
     const int default_map_size   = 50;
 
     for (const auto& json_layer : json_map["layers"])

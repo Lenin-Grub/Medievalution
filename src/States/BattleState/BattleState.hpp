@@ -15,7 +15,8 @@ enum class ToolState
     Rotate,
     Scale,
     Brush,
-    Fill
+    Fill,
+    Flip
 };
 
 class StateMachine;
