@@ -313,3 +313,33 @@ std::vector<std::string> Animator::getAnimationNames() const
     }
     return names;
 }
+
+void Animator::flipFramesHorizontally()
+{
+    if (frames.empty())
+    {
+        LOG_ERROR("Cannot flip frames. Frames are empty!");
+        return;
+    }
+
+    const sf::Texture* texture = sprite.getTexture();
+    if (!texture)
+    {
+        LOG_ERROR("Cannot flip frames. Texture is not set!");
+        return;
+    }
+
+    sf::Vector2u textureSize = texture->getSize();
+
+    for (auto& frame : frames)
+    {
+        frame.left = textureSize.x - frame.left - frame.width;
+    }
+
+    if (!frames.empty())
+    {
+        sprite.setTextureRect(frames.at(current_frame));
+    }
+
+    LOG_INFO("All frames flipped horizontally using IntRect.");
+}

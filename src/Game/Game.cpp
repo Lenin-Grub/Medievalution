@@ -95,11 +95,11 @@ bool Game::initFonts() noexcept
     try
     {
         ImFontConfig config;
-        config.MergeMode = true;
-        config.PixelSnapH = true;
+        config.MergeMode        = true;
+        config.PixelSnapH       = true;
         config.GlyphMinAdvanceX = 6.0f;
-        config.OversampleH = 3;
-        config.OversampleV = 3;
+        config.OversampleH      = 3;
+        config.OversampleV      = 3;
 
         static const ImWchar icon_ranges[] = { static_cast<ImWchar> (Icon::MIN), static_cast<ImWchar>(Icon::MAX), 0 };
 

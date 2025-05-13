@@ -54,6 +54,8 @@ public:
     /// @return A vector containing the names of all animations.
     std::vector<std::string> getAnimationNames() const;
 
+    void flipFramesHorizontally();
+
     /// @brief Sets the display time for each frame
     /// @param time The time to display each frame, in seconds.
     void setFrameTime(float time);
