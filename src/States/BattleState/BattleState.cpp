@@ -349,25 +349,30 @@ void BattleState::renderTilesSection()
 {
     if (ImGui::CollapsingHeader((ICON::getStr(Icon::FOUR_QUADS) + " Tiles").c_str()))
     {
-        static int value = editor.getTileSize();
-        const int min_value = 8;
-        const int max_value = 64;
-
-        ImGui::SliderInt("Scale", &value, min_value, max_value);
-        ImGui::Separator();
-
         renderTilesetTable();
     }
 }
 
 void BattleState::renderTilesetTable()
 {
+    static int value     = editor.getTileSize();
+    const  int min_value = 8;
+    const  int max_value = 128;
+
+    ImGui::SliderInt("Scale", &value, min_value, max_value);
+    ImGui::Separator();
+
     sf::Texture& tileset_Texture = editor.getTilesetTexture();
     int tileset_cols = editor.getSheetWidth();
     int tileset_rows = editor.getSheetHeight();
 
+
+    ImVec2 scale_factor = ImVec2(value, value);
+    //int tileset_cols = std::round(texture.getSize().x / value);
+    //int tileset_rows = std::round(texture.getSize().y / value);
+
     ImTextureID tileset_texture_id = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle();
-    ImVec2 scale_factor = ImVec2(editor.getTileSize(), editor.getTileSize());
+    //ImVec2 scale_factor            = ImVec2(editor.getTileSize(), editor.getTileSize());
 
     if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
     {
@@ -670,8 +675,8 @@ void BattleState::renderSpriteSheet()
 {
     static int size     = 64;
     static int value    = 96;
-    const int  minValue = 64;
-    const int  maxValue = 128;
+    const int  minValue = 32;
+    const int  maxValue = 256;
 
     ImVec2 scale_factor = ImVec2(value, value);
     int tileset_cols = std::round(texture.getSize().x / size);
