@@ -69,6 +69,7 @@ void Layer::addTile(const int& id, sf::Vector2f pos)
         return;
     }
 
+
     sf::Vector2i tile_coords = getTileCoordinates(pos);
     int x = tile_coords.x;
     int y = tile_coords.y;
@@ -125,14 +126,22 @@ const std::string& Layer::getTextureName()
 
 sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const
 {
-    float mx = mouse_pos.x;
-    float my = mouse_pos.y;
+    // Смещаем точку клика чуть внутрь тайла для удобства
+    float offset_x = tile_size / 2.0f;
+    float offset_y = tile_size / 8.0f;
 
+    float layer_offset_x = 1.0f * layer_index;
+    float layer_offset_y = (tile_size / 2) * layer_index;
+
+    float mx = mouse_pos.x - offset_x + layer_offset_x;
+    float my = mouse_pos.y - offset_y + layer_offset_y;
+
+    // Вычисляем изометрические координаты
     float x_f = ((my / 16.0f) + (mx / (tile_size / 2))) / 2.0f;
     float y_f = ((my / 16.0f) - (mx / (tile_size / 2))) / 2.0f;
 
-    int tile_x = static_cast<int>(x_f);
-    int tile_y = static_cast<int>(y_f);
+    int tile_x = static_cast<int>(std::floor(x_f));
+    int tile_y = static_cast<int>(std::floor(y_f));
 
     if (tile_x < 0 || tile_y < 0 || tile_x >= layer_size.x || tile_y >= layer_size.y)
     {
