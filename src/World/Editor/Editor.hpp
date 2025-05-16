@@ -76,6 +76,8 @@ public:
 
     void loadMap(const std::string& filePath);
 
+    sf::Vector2i getMouseGridPosition();
+
 private:
     std::vector<std::unique_ptr<Layer>> layers; ///< Vector of layers managed by the editor.
     unsigned int current_layer;                 ///< Index of the current layer.

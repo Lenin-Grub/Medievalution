@@ -243,3 +243,24 @@ void Editor::loadMap(const std::string& file_path)
 
     LOG_INFO("Map loaded successfully from {0}", file_path);
 }
+
+
+sf::Vector2i Editor::getMouseGridPosition()
+{
+    const float tileW = 64, tileH = 32;
+    const float halfW = tileW / 2, halfH = tileH / 2;
+
+    float mx = common::mouse_pos_view.x; /*+ common::layer_index*/
+    float my = common::mouse_pos_view.y; /*+ halfH * common::layer_index*/
+
+    int tileX = (my / halfH + mx / halfW) / 2;
+    int tileY = (my / halfH - mx / halfW) / 2;
+
+    float screenX = (tileX - tileY) * halfW;
+    float screenY = (tileX + tileY) * halfH;
+
+    float relX = common::mouse_pos_view.x - screenX;
+    float relY = common::mouse_pos_view.y - screenY;
+
+    return common::mouse_pos_grid = { tileX, tileY };
+}

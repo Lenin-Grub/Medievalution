@@ -15,6 +15,7 @@ public:
     static float        dtime;
     static sf::Vector2i mouse_pos_screen;
     static sf::Vector2i mouse_pos_window;
+    static sf::Vector2i mouse_pos_grid;
     static sf::Vector2f mouse_pos_view;
     static Math         math;
 

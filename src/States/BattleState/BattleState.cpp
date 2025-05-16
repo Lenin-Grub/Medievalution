@@ -52,7 +52,7 @@ void BattleState::init()
 
     auto entity2 = entity_manager.createEntity("Archer", "Units");
     entity_manager.addComponent<Components::Sprite>(entity2, sprite);
-    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(64, 64));
+    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(0, 64));
     entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity2);
     entity_manager.addComponent<Components::Selectable>(entity2);
@@ -62,7 +62,7 @@ void BattleState::init()
 
     auto entity3 = entity_manager.createEntity("Archer", "Units");
     entity_manager.addComponent<Components::Sprite>(entity3, sprite);
-    entity_manager.addComponent<Components::Position>(entity3, sf::Vector2f(0, 64));
+    entity_manager.addComponent<Components::Position>(entity3, sf::Vector2f(64, 64));
     entity_manager.addComponent<Components::Velocity>(entity3, sf::Vector2f(0.0f, 0.0f), 0.2f);
     entity_manager.addComponent<Components::Pathfinding>(entity3);
     entity_manager.addComponent<Components::Selectable>(entity3);
@@ -450,6 +450,33 @@ void BattleState::renderMetrics()
 
     ImGui::Columns(1);
 
+
+    auto gridPos = editor.getMouseGridPosition();
+
+    ImGui::Columns(4, "table_columns##");
+    ImGui::Separator();
+
+    ImGui::Text("Coordinates2"); ImGui::SameLine();
+    ImGui::NextColumn();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Red);
+    ImGui::Button("X##"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("%i", gridPos.x); // Выводим x
+    ImGui::NextColumn();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(40, 159, 49));
+    ImGui::Button("Y##"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("%i", gridPos.y); // Выводим y
+    ImGui::NextColumn();
+
+    ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(23, 68, 210));
+    ImGui::Button("Z##"); ImGui::SameLine();
+    ImGui::PopStyleColor();
+    ImGui::Text("1");
+
+    ImGui::Columns(1);
 
     ImGui::Checkbox("Show path", &pathfinding.is_path_visible);
     ImGui::Checkbox("Show connections", &pathfinding.is_connections_visible);

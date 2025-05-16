@@ -2,6 +2,13 @@
 #include "Common/Common.h"
 #include "Node.h"
 
+enum class PathMode 
+{
+    Regular,
+    Isometric,
+    NonDiscrete
+};
+
 enum class HeuristicType 
 { 
     Manhattan,
@@ -54,7 +61,7 @@ public:
     /// @param start The start node.
     /// @param end The end node.
     /// @return The heuristic value.
-    int heuristic(Node* start, Node* end, HeuristicType type = HeuristicType::Manhattan);
+    int heuristic(Node* start, Node* end, HeuristicType type = HeuristicType::Diagonal);
 
     /// @brief Resets the walkable state of all nodes.
     void resetWalkable();
@@ -67,12 +74,17 @@ public:
     /// @param position The position of the new node.
     void addNode(const sf::Vector2f& position);
 
+    /// @brief Connects two nodes, allowing pathfinding between them.
+    /// @param node1 The first node to connect.
+    /// @param node2 The second node to connect.
     void connect(Node* node1, Node* node2, float cost);
 
     /// @brief Connects two nodes, allowing pathfinding between them.
     /// @param node1 The first node to connect.
     /// @param node2 The second node to connect.
- /*   void connect(Node* node1, Node* node2);*/
+    void connectNeighbors(int x, int y, int mapWidth, int mapHeight, bool connectDiagonals = true);
+
+    Node* getNodeByGridPosition(sf::Vector2i pos);
 
     /// @brief Disconnects two nodes, preventing pathfinding between them.
     /// @param node1 The first node to disconnect.
@@ -90,6 +102,10 @@ public:
 
     Node* getRandomEndNode() const;
 
+    sf::Vector2i getMouseGridPosition();
+
+    void setPathMode(PathMode mode);
+
     /// @brief Map of nodes indexed by their position.
     std::unordered_map<sf::Vector2f, Node, Vector2fHash> nodes; 
 
@@ -104,4 +120,7 @@ public:
     bool        is_nodes_visible;
     bool        is_connections_visible;
     bool        is_beginend_visible;
+
+private:
+    PathMode path_mode;
 };

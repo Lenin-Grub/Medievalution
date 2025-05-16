@@ -5,52 +5,42 @@ Pathfinding::Pathfinding()
     : start_node(nullptr)
     , end_node(nullptr)
     , current_node(nullptr)
-    , tile_size(sf::Vector2f(32, 32))
+    , tile_size(sf::Vector2f(64, 32))
     , width(50)
     , height(50)
     , is_path_visible{true}
     , is_nodes_visible(false)
     , is_connections_visible(false)
     , is_beginend_visible(false)
+    , path_mode (PathMode::Isometric)
 {
 }
 
 void Pathfinding::initNodes(int width, int height)
 {
-    this->width = width;
+    this->width  = width;
     this->height = height;
     nodes.clear();
 
-    for (int y = 0; y < height; ++y) 
+    for (int y = 0; y < height; ++y)
     {
-        for (int x = 0; x < width; ++x) 
+        for (int x = 0; x < width; ++x)
         {
-            sf::Vector2f position(x * tile_size.x, y * tile_size.y);
+            sf::Vector2f position;
+
+            if (path_mode == PathMode::Isometric)
+            {
+                float isoX = (x - y) * tile_size.x / 2;
+                float isoY = (x + y) * tile_size.y / 2;
+                position = { isoX, isoY };
+            }
+            else
+            {
+                position = { x * tile_size.x, y * tile_size.y };
+            }
+
             addNode(position);
-
-            // Direct connections (cost = 1)
-            if (x > 0) 
-            {
-                Node* left = getNode(sf::Vector2f((x - 1) * tile_size.x, y * tile_size.y));
-                connect(getNode(position), left, 1);
-            }
-            if (y > 0) 
-            {
-                Node* up = getNode(sf::Vector2f(x * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), up , 1);
-            }
-
-            // Diagonal connections (cost = sqrt(2))
-            if (x > 0 && y > 0) 
-            {
-                Node* leftUp = getNode(sf::Vector2f((x - 1) * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), leftUp, std::sqrt(2.0f));
-            }
-            if (x < width - 1 && y > 0) 
-            {
-                Node* rightUp = getNode(sf::Vector2f((x + 1) * tile_size.x, (y - 1) * tile_size.y));
-                connect(getNode(position), rightUp, std::sqrt(2.0f));
-            }
+            connectNeighbors(x, y, width, height, true);
         }
     }
 }
@@ -119,8 +109,8 @@ void Pathfinding::draw(sf::RenderWindow& window)
         {
             line[0].position = p->position + sf::Vector2f(16, 16);
             line[1].position = p->parent->position + sf::Vector2f(16, 16);
-            line[0].color = sf::Color::Blue;
-            line[1].color = sf::Color::Blue;
+            line[0].color    = sf::Color::Blue;
+            line[1].color    = sf::Color::Blue;
 
             window.draw(line, 2, sf::Lines);
             p = p->parent;
@@ -321,13 +311,29 @@ std::vector<Node*> Pathfinding::path() const
 
 Node* Pathfinding::getNodeByMousePosition(const sf::Vector2f& mousePosition)
 {
-    int x = static_cast<int>(mousePosition.x / tile_size.x);
-    int y = static_cast<int>(mousePosition.y / tile_size.y);
-
-    if (x >= 0 && x < width && y >= 0 && y < height)
+    if (path_mode == PathMode::Isometric)
     {
-        sf::Vector2f nodePosition(x * tile_size.x, y * tile_size.y);
-        return getNode(nodePosition);
+        sf::Vector2i gridPos = getMouseGridPosition();
+
+        if (gridPos.x >= 0 && gridPos.y >= 0 && gridPos.x < width && gridPos.y < height)
+        {
+            float screenX = (gridPos.x - gridPos.y) * (tile_size.x / 2);
+            float screenY = (gridPos.x + gridPos.y) * (tile_size.y / 2);
+
+            sf::Vector2f nodePosition(screenX, screenY);          
+            return getNode(nodePosition);
+        }
+    }
+    else if (path_mode == PathMode::Regular)
+    {
+        int x = static_cast<int>(mousePosition.x / tile_size.x);
+        int y = static_cast<int>(mousePosition.y / tile_size.y);
+
+        if (x >= 0 && x < width && y >= 0 && y < height)
+        {
+            sf::Vector2f nodePosition(x * tile_size.x, y * tile_size.y);
+            return getNode(nodePosition);
+        }
     }
 
     return nullptr;
@@ -344,4 +350,97 @@ Node* Pathfinding::getRandomEndNode() const
 
     // Return a random node from the vector
     return nodeVector[std::rand() % nodeVector.size()];
+}
+
+sf::Vector2i Pathfinding::getMouseGridPosition()
+{
+    const float tileW = 64, tileH = 32;
+    const float halfW = tileW / 2, halfH = tileH / 2;
+
+    float mx = common::mouse_pos_view.x; /* + layer_index        */
+    float my = common::mouse_pos_view.y; /* + halfH * layer_index*/
+
+    int tileX = (my / halfH + mx / halfW) / 2;
+    int tileY = (my / halfH - mx / halfW) / 2;
+
+    float screenX = (tileX - tileY) * halfW;
+    float screenY = (tileX + tileY) * halfH;
+
+    float relX = common::mouse_pos_view.x - screenX;
+    float relY = common::mouse_pos_view.y - screenY;
+
+    return common::mouse_pos_grid = { tileX, tileY };
+}
+
+void Pathfinding::setPathMode(PathMode mode)
+{
+    path_mode = mode;
+}
+
+void Pathfinding::connectNeighbors(int x, int y, int map_width, int map_height, bool connect_diagonals)
+{
+    Node* current = getNodeByGridPosition(sf::Vector2i( x, y ));
+
+    if (!current) return;
+
+    const int dx[] = { -1, 0, 1, 0 }; // left, up, right, down
+    const int dy[] = { 0, -1, 0, 1 };
+
+    for (int i = 0; i < 4; ++i)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+
+        if (nx >= 0 && ny >= 0 && nx < map_width && ny < map_height)
+        {
+            Node* neighbor = getNodeByGridPosition(sf::Vector2i( nx, ny ));
+            if (neighbor)
+                connect(current, neighbor, 1.0f);
+        }
+    }
+
+    if (connect_diagonals)
+    {
+        const int ddx[] = { -1, 1, -1, 1 };
+        const int ddy[] = { -1, -1, 1, 1 };
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int nx = x + ddx[i];
+            int ny = y + ddy[i];
+
+            if (nx >= 0 && ny >= 0 && nx < map_width && ny < map_height)
+            {
+                Node* diagNeighbor = getNodeByGridPosition(sf::Vector2i( nx, ny ));
+                if (diagNeighbor)
+                    connect(current, diagNeighbor, std::sqrt(2.0f));
+            }
+        }
+    }
+}
+
+Node* Pathfinding::getNodeByGridPosition(sf::Vector2i pos)
+{
+    for (auto& pair : nodes)
+    {
+        sf::Vector2i gridPos;
+
+        if (path_mode == PathMode::Isometric)
+        {
+            float isoX = pair.first.x;
+            float isoY = pair.first.y;
+            gridPos.x = (isoX / (tile_size.x / 2) + isoY / (tile_size.y / 2)) / 2;
+            gridPos.y = (isoY / (tile_size.y / 2) - isoX / (tile_size.x / 2)) / 2;
+        }
+        else
+        {
+            gridPos.x = static_cast<int>(pair.first.x / tile_size.x);
+            gridPos.y = static_cast<int>(pair.first.y / tile_size.y);
+        }
+
+        if (gridPos == pos)
+            return &pair.second;
+    }
+
+    return nullptr;
 }

@@ -126,7 +126,6 @@ const std::string& Layer::getTextureName()
 
 sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const
 {
-    // Смещаем точку клика чуть внутрь тайла для удобства
     float offset_x = tile_size / 2.0f;
     float offset_y = tile_size / 8.0f;
 
@@ -136,7 +135,6 @@ sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const
     float mx = mouse_pos.x - offset_x + layer_offset_x;
     float my = mouse_pos.y - offset_y + layer_offset_y;
 
-    // Вычисляем изометрические координаты
     float x_f = ((my / 16.0f) + (mx / (tile_size / 2))) / 2.0f;
     float y_f = ((my / 16.0f) - (mx / (tile_size / 2))) / 2.0f;
 
