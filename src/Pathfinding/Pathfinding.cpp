@@ -14,6 +14,8 @@ Pathfinding::Pathfinding()
     , is_beginend_visible(false)
     , path_mode (PathMode::Isometric)
 {
+    //to do remove it here only for debuging
+    font = ResourceLoader::instance().getFont("OpenSans-Semibold.ttf");
 }
 
 void Pathfinding::initNodes(int width, int height)
@@ -81,15 +83,11 @@ void Pathfinding::draw(sf::RenderWindow& window)
             if (is_beginend_visible)
             {
                 if (&node == start_node)
-                    rect.setFillColor(sf::Color::Green);
-                else if (&node == end_node)
-                    rect.setFillColor(sf::Color::Red);
-                else if (is_nodes_visible && !node.walkable)
-                    rect.setFillColor(sf::Color::Red);
+                    drawNodeCost(window, font);
                 else
                     continue;
 
-                window.draw(rect);
+                //window.draw(rect);
             }
             else if (is_nodes_visible && !node.walkable)
             {
@@ -120,17 +118,28 @@ void Pathfinding::draw(sf::RenderWindow& window)
 }
 
 
-void Pathfinding::handleInput() 
+void Pathfinding::handleInput()
 {
     Node* node = getNodeByMousePosition(common::mouse_pos_view);
-
-    if (node) 
+    if (node)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             node->walkable = false;
 
         if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
             node->walkable = true;
+
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+        {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                node->terrainCost = std::min(10.0f, node->terrainCost + 0.5f);
+            }
+            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            {
+                node->terrainCost = std::max(0.0f, node->terrainCost - 0.5f);
+            }
+        }
 
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
             resetWalkable();
@@ -172,7 +181,11 @@ void Pathfinding::findPath(Node* start, Node* end)
         {
             if (!neighbor->walkable || closedSet.count(neighbor)) continue;
 
-            float edgeCost       = current->edge_costs[neighbor];
+            sf::Vector2f delta = neighbor->position - current->position;
+            float baseCost = std::sqrt(delta.x * delta.x + delta.y * delta.y); // длина шага
+            float terrainFactor = (current->terrainCost + neighbor->terrainCost) / 2.0f;
+            float edgeCost = baseCost * terrainFactor;
+
             float tentativeGCost = current->gCost + edgeCost;
 
             if (tentativeGCost < neighbor->gCost) 
@@ -258,9 +271,9 @@ void Pathfinding::addNode(const sf::Vector2f& position)
     nodes[position] = node;
 }
 
-void Pathfinding::connect(Node* node1, Node* node2, float cost = 1.0f)
+void Pathfinding::connect(Node* node1, Node* node2, float cost)
 {
-    if (node1 && node2 && node1 != node2) 
+    if (node1 && node2 && node1 != node2)
     {
         node1->neighbors.push_back(node2);
         node1->edge_costs[node2] = cost;
@@ -443,4 +456,41 @@ Node* Pathfinding::getNodeByGridPosition(sf::Vector2i pos)
     }
 
     return nullptr;
+}
+
+//to do remove it here only for debuging
+
+sf::Color getCostColor(float cost, float maxCost = 5.0f)
+{
+    float intensity = std::min(1.0f, cost / maxCost);
+    int r = static_cast<int>(255 * intensity);
+    int g = static_cast<int>(255 * (1 - intensity));
+    return sf::Color(r, g, 0);
+}
+
+    //to do remove it here only for debuging
+void Pathfinding::drawNodeCost(sf::RenderWindow& window, sf::Font& font)
+{
+    sf::Text text;
+    text.setFont(font);
+    text.setCharacterSize(14);
+    text.setFillColor(sf::Color::White);
+
+    for (const auto& pair : nodes)
+    {
+        const Node& node = pair.second;
+
+        if (!node.walkable)
+            continue;
+        std::stringstream ss;
+        ss << std::fixed << std::setprecision(1) << node.terrainCost;
+        text.setString(ss.str());
+
+        text.setFillColor(getCostColor(node.terrainCost));
+
+        sf::FloatRect bounds = text.getLocalBounds();
+        text.setOrigin(bounds.width / 2, bounds.height / 2);
+        text.setPosition(node.position.x, node.position.y + tile_size.y / 4); // чуть ниже центра ромба
+        window.draw(text);
+    }
 }

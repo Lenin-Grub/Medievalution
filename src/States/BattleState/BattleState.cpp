@@ -462,13 +462,13 @@ void BattleState::renderMetrics()
     ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Red);
     ImGui::Button("X##"); ImGui::SameLine();
     ImGui::PopStyleColor();
-    ImGui::Text("%i", gridPos.x); // Выводим x
+    ImGui::Text("%i", gridPos.x);
     ImGui::NextColumn();
 
     ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(40, 159, 49));
     ImGui::Button("Y##"); ImGui::SameLine();
     ImGui::PopStyleColor();
-    ImGui::Text("%i", gridPos.y); // Выводим y
+    ImGui::Text("%i", gridPos.y);
     ImGui::NextColumn();
 
     ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(23, 68, 210));
@@ -481,7 +481,7 @@ void BattleState::renderMetrics()
     ImGui::Checkbox("Show path", &pathfinding.is_path_visible);
     ImGui::Checkbox("Show connections", &pathfinding.is_connections_visible);
     ImGui::Checkbox("Show nodes", &pathfinding.is_nodes_visible);
-    ImGui::Checkbox("Show begin & end", &pathfinding.is_beginend_visible);
+    ImGui::Checkbox("Show cost", &pathfinding.is_beginend_visible);
 
     static char filePath[256] = "map_save.json";
     ImGui::InputText("File Path", filePath, IM_ARRAYSIZE(filePath));

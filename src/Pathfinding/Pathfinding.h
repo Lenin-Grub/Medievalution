@@ -86,6 +86,8 @@ public:
 
     Node* getNodeByGridPosition(sf::Vector2i pos);
 
+    void drawNodeCost(sf::RenderWindow& window, sf::Font& font);
+
     /// @brief Disconnects two nodes, preventing pathfinding between them.
     /// @param node1 The first node to disconnect.
     /// @param node2 The second node to disconnect.
@@ -123,4 +125,5 @@ public:
 
 private:
     PathMode path_mode;
+    sf::Font font;
 };
