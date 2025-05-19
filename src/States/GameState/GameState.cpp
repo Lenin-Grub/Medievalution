@@ -16,6 +16,7 @@ GameState::GameState(StateData& data, StateMachine& machine, sf::RenderWindow& w
 void GameState::init()
 {
     data.camera.setDefaulatView();
+    data.camera.reset();
     world_map.init();
     LOG_INFO("State Game\t Init");
     texture = ResourceLoader::instance().getTexture("Spearman.png");

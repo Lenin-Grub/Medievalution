@@ -34,6 +34,8 @@ enum class Icon
     PAUSE           = 0xe965,
     UPDATE          = 0xe970,
     BEGIN           = 0xe972,
+    UNDO            = 0xe973,
+    REDO            = 0xe974,
     PREV            = 0xe97f,
     SAVE            = 0xe976,
     SEARCH          = 0xe978,

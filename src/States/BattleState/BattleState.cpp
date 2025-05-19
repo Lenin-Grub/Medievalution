@@ -229,6 +229,25 @@ void BattleState::renderTools()
 
         // Fill
         renderToolButton(Icon::FILL, "Fill", ToolState::Fill, GizmoMode::None);
+        ImGui::SameLine(0.0f, 1.0f);
+
+        // Space
+        ImGui::Dummy(ImVec2(50.0f, 0.0f));
+        ImGui::SameLine();
+
+        // Undo
+        renderToolButton(Icon::UNDO, "Undo", ToolState::Undo, GizmoMode::None);
+        ImGui::SameLine(0.0f, 1.0f);
+
+        //Redo
+        renderToolButton(Icon::REDO, "Redo", ToolState::Redo, GizmoMode::None);
+
+        //if (ImGui::Button((ICON::getStr(Icon::UNDO)).c_str()))
+        //    editor.undo();
+        //ImGui::SameLine(0.0f, 1.0f);
+
+        //if (ImGui::Button((ICON::getStr(Icon::REDO)).c_str()))
+        //    editor.redo();
 
         // Gizmo
         gizmos.drawImGui();
@@ -239,7 +258,7 @@ void BattleState::renderLayersSection()
 {
     if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::STACK_FILES)) + " Layers").c_str()))
     {
-        ImGui::Text("Current layer: %d", editor.getCurrentLayer());
+        ImGui::Text("Current layer: %d", editor.getCurrentLayerID());
 
         renderTilesetSelector();
         renderLayerControls();
@@ -317,9 +336,9 @@ void BattleState::renderLayerControls()
             ImGui::PopID();
 
             ImGui::TableSetColumnIndex(1);
-            if (ImGui::Selectable(display_layer_name.c_str(), editor.getCurrentLayer() == i))
+            if (ImGui::Selectable(display_layer_name.c_str(), editor.getCurrentLayerID() == i))
             {
-                editor.setCurrentLayer(i);
+                editor.setCurrentLayerID(i);
             }
 
             ImGui::TableSetColumnIndex(2);
@@ -479,6 +498,8 @@ void BattleState::renderMetrics()
     ImGui::Text("1");
 
     ImGui::Columns(1);
+
+    ImGui::Text("Tile id: %i", editor.getLayers().at(0)->getTileId(common::mouse_pos_grid));
 
     ImGui::Checkbox("Show path", &pathfinding.is_path_visible);
     ImGui::Checkbox("Show connections", &pathfinding.is_connections_visible);

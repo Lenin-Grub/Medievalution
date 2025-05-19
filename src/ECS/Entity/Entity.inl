@@ -27,7 +27,7 @@ Component& EntityManager::getComponent(entt::entity entity)
 }
 
 template <typename Component>
-bool EntityManager::hasComponent(entt::entity entity)
+bool EntityManager::hasComponent(entt::entity entity) const
 {
     return registry.all_of<Component>(entity);
 }

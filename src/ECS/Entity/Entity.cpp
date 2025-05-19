@@ -37,3 +37,7 @@ const entt::registry& EntityManager::getRegistry()
     return registry;
 }
 
+bool EntityManager::hasEntity(entt::entity entity) const
+{
+    return registry.valid(entity);
+}

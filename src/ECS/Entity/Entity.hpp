@@ -60,6 +60,8 @@ public:
 
     const entt::registry& getRegistry();
 
+    bool hasEntity(entt::entity entity) const;
+
     void findEntityByName(const std::string& name);
 
     void findEntityByGroup(const std::string& group);
@@ -74,7 +76,7 @@ private:
     /// @param entity The entity to check.
     /// @return True if the entity has the component, false otherwise.
     template <typename Component>
-    bool hasComponent(entt::entity entity);
+    bool hasComponent(entt::entity entity) const;
 
 
 private:
