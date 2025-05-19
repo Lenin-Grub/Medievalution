@@ -12,7 +12,7 @@ Camera::Camera()
 {
 }
 
-void Camera::setDefaulatView()
+void Camera::setDefaulatView() noexcept
 {
     common::view.setSize(sf::Vector2f(WindowSettings::getInstance().settings.resolution.width,
         WindowSettings::getInstance().settings.resolution.height));
@@ -21,24 +21,24 @@ void Camera::setDefaulatView()
         WindowSettings::getInstance().settings.resolution.height / 2.f));
 }
 
-void Camera::update(const float& dtime)
+void Camera::update(const float& dtime) noexcept
 {
     move(dtime);
     focusOn();
 }
 
-void Camera::move(const float& dtime)
+void Camera::move(const float& dtime) noexcept
 {
     float zoom_factor    = common::view.getSize().x / WindowSettings::getInstance().settings.resolution.width;
     float adjusted_speed = WindowSettings::getInstance().settings.camera_speed * zoom_factor;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(   adjusted_speed * dtime, 0); stopFocus(); }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { common::view.move(0,-adjusted_speed * dtime   ); stopFocus(); }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { common::view.move(0, adjusted_speed * dtime   ); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(   adjusted_speed * dtime, 0); stopFocus(); }
 }
 
-void Camera::zoom() 
+void Camera::zoom() noexcept
 {
     if (!ImGui::GetIO().WantCaptureMouse)
     {
@@ -58,7 +58,7 @@ void Camera::zoom()
     }
 }
 
-void Camera::scroll()
+void Camera::scroll() noexcept
 {
     if (common::sfml_event.type == sf::Event::MouseButtonPressed && common::sfml_event.mouseButton.button == sf::Mouse::Middle) 
     {
@@ -84,7 +84,7 @@ void Camera::scroll()
     }
 }
 
-void Camera::focusOn()
+void Camera::focusOn() noexcept
 {
     sf::Vector2f current_сenter = common::view.getCenter();
     sf::Vector2f direction      = target_position - current_сenter;
@@ -112,28 +112,28 @@ void Camera::focusOn()
     }
 }
 
-bool Camera::enableFocus(const bool approve)
+bool Camera::enableFocus(const bool approve) noexcept
 {
     return is_moved_to_focus = approve;
 }
 
-void Camera::stopFocus()
+void Camera::stopFocus() noexcept
 {
     auto_focusing = false;
     enableFocus(false);
 }
 
-const bool Camera::isMoveToFocus() const
+const bool Camera::isMoveToFocus() const noexcept
 {
     return is_moved_to_focus;
 }
 
-sf::Vector2f Camera::setFocusOn(sf::Vector2f target)
+sf::Vector2f Camera::setFocusOn(sf::Vector2f target) noexcept
 {
     return target_position = target;
 }
 
-void Camera::reset()
+void Camera::reset() noexcept
 {
     auto_focusing     = false;
     is_moved_to_focus = false;
