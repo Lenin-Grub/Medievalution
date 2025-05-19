@@ -43,7 +43,7 @@ private:
     bool               is_loaded;
 
     Pathfinding        pathfinding;
-    Node* firstNode  = nullptr;
-    Node* secondNode = nullptr;
-
+    Node*              firstNode;
+    Node*              secondNode;
+    sf::Vector2f       position;
 };

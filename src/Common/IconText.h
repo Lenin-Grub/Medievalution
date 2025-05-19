@@ -27,6 +27,7 @@ enum class Icon
     LOG_IN          = 0xe950,
     LOG_OUT         = 0xe951,
     MAP             = 0xe953,
+    LOCATION        = 0xe954,
     SELECT          = 0xe955,
     UNWRAP          = 0xe956,
     MONITOR         = 0xe95f,

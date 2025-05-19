@@ -40,10 +40,32 @@ public:
     /// based on user input such as mouse wheel scrolling.
     void scroll();
 
+    void focusOn();
+
+    bool enableFocus(const bool enable);
+
+    void stopFocus();
+
+    const bool isMoveToFocus() const;
+
+    sf::Vector2f setFocusOn(sf::Vector2f target);
+
+    void reset();
+
+
+
 private:
     int          max_zoom;           ///< The maximum zoom level for the camera.
     int          min_zoom;           ///< The minimum zoom level for the camera.
+    
     float        pan_threshold;      ///< The threshold for initiating a pan action.
+    float        arrival_threshold;
+    
     bool         is_panning;         ///< Indicates whether the camera is currently panning.
+    bool         is_moved_to_focus;
+    bool         auto_focusing;
+    
     sf::Vector2f prev_mouse_pos;     ///< Stores the previous mouse position for panning calculations.
+    sf::Vector2f target_position;
+    sf::Vector2f target_focus;
 };

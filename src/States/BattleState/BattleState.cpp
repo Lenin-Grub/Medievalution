@@ -16,6 +16,8 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
 void BattleState::init()
 {
     data.camera.setDefaulatView();
+    data.camera.reset();
+
     editor.init();
 
     texture = ResourceLoader::instance().getTexture("Spearman.png");
