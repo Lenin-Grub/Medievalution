@@ -2,7 +2,7 @@
 #include "Editor.hpp"
 
 Editor::Editor()
-    :current_layer(0)
+    :current_layer_id(0)
 {
 }
 
@@ -20,33 +20,31 @@ bool Editor::init()
     }
 }
 
-
-void Editor::addTile(const int& id, sf::Vector2f pos)
+void Editor::addTile(const int& id, sf::Vector2f pos) noexcept
 {
-    if (current_layer >= 0 && current_layer < layers.size())
-        layers.at(current_layer)->addTile(id, pos);
+    if (current_layer_id >= 0 && current_layer_id < layers.size())
+        layers.at(current_layer_id)->addTile(id, pos);
 }
 
-void Editor::removeTile(sf::Vector2f pos)
+void Editor::removeTile(sf::Vector2f pos) noexcept
 {
-    if (current_layer >= 0 && current_layer < layers.size())
-        layers.at(current_layer)->addTile(0, pos);
+    if (current_layer_id >= 0 && current_layer_id < layers.size())
+        layers.at(current_layer_id)->addTile(static_cast<int>(TileId::Empty), pos);
 }
 
-void Editor::addLayer(const std::string& name)
+void Editor::addLayer(const std::string& name) noexcept
 {
-   //current_layer++;
-   layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name), ++current_layer));
+   layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name), ++current_layer_id));
    layers.back()->init();
 }
 
-void Editor::removeLayer()
+void Editor::removeLayer() noexcept
 {
     if (layers.size() > 1)
     {
-        layers.erase(layers.begin() + current_layer);
-        if (current_layer > 0)
-            current_layer--;
+        layers.erase(layers.begin() + current_layer_id);
+        if (current_layer_id > 0)
+            current_layer_id--;
     }
     else
     {
@@ -54,43 +52,43 @@ void Editor::removeLayer()
     }
 }
 
-int Editor::switchTo(const int& id)
+int Editor::switchTo(const int& id) noexcept
 {
-    return current_layer = id;
+    return current_layer_id = id;
 }
 
-sf::Texture& Editor::getTilesetTexture()
+sf::Texture& Editor::getTilesetTexture() noexcept
 {
-    return layers.at(current_layer)->tileset_texture;
+    return layers.at(current_layer_id)->tileset_texture;
 }
 
-const int Editor::getTileSize() const
+const int Editor::getTileSize() const noexcept
 {
-    return layers.at(current_layer)->tile_size;
+    return layers.at(current_layer_id)->tile_size;
 }
 
-const int Editor::getSheetWidth() const
+const int Editor::getSheetWidth() const noexcept
 {
-    return layers.at(current_layer)->tileset_cols;
+    return layers.at(current_layer_id)->tileset_cols;
 }
 
-const int Editor::getSheetHeight() const
+const int Editor::getSheetHeight() const noexcept
 {
-    return layers.at(current_layer)->tileset_rows;
+    return layers.at(current_layer_id)->tileset_rows;
 }
 
-unsigned int Editor::getCurrentLayer() const 
+unsigned int Editor::getCurrentLayerID() const noexcept
 {
-    return current_layer;
+    return current_layer_id;
 }
 
-void Editor::setCurrentLayer(size_t index) 
+void Editor::setCurrentLayerID(size_t index) noexcept
 {
     if (index < layers.size()) 
-        current_layer = index;
+        current_layer_id = index;
 }
 
-const std::vector<std::unique_ptr<Layer>>& Editor::getLayers() const 
+const std::vector<std::unique_ptr<Layer>>& Editor::getLayers() const noexcept
 {
     return layers;
 }
@@ -110,12 +108,11 @@ void Editor::draw(sf::RenderTarget& target, sf::RenderStates states) const
     }
 }
 
-
 void Editor::saveMap(const std::string& file_path) const
 {
     nlohmann::json json_map;
 
-    json_map["current_layer"] = current_layer;
+    json_map["current_layer"] = current_layer_id;
 
     for (const auto& layer : layers)
     {
@@ -167,10 +164,10 @@ void Editor::loadMap(const std::string& file_path)
 
     layers.clear();
 
-    current_layer = json_map.value("current_layer", 0);
+    current_layer_id = json_map.value("current_layer", 0);
 
     const int default_tile_size = 64;
-    const int default_map_size = 50;
+    const int default_map_size  = 50;
 
     for (const auto& json_layer : json_map["layers"])
     {
@@ -198,45 +195,7 @@ void Editor::loadMap(const std::string& file_path)
 
         const auto& tile_ids_array = json_layer["tile_ids"];
         new_layer->tile_ids = tile_ids_array.get<std::vector<int>>();
-
-        // Восстанови вершины на основе tile_ids
-        for (int y = 0; y < layer_size.y; ++y)
-        {
-            for (int x = 0; x < layer_size.x; ++x)
-            {
-                int index = x + y * layer_size.x;
-                int tileId = new_layer->tile_ids[index];
-
-                // Используем те же формулы, что и в init()
-                float base_x = x * (tile_size / 2) - y * (tile_size / 2); // tile_size/2 == 32
-                float base_y = (x + y) * 16.0f;
-
-                sf::Vertex* quad = &new_layer->tile_map[index * 4];
-
-                quad[0].position = sf::Vector2f(base_x, base_y);
-                quad[1].position = sf::Vector2f(base_x + tile_size, base_y);
-                quad[2].position = sf::Vector2f(base_x + tile_size, base_y + tile_size);
-                quad[3].position = sf::Vector2f(base_x, base_y + tile_size);
-
-                if (tileId == -1)
-                {
-                    quad[0].texCoords = sf::Vector2f(0, 0);
-                    quad[1].texCoords = sf::Vector2f(0, 0);
-                    quad[2].texCoords = sf::Vector2f(0, 0);
-                    quad[3].texCoords = sf::Vector2f(0, 0);
-                }
-                else
-                {
-                    int tu = tileId % new_layer->tileset_cols;
-                    int tv = tileId / new_layer->tileset_cols;
-
-                    quad[0].texCoords = sf::Vector2f(tu * tile_size, tv * tile_size);
-                    quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size, tv * tile_size);
-                    quad[2].texCoords = sf::Vector2f((tu + 1) * tile_size, (tv + 1) * tile_size);
-                    quad[3].texCoords = sf::Vector2f(tu * tile_size, (tv + 1) * tile_size);
-                }
-            }
-        }
+        new_layer->updateVertices();
 
         layers.push_back(std::move(new_layer));
     }
@@ -244,10 +203,16 @@ void Editor::loadMap(const std::string& file_path)
     LOG_INFO("Map loaded successfully from {0}", file_path);
 }
 
-
-sf::Vector2i Editor::getMouseGridPosition()
+sf::Vector2i Editor::getMouseGridPosition() noexcept
 {
-    const float tileW = 64, tileH = 32;
+    if (layers.empty())
+    {
+        LOG_ERROR("Can`t get mouse position, because layer is empty");
+        return common::mouse_pos_grid = { -1, -1 };
+    }
+
+    const float tileW = layers.at(0)->layer_size.x;
+    const float tileH = layers.at(0)->layer_size.y;
     const float halfW = tileW / 2, halfH = tileH / 2;
 
     float mx = common::mouse_pos_view.x; /*+ common::layer_index*/
