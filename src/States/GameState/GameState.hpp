@@ -46,4 +46,9 @@ private:
     Node*              firstNode;
     Node*              secondNode;
     sf::Vector2f       position;
+
+
+   std::unordered_map<const Node*, std::string> node_names;
+   std::unordered_map<const Node*, int>         nodeIDs;
+   char                                         search_buffer[128] = "";
 };

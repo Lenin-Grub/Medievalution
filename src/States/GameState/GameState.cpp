@@ -223,13 +223,9 @@ void GameState::renderHelp()
 void GameState::renderNodesTree()
 {
     ImGui::Begin("Nodes Tree");
-
-    static std::unordered_map<const Node*, std::string> node_names;
-    static std::unordered_map<const Node*, int>         nodeIDs;
-    static char                                         search_buffer[128] = "";
-
     ImGui::InputText((ICON::getStr(Icon::SEARCH) + " Search").c_str(), search_buffer, IM_ARRAYSIZE(search_buffer));
     ImGui::SameLine();
+
     if (ImGui::Button("Reset"))
         memset(search_buffer, 0, sizeof(search_buffer));
 
@@ -238,27 +234,25 @@ void GameState::renderNodesTree()
 
     if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::DOT_MENU)) + " Provinces").c_str()))
     {
-        // Фильтрация нод по запросу
         for (const auto& pair : pathfinding.nodes)
         {
             const Node& node = pair.second;
 
             if (node_names.find(&node) == node_names.end())
             {
-                sf::Color node_color = world_map.getColor(pair.second.position);
+                sf::Color   node_color    = world_map.getColor(pair.second.position);
                 std::string province_name = world_map.getProvinceName(world_map.getColor(pair.second.position), pair.second.position);
-                node_names[&node] = province_name;
-                nodeIDs[&node] = world_map.getProvinceID(world_map.getColor(pair.second.position), pair.second.position);
+                node_names.at(& node)     = province_name;
+                nodeIDs.at(& node)        = world_map.getProvinceID(world_map.getColor(pair.second.position), pair.second.position);
             }
 
             std::string_view nodeName = node_names[&node];
-            int              nodeID = nodeIDs[&node];
+            int nodeID                = nodeIDs[&node];
 
             if (nodeName.find(search_query) != std::string_view::npos || std::to_string(nodeID).find(search_query) != std::string::npos)
                 filtered_nodes.push_back(&node);
         }
 
-        // Используем ImGuiListClipper для оптимизации отрисовки
         ImGuiListClipper clipper;
         clipper.Begin(static_cast<int>(filtered_nodes.size()));
 
@@ -282,6 +276,7 @@ void GameState::renderNodesTree()
                     data.camera.setFocusOn(position);
                     data.camera.enableFocus(true);
                 }
+
                 ImGui::PopStyleColor(3);
                 ImGui::PopID();
 
@@ -291,10 +286,10 @@ void GameState::renderNodesTree()
                     {
                         if (node_names.find(neighbor) == node_names.end())
                         {
-                            sf::Color neighbor_color = world_map.getColor(neighbor->position);
+                            sf::Color neighbor_color           = world_map.getColor(neighbor->position);
                             std::string neighbor_province_name = world_map.getProvinceName(world_map.getColor(neighbor->position), neighbor->position);
-                            node_names[neighbor] = neighbor_province_name;
-                            nodeIDs[neighbor] = world_map.getProvinceID(world_map.getColor(neighbor->position), neighbor->position);
+                            node_names[neighbor]               = neighbor_province_name;
+                            nodeIDs[neighbor]                  = world_map.getProvinceID(world_map.getColor(neighbor->position), neighbor->position);
                         }
 
                         ImGui::BulletText("Neighbor: %s \t (ID: %d)", node_names[neighbor].c_str(), nodeIDs[neighbor]);
