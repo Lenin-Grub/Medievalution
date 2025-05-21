@@ -1,5 +1,6 @@
 #pragma once
 #define NOMINMAX
+#define ENTT_CONFIG_RUNTIMETYPEINFO
 
 #include <stdlib.h>
 #include <cassert>

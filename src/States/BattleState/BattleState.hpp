@@ -74,7 +74,7 @@ private:
     Editor            editor;
     Animator          animator;
     Pathfinding       pathfinding;
-    EntityManager     entity_manager;
+    Registry          registry;
 
     sf::Sprite        sprite;
     sf::Texture       texture;

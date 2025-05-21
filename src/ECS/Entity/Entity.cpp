@@ -5,39 +5,72 @@
 #include "../Systems/AllSystems.hpp"
 
 
-entt::entity EntityManager::createEntity(const std::string& name, const std::string& group)
-{
-    auto   entity = registry.create();
-    return entity;
-}
+#pragma region Registry
+    Registry::Registry()
+        :regisry(nullptr)
+    {
+        regisry = std::make_unique<entt::registry>();
+    }
 
-void EntityManager::destroyEntity(entt::entity entity)
-{
-    registry.destroy(entity);
-}
+    entt::registry& Registry::getRegistry()
+    {
+        if (!regisry)
+            LOG_ERROR("Registry is not initialized");
 
-void EntityManager::update(float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window)
+        return *regisry;
+    }
+
+    entt::entity Registry::createEntity()
+    {
+        return regisry->create();
+    }
+
+    void Registry::update(entt::registry& registry, float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window)
 {
     SpriteUpdateSystem:: update(registry, animator);
     HandleInputSystem::  update(registry, pathfinding);
     PathfindingSystem::  update(registry, pathfinding, delta_time);
     MovementSystem::     update(registry, delta_time);
     ControlSystem::      update(registry);
-    SelectSystem::       update(registry);
-    
+    SelectSystem::       update(registry); 
 }
 
-void EntityManager::draw(sf::RenderWindow& window)
-{
-    RenderSystem::render(registry, window);    
-}
+    void Registry::draw(entt::registry& registry, sf::RenderWindow& window)
+    {
+        RenderSystem::render(registry, window);
+    }
 
-const entt::registry& EntityManager::getRegistry()
-{
-    return registry;
-}
+#pragma endregion
 
-bool EntityManager::hasEntity(entt::entity entity) const
-{
-    return registry.valid(entity);
-}
+
+
+#pragma region Entity
+    Entity::Entity(Registry& registry, const std::string& name, const std::string& group)
+        : registry(registry)
+        , name(name)
+        , group(group)
+    {
+        entity = registry.createEntity();
+        addComponent<Components::Identification>(Components::Identification
+            {
+                .name = name,
+                .group = group,
+                .id = static_cast<int32_t>(entity)
+            });
+    }
+
+    std::uint32_t Entity::destroy()
+    {
+        return registry.getRegistry().destroy(entity);
+    }
+
+    entt::entity& Entity::getEntity()
+    {
+        return entity;
+    }
+
+    entt::registry& Entity::getRegistry()
+    {
+        return registry.getRegistry();
+    }
+#pragma endregion

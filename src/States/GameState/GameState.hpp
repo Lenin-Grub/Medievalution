@@ -38,7 +38,6 @@ private:
     std::stringstream  cords;
     
     WorldMap           world_map;
-    EntityManager      entity_manager;
     
     bool               is_loaded;
 

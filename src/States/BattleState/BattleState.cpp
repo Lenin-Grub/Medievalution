@@ -36,42 +36,73 @@ void BattleState::init()
     pathfinding.initNodes(50, 50);
 
     ///-------------
-    entity = entity_manager.createEntity("Spearman", "Units");
-    entity_manager.addComponent<Components::Sprite>(entity, sprite);
-    entity_manager.addComponent<Components::Position>(entity, sf::Vector2f(0.0f, 0.0f));
-    entity_manager.addComponent<Components::Velocity>(entity, sf::Vector2f(0.0f, 0.0f), 0.2f);
-    entity_manager.addComponent<Components::Pathfinding>(entity);
-    entity_manager.addComponent<Components::Selectable>(entity);
-    entity_manager.addComponent<Components::Animation>(entity);
 
-    auto& pos = entity_manager.getComponent<Components::Sprite>(entity).sprite;
-    pos.setOrigin(8, 32);
+    Entity player(registry, "Spearman 1", "Characters");
 
-    auto& animation = entity_manager.getComponent<Components::Animation>(entity);
-    animation.animations["Idle"] = { sf::IntRect(0, 0, 64, 64), sf::IntRect(64, 0, 64, 64) };
-    animation.animations["Run"] = { sf::IntRect(0, 64, 64, 64), sf::IntRect(64, 64, 64, 64) };
-    animation.animations["Dead"] = { sf::IntRect(0, 128, 64, 64), sf::IntRect(64, 128, 64, 64) };
+    player.addComponent<Components::Position>(Components::Position
+        {
+            .position = sf::Vector2f(0, 0),
+        });
+    player.addComponent<Components::Velocity>(Components::Velocity
+        {
+            .velocity = sf::Vector2f(0.0f, 0.0f),
+            .speed = 0.2f
+        });
+    player.addComponent<Components::Sprite>(Components::Sprite
+        {
+            .sprite = this->sprite,
+        });
 
-    auto entity2 = entity_manager.createEntity("Archer", "Units");
-    entity_manager.addComponent<Components::Sprite>(entity2, sprite);
-    entity_manager.addComponent<Components::Position>(entity2, sf::Vector2f(0, 64));
-    entity_manager.addComponent<Components::Velocity>(entity2, sf::Vector2f(0.0f, 0.0f), 0.2f);
-    entity_manager.addComponent<Components::Pathfinding>(entity2);
-    entity_manager.addComponent<Components::Selectable>(entity2);
+    auto& spriteComponent = player.getComponent<Components::Sprite>();
+    spriteComponent.sprite.setOrigin(8.0f, 32.0f);
 
-    auto& pos2 = entity_manager.getComponent<Components::Sprite>(entity2).sprite;
-    pos2.setOrigin(8, 32);
+    player.addComponent<Components::Pathfinding>(Components::Pathfinding{});
+    player.addComponent<Components::Selectable>(Components::Selectable{});
 
-    auto entity3 = entity_manager.createEntity("Archer", "Units");
-    entity_manager.addComponent<Components::Sprite>(entity3, sprite);
-    entity_manager.addComponent<Components::Position>(entity3, sf::Vector2f(64, 64));
-    entity_manager.addComponent<Components::Velocity>(entity3, sf::Vector2f(0.0f, 0.0f), 0.2f);
-    entity_manager.addComponent<Components::Pathfinding>(entity3);
-    entity_manager.addComponent<Components::Selectable>(entity3);
 
-    auto& pos3 = entity_manager.getComponent<Components::Sprite>(entity3).sprite;
-    pos3.setOrigin(8, 32);
+    Entity player2(registry, "Spearman 2", "Characters");
 
+    player2.addComponent<Components::Position>(Components::Position
+        {
+            .position = sf::Vector2f(64, 64),
+        });
+    player2.addComponent<Components::Velocity>(Components::Velocity
+        {
+            .velocity = sf::Vector2f(0.0f, 0.0f),
+            .speed = 0.2f
+        });
+    player2.addComponent<Components::Sprite>(Components::Sprite
+        {
+            .sprite = this->sprite,
+        });
+
+    auto& spriteComponent2 = player2.getComponent<Components::Sprite>();
+    spriteComponent2.sprite.setOrigin(8.0f, 32.0f);
+
+    player2.addComponent<Components::Pathfinding>(Components::Pathfinding{});
+    player2.addComponent<Components::Selectable>(Components::Selectable{});
+
+    Entity player3(registry, "Archer", "Characters");
+
+    player3.addComponent<Components::Position>(Components::Position
+        {
+            .position = sf::Vector2f(128, 64),
+        });
+    player3.addComponent<Components::Velocity>(Components::Velocity
+        {
+            .velocity = sf::Vector2f(0.0f, 0.0f),
+            .speed = 0.2f
+        });
+    player3.addComponent<Components::Sprite>(Components::Sprite
+        {
+            .sprite = this->sprite,
+        });
+
+    auto& spriteComponent3 = player3.getComponent<Components::Sprite>();
+    spriteComponent3.sprite.setOrigin(8.0f, 32.0f);
+
+    player3.addComponent<Components::Pathfinding>(Components::Pathfinding{});
+    player3.addComponent<Components::Selectable>(Components::Selectable{});
     ///-------------
 
     LOG_INFO("State Battle\t Init");
@@ -123,7 +154,8 @@ void BattleState::updateImGui()
 void BattleState::update(const float& dtime)
 {
     updateMousePositions();
-    entity_manager.update(dtime, animator, pathfinding, window);
+    //entity_manager.update(dtime, animator, pathfinding, window);
+    registry.update(registry.getRegistry(), dtime, animator, pathfinding, window);
     animator.update(0.1f);
     data.camera.update(dtime);
 }
@@ -134,7 +166,8 @@ void BattleState::draw(sf::RenderTarget* target)
 
     editor.draw(*target, sf::RenderStates::Default);
     pathfinding.draw(window);
-    entity_manager.draw(window);
+    //entity_manager.draw(window);
+    registry.draw(registry.getRegistry(), window);
     gizmos.draw();
 
     endView(target);
@@ -160,6 +193,7 @@ void BattleState::renderEditor()
 {
     ImGui::Begin((ICON::getStr(Icon::MAP) + " Editor").c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
+    //entity_manager.showGui();
     renderTools();
     renderLayersSection();
     renderTilesSection();

@@ -5,6 +5,13 @@
 namespace Components
 {
 
+    struct Identification
+    {
+        std::string   name  { "Game Object" };
+        std::string   group { "" };
+        std::int32_t  id    { -1 };
+    };
+
     struct Position
     {
         sf::Vector2f position { 0.0f, 0.0f };
@@ -14,7 +21,7 @@ namespace Components
     struct Velocity
     {
         sf::Vector2f velocity { 0.0f, 0.0f };
-        float        speed = 1.0f;
+        float        speed    { 1.0f };
     };
 
 
@@ -34,24 +41,11 @@ namespace Components
 
     struct Sprite
     {
-        sf::Sprite  sprite;
-        sf::IntRect int_rect;
-        sf::Texture texture;
-    };
-
-    struct Animation
-    {
-        std::map<std::string, std::vector<sf::IntRect>> animations;
-    };
-
-    struct Animator
-    {
-        std::string current_animation;
-        float       frame_time    = 0.1f;
-        float       current_time  = 0.0f;
-        int         current_frame = 0;
-        bool        is_playing    = false;
-        bool        is_looping    = true;
+        sf::Image          imgae;
+        sf::Texture        texture;
+        sf::Sprite         sprite;
+        sf::IntRect        int_rect;
+        sf::RectangleShape shape { sf::Vector2f(0.f, 0.f) };
     };
 
     struct Pathfinding 
