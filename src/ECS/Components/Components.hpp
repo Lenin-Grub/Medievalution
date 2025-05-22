@@ -60,4 +60,30 @@ namespace Components
     {
         bool is_selected = false;
     };
+
+    struct Animation
+    {
+        Animator animator;
+
+        explicit Animation(sf::Sprite& sprite)
+            : animator(sprite) 
+        {
+        }
+    };
+
+    enum class CharacterState 
+    {
+        NONE = 0,
+        Idle,
+        Move,
+        Attack,
+        Dead,
+        Shoot,
+        Hit,
+    };
+
+    struct State
+    {
+        CharacterState state = CharacterState::NONE;
+    };
 }

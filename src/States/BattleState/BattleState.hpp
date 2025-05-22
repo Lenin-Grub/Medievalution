@@ -56,18 +56,6 @@ private:
     // Metrics gui method
     void renderMetrics();
 
-    // Animator gui methods
-    void renderAnimator();
-
-    void renderSpriteSelector();
-    void renderAnimationControls();
-    void renderAnimationCombo();
-    void renderFrameControls();
-    void renderPlaybackButtons(int& current_frame, bool& is_payed);
-    void renderAddRemoveFrameButtons();
-    void renderFrameSelector();
-    void renderSpriteSheet();
-
 private:
     ToolState         tools;
     Gizmos            gizmos;
@@ -89,4 +77,6 @@ private:
     int selected_animation_item { -1 };
 
     bool is_brash;
+
+    sf::Sprite my_sprite;
 };

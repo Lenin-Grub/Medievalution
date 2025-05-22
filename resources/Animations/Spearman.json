@@ -1,222 +1,204 @@
 {
-    "animations": [
+  "texture": "Spearman.png",
+  "animations": {
+    "attack": {
+      "total_duration": 50.0,
+      "frames": [
         {
-            "frames": [
-                {
-                    "height": 64,
-                    "left": 0,
-                    "top": 192,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 64,
-                    "top": 192,
-                    "width": 64
-                }
-            ],
-            "name": "Hit"
+          "left": 192,
+          "top": 64,
+          "width": 64,
+          "height": 64
         },
         {
-            "frames": [
-                {
-                    "height": 64,
-                    "left": 0,
-                    "top": 256,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 64,
-                    "top": 256,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 128,
-                    "top": 256,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 192,
-                    "top": 256,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 256,
-                    "top": 256,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 320,
-                    "top": 256,
-                    "width": 64
-                }
-            ],
-            "name": "Dead"
+          "left": 256,
+          "top": 64,
+          "width": 64,
+          "height": 64
         },
         {
-            "frames": [
-                {
-                    "height": 64,
-                    "left": 0,
-                    "top": 0,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 64,
-                    "top": 0,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 128,
-                    "top": 0,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 192,
-                    "top": 0,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 256,
-                    "top": 0,
-                    "width": 64
-                }
-            ],
-            "name": "Stand"
+          "left": 320,
+          "top": 64,
+          "width": 64,
+          "height": 64
         },
         {
-            "frames": [
-                {
-                    "height": 64,
-                    "left": 0,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 64,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 128,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 192,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 256,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 320,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 384,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 448,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 512,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 576,
-                    "top": 64,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 640,
-                    "top": 64,
-                    "width": 64
-                }
-            ],
-            "name": "Attack"
+          "left": 384,
+          "top": 64,
+          "width": 64,
+          "height": 64
         },
         {
-            "frames": [
-                {
-                    "height": 64,
-                    "left": 0,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 64,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 128,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 192,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 256,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 320,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 384,
-                    "top": 128,
-                    "width": 64
-                },
-                {
-                    "height": 64,
-                    "left": 448,
-                    "top": 128,
-                    "width": 64
-                }
-            ],
-            "name": "Run"
+          "left": 448,
+          "top": 64,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 512,
+          "top": 64,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 576,
+          "top": 64,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 640,
+          "top": 64,
+          "width": 64,
+          "height": 64
         }
-    ],
-    "texture": "Spearman.png"
+      ]
+    },
+    "stand": {
+      "total_duration": 50.0,
+      "frames": [
+        {
+          "left": 0,
+          "top": 0,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 64,
+          "top": 0,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 128,
+          "top": 0,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 192,
+          "top": 0,
+          "width": 64,
+          "height": 64
+        },
+        {
+          "left": 256,
+          "top": 0,
+          "width": 64,
+          "height": 64
+        }
+      ]
+    },
+    "hit": {
+      "total_duration": 10.0,
+      "frames": [
+        {
+          "height": 64,
+          "left": 0,
+          "top": 192,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 64,
+          "top": 192,
+          "width": 64
+        }
+      ]
+    },
+    "dead": {
+      "total_duration": 50.0,
+      "frames": [
+        {
+          "height": 64,
+          "left": 0,
+          "top": 256,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 64,
+          "top": 256,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 128,
+          "top": 256,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 192,
+          "top": 256,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 256,
+          "top": 256,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 320,
+          "top": 256,
+          "width": 64
+        }
+      ]
+    },
+    "run": {
+      "total_duration": 50.0,
+      "frames": [
+        {
+          "height": 64,
+          "left": 0,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 64,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 128,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 192,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 256,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 320,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 384,
+          "top": 128,
+          "width": 64
+        },
+        {
+          "height": 64,
+          "left": 448,
+          "top": 128,
+          "width": 64
+        }
+      ]
+    }
+  }
 }

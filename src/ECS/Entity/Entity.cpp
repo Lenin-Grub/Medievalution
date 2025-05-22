@@ -26,14 +26,16 @@
     }
 
     void Registry::update(entt::registry& registry, float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window)
-{
-    SpriteUpdateSystem:: update(registry, animator);
-    HandleInputSystem::  update(registry, pathfinding);
-    PathfindingSystem::  update(registry, pathfinding, delta_time);
-    MovementSystem::     update(registry, delta_time);
-    ControlSystem::      update(registry);
-    SelectSystem::       update(registry); 
-}
+    {
+        SpriteSystem::      update(registry, animator);
+        HandleInputSystem:: update(registry, pathfinding);
+        PathfindingSystem:: update(registry, pathfinding, delta_time);
+        MovementSystem::    update(registry, delta_time);
+        ControlSystem::     update(registry);
+        SelectSystem::      update(registry);
+        AnimationSystem::   update(registry, delta_time);
+        StateSystem::       update(registry, delta_time);
+    }
 
     void Registry::draw(entt::registry& registry, sf::RenderWindow& window)
     {

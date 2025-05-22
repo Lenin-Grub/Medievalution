@@ -5,29 +5,44 @@
 void PathfindingSystem::update(entt::registry& registry, Pathfinding& global_pathfinding, float deltaTime)
 {
     auto view = registry.view<Components::Pathfinding, Components::Position, Components::Velocity>();
-    for (auto [entity, path_component, positionComponent, velocityComponent] : view.each())
+    for (auto entity : view)
     {
+        auto& path_component = registry.get<Components::Pathfinding>(entity);
+        auto& positionComponent = registry.get<Components::Position>(entity);
+        auto& velocityComponent = registry.get<Components::Velocity>(entity);
+
         if (path_component.path.empty() || path_component.current_node_index >= path_component.path.size())
+        {
+            // Проверяем, есть ли компонент State
+            if (registry.try_get<Components::State>(entity))
+            {
+                auto& state = registry.get<Components::State>(entity);
+                if (state.state == Components::CharacterState::Move)
+                {
+                    state.state = Components::CharacterState::Idle;
+                }
+            }
             continue;
+        }
 
-        Node* nextNode = path_component.path.at(path_component.current_node_index);
-
-        // Going to next node
+        Node* nextNode = path_component.path[path_component.current_node_index];
         sf::Vector2f direction = nextNode->position - positionComponent.position;
 
-        float nex_node_distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+        float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-        if (nex_node_distance <= velocityComponent.speed * deltaTime) 
+        if (distance <= velocityComponent.speed * deltaTime)
         {
             positionComponent.position = nextNode->position;
 
-            if (path_component.current_node_index < path_component.path.size() - 1) 
+            if (path_component.current_node_index < path_component.path.size() - 1)
+            {
                 path_component.current_node_index++;
-            else 
-            {   // If finishing, can init new way
+            }
+            else
+            {
                 path_component.start_node = nextNode;
 
-                if (path_component.end_node) 
+                if (path_component.end_node)
                 {
                     global_pathfinding.findPath(path_component.start_node, path_component.end_node);
                     path_component.path = global_pathfinding.path();
@@ -35,11 +50,19 @@ void PathfindingSystem::update(entt::registry& registry, Pathfinding& global_pat
                 }
             }
         }
-        else 
+        else
         {
-            direction /= nex_node_distance;
+            direction /= distance;
             sf::Vector2f velocity = direction * velocityComponent.speed * deltaTime;
             positionComponent.position += velocity;
+
+            if (auto* state = registry.try_get<Components::State>(entity))
+            {
+                if (state->state != Components::CharacterState::Move)
+                {
+                    state->state = Components::CharacterState::Move;
+                }
+            }
         }
     }
 }

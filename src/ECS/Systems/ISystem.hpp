@@ -3,11 +3,11 @@
 #include "../Components/Components.hpp"
 
 
-class MyClass
+class ISystem
 {
 public:
-	MyClass() = default;
-	virtual ~MyClass() = default;
+	ISystem() = default;
+	virtual ~ISystem() = default;
 
 	virtual void update(entt::registry& registry, float delta_time) = 0;
 
