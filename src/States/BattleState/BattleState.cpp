@@ -5,10 +5,11 @@
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }
 , m_selected_tile_id (0)
-, m_animator_tile_selected_id (0)
 , animator(sprite)
 , gizmos(window, sf::Vector2f(10,10))
 , is_brash(false)
+, tools (ToolState::None)
+, animaton_editor (window)
 {
     state_machine.is_init = true;
 }
@@ -21,122 +22,15 @@ void BattleState::init()
     editor.init();
 
     texture = ResourceLoader::instance().getTexture("Spearman.png");
-    sprite.setTexture(texture);
-    sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
-    //animator.setFrameTime(0.5f);
-    animator.pause();
+    pathfinding.initNodes(64, 64);
 
-    std::string selected_item = items.at(current_item);
-    auto file = selected_item;
-    selected_item += ".png";
+    UnitFactory factory(registry, texture);
 
-    //animator.init(selected_item.c_str());
-    //animator.loadAllAnimations(file);
-
-    pathfinding.initNodes(50, 50);
-
-    ///-------------
-    sf::Texture& spearmanTexture = ResourceLoader::instance().getTexture("Spearman.png");
-
-    // entity 1
-    {
-        Entity player(registry, "Spearman 1", "Characters");
-
-        player.addComponent<Components::Position>(Components::Position
-            {
-                .position = sf::Vector2f(0, 0),
-            });
-        player.addComponent<Components::Velocity>(Components::Velocity
-            {
-                .velocity = sf::Vector2f(0.0f, 0.0f),
-                .speed = 0.2f
-            });
-        player.addComponent<Components::Sprite>(Components::Sprite
-            {
-                .sprite = sf::Sprite(spearmanTexture),
-            });
-
-        auto& sprite_component = player.getComponent<Components::Sprite>();
-        sprite_component.sprite.setOrigin(8.0f, 32.0f);
-
-        player.addComponent<Components::Pathfinding>(Components::Pathfinding{});
-        player.addComponent<Components::Selectable>(Components::Selectable{});
-        //player.addComponent<Components::Control>(Components::Control{});
-        player.addComponent<Components::Animation>(sprite_component.sprite);
-
-        auto& player_animator = player.getComponent<Components::Animation>().animator;
-        
-        AnimationLoader::loadFromFile("Spearman", player_animator);
-        player.addComponent<Components::State>(Components::State{.state = Components::CharacterState::Idle});
-
-        // Подписываемся на событие окончания анимации
-        player_animator.onAnimationFinished([](const std::string& name) { LOG_INFO("Animation finished: {}", name); });
-
-    }
-
-    // entity 2
-    {
-
-        Entity player2(registry, "Spearman 2", "Characters");
-
-        player2.addComponent<Components::Position>(Components::Position
-            {
-                .position = sf::Vector2f(64, 64),
-            });
-        player2.addComponent<Components::Velocity>(Components::Velocity
-            {
-                .velocity = sf::Vector2f(0.0f, 0.0f),
-                .speed = 0.2f
-            });
-
-        player2.addComponent<Components::Sprite>(Components::Sprite
-            {
-                .sprite = sf::Sprite(spearmanTexture),
-            });
-
-        auto& sprite_component = player2.getComponent<Components::Sprite>();
-        sprite_component.sprite.setOrigin(8.0f, 32.0f);
-
-        player2.addComponent<Components::Pathfinding>(Components::Pathfinding{});
-        player2.addComponent<Components::Selectable>(Components::Selectable{});
-        player2.addComponent<Components::Animation>(sprite_component.sprite);
-
-        auto& player_animator2 = player2.getComponent<Components::Animation>().animator;
-
-        AnimationLoader::loadFromFile("Spearman", player_animator2);
-        player2.addComponent<Components::State>(Components::State{ .state = Components::CharacterState::Idle });
-
-        // Подписываемся на событие окончания анимации
-        player_animator2.onAnimationFinished([](const std::string& name) { LOG_INFO("Animation finished: {}", name); });
-
-    }
-
-    // entity 3
-    {
-        Entity player3(registry, "Archer", "Characters");
-
-        player3.addComponent<Components::Position>(Components::Position
-            {
-                .position = sf::Vector2f(128, 64),
-            });
-        player3.addComponent<Components::Velocity>(Components::Velocity
-            {
-                .velocity = sf::Vector2f(0.0f, 0.0f),
-                .speed = 0.2f
-            });
-        player3.addComponent<Components::Sprite>(Components::Sprite
-            {
-                .sprite = this->sprite,
-            });
-
-        auto& spriteComponent3 = player3.getComponent<Components::Sprite>();
-        spriteComponent3.sprite.setOrigin(8.0f, 32.0f);
-
-        player3.addComponent<Components::Pathfinding>(Components::Pathfinding{});
-        player3.addComponent<Components::Selectable>(Components::Selectable{});
-    }
-    ///-------------
-
+    Entity spearman1 = factory.createSpearman(sf::Vector2f(0,0));
+    Entity spearman2 = factory.createSpearman(sf::Vector2f(64, 64));
+    Entity spearman3 = factory.createSpearman(sf::Vector2f(128, 64));
+    Entity spearman4 = factory.createSpearman(sf::Vector2f(128, 128));
+   
     LOG_INFO("State Battle\t Init");
 }
 
@@ -180,6 +74,7 @@ void BattleState::updateImGui()
 
     renderMetrics();
     renderEditor();
+    animaton_editor.gui();
 }
 
 void BattleState::update(const float& dtime)
@@ -187,6 +82,7 @@ void BattleState::update(const float& dtime)
     updateMousePositions();
     registry.update(registry.getRegistry(), dtime, animator, pathfinding, window);
     data.camera.update(dtime);
+    animaton_editor.update(dtime);
 }
 
 void BattleState::draw(sf::RenderTarget* target)
