@@ -76,3 +76,49 @@
         return registry.getRegistry();
     }
 #pragma endregion
+
+
+    // for tests only
+    UnitFactory::UnitFactory(Registry& registry, const sf::Texture& texture)
+        : registry(registry), unitTexture(texture), spearmanCounter(0) 
+    {
+    }
+
+    Entity UnitFactory::createSpearman(sf::Vector2f pos)
+    {
+        std::ostringstream oss;
+        oss << "Spearman " << ++spearmanCounter;
+        std::string name = oss.str();
+
+        Entity entity(registry, name, "Characters");
+
+        entity.addComponent<Components::Position>(Components::Position{
+            .position = pos
+            });
+
+        entity.addComponent<Components::Velocity>(Components::Velocity{
+            .velocity = sf::Vector2f(0.0f, 0.0f),
+            .speed = 0.2f
+            });
+
+        entity.addComponent<Components::Sprite>(Components::Sprite{
+            .sprite = sf::Sprite(unitTexture)
+            });
+
+        auto& spriteComponent = entity.getComponent<Components::Sprite>();
+        spriteComponent.sprite.setOrigin(8.0f, 32.0f);
+        spriteComponent.sprite.setTextureRect(sf::IntRect(0, 0, 64, 64));
+
+        entity.addComponent<Components::Pathfinding>(Components::Pathfinding{});
+        entity.addComponent<Components::Selectable>(Components::Selectable{});
+        entity.addComponent<Components::Animation>(Components::Animation{ spriteComponent.sprite });
+
+        auto& animator = entity.getComponent<Components::Animation>().animator;
+        AnimationLoader::loadFromFile("Spearman", animator);
+
+        entity.addComponent<Components::State>(Components::State{
+            .state = Components::CharacterState::Idle
+            });
+
+        return entity;
+    }

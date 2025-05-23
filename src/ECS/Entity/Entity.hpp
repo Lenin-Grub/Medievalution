@@ -115,3 +115,17 @@ private:
 };
 
 #include "Entity.inl"
+
+
+class UnitFactory 
+{
+public:
+    explicit UnitFactory(Registry& registry, const sf::Texture& texture);
+
+    Entity createSpearman(sf::Vector2f pos);
+
+private:
+    Registry&          registry;
+    const sf::Texture& unitTexture;
+    int                spearmanCounter;
+};
