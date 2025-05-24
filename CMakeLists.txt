@@ -85,6 +85,7 @@ endif()
 
 # Включение внешних библиотек
 add_subdirectory(${PROJECT_SOURCE_DIR}/ext_libs/json)
+add_subdirectory(${PROJECT_SOURCE_DIR}/src/Audio)
 
 # Подключение библиотек к проекту
 target_link_libraries(${PROJECT_NAME}
@@ -96,6 +97,7 @@ target_link_libraries(${PROJECT_NAME}
     ImGui-SFML::ImGui-SFML
     json
 	EnTT::EnTT
+	Audio
 )
 
 # Установка стандарта C++

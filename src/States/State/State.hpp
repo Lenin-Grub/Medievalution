@@ -2,12 +2,14 @@
 #include "Common/Common.h"
 #include "Camera/Camera.h"
 
+#include <Audio/src/Jukebox.hpp>
+
 class StateMachine;
 
 struct StateData
 {
     Camera camera;
-    Jukebox jukebox = Jukebox("resources/Audio/Musics/");
+    Audio::Music::Jukebox jukebox{ "resources/Audio/Musics/" };
 };
 
 /**
