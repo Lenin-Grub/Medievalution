@@ -68,47 +68,59 @@ void BattleState::updateEvents()
     gizmos.update();
 }
 
-void BattleState::updateImGui() 
+void BattleState::updateImGui()
 {
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::BeginMainMenuBar();
 
-    if (ImGui::BeginMenu("File")) 
+    if (ImGui::BeginMenu("File"))
     {
-        if (ImGui::MenuItem("New"))
+        if (ImGui::MenuItem(SET_ICON_TEXT((Icon::TOOL), "Map editor")))
         {
-            // Создать новый проект
+            show_editor_window = true;
         }
-        if (ImGui::MenuItem("Open")) 
-        {
-            // Открыть проект
-        }
-        ImGui::Separator();
 
+        if (ImGui::MenuItem(SET_ICON_TEXT((Icon::INSTAGRAM), "Animation editor")))
+        {
+            show_animator_window = true;
+        }
+
+        if (ImGui::MenuItem(SET_ICON_TEXT((Icon::METRIC_UP), "Metric")))
+        {
+            show_metrics_window = true;
+        }
+
+        ImGui::Separator();
         ImGui::EndMenu();
     }
 
-    // Кнопка справа
+    renderTools();
+
     ImGui::SameLine();
     ImGui::SetCursorPosX(ImGui::GetWindowWidth() - 80);
-    
-    if (ImGui::Button(ICON::getChar(Icon::SETTINGS))) 
+
+    if (ImGui::Button(SET_ICON(Icon::SETTINGS)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(ICON::getStr(Icon::ON_OFF).c_str()))
+    if (ImGui::Button(SET_ICON(Icon::ON_OFF)))
     {
         state_machine.lastState();
     }
 
     ImGui::EndMainMenuBar();
 
-    renderMetrics();
-    renderEditor();
-    animaton_editor.gui();
+    if (show_editor_window)
+        renderEditor();
+
+    if (show_metrics_window)
+        renderMetrics();
+
+    if (show_animator_window)
+        animaton_editor.gui();
 }
 
 void BattleState::update(const float& dtime)
@@ -148,9 +160,9 @@ void BattleState::beginView(sf::RenderTarget*& target)
 
 void BattleState::renderEditor()
 {
-    ImGui::Begin((ICON::getStr(Icon::MAP) + " Editor").c_str(), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
+    ImGui::Begin(SET_ICON_TEXT((Icon::MAP), " Editor"), nullptr, ImGuiWindowFlags_HorizontalScrollbar | ImGuiWindowFlags_AlwaysVerticalScrollbar);
 
-    renderTools();
+    //renderTools();
     renderLayersSection();
     renderTilesSection();
 
@@ -159,8 +171,11 @@ void BattleState::renderEditor()
 
 void BattleState::renderTools()
 {
-    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::TOOL), "Tools")))
+    //if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::TOOL), "Tools")))
     {
+        ImGui::Dummy(ImVec2(50.0f, 0.0f));
+        ImGui::SameLine();
+
         sf::Color green(40, 159, 49, 255);
         ImVec4 imVecColor(
             green.r / 255.0f,
@@ -246,7 +261,7 @@ void BattleState::renderTools()
 
 void BattleState::renderLayersSection()
 {
-    if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::STACK_FILES)) + " Layers").c_str()))
+    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::STACK_FILES),"Layers")))
     {
         ImGui::Text("Current layer: %d", battle_map.getCurrentLayerID());
 
@@ -261,7 +276,7 @@ void BattleState::renderTilesetSelector()
     static int current_item = 0;
     static bool show_tileset_selector = false;
 
-    if (ImGui::Button((ICON::getStr(Icon::ADD_FILES) + " Add").c_str()))
+    if (ImGui::Button(SET_ICON_TEXT((Icon::ADD_FILES),"Add")))
     {
         show_tileset_selector = true;
     }
@@ -295,7 +310,7 @@ void BattleState::renderTilesetSelector()
 
     ImGui::SameLine();
 
-    if (ImGui::Button((ICON::getStr(Icon::REMOVE_FILES) + " Remove").c_str()))
+    if (ImGui::Button(SET_ICON_TEXT((Icon::REMOVE_FILES)," Remove")))
     {
         battle_map.removeLayer();
     }
@@ -315,9 +330,9 @@ void BattleState::renderLayerControls()
 
         for (size_t i = 0; i < layers.size(); ++i)
         {
-            Layer* layer = layers[i].get();
+            Layer* layer                   = layers[i].get();
             std::string default_layer_name = " Layer " + std::to_string(i);
-            std::string display_layer_name = ICON::getStr(Icon::EMPTY_FILES).c_str() + (layer->layer_name.empty() ? default_layer_name : layer->layer_name);
+            std::string display_layer_name = SET_ICON_TEXT((Icon::EMPTY_FILES), (layer->layer_name.empty() ? default_layer_name : layer->layer_name));
 
             ImGui::TableNextRow();
             ImGui::TableSetColumnIndex(0);
@@ -333,7 +348,7 @@ void BattleState::renderLayerControls()
 
             ImGui::TableSetColumnIndex(2);
             ImGui::PushID(static_cast<int>(i));
-            if (ImGui::Button((ICON::getStr(Icon::EDIT)).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::EDIT)))
             {
                 ImGui::OpenPopup("Rename Layer");
             }
@@ -342,6 +357,7 @@ void BattleState::renderLayerControls()
             {
                 static char layer_name_buffer[128] = "";
                 strcpy(layer_name_buffer, layer->layer_name.empty() ? default_layer_name.c_str() : layer->layer_name.c_str());
+
                 if (ImGui::InputText("##LayerName", layer_name_buffer, sizeof(layer_name_buffer), ImGuiInputTextFlags_EnterReturnsTrue))
                 {
                     layer->layer_name = layer_name_buffer;
@@ -358,7 +374,7 @@ void BattleState::renderLayerControls()
 
 void BattleState::renderTilesSection()
 {
-    if (ImGui::CollapsingHeader((ICON::getStr(Icon::FOUR_QUADS) + " Tiles").c_str()))
+    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::FOUR_QUADS), "Tiles")))
     {
         renderTilesetTable();
     }
@@ -377,13 +393,9 @@ void BattleState::renderTilesetTable()
     int tileset_cols = battle_map.getSheetWidth();
     int tileset_rows = battle_map.getSheetHeight();
 
-
     ImVec2 scale_factor = ImVec2(value, value);
-    //int tileset_cols = std::round(texture.getSize().x / value);
-    //int tileset_rows = std::round(texture.getSize().y / value);
 
     ImTextureID tileset_texture_id = (ImTextureID)(intptr_t)tileset_Texture.getNativeHandle();
-    //ImVec2 scale_factor            = ImVec2(editor.getTileSize(), editor.getTileSize());
 
     if (ImGui::BeginTable("TilesetTable", tileset_cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
     {

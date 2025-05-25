@@ -73,4 +73,7 @@ private:
 
     int               m_selected_tile_id;
     bool              is_brash;
+    bool              show_editor_window   = false;
+    bool              show_metrics_window  = false;
+    bool              show_animator_window = false;
 };

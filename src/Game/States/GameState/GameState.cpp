@@ -270,7 +270,6 @@ void GameState::renderNodesTree()
 
                     const Node* node = filtered_nodes[i];
 
-                    // Безопасное получение имени и ID
                     const std::string& name = (node_names.find(node) != node_names.end()) ? node_names[node] : "Unknown";
                     int id = (nodeIDs.find(node) != nodeIDs.end()) ? nodeIDs[node] : -1;
 

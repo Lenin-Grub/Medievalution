@@ -199,21 +199,21 @@ void AnimationEditor::drawPlaybackControls()
         {
             const auto& clip = it->second;
 
-            if (ImGui::Button(ICON::getStr(Icon::BEGIN).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::BEGIN)))
             {
                 selected_frame_index = 0;
                 sprite.setTextureRect(clip.frames[selected_frame_index].rect);
             }
 
             ImGui::SameLine();
-            if (ImGui::Button(ICON::getStr(Icon::PREV).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::PREV)))
             {
                 selected_frame_index = std::max(0, selected_frame_index - 1);
                 sprite.setTextureRect(clip.frames[selected_frame_index].rect);
             }
 
             ImGui::SameLine();
-            if (ImGui::Button(is_playing ? ICON::getStr(Icon::PAUSE).c_str() : ICON::getStr(Icon::PLAY).c_str()))
+            if (ImGui::Button(is_playing ? SET_ICON(Icon::PAUSE) : SET_ICON(Icon::PLAY)))
             {
                 if (!current_animation_name.empty())
                 {
@@ -232,14 +232,14 @@ void AnimationEditor::drawPlaybackControls()
             }
 
             ImGui::SameLine();
-            if (ImGui::Button(ICON::getStr(Icon::NEXT).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::NEXT)))
             {
                 selected_frame_index = std::min(static_cast<int>(clip.frames.size()) - 1, selected_frame_index + 1);
                 sprite.setTextureRect(clip.frames[selected_frame_index].rect);
             }
 
             ImGui::SameLine();
-            if (ImGui::Button(ICON::getStr(Icon::END).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::END)))
             {
                 selected_frame_index = static_cast<int>(clip.frames.size()) - 1;
                 sprite.setTextureRect(clip.frames[selected_frame_index].rect);
@@ -248,7 +248,7 @@ void AnimationEditor::drawPlaybackControls()
             ImGui::SameLine();
             ImGui::Separator();
 
-            if (ImGui::Button(ICON::getStr(Icon::LOOP).c_str()))
+            if (ImGui::Button(SET_ICON(Icon::LOOP)))
             {
                 is_looping != is_looping;
             }

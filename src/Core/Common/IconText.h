@@ -50,6 +50,8 @@ enum class Icon
     TOOL            = 0xe989,
     DUMP_EMPTY      = 0xe98A,
     DUMP_FULL       = 0xe98B,
+    METRIC_DONW     = 0xe98C,
+    METRIC_UP       = 0xe98D,
     OPEN_WITHIN     = 0xe99E,
     PALETTE         = 0xe99F,
     FILL            = 0xe9A0,
