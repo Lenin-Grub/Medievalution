@@ -4,6 +4,9 @@
 #include <codecvt>
 #include <locale>
 
+#define SET_ICON(...) ICON::getStr(__VA_ARGS__).c_str()
+#define SET_ICON_TEXT(icon, text) (ICON::getStr(icon) + " " + text).c_str()
+
 enum class Icon 
 {
     // Used only for init ranged.
@@ -71,3 +74,4 @@ namespace ICON
         return str.c_str();
     }
 }
+

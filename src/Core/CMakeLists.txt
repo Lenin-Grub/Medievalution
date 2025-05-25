@@ -5,7 +5,7 @@ project(Core)
 add_library(${PROJECT_NAME} STATIC)
 
 # Сборка всех файлов
-FILE(GLOB_RECURSE EDITOR_HEADERS ${PROJECT_SOURCE_DIR}/*.hpp ${PROJECT_SOURCE_DIR}/*.h ${PROJECT_SOURCE_DIR}/src/*.inl)
+FILE(GLOB_RECURSE EDITOR_HEADERS ${PROJECT_SOURCE_DIR}/*.hpp ${PROJECT_SOURCE_DIR}/*.h ${PROJECT_SOURCE_DIR}/*.inl)
 FILE(GLOB_RECURSE EDITOR_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
 
 # Добавляем все файлы в проект (включая заголовки)

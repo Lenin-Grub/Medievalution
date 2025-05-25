@@ -8,7 +8,7 @@
     "fullscreen": false,
     "fps_limit": 50,
     "music_volume": 20,
-    "camera_speed": 1,
+    "camera_speed": 1000,
     "zoom_speed": 0.0,
     "language": "rus"
 }

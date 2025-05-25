@@ -221,16 +221,16 @@ void GameState::renderHelp()
 void GameState::renderNodesTree()
 {
     ImGui::Begin("Nodes Tree");
-    ImGui::InputText((ICON::getStr(Icon::SEARCH) + " Search").c_str(), search_buffer, IM_ARRAYSIZE(search_buffer));
-    ImGui::SameLine();
 
+    ImGui::InputText(SET_ICON_TEXT((Icon::SEARCH), "Search"), search_buffer, IM_ARRAYSIZE(search_buffer));
+    ImGui::SameLine();
     if (ImGui::Button("Reset"))
         memset(search_buffer, 0, sizeof(search_buffer));
 
     std::vector<const Node*> filtered_nodes;
     std::string search_query = search_buffer;
 
-    if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::DOT_MENU)) + " Provinces").c_str()))
+    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::DOT_MENU), "Provinces")))
     {
         for (const auto& pair : pathfinding.nodes)
         {
@@ -238,72 +238,97 @@ void GameState::renderNodesTree()
 
             if (node_names.find(&node) == node_names.end())
             {
-                sf::Color   node_color    = world_map.getColor(pair.second.position);
-                std::string province_name = world_map.getProvinceName(world_map.getColor(pair.second.position), pair.second.position);
-                node_names.at(& node)     = province_name;
-                nodeIDs.at(& node)        = world_map.getProvinceID(world_map.getColor(pair.second.position), pair.second.position);
+                sf::Color node_color = world_map.getColor(node.position);
+                std::string province_name = world_map.getProvinceName(node_color, node.position);
+                int province_id = world_map.getProvinceID(node_color, node.position);
+
+                node_names[&node] = province_name;
+                nodeIDs[&node] = province_id;
             }
 
-            std::string_view nodeName = node_names[&node];
-            int nodeID                = nodeIDs[&node];
+            const std::string& name = node_names[&node];
+            int id = nodeIDs[&node];
 
-            if (nodeName.find(search_query) != std::string_view::npos || std::to_string(nodeID).find(search_query) != std::string::npos)
+            if (name.find(search_query) != std::string::npos ||
+                std::to_string(id).find(search_query) != std::string::npos)
+            {
                 filtered_nodes.push_back(&node);
+            }
         }
 
-        ImGuiListClipper clipper;
-        clipper.Begin(static_cast<int>(filtered_nodes.size()));
-
-        while (clipper.Step())
+        if (!filtered_nodes.empty())
         {
-            for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i)
+            ImGuiListClipper clipper;
+            clipper.Begin(static_cast<int>(filtered_nodes.size()));
+
+            while (clipper.Step())
             {
-                const Node* node = filtered_nodes[i];
-
-                bool open = ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", node_names[node].c_str(), nodeIDs[node]);
-
-                ImGui::SameLine();
-                ImGui::PushID(node);
-                ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-                ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.1f, 0.1f, 0.5f));
-                ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.2f, 0.2f, 0.5f));
-
-                if (ImGui::Button((std::string(ICON::getStr(Icon::LOCATION))).c_str()))
+                for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; ++i)
                 {
-                    position = node->position;
-                    data.camera.setFocusOn(position);
-                    data.camera.enableFocus(true);
-                }
+                    if (i < 0 || i >= static_cast<int>(filtered_nodes.size()))
+                        continue;
 
-                ImGui::PopStyleColor(3);
-                ImGui::PopID();
+                    const Node* node = filtered_nodes[i];
 
-                if (open)
-                {
-                    for (const Node* neighbor : node->neighbors)
+                    // Безопасное получение имени и ID
+                    const std::string& name = (node_names.find(node) != node_names.end()) ? node_names[node] : "Unknown";
+                    int id = (nodeIDs.find(node) != nodeIDs.end()) ? nodeIDs[node] : -1;
+
+                    bool open = ImGui::TreeNode((void*)(intptr_t)node, "Node: %s \t (ID: %d)", name.c_str(), id);
+
+                    ImGui::SameLine();
+                    ImGui::PushID(node);
+                    ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonHovered, ImVec4(0.1f, 0.1f, 0.1f, 0.5f));
+                    ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImVec4(0.2f, 0.2f, 0.2f, 0.5f));
+
+                    if (ImGui::Button(ICON::getStr(Icon::LOCATION).c_str()))
                     {
-                        if (node_names.find(neighbor) == node_names.end())
+                        position = node->position;
+                        data.camera.setFocusOn(position);
+                        data.camera.enableFocus(true);
+                    }
+
+                    ImGui::PopStyleColor(3);
+                    ImGui::PopID();
+
+                    if (open)
+                    {
+                        for (const Node* neighbor : node->neighbors)
                         {
-                            sf::Color neighbor_color           = world_map.getColor(neighbor->position);
-                            std::string neighbor_province_name = world_map.getProvinceName(world_map.getColor(neighbor->position), neighbor->position);
-                            node_names[neighbor]               = neighbor_province_name;
-                            nodeIDs[neighbor]                  = world_map.getProvinceID(world_map.getColor(neighbor->position), neighbor->position);
+                            if (node_names.find(neighbor) == node_names.end())
+                            {
+                                sf::Color neighbor_color = world_map.getColor(neighbor->position);
+                                std::string neighbor_name = world_map.getProvinceName(neighbor_color, neighbor->position);
+                                int neighbor_id = world_map.getProvinceID(neighbor_color, neighbor->position);
+
+                                node_names[neighbor] = neighbor_name;
+                                nodeIDs[neighbor] = neighbor_id;
+                            }
+
+                            const std::string& neighbor_name = node_names[neighbor];
+                            int neighbor_id = nodeIDs[neighbor];
+
+                            ImGui::BulletText("Neighbor: %s \t (ID: %d)", neighbor_name.c_str(), neighbor_id);
+                            ImGui::SameLine();
+
+                            ImGui::PushID(neighbor);
+                            if (ImGui::Button("X"))
+                                pathfinding.disconnect(const_cast<Node*>(node), const_cast<Node*>(neighbor));
+                            ImGui::PopID();
                         }
 
-                        ImGui::BulletText("Neighbor: %s \t (ID: %d)", node_names[neighbor].c_str(), nodeIDs[neighbor]);
-                        ImGui::SameLine();
-
-                        ImGui::PushID(neighbor);
-                        if (ImGui::Button("X"))
-                            pathfinding.disconnect(const_cast<Node*>(node), const_cast<Node*>(neighbor));
-                        ImGui::PopID();
+                        ImGui::TreePop();
                     }
-                    ImGui::TreePop();
                 }
             }
-        }
 
-        clipper.End();
+            clipper.End();
+        }
+        else
+        {
+            ImGui::Text("No nodes found.");
+        }
     }
 
     ImGui::End();

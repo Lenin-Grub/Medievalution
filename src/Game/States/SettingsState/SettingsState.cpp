@@ -41,9 +41,9 @@ void SettingsState::updateImGui()
 {
     ImVec2 center = ImGui::GetMainViewport()->GetCenter();
     ImGui::SetNextWindowPos(center, ImGuiCond_Appearing, ImVec2(0.5f, 0.5f));
-    ImGui::Begin(LOCLIZATION(ICON::getStr(Icon::SETTINGS), "T_settings"), nullptr, ImGuiWindowFlags_NoCollapse
-                                                                                                             | ImGuiWindowFlags_AlwaysAutoResize
-                                                                                                             | ImGuiWindowFlags_NoMove);
+    ImGui::Begin(LOCLIZATION(SET_ICON(Icon::SETTINGS), "T_settings"), nullptr, ImGuiWindowFlags_NoCollapse
+                                                                             | ImGuiWindowFlags_AlwaysAutoResize
+                                                                             | ImGuiWindowFlags_NoMove);
 
     renderWindowSettings();
     renderSoundsAndMusic();
@@ -83,7 +83,7 @@ void SettingsState::renderWindowSettings()
 
     const char* combo_preview_value = str_preview.c_str();
 
-    if (ImGui::BeginCombo(LOCLIZATION(ICON::getStr(Icon::MONITOR), "T_resolution"), combo_preview_value, 0))
+    if (ImGui::BeginCombo(LOCLIZATION(SET_ICON(Icon::MONITOR), "T_resolution"), combo_preview_value, 0))
     {
         for (int n = 0; n < video_modes.size(); n++) 
         {
@@ -110,7 +110,7 @@ void SettingsState::renderWindowSettings()
         ImGui::EndCombo();
     }
 
-    if (ImGui::Checkbox(LOCLIZATION(ICON::getStr(Icon::MONITOR), "T_full_window"), &WindowSettings::getInstance().settings.fullscreen))
+    if (ImGui::Checkbox(LOCLIZATION(SET_ICON(Icon::MONITOR), "T_full_window"), &WindowSettings::getInstance().settings.fullscreen))
     {
         WindowSettings::getInstance().settings.fullscreen;
     }

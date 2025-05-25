@@ -159,7 +159,7 @@ void BattleState::renderEditor()
 
 void BattleState::renderTools()
 {
-    if (ImGui::CollapsingHeader((std::string(ICON::getStr(Icon::TOOL)) + " Tools").c_str()))
+    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::TOOL), "Tools")))
     {
         sf::Color green(40, 159, 49, 255);
         ImVec4 imVecColor(
