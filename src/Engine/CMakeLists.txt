@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.31 FATAL_ERROR)
-project(Audio)
+project(Engine)
 
 # Сборка как статическая библиотека
 add_library(${PROJECT_NAME} STATIC)
@@ -15,7 +15,10 @@ target_sources(${PROJECT_NAME} PRIVATE
 )
 
 # Указываем, что заголовки доступны извне (если нужно)
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR})
+target_include_directories(${PROJECT_NAME} PUBLIC 
+    ${PROJECT_SOURCE_DIR}
+    ${CMAKE_SOURCE_DIR}/src/Core
+)
 
 # Группировка файлов в Solution Explorer (Visual Studio)
 source_group(TREE ${PROJECT_SOURCE_DIR} FILES ${EDITOR_HEADERS} ${EDITOR_SOURCES})
@@ -24,7 +27,13 @@ source_group(TREE ${PROJECT_SOURCE_DIR} FILES ${EDITOR_HEADERS} ${EDITOR_SOURCES
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
 # Подключение зависимостей
-target_link_libraries(${PROJECT_NAME} PUBLIC
+target_link_libraries(${PROJECT_NAME} PUBLIC 
+    sfml-graphics
+    sfml-window
     sfml-system
+    ImGui-SFML::ImGui-SFML
+    json
+    EnTT::EnTT
+    spdlog
     Core
 )
