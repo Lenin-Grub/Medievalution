@@ -1,13 +1,7 @@
 #include "AnimationEditor.hpp"
 
-
-
-#pragma region AnimationEditor
-
 AnimationEditor::AnimationEditor(sf::RenderWindow& window)
-    : window(window),
-    sprite(),
-    animator(sprite)
+    : window(window), sprite(), animator(sprite), selected_frame_index(-1), selected_tile_index(-1), is_playing(false)
 {
 }
 
@@ -20,45 +14,45 @@ void AnimationEditor::gui()
 {
     ImGui::Begin("Animation Editor");
 
-    if (ImGui::BeginTable("TopRow", 4 /*,ImGuiTableFlags_SizingStretchProp*/))
-    {
-        ImGui::TableNextRow();
-        ImGui::TableNextColumn();
-
-        spriteSelector();
-        ImGui::TableNextColumn();
-
-        animationsPanel();
-        ImGui::TableNextColumn();
-
-        frameSelector();
-        ImGui::TableNextColumn();
-
-        frameControls();
-        ImGui::EndTable();
-    }
-
-    playbackButtons();
-    spriteSheet();
+    drawTopPanel();
+    drawPlaybackControls();
+    drawSpriteSheet();
 
     ImGui::End();
 }
 
-void AnimationEditor::spriteSelector()
+void AnimationEditor::drawTopPanel()
+{
+    if (ImGui::BeginTable("TopRow", 4))
+    {
+        ImGui::TableNextRow();
+        ImGui::TableNextColumn(); drawSpriteSelector();
+        ImGui::TableNextColumn(); drawAnimationsPanel();
+        ImGui::TableNextColumn(); drawFrameList();
+        ImGui::TableNextColumn(); drawFrameControls();
+        ImGui::EndTable();
+    }
+}
+
+void AnimationEditor::drawSpriteSelector()
 {
     ImGui::BeginChild("SpritePreview", ImVec2(270, 310), true);
 
-    const char* files[] = { "Spearman.png", "Archer.png" };
+    const char* files[] = { "Spearman", "Archer" };
     static int selected = 0;
 
-    if (ImGui::Combo("Select Sprite", &selected, files, IM_ARRAYSIZE(files)))
+    if (ImGui::Combo("Select", &selected, files, IM_ARRAYSIZE(files)))
     {
         current_animation_name.clear();
+
         std::string filename = files[selected];
-        texture = ResourceLoader::instance().getTexture(filename);
+
+        animator.clearAllAnimations();
+
+        texture = ResourceLoader::instance().getTexture(filename + ".png");
         sprite.setTexture(texture);
 
-        AnimationLoader::loadFromFile("Spearman", animator);
+        AnimationLoader::loadFromFile(filename, animator);
     }
 
     const sf::Sprite& animatedSprite = animator.getSprite();
@@ -70,18 +64,10 @@ void AnimationEditor::spriteSelector()
     ImGui::EndChild();
 }
 
-
-void AnimationEditor::animationsPanel()
+void AnimationEditor::drawAnimationsPanel()
 {
     ImGui::BeginChild("AnimationsPanel", ImVec2(0, 310), true);
 
-    for (const auto& [name, _] : animator.getAllAnimations())
-    {
-        if (ImGui::Selectable(name.c_str(), current_animation_name == name))
-        {
-            current_animation_name = name;
-        }
-    }
 
     static char newAnimName[64] = "";
     ImGui::InputText("New Animation", newAnimName, IM_ARRAYSIZE(newAnimName));
@@ -94,46 +80,22 @@ void AnimationEditor::animationsPanel()
         newAnimName[0] = '\0';
     }
 
-    ImGui::EndChild();
-}
-
-
-void AnimationEditor::frameControls()
-{
-    ImGui::BeginChild("EditFrame", ImVec2(0, 310), true);
-    if (!current_animation_name.empty())
+    for (const auto& [name, _] : animator.getAllAnimations())
     {
-        auto it = animator.getAllAnimations().find(current_animation_name);
-        if (it != animator.getAllAnimations().end())
+        if (ImGui::Selectable(name.c_str(), current_animation_name == name))
         {
-            auto& frames = const_cast<std::vector<sf::IntRect>&>(it->second.frames);
-
-            constexpr int tileSize = 64;
-
-            int textureWidth = texture.getSize().x;
-            int textureHeight = texture.getSize().y;
-            int cols = textureWidth / tileSize;
-            int rows = textureHeight / tileSize;
-
-            if (selected_frame_index >= 0 && selected_frame_index < static_cast<int>(frames.size()))
-            {
-                auto& rect = frames[selected_frame_index];
-
-                ImGui::Text("Current Frame: %d", selected_frame_index);
-                ImGui::DragInt("Left", &rect.left);
-                ImGui::DragInt("Top", &rect.top);
-                ImGui::DragInt("Width", &rect.width);
-                ImGui::DragInt("Height", &rect.height);
-            }
+            current_animation_name = name;
+            animator.setAnimation(current_animation_name, true);
         }
     }
+
     ImGui::EndChild();
 }
 
-
-void AnimationEditor::frameSelector()
+void AnimationEditor::drawFrameList()
 {
     ImGui::BeginChild("FrameList", ImVec2(0, 310), true);
+
     if (!current_animation_name.empty())
     {
         auto it = animator.getAllAnimations().find(current_animation_name);
@@ -151,34 +113,21 @@ void AnimationEditor::frameSelector()
                 {
                     ImGui::TableNextRow();
                     ImGui::TableSetColumnIndex(0);
-
                     ImGui::PushID(static_cast<int>(i));
-
                     std::string label = "Frame " + std::to_string(i);
                     bool is_selected = (selected_frame_index == static_cast<int>(i));
 
                     if (ImGui::Selectable(label.c_str(), is_selected))
                     {
                         selected_frame_index = static_cast<int>(i);
-                        sprite.setTextureRect(frames[i]);
-
-                        constexpr int tileSize = 64;
-                        int cols = texture.getSize().x / tileSize;
-                        if (cols > 0)
-                        {
-                            int col = frames[i].left / tileSize;
-                            int row = frames[i].top / tileSize;
-                            selected_tile_index = row * cols + col;
-                        }
+                        sprite.setTextureRect(frames[i].rect);
+                        updateSelectedTileFromFrame();
                     }
 
                     ImGui::TableSetColumnIndex(1);
-                    if (ImGui::SmallButton(ICON::getStr(Icon::DUMP_FULL).c_str()))
+                    if (ImGui::Button(ICON::getStr(Icon::DUMP_FULL).c_str()))
                     {
-                        auto& framesNonConst = const_cast<std::vector<sf::IntRect>&>(frames);
-                        framesNonConst.erase(framesNonConst.begin() + i);
-                        selected_frame_index = std::max(-1, static_cast<int>(i) - 1);
-                        animator.addAnimation(current_animation_name, it->second);
+                        removeFrame(current_animation_name, i);
                     }
 
                     ImGui::PopID();
@@ -188,26 +137,139 @@ void AnimationEditor::frameSelector()
             }
         }
     }
+
     ImGui::EndChild();
 }
 
+void AnimationEditor::drawFrameControls()
+{
+    ImGui::BeginChild("EditFrame", ImVec2(0, 350), true);
 
-void AnimationEditor::spriteSheet()
+    if (!current_animation_name.empty())
+    {
+        const auto& animations = animator.getAllAnimations();
+        auto it = animations.find(current_animation_name);
+        if (it != animations.end())
+        {
+            auto& frames = const_cast<std::vector<Frame>&>(it->second.frames); // Не очень красиво, но работает в редакторе
+
+            if (selected_frame_index >= 0 && selected_frame_index < static_cast<int>(frames.size()))
+            {
+                auto& frame = frames[selected_frame_index];
+
+                ImGui::Text("Current Frame: %d", selected_frame_index);
+
+                ImGui::Separator();
+
+                ImGui::DragInt("Left", &frame.rect.left);
+                ImGui::DragInt("Top", &frame.rect.top);
+                ImGui::DragInt("Width", &frame.rect.width);
+                ImGui::DragInt("Height", &frame.rect.height);
+
+                ImGui::Separator();
+
+                ImGui::DragFloat("Duration (s)", &frame.duration, 0.01f, 0.01f, 10.0f, "%.2f");
+            }
+            else
+            {
+                ImGui::Text("No valid frame selected.");
+            }
+        }
+        else
+        {
+            ImGui::Text("Animation not found.");
+        }
+    }
+    else
+    {
+        ImGui::Text("No animation selected.");
+    }
+
+    ImGui::EndChild();
+}
+
+void AnimationEditor::drawPlaybackControls()
+{
+    ImGui::BeginGroup();
+
+    if (!current_animation_name.empty())
+    {
+        auto it = animator.getAllAnimations().find(current_animation_name);
+        if (it != animator.getAllAnimations().end() && !it->second.frames.empty())
+        {
+            const auto& clip = it->second;
+
+            if (ImGui::Button(ICON::getStr(Icon::BEGIN).c_str()))
+            {
+                selected_frame_index = 0;
+                sprite.setTextureRect(clip.frames[selected_frame_index].rect);
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(ICON::getStr(Icon::PREV).c_str()))
+            {
+                selected_frame_index = std::max(0, selected_frame_index - 1);
+                sprite.setTextureRect(clip.frames[selected_frame_index].rect);
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(is_playing ? ICON::getStr(Icon::PAUSE).c_str() : ICON::getStr(Icon::PLAY).c_str()))
+            {
+                if (!current_animation_name.empty())
+                {
+                    if (animator.getCurrentAnimationName() != current_animation_name)
+                    {
+                        animator.setAnimation(current_animation_name, true);
+                    }
+
+                    is_playing = !is_playing;
+
+                    if (is_playing)
+                        animator.play();
+                    else
+                        animator.pause();
+                }
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(ICON::getStr(Icon::NEXT).c_str()))
+            {
+                selected_frame_index = std::min(static_cast<int>(clip.frames.size()) - 1, selected_frame_index + 1);
+                sprite.setTextureRect(clip.frames[selected_frame_index].rect);
+            }
+
+            ImGui::SameLine();
+            if (ImGui::Button(ICON::getStr(Icon::END).c_str()))
+            {
+                selected_frame_index = static_cast<int>(clip.frames.size()) - 1;
+                sprite.setTextureRect(clip.frames[selected_frame_index].rect);
+            }
+
+            ImGui::SameLine();
+            ImGui::Separator();
+
+            if (ImGui::Button(ICON::getStr(Icon::LOOP).c_str()))
+            {
+                is_looping != is_looping;
+            }
+        }
+    }
+
+    ImGui::EndGroup();
+}
+
+void AnimationEditor::drawSpriteSheet()
 {
     ImGui::BeginChild("SpriteSheet", ImVec2(0, 0), true);
+
     if (texture.getSize().x > 0)
     {
-        static int value = 96;
-        const int minValue = 32, maxValue = 128;
+        static int scaleValue = 96;
+        const int cols = texture.getSize().x / tileSize;
+        const int rows = texture.getSize().y / tileSize;
 
-        ImVec2 scale_factor = ImVec2(value, value);
-        constexpr int tileSize = 64;
-        int cols = texture.getSize().x / tileSize;
-        int rows = texture.getSize().y / tileSize;
-
-        ImGui::SliderInt("Scale", &value, minValue, maxValue);
-
-        ImTextureID texId = (ImTextureID)(intptr_t)texture.getNativeHandle();
+        ImGui::SliderInt("Scale", &scaleValue, 32, 128);
+        ImTextureID texId = static_cast<ImTextureID>(texture.getNativeHandle());
 
         if (ImGui::BeginTable("Tiles", cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
         {
@@ -222,24 +284,27 @@ void AnimationEditor::spriteSheet()
                     ImVec2 uv0(col / (float)cols, row / (float)rows);
                     ImVec2 uv1((col + 1) / (float)cols, (row + 1) / (float)rows);
 
-                    int current_index = row * cols + col;
-                    bool is_current = (selected_tile_index == current_index);
+                    const int index = row * cols + col;
+                    const bool isSelected = (index == selected_tile_index);
 
-                    if (is_current)
+                    if (isSelected)
                     {
                         ImGui::PushStyleColor(ImGuiCol_Border, IM_COL32(255, 0, 0, 255));
                         ImGui::PushStyleVar(ImGuiStyleVar_FrameBorderSize, 2.0f);
                     }
 
-                    if (ImGui::ImageButton("Tile", texId, scale_factor, uv0, uv1))
+                    if (ImGui::ImageButton("##Tile", texId, ImVec2(scaleValue, scaleValue), uv0, uv1))
                     {
-                        selected_tile_index = current_index;
+                        selected_tile_index = index;
                     }
 
-                    if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+                    if (ImGui::IsItemHovered())
                     {
-                        ImGui::OpenPopup("AddFrameMenu");
-                        selected_tile_index = current_index;
+                        if (ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+                        {
+                            selected_tile_index = index;
+                            ImGui::OpenPopup("AddFrameMenu");
+                        }
                     }
 
                     if (ImGui::BeginPopup("AddFrameMenu"))
@@ -251,7 +316,7 @@ void AnimationEditor::spriteSheet()
                         ImGui::EndPopup();
                     }
 
-                    if (is_current)
+                    if (isSelected)
                     {
                         ImGui::PopStyleColor();
                         ImGui::PopStyleVar();
@@ -262,132 +327,65 @@ void AnimationEditor::spriteSheet()
             }
             ImGui::EndTable();
         }
-
-        if (show_context_menu && context_menu_tile_index.has_value())
-        {
-            if (ImGui::BeginPopupContextVoid("TileContextMenu"))
-            {
-                if (ImGui::MenuItem("Add Frame"))
-                {
-                    selected_tile_index = context_menu_tile_index.value();
-
-                    // Добавляем новый кадр
-                    if (!current_animation_name.empty())
-                    {
-                        auto it = animator.getAllAnimations().find(current_animation_name);
-                        if (it != animator.getAllAnimations().end())
-                        {
-                            auto& frames = const_cast<std::vector<sf::IntRect>&>(it->second.frames);
-                            constexpr int tileSize = 64;
-                            int cols = texture.getSize().x / tileSize;
-                            if (cols <= 0) return;
-
-                            int x = selected_tile_index % cols;
-                            int y = selected_tile_index / cols;
-
-                            sf::IntRect defaultRect(
-                                x * tileSize,
-                                y * tileSize,
-                                tileSize,
-                                tileSize
-                            );
-
-                            frames.push_back(defaultRect);
-                            selected_frame_index = static_cast<int>(frames.size() - 1);
-                            animator.addAnimation(current_animation_name, it->second);
-                        }
-                    }
-                }
-                ImGui::EndPopup();
-            }
-            show_context_menu = false;
-        }
     }
+
     ImGui::EndChild();
 }
 
-void AnimationEditor::playbackButtons()
+void AnimationEditor::removeFrame(const std::string& animationName, size_t index)
 {
-    ImGui::BeginGroup();
+    auto it = animator.getAllAnimations().find(animationName);
+    if (it == animator.getAllAnimations().end())
+        return;
 
-    if (!current_animation_name.empty())
-    {
-        auto it = animator.getAllAnimations().find(current_animation_name);
-        if (it != animator.getAllAnimations().end())
-        {
-            const auto& clip = it->second;
+    AnimationClip clip = it->second;
+    if (index >= clip.frames.size())
+        return;
 
-            if (clip.frames.empty())
-                return;
+    clip.frames.erase(clip.frames.begin() + index);
+    selected_frame_index = std::max(-1, static_cast<int>(index) - 1);
 
-            if (ImGui::Button((ICON::getStr(Icon::BEGIN) + "##Begin").c_str()))
-            {
-                selected_frame_index = 0;
-                sprite.setTextureRect(clip.frames[selected_frame_index]);
-            }
-
-            ImGui::SameLine(0.0f, 5.0f);
-
-            if (ImGui::Button((ICON::getStr(Icon::PREV) + "##Prev").c_str()))
-            {
-                selected_frame_index = std::max(0, selected_frame_index - 1);
-                sprite.setTextureRect(clip.frames[selected_frame_index]);
-            }
-
-            ImGui::SameLine(0.0f, 5.0f);
-
-            if (ImGui::Button(is_playing ? (ICON::getStr(Icon::PAUSE) + "##Pause").c_str() : (ICON::getStr(Icon::PLAY) + "##Play").c_str()))
-            {
-                is_playing = !is_playing;
-                if (is_playing)
-                    animator.play();
-                else
-                    animator.pause();
-            }
-
-            ImGui::SameLine(0.0f, 5.0f);
-
-            if (ImGui::Button((ICON::getStr(Icon::NEXT) + "##Next").c_str()))
-            {
-                selected_frame_index = std::min(static_cast<int>(clip.frames.size()) - 1, selected_frame_index + 1);
-                sprite.setTextureRect(clip.frames[selected_frame_index]);
-            }
-
-            ImGui::SameLine(0.0f, 5.0f);
-
-            if (ImGui::Button((ICON::getStr(Icon::END) + "##End").c_str()))
-            {
-                selected_frame_index = static_cast<int>(clip.frames.size()) - 1;
-                sprite.setTextureRect(clip.frames[selected_frame_index]);
-            }
-        }
-    }
-
-    ImGui::EndGroup();
+    animator.addAnimation(animationName, clip);
 }
+
+void AnimationEditor::updateSelectedTileFromFrame()
+{
+    const int cols = texture.getSize().x / tileSize;
+    if (cols <= 0) return;
+
+    const sf::IntRect& rect = animator.getAllAnimations().at(current_animation_name).frames[selected_frame_index].rect;
+    const int x = rect.left / tileSize;
+    const int y = rect.top / tileSize;
+    selected_tile_index = y * cols + x;
+}
+
 
 void AnimationEditor::addFrameFromSelectedTile()
 {
     if (texture.getSize().x <= 0 || current_animation_name.empty())
         return;
 
-    constexpr int tileSize = 64;
     auto it = animator.getAllAnimations().find(current_animation_name);
     if (it == animator.getAllAnimations().end())
         return;
 
-    int cols = texture.getSize().x / tileSize;
+    const int cols = texture.getSize().x / tileSize;
     if (cols <= 0)
         return;
 
-    int x = selected_tile_index % cols;
-    int y = selected_tile_index / cols;
+    const int x = selected_tile_index % cols;
+    const int y = selected_tile_index / cols;
 
     sf::IntRect rect(x * tileSize, y * tileSize, tileSize, tileSize);
-    auto& frames = const_cast<std::vector<sf::IntRect>&>(it->second.frames);
-    frames.push_back(rect);
-    selected_frame_index = static_cast<int>(frames.size() - 1);
-    animator.addAnimation(current_animation_name, it->second);
-}
 
-#pragma endregion
+    Frame newFrame;
+    newFrame.rect = rect;
+    newFrame.duration = 1.0f;
+
+    AnimationClip modifiedClip = it->second;
+    modifiedClip.frames.push_back(newFrame);
+
+    selected_frame_index = static_cast<int>(modifiedClip.frames.size() - 1);
+
+    animator.addAnimation(current_animation_name, modifiedClip);
+}

@@ -1,13 +1,11 @@
 #include "Animator.hpp"
 
 
-
 #pragma region AnimationClip
 
-void AnimationClip::addFrame(sf::IntRect rect)
+void AnimationClip::addFrame(sf::IntRect rect, float duration)
 {
-    frames.push_back(rect);
-    total_duration = static_cast<float>(frames.size()) * 0.1f;
+    frames.push_back({ rect, duration });
 }
 
 bool AnimationClip::removeFrame(int index)
@@ -15,24 +13,22 @@ bool AnimationClip::removeFrame(int index)
     if (index >= 0 && index < frames.size())
     {
         frames.erase(frames.begin() + index);
-        total_duration = static_cast<float>(frames.size()) * 0.1f;
         return true;
     }
     return false;
 }
 
-void AnimationClip::clearFrames()
+void AnimationClip::clearAllFrames()
 {
     frames.clear();
-    total_duration = 0.0f;
 }
 
 void AnimationClip::flipHorizontally()
 {
     for (auto& frame : frames)
     {
-        frame.left += frame.width;
-        frame.width *= -1;
+        frame.rect.left += frame.rect.width;
+        frame.rect.width *= -1;
     }
 }
 
@@ -50,7 +46,14 @@ Animator::Animator(sf::Sprite& sprite)
 void Animator::addAnimation(const std::string& name, const AnimationClip& clip)
 {
     if (!clip.frames.empty()) 
+    {
         animations[name] = clip;
+    }
+}
+
+void Animator::clearAllAnimations()
+{
+    animations.clear();
 }
 
 void Animator::setAnimation(const std::string& name, bool loop)
@@ -61,7 +64,6 @@ void Animator::setAnimation(const std::string& name, bool loop)
         animation_state.current_frame     = 0;
         animation_state.elapsed_time      = 0.0f;
         animation_state.is_looping        = loop;
-        animation_state.is_playing        = true;
 
         if (!animation_state.is_playing)
             play();
@@ -89,7 +91,7 @@ void Animator::stop()
     animation_state.current_frame = 0;
 }
 
-void Animator::update(float dt)
+void Animator::update(float delta_time)
 {
     if (!animation_state.is_playing || animation_state.current_animation.empty())
         return;
@@ -107,32 +109,43 @@ void Animator::update(float dt)
         return;
     }
 
-    animation_state.elapsed_time += dt * speed;
+    int current_index    = animation_state.current_frame;
+    float elapsed        = animation_state.elapsed_time;
+    float frame_duration = clip.frames[current_index].duration;
 
-    if (animation_state.elapsed_time >= clip.total_duration)
+    elapsed += delta_time * speed;
+
+    if (elapsed >= frame_duration)
     {
-        animation_state.elapsed_time = 0.0f;
+        elapsed = 0.0f;
+        ++current_index;
 
-        if (animation_state.is_looping || animation_state.current_frame < static_cast<int>(clip.frames.size() - 1))
+        if (current_index >= static_cast<int>(clip.frames.size()))
         {
-            animation_state.current_frame = (animation_state.current_frame + 1) % static_cast<int>(clip.frames.size());
-        }
-        else
-        {
-            animation_state.is_playing = false;
-            if (finished_callback)
-                finished_callback(animation_state.current_animation);
+            if (animation_state.is_looping)
+                current_index = 0;
+            else
+            {
+                animation_state.is_playing = false;
+                current_index = static_cast<int>(clip.frames.size()) - 1;
+
+                if (finished_callback)
+                    finished_callback(animation_state.current_animation);
+            }
         }
 
-        if (animation_state.current_frame >= 0 &&
-            animation_state.current_frame < static_cast<int>(clip.frames.size()))
-        {
-            sprite.setTextureRect(clip.frames[animation_state.current_frame]);
-        }
-        else
-        {
-            sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
-        }
+        animation_state.current_frame = current_index;
+    }
+
+    animation_state.elapsed_time = elapsed;
+
+    if (current_index >= 0 && current_index < static_cast<int>(clip.frames.size()))
+    {
+        sprite.setTextureRect(clip.frames[current_index].rect);
+    }
+    else
+    {
+        sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
     }
 }
 
@@ -174,9 +187,15 @@ void Animator::setAnimationFrame(int frameIndex)
         if (it != animations.end() && frameIndex >= 0 && frameIndex < static_cast<int>(it->second.frames.size()))
         {
             animation_state.current_frame = frameIndex;
-            sprite.setTextureRect(it->second.frames[frameIndex]);
+            animation_state.elapsed_time = 0.0f;
+            sprite.setTextureRect(it->second.frames[frameIndex].rect);
         }
     }
+}
+
+const std::string& Animator::getCurrentAnimationName() const
+{
+    return animation_state.current_animation;
 }
 
 #pragma endregion
@@ -184,7 +203,6 @@ void Animator::setAnimationFrame(int frameIndex)
 
 
 #pragma region AnimationLoader
-
 bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animator)
 {
     std::ifstream file("resources/Animations/" + filename + ".json");
@@ -200,7 +218,9 @@ bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animat
     file.close();
 
     if (jsonData.contains("texture"))
+    {
         std::string textureName = jsonData["texture"];
+    }
 
     if (jsonData.contains("animations"))
     {
@@ -208,23 +228,27 @@ bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animat
         {
             AnimationClip clip;
 
-            clip.total_duration = animJson.value("total_duration", 10.0f);
-
             if (animJson.contains("frames"))
             {
                 for (const auto& frameJson : animJson["frames"])
                 {
-                    sf::IntRect rect(frameJson.value("left", 0),
+                    sf::IntRect rect(
+                        frameJson.value("left", 0),
                         frameJson.value("top", 0),
                         frameJson.value("width", 0),
-                        frameJson.value("height", 0));
+                        frameJson.value("height", 0)
+                    );
+                    float duration = frameJson.value("duration", 1.0f);
 
-                    clip.frames.push_back(rect);
+                    clip.addFrame(rect, duration);
                 }
             }
+
+            bool loop = animJson.value("loop", true);
             animator.addAnimation(animName, clip);
         }
     }
+
     return true;
 }
 
@@ -242,14 +266,17 @@ bool AnimationLoader::saveToFile(const std::string& filename, const Animator& an
         json framesJson;
         for (const auto& frame : clip.frames)
         {
-            framesJson.push_back({ {"left",   frame.left},
-                                  {"top",    frame.top},
-                                  {"width",  frame.width},
-                                  {"height", frame.height} });
+            framesJson.push_back({
+                {"left",     frame.rect.left},
+                {"top",      frame.rect.top},
+                {"width",    frame.rect.width},
+                {"height",   frame.rect.height},
+                {"duration", frame.duration}
+                });
         }
 
-        animationsJson[name]["total_duration"] = clip.total_duration;
         animationsJson[name]["frames"] = framesJson;
+        animationsJson[name]["loop"] = true;
     }
 
     jsonData["animations"] = animationsJson;

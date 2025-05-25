@@ -3,25 +3,28 @@
 #include <iostream>
 #include <fstream>
 
-#include <json.hpp>
-#include <imgui.h>
-#include <imgui-SFML.h>
-
 #include <Common/Common.h>
-#include <Common/IconText.h>
 #include <Resource/ResourceManager.hpp>
 
 
 #pragma region AnimationClip
 
+struct Frame 
+{
+    sf::IntRect rect;
+    float duration = 1.0f;
+};
+
 struct AnimationClip 
 {
-    std::vector<sf::IntRect> frames;
-    float total_duration = 0.1f;
+    std::vector<Frame> frames;
 
-    void addFrame(sf::IntRect rect);
+    void addFrame(sf::IntRect rect, float duration = 1.0f);
+
     bool removeFrame(int index);
-    void clearFrames();
+
+    void clearAllFrames();
+
     void flipHorizontally();
 };
 
@@ -38,21 +41,32 @@ public:
     explicit Animator(sf::Sprite& sprite);
 
     void addAnimation(const std::string& name, const AnimationClip& clip);
+
+    void clearAllAnimations();
+
     void setAnimation(const std::string& name, bool loop = true);
+
     void play();
+
     void pause();
+
     void stop();
 
     void update(float dt);
 
     void onAnimationFinished(FinishedCallback callback);
+
     void setSprite(const sf::Sprite& sprite);
+
     const sf::Sprite& getSprite() const;
 
     void setAnimationSpeed(float speed);
+
     float getAnimationSpeed() const;
 
     void setAnimationFrame(int frameIndex);
+
+    const std::string& getCurrentAnimationName() const;
 
     const std::map<std::string, AnimationClip>& getAllAnimations() const;
 
