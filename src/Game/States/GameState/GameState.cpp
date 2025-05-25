@@ -157,7 +157,7 @@ void GameState::renderMenu()
 {
     ImGui::Begin("GameMenu##", nullptr, ImGuiWindowFlags_NoTitleBar | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove | ImGuiWindowFlags_AlwaysAutoResize);
 
-    if (ImGui::Button((Localization::getInstance().get("T_exit")).c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(LOCLIZATION("T_exit"), ImVec2(120, 0)))
         state_machine.lastState();
 
     ImGui::SameLine();
@@ -199,13 +199,13 @@ void GameState::renderHelp()
     ImGui::Text("(%.1f , %.1f)", common::mouse_pos_view.x, common::mouse_pos_view.y);
     ImGui::NextColumn();
 
-    ImGui::Text(Localization::getInstance().get("T_Province_name").c_str()); 
+    ImGui::Text(LOCLIZATION("T_Province_name"));
     ImGui::NextColumn();
 
     ImGui::Text("%s", chr);
     ImGui::NextColumn();
 
-    ImGui::Text(Localization::getInstance().get("T_Province_id").c_str());
+    ImGui::Text(LOCLIZATION("T_Province_id"));
     ImGui::NextColumn();
 
     ImGui::Text("%d", world_map.getProvinceID(world_map.getColor()));
@@ -214,7 +214,7 @@ void GameState::renderHelp()
     ImGui::Separator();
     ImGui::Columns(1);
 
-    ImGui::SliderFloat(Localization::getInstance().get("T_transparency").c_str(), &world_map.transparency, 0.0f, 1.0f);
+    ImGui::SliderFloat(LOCLIZATION("T_transparency"), &world_map.transparency, 0.0f, 1.0f);
     ImGui::End();
 }
 

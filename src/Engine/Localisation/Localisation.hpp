@@ -6,6 +6,8 @@
 
 #include "../Settings/WindowSettings.h"
 
+#define LOCLIZATION(...) Localization::getInstance().get(__VA_ARGS__).c_str()
+
 /// @brief Interface for localization.
 class ILocalization
 {

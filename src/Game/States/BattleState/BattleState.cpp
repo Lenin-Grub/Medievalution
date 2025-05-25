@@ -127,7 +127,6 @@ void BattleState::draw(sf::RenderTarget* target)
     pathfinding.draw(window);
     registry.draw(registry.getRegistry(), window);
     gizmos.draw();
-
     endView(target);
     ImGui::SFML::Render(window);
 }

@@ -41,22 +41,22 @@ void MenuState::updateImGui()
                                      | ImGuiWindowFlags_NoResize
                                      | ImGuiWindowFlags_NoMove);
 
-    if (ImGui::Button(Localization::getInstance().get("T_new_game").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(LOCLIZATION("T_new_game"), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<LoadingState>(data, state_machine, window, false);
     }
     
-    if (ImGui::Button(Localization::getInstance().get("T_battle_scene").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(LOCLIZATION("T_battle_scene"), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<BattleState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::getInstance().get("T_settings").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(LOCLIZATION("T_settings"), ImVec2(120, 0)))
     {
         next_state = StateMachine::build<SettingsState>(data, state_machine, window, false);
     }
 
-    if (ImGui::Button(Localization::getInstance().get("T_exit").c_str(), ImVec2(120, 0)))
+    if (ImGui::Button(LOCLIZATION("T_exit"), ImVec2(120, 0)))
     {
         state_machine.quit();
     }

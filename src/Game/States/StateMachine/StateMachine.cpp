@@ -81,7 +81,7 @@ void StateMachine::init()
 
 void StateMachine::update()
 {
-    dtime = clock.restart().asMilliseconds();
+    dtime = clock.restart().asSeconds();
 
     while (states.top()->window.pollEvent(common::sfml_event))
     {
