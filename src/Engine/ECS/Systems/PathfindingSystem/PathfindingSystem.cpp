@@ -12,7 +12,6 @@ void PathfindingSystem::update(entt::registry& registry, Pathfinding& global_pat
 
         if (path_component.path.empty() || path_component.current_node_index >= path_component.path.size())
         {
-            // Проверяем, есть ли компонент State
             if (registry.try_get<Components::State>(entity))
             {
                 auto& state = registry.get<Components::State>(entity);

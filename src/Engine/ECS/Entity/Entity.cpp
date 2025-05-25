@@ -97,7 +97,7 @@
 
         entity.addComponent<Components::Velocity>(Components::Velocity{
             .velocity = sf::Vector2f(0.0f, 0.0f),
-            .speed = 0.2f
+            .speed = 300.0f
             });
 
         entity.addComponent<Components::Sprite>(Components::Sprite{
