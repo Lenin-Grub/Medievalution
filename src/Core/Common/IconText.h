@@ -35,6 +35,7 @@ enum class Icon
     PLAY            = 0xe96B,
     ON_OFF          = 0xe96D,
     UPDATE          = 0xe970,
+    LOOP            = 0xe971,
     BEGIN           = 0xe972,
     UNDO            = 0xe973,
     REDO            = 0xe974,
