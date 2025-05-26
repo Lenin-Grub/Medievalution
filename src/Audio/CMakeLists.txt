@@ -26,5 +26,6 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 # Подключение зависимостей
 target_link_libraries(${PROJECT_NAME} PUBLIC
     sfml-system
+    sfml-audio
     Core
 )
