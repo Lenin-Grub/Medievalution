@@ -1,7 +1,7 @@
 #pragma once
 #include <States/State/State.hpp>
 #include <States/StateMachine/StateMachine.hpp>
-#include <Settings/WindowSettings.h>"
+#include <Settings/WindowSettings.h>
 #include <Resource/ResourceManager.hpp>
 
 class StateMachine;

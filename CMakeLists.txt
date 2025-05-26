@@ -4,7 +4,7 @@ project(Medievalution)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT ${PROJECT_NAME})
 
-FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/main.cpp)
+FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/src/Main.cpp)
 
 add_compile_definitions("DEBUG=$<CONFIG:Debug>")
 
