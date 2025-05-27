@@ -47,13 +47,6 @@ public:
     /// @param height The height of the grid.
     void initNodes(int width, int height);
 
-    /// @brief Draws the nodes and paths on the given render window.
-    /// @param window The render window to draw on.
-    void draw(sf::RenderWindow& window);
-
-    /// @brief Handles user input for pathfinding operations.
-    void handleInput();
-
     /// @brief Finds a path from the start node to the end node using a pathfinding algorithm.
     /// @param start The start node.
     /// @param end The end node.
@@ -84,6 +77,11 @@ public:
     /// @param node2 The second node to connect.
     void connect(Node* node1, Node* node2, float cost);
 
+    /// @brief Disconnects two nodes, preventing pathfinding between them.
+    /// @param node1 The first node to disconnect.
+    /// @param node2 The second node to disconnect.
+    void disconnect(Node* node1, Node* node2);
+
     /// @brief Connects two nodes, allowing pathfinding between them.
     /// @param node1 The first node to connect.
     /// @param node2 The second node to connect.
@@ -91,27 +89,22 @@ public:
 
     Node* getNodeByGridPosition(sf::Vector2i pos);
 
-    void drawNodeCost(sf::RenderWindow& window, sf::Font& font);
-
-    /// @brief Disconnects two nodes, preventing pathfinding between them.
-    /// @param node1 The first node to disconnect.
-    /// @param node2 The second node to disconnect.
-    void disconnect(Node* node1, Node* node2);
-
     /// @brief Gets the node at the specified position.
     /// @param position The position of the node to retrieve.
     /// @return The node at the specified position, or nullptr if not found.
     Node* getNode(const sf::Vector2f& position);
 
+    const std::unordered_map<sf::Vector2f, Node, Vector2fHash>& getNodes() const;
+
     std::vector<Node*> path() const;
 
     Node* getNodeByMousePosition(const sf::Vector2f& mousePosition);
 
-    Node* getRandomEndNode() const;
-
     sf::Vector2i getMouseGridPosition();
 
     void setPathMode(PathMode mode);
+
+    const PathMode& getPathMode() const;
 
     /// @brief Map of nodes indexed by their position.
     std::unordered_map<sf::Vector2f, Node, Vector2fHash> nodes; 
@@ -130,5 +123,35 @@ public:
 
 private:
     PathMode path_mode;
-    sf::Font font;
+};
+
+
+class PathfindingRenderer 
+{
+public:
+    static void render(const Pathfinding& pathfinding, sf::RenderWindow& window);
+
+private:
+    static void drawConnections(const Pathfinding& pathfinding, sf::RenderWindow& window);
+    static void drawNodes(const Pathfinding& pathfinding, sf::RenderWindow& window);
+    static void drawPath(const Pathfinding& pathfinding, sf::RenderWindow& window);
+    static void drawNodeCost(const Pathfinding& pathfinding, sf::RenderWindow& window, const Node& node);
+    static sf::Color getCostColor(float cost, float maxCost = 10.0f);
+
+private:
+    //sf::Font font;
+};
+
+class PathfindingInputSystem
+{
+public:
+    static void handleInput(Pathfinding& pathfinding);
+};
+
+class GridSystem 
+{
+public:
+    static void generateGrid(Pathfinding& pathfinding, int width, int height);
+    static void connectNeighbors(Pathfinding& pathfinding, int x, int y, int mapWidth, int mapHeight, bool connectDiagonals = true);
+    static sf::Vector2i getGridPosition(const Pathfinding& pathfinding, const sf::Vector2f& mousePosition);
 };

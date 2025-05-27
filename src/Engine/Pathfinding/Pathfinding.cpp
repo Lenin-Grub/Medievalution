@@ -1,5 +1,7 @@
 #include "Pathfinding.h"
 
+#pragma region Pathfinding
+
 Pathfinding::Pathfinding()
     : start_node(nullptr)
     , end_node(nullptr)
@@ -13,8 +15,6 @@ Pathfinding::Pathfinding()
     , is_beginend_visible(false)
     , path_mode (PathMode::Isometric)
 {
-    //to do remove it here only for debuging
-    font = ResourceLoader::instance().getFont("OpenSans-Semibold.ttf");
 }
 
 void Pathfinding::initNodes(int width, int height)
@@ -43,105 +43,6 @@ void Pathfinding::initNodes(int width, int height)
             addNode(position);
             connectNeighbors(x, y, width, height, true);
         }
-    }
-}
-
-
-void Pathfinding::draw(sf::RenderWindow& window)
-{
-    sf::Vertex line[2];
-    sf::RectangleShape rect(tile_size);
-
-    // Draw lines between neighbors
-    if (is_connections_visible) 
-    {
-        for (const auto& pair : nodes)
-        {
-            const Node& node = pair.second;
-            for (const auto& [neighbor, cost] : node.edge_costs) 
-            {
-                sf::Color color = (cost > 1.0f) ? sf::Color::Yellow : sf::Color::Cyan; // colors for diagonal
-                line[0].position = node.position + sf::Vector2f(16, 16);
-                line[1].position = neighbor->position + sf::Vector2f(16, 16);
-                line[0].color = color;
-                line[1].color = color;
-
-                window.draw(line, 2, sf::Lines);
-            }
-        }
-    }
-
-    // Draw nodes
-    if (is_beginend_visible || is_nodes_visible)
-    {
-        for (const auto& pair : nodes)
-        {
-            const Node& node = pair.second;
-            rect.setPosition(node.position);
-
-            if (is_beginend_visible)
-            {
-                if (&node == start_node)
-                    drawNodeCost(window, font);
-                else
-                    continue;
-
-                //window.draw(rect);
-            }
-            else if (is_nodes_visible && !node.walkable)
-            {
-                rect.setFillColor(sf::Color::Red);
-                window.draw(rect);
-            }
-        }
-    }
-
-  
-    // Draw path
-    if (is_path_visible && end_node != nullptr)
-    {
-        glLineWidth(5.0f);
-        Node* p = end_node;
-        while (p->parent != nullptr)
-        {
-            line[0].position = p->position + sf::Vector2f(16, 16);
-            line[1].position = p->parent->position + sf::Vector2f(16, 16);
-            line[0].color    = sf::Color::Blue;
-            line[1].color    = sf::Color::Blue;
-
-            window.draw(line, 2, sf::Lines);
-            p = p->parent;
-        }
-        glLineWidth(1.0f);
-    }
-}
-
-
-void Pathfinding::handleInput()
-{
-    Node* node = getNodeByMousePosition(common::mouse_pos_view);
-    if (node)
-    {
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-            node->walkable = false;
-
-        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
-            node->walkable = true;
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-        {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-            {
-                node->terrainCost = std::min(10.0f, node->terrainCost + 0.5f);
-            }
-            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-            {
-                node->terrainCost = std::max(0.0f, node->terrainCost - 0.5f);
-            }
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
-            resetWalkable();
     }
 }
 
@@ -181,7 +82,7 @@ void Pathfinding::findPath(Node* start, Node* end)
             if (!neighbor->walkable || closedSet.count(neighbor)) continue;
 
             sf::Vector2f delta = neighbor->position - current->position;
-            float baseCost = std::sqrt(delta.x * delta.x + delta.y * delta.y); // длина шага
+            float baseCost = std::sqrt(delta.x * delta.x + delta.y * delta.y);
             float terrainFactor = (current->terrainCost + neighbor->terrainCost) / 2.0f;
             float edgeCost = baseCost * terrainFactor;
 
@@ -224,10 +125,13 @@ int Pathfinding::heuristic(Node* start, Node* end, HeuristicType type)
     {
     case HeuristicType::Manhattan:
         return dx + dy;
+
     case HeuristicType::Euclidean:
         return static_cast<int>(std::sqrt(dx * dx + dy * dy));
+
     case HeuristicType::Diagonal:
         return std::max(dx, dy);
+
     default:
         return dx + dy;
     }
@@ -304,6 +208,11 @@ Node* Pathfinding::getNode(const sf::Vector2f& position)
     return nullptr;
 }
 
+const std::unordered_map<sf::Vector2f, Node, Vector2fHash>& Pathfinding::getNodes() const
+{
+    return nodes;
+}
+
 std::vector<Node*> Pathfinding::path() const 
 {
     std::vector<Node*> path;
@@ -351,19 +260,6 @@ Node* Pathfinding::getNodeByMousePosition(const sf::Vector2f& mousePosition)
     return nullptr;
 }
 
-Node* Pathfinding::getRandomEndNode() const
-{
-    // Extract nodes into a vector
-    std::vector<Node*> nodeVector;
-    for (const auto& pair : nodes) 
-    {
-        nodeVector.push_back(const_cast<Node*>(&pair.second));
-    }
-
-    // Return a random node from the vector
-    return nodeVector[std::rand() % nodeVector.size()];
-}
-
 sf::Vector2i Pathfinding::getMouseGridPosition()
 {
     const float tileW = 64, tileH = 32;
@@ -387,6 +283,11 @@ sf::Vector2i Pathfinding::getMouseGridPosition()
 void Pathfinding::setPathMode(PathMode mode)
 {
     path_mode = mode;
+}
+
+const PathMode& Pathfinding::getPathMode() const
+{
+    return path_mode;
 }
 
 void Pathfinding::connectNeighbors(int x, int y, int map_width, int map_height, bool connect_diagonals)
@@ -457,9 +358,108 @@ Node* Pathfinding::getNodeByGridPosition(sf::Vector2i pos)
     return nullptr;
 }
 
-//to do remove it here only for debuging
+#pragma endregion
 
-sf::Color getCostColor(float cost, float maxCost = 5.0f)
+
+#pragma region RenderPathfinding
+
+void PathfindingRenderer::render(const Pathfinding& pathfinding, sf::RenderWindow& window)
+{
+    if (pathfinding.is_connections_visible)
+        drawConnections(pathfinding, window);
+
+    if (pathfinding.is_nodes_visible || pathfinding.is_beginend_visible)
+        drawNodes(pathfinding, window);
+
+    if (pathfinding.is_path_visible && pathfinding.end_node)
+        drawPath(pathfinding, window);
+}
+
+void PathfindingRenderer::drawConnections(const Pathfinding& pathfinding, sf::RenderWindow& window)
+{
+    sf::Vertex line[2];
+    for (const auto& pair : pathfinding.getNodes())
+    {
+        const Node& node = pair.second;
+        for (const auto& [neighbor, cost] : node.edge_costs)
+        {
+            sf::Color color = (cost > 1.0f) ? sf::Color::Yellow : sf::Color::Cyan;
+            line[0].position = node.position + sf::Vector2f(16, 16);
+            line[1].position = neighbor->position + sf::Vector2f(16, 16);
+            line[0].color = color;
+            line[1].color = color;
+            window.draw(line, 2, sf::Lines);
+        }
+    }
+}
+
+void PathfindingRenderer::drawNodes(const Pathfinding& pathfinding, sf::RenderWindow& window)
+{
+    sf::RectangleShape rect(pathfinding.tile_size);
+    for (const auto& pair : pathfinding.getNodes())
+    {
+        const Node& node = pair.second;
+        rect.setPosition(node.position);
+
+        if (pathfinding.is_beginend_visible)
+        {
+            if (&node == pathfinding.start_node)
+            {
+                rect.setFillColor(sf::Color::Green);
+                window.draw(rect);
+            }
+        }
+        else if (pathfinding.is_nodes_visible && !node.walkable)
+        {
+            rect.setFillColor(sf::Color::Red);
+            window.draw(rect);
+        }
+    }
+
+    if (pathfinding.is_nodes_visible)
+    {
+        for (const auto& pair : pathfinding.getNodes())
+        {
+            const Node& node = pair.second;
+            if (node.walkable)
+                drawNodeCost(pathfinding, window, node);
+        }
+    }
+}
+
+void PathfindingRenderer::drawPath(const Pathfinding& pathfinding, sf::RenderWindow& window)
+{
+    glLineWidth(5.0f);
+    sf::Vertex line[2];
+    Node* p = pathfinding.end_node;
+    while (p && p->parent)
+    {
+        line[0].position = p->position + sf::Vector2f(16, 16);
+        line[1].position = p->parent->position + sf::Vector2f(16, 16);
+        line[0].color = sf::Color::Blue;
+        line[1].color = sf::Color::Blue;
+        window.draw(line, 2, sf::Lines);
+        p = p->parent;
+    }
+    glLineWidth(1.0f);
+}
+
+void PathfindingRenderer::drawNodeCost(const Pathfinding& pathfinding, sf::RenderWindow& window, const Node& node)
+{
+    //sf::Text text;
+    //text.setFont(font);
+    //text.setCharacterSize(14);
+    //text.setFillColor(getCostColor(node.terrainCost));
+    //std::stringstream ss;
+    //ss << std::fixed << std::setprecision(1) << node.terrainCost;
+    //text.setString(ss.str());
+    //sf::FloatRect bounds = text.getLocalBounds();
+    //text.setOrigin(bounds.width / 2, bounds.height / 2);
+    //text.setPosition(node.position.x, node.position.y + pathfinding.tile_size.y / 4);
+    //window.draw(text);
+}
+
+sf::Color PathfindingRenderer::getCostColor(float cost, float maxCost)
 {
     float intensity = std::min(1.0f, cost / maxCost);
     int r = static_cast<int>(255 * intensity);
@@ -467,29 +467,125 @@ sf::Color getCostColor(float cost, float maxCost = 5.0f)
     return sf::Color(r, g, 0);
 }
 
-    //to do remove it here only for debuging
-void Pathfinding::drawNodeCost(sf::RenderWindow& window, sf::Font& font)
+#pragma endregion
+
+
+#pragma region InputPathfinding
+
+void PathfindingInputSystem::handleInput(Pathfinding& pathfinding)
 {
-    sf::Text text;
-    text.setFont(font);
-    text.setCharacterSize(14);
-    text.setFillColor(sf::Color::White);
-
-    for (const auto& pair : nodes)
+    Node* node = pathfinding.getNodeByMousePosition(common::mouse_pos_view);
+    if (node)
     {
-        const Node& node = pair.second;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            node->walkable = false;
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LShift))
+            node->walkable = true;
 
-        if (!node.walkable)
-            continue;
-        std::stringstream ss;
-        ss << std::fixed << std::setprecision(1) << node.terrainCost;
-        text.setString(ss.str());
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
+        {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+            {
+                node->terrainCost = std::min(10.0f, node->terrainCost + 0.5f);
+            }
+            else if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+            {
+                node->terrainCost = std::max(0.0f, node->terrainCost - 0.5f);
+            }
+        }
 
-        text.setFillColor(getCostColor(node.terrainCost));
-
-        sf::FloatRect bounds = text.getLocalBounds();
-        text.setOrigin(bounds.width / 2, bounds.height / 2);
-        text.setPosition(node.position.x, node.position.y + tile_size.y / 4); // чуть ниже центра ромба
-        window.draw(text);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Backspace))
+            pathfinding.resetWalkable();
     }
 }
+
+#pragma endregion
+
+#pragma region PathfindingGrid
+
+void GridSystem::generateGrid(Pathfinding& pathfinding, int width, int height)
+{
+    pathfinding.width = width;
+    pathfinding.height = height;
+    pathfinding.nodes.clear();
+
+    for (int y = 0; y < height; ++y)
+    {
+        for (int x = 0; x < width; ++x)
+        {
+            sf::Vector2f position;
+            if (pathfinding.getPathMode()  == PathMode::Isometric)
+            {
+                float isoX = (x - y) * pathfinding.tile_size.x / 2;
+                float isoY = (x + y) * pathfinding.tile_size.y / 2;
+                position = { isoX, isoY };
+            }
+            else
+            {
+                position = { x * pathfinding.tile_size.x, y * pathfinding.tile_size.y };
+            }
+
+            pathfinding.addNode(position);
+            connectNeighbors(pathfinding, x, y, width, height, true);
+        }
+    }
+}
+
+void GridSystem::connectNeighbors(Pathfinding& pathfinding, int x, int y, int mapWidth, int mapHeight, bool connectDiagonals)
+{
+    Node* current = pathfinding.getNodeByGridPosition({ x, y });
+    if (!current)
+        return;
+
+    const int dx[] = { -1, 0, 1, 0 };
+    const int dy[] = { 0, -1, 0, 1 };
+
+    for (int i = 0; i < 4; ++i)
+    {
+        int nx = x + dx[i];
+        int ny = y + dy[i];
+
+        if (nx >= 0 && ny >= 0 && nx < mapWidth && ny < mapHeight)
+        {
+            Node* neighbor = pathfinding.getNodeByGridPosition({ nx, ny });
+            if (neighbor)
+                pathfinding.connect(current, neighbor, 1.0f);
+        }
+    }
+
+    if (connectDiagonals)
+    {
+        const int ddx[] = { -1, 1, -1, 1 };
+        const int ddy[] = { -1, -1, 1, 1 };
+
+        for (int i = 0; i < 4; ++i)
+        {
+            int nx = x + ddx[i];
+            int ny = y + ddy[i];
+
+            if (nx >= 0 && ny >= 0 && nx < mapWidth && ny < mapHeight)
+            {
+                Node* diagNeighbor = pathfinding.getNodeByGridPosition({ nx, ny });
+                if (diagNeighbor)
+                    pathfinding.connect(current, diagNeighbor, std::sqrt(2.0f));
+            }
+        }
+    }
+}
+
+sf::Vector2i GridSystem::getGridPosition(const Pathfinding& pathfinding, const sf::Vector2f& mousePosition)
+{
+    const float tileW = pathfinding.tile_size.x;
+    const float tileH = pathfinding.tile_size.y;
+    const float halfW = tileW / 2, halfH = tileH / 2;
+
+    float mx = mousePosition.x;
+    float my = mousePosition.y;
+
+    int tileX = static_cast<int>((my / halfH + mx / halfW) / 2);
+    int tileY = static_cast<int>((my / halfH - mx / halfW) / 2);
+
+    return { tileX, tileY };
+}
+
+#pragma endregion
