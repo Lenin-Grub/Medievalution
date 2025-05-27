@@ -15,9 +15,3 @@ sf::Vector2f common::mouse_pos_view;
 Math         common::math;
 
 using namespace nlohmann;
-
-Common::Common()
-{
-    system("chcp 1251");
-    setlocale(LC_ALL, "ru");
-}

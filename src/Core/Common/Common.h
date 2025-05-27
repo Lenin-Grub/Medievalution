@@ -23,8 +23,6 @@ public:
     static sf::Vector2i mouse_pos_grid;
     static sf::Vector2f mouse_pos_view;
     static Math         math;
-
-    Common();
 };
 
 typedef Common common;
