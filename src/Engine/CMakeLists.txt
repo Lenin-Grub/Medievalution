@@ -32,8 +32,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     sfml-window
     sfml-system
     ImGui-SFML::ImGui-SFML
-    json
     EnTT::EnTT
+    json
     spdlog
     Core
 )
