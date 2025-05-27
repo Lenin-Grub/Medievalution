@@ -17,7 +17,7 @@ BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindo
 
 void BattleState::init()
 {
-    data.camera.setDefaulatView();
+    data.camera.setDefaultView();
     data.camera.reset();
 
     battle_map.init();
