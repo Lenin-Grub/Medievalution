@@ -1,18 +1,14 @@
 ﻿#include "Camera.h"
 
 Camera::Camera()
-    : max_zoom          (1500)
-    , min_zoom          (90)
-    , pan_threshold     (5.0f)
-    , arrival_threshold (1.0f)
-    , is_panning        (false)
+    : is_panning(false)
     , is_moved_to_focus (false)
     , auto_focusing     (false)
 {
     window_size = sf::Vector2f(WindowSettings::getInstance().settings.resolution.width, WindowSettings::getInstance().settings.resolution.height);
 }
 
-void Camera::setDefaulatView() noexcept
+void Camera::setDefaultView() const noexcept
 {
     common::view.setSize(window_size);
     common::view.setCenter(window_size / 2.f);
@@ -29,10 +25,10 @@ void Camera::move(const float& dtime) noexcept
     float zoom_factor    = common::view.getSize().x / WindowSettings::getInstance().settings.resolution.width;
     float adjusted_speed = WindowSettings::getInstance().settings.camera_speed * zoom_factor;
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) { common::view.move(0,-adjusted_speed * dtime   ); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) { common::view.move(0, adjusted_speed * dtime   ); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) { common::view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) { common::view.move(   adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.up))    { common::view.move(0,-adjusted_speed * dtime   ); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.down))  { common::view.move(0, adjusted_speed * dtime   ); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.left))  { common::view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.right)) { common::view.move(   adjusted_speed * dtime, 0); stopFocus(); }
 }
 
 void Camera::zoom() noexcept
@@ -41,12 +37,12 @@ void Camera::zoom() noexcept
     {
         if (common::sfml_event.mouseWheelScroll.delta > 0)
         {
-            if (common::view.getSize().x <= max_zoom || common::view.getSize().y <= max_zoom)
+            if (common::view.getSize().x <= camera_settings.max_zoom || common::view.getSize().y <= camera_settings.max_zoom)
                 common::view.zoom(1.1);
         }
         else if (common::sfml_event.mouseWheelScroll.delta < 0)
         {
-            if (common::view.getSize().x >= min_zoom || common::view.getSize().y >= min_zoom)
+            if (common::view.getSize().x >= camera_settings.min_zoom || common::view.getSize().y >= camera_settings.min_zoom)
                 common::view.zoom(0.9);
         }
     }
@@ -54,25 +50,26 @@ void Camera::zoom() noexcept
 
 void Camera::scroll() noexcept
 {
-    if (common::sfml_event.type == sf::Event::MouseButtonPressed && common::sfml_event.mouseButton.button == sf::Mouse::Middle) 
+    if (common::sfml_event.type == sf::Event::MouseButtonPressed &&
+        common::sfml_event.mouseButton.button == sf::Mouse::Middle)
     {
-        prev_mouse_pos.x = common::mouse_pos_window.x;
-        prev_mouse_pos.y = common::mouse_pos_window.y;
-        is_panning       = true;
+        prev_mouse_pos = static_cast<sf::Vector2f>(common::mouse_pos_window);
+        is_panning = true;
         stopFocus();
     }
-    else if (common::sfml_event.type == sf::Event::MouseMoved && is_panning) 
+    else if (common::sfml_event.type == sf::Event::MouseMoved && is_panning)
     {
-        sf::Vector2f mouse_pos = (sf::Vector2f)common::mouse_pos_window;        
-        sf::Vector2f offset    = prev_mouse_pos - mouse_pos;
-        prev_mouse_pos         = mouse_pos;
-        
-        if (offset.x * offset.x + offset.y * offset.y > pan_threshold * pan_threshold)
+        sf::Vector2f mouse_pos = static_cast<sf::Vector2f>(common::mouse_pos_window);
+        sf::Vector2f offset   = prev_mouse_pos - mouse_pos;
+        prev_mouse_pos        = mouse_pos;
+
+        if (offset.x * offset.x + offset.y * offset.y > camera_settings.pan_threshold * camera_settings.pan_threshold)
             common::view.move(offset);
 
         stopFocus();
     }
-    else if (common::sfml_event.type == sf::Event::MouseButtonReleased && common::sfml_event.mouseButton.button == sf::Mouse::Middle) 
+    else if (common::sfml_event.type == sf::Event::MouseButtonReleased &&
+             common::sfml_event.mouseButton.button == sf::Mouse::Middle)
     {
         is_panning = false;
     }
@@ -132,5 +129,5 @@ void Camera::reset() noexcept
     auto_focusing     = false;
     is_moved_to_focus = false;
 
-    setDefaulatView();
+    setDefaultView();
 }

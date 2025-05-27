@@ -7,6 +7,21 @@
 
 #include "../Input/Input.h"
 
+struct CameraSettings 
+{
+    float min_zoom      = 90.0f;   ///< The maximum zoom level for the camera.
+    float max_zoom      = 1500.0f; ///< The minimum zoom level for the camera.
+    float pan_threshold = 5.0f;    ///< Distance threshold for reaching the focus point.
+};
+
+struct CameraControls 
+{
+    sf::Keyboard::Key up    = sf::Keyboard::W;
+    sf::Keyboard::Key down  = sf::Keyboard::S;
+    sf::Keyboard::Key left  = sf::Keyboard::A;
+    sf::Keyboard::Key right = sf::Keyboard::D;
+};
+
 /**
  * @class Camera
  * @brief A class for handling camera functionality within an application.
@@ -21,7 +36,7 @@ public:
     virtual ~Camera() = default;
 
     /// @brief Sets the default view.
-    void setDefaulatView() noexcept;
+    void setDefaultView() const noexcept;
 
     /// @brief Updates the camera's state based on the elapsed time.
     /// This method should be called every frame to update the camera's
@@ -67,14 +82,12 @@ public:
 
     /// @brief Resets the camera to its initial state.
     void reset() noexcept;
-
+    
 private:
-    int          max_zoom;          ///< The maximum zoom level for the camera.
-    int          min_zoom;          ///< The minimum zoom level for the camera.
-    
-    float        pan_threshold;     ///< The threshold for initiating a pan action.
-    float        arrival_threshold; ///< Distance threshold for reaching the focus point.
-    
+
+    CameraSettings camera_settings;
+    CameraControls camera_controls;
+
     bool         is_panning;        ///< Indicates whether the camera is currently panning.
     bool         is_moved_to_focus; ///< Tracks whether the camera has reached the focus point.
     bool         auto_focusing;     ///< Indicates whether auto-focusing is enabled.
