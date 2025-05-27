@@ -60,7 +60,7 @@ void BattleState::updateEvents()
             battle_map.removeTile(common::mouse_pos_view);
     }
 
-    pathfinding.handleInput();
+    PathfindingInputSystem::handleInput(pathfinding);
 
     data.camera.scroll();
     data.camera.zoom();
@@ -136,7 +136,7 @@ void BattleState::draw(sf::RenderTarget* target)
     beginView(target);
 
     battle_map.draw(*target, sf::RenderStates::Default);
-    pathfinding.draw(window);
+    PathfindingRenderer::render(pathfinding, window);
     registry.draw(registry.getRegistry(), window);
     gizmos.draw();
     endView(target);

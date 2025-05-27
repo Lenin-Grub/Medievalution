@@ -77,7 +77,7 @@ void GameState::updateEvents()
             }
         }
 
-        pathfinding.handleInput();
+        PathfindingInputSystem::handleInput(pathfinding);
 
        // Handle input
        if( sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
@@ -129,7 +129,7 @@ void GameState::draw(sf::RenderTarget* target)
     beginView(target);
 
     world_map.draw(*target, sf::RenderStates::Default);
-    pathfinding.draw(window);
+    PathfindingRenderer::render(pathfinding, window);
 
     endView(target);
     ImGui::SFML::Render(window);
