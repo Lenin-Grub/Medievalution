@@ -5,92 +5,87 @@ void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
     auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
 
     std::vector<std::tuple<entt::entity, float, float>> sorted_entities;
-
-    for (auto entity : view) 
+    for (auto entity : view)
     {
-        auto& position_component = view.get<Components::Position>(entity);
-        sorted_entities.emplace_back(entity, position_component.position.x, position_component.position.y);
+        const auto& position = view.get<Components::Position>(entity);
+        sorted_entities.emplace_back(entity, position.position.x, position.position.y);
     }
 
-    // Сортируем по позиции Y, а затем по X (если Y одинаковые)
-    std::sort(sorted_entities.begin(), sorted_entities.end(), [](const auto& a, const auto& b)
+    std::sort(sorted_entities.begin(), sorted_entities.end(),
+        [](const auto& firtst, const auto& second)
         {
-            auto [entity_a, x_a, y_a] = a;
-            auto [entity_b, x_b, y_b] = b;
+            auto [entity_first , current_x, current_y] = firtst;
+            auto [entity_second, next_x, next_y]       = second;
 
-            if (y_a != y_b)
-            {
-                return y_a < y_b;
-            }
-            return x_a < x_b;
+            if (current_y != next_y)
+                return current_y < next_y;
+
+            return current_x < next_x;
         });
 
-    for (const auto& [entity, x, y] : sorted_entities) 
+    for (const auto& [entity, x, y] : sorted_entities)
     {
-        auto& sprite_component = view.get<Components::Sprite>(entity);
+        const auto& sprite_component = view.get<Components::Sprite>(entity);
         window.draw(sprite_component.sprite);
-    }
 
-    for (const auto& [entity, x, y] : sorted_entities) 
-    {
-        auto& position_component   = view.get<Components::Position>  (entity);
-        auto& selectable_component = view.get<Components::Selectable>(entity);
-
+        const auto& selectable_component = view.get<Components::Selectable>(entity);
         if (selectable_component.is_selected)
         {
-            int size = 5;
-            sf::ConvexShape diamond(4);
-            diamond.setFillColor(sf::Color::Green);
-            diamond.setPoint(0, sf::Vector2f(0, -size));
-            diamond.setPoint(1, sf::Vector2f(size, 0));
-            diamond.setPoint(2, sf::Vector2f(0, size));
-            diamond.setPoint(3, sf::Vector2f(-size, 0));
-
-            auto& sprite_component = view.get<Components::Sprite>(entity);
-            sf::Vector2f marker_position = position_component.position;
-            marker_position.x -= sprite_component.sprite.getGlobalBounds().width / 2 - 48;
-            marker_position.y -= sprite_component.sprite.getGlobalBounds().height / 2 - 12;
-            diamond.setPosition(marker_position);
-
-            window.draw(diamond);
+            const auto& position_component = view.get<Components::Position>(entity);
+            drawSelectionMarker(window, position_component, sprite_component);
         }
-
-        selectionBox(window);
     }
+
+    selectionBox(window);
 }
 
 void RenderSystem::selectionBox(sf::RenderWindow& window)
 {
-    static sf::Vector2f startSelection;
-    static bool         isSelecting = false;
+    static sf::Vector2f start_selection;
+    static bool is_selecting = false;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !is_selecting)
     {
-        if (!isSelecting)
-        {
-            startSelection = common::mouse_pos_view;
-            isSelecting = true;
-        }
-    }
-    else
-    {
-        if (isSelecting)
-            isSelecting = false;
+        start_selection = common::mouse_pos_view;
+        is_selecting = true;
     }
 
-    if (isSelecting)
-    {
-        sf::RectangleShape selectionBox;
-        selectionBox.setFillColor(sf::Color(255, 255, 255, 5));
-        selectionBox.setOutlineColor(sf::Color::Black);
-        selectionBox.setOutlineThickness(1);
+    if (!sf::Mouse::isButtonPressed(sf::Mouse::Left) && is_selecting)
+        is_selecting = false;
 
-        sf::Vector2f currentMousePos = common::mouse_pos_view;
-        sf::Vector2f size = currentMousePos - startSelection;
+    if (!is_selecting)
+        return;
 
-        selectionBox.setPosition(startSelection);
-        selectionBox.setSize(size);
+    sf::RectangleShape selection_box;
+    selection_box.setFillColor(sf::Color(255, 255, 255, 5));
+    selection_box.setOutlineColor(sf::Color::Black);
+    selection_box.setOutlineThickness(1);
 
-        window.draw(selectionBox);
-    }
+    sf::Vector2f current_mouse_pos = common::mouse_pos_view;
+    sf::Vector2f size = current_mouse_pos - start_selection;
+
+    selection_box.setPosition(start_selection);
+    selection_box.setSize(size);
+
+    window.draw(selection_box);
+}
+
+void RenderSystem::drawSelectionMarker(sf::RenderWindow& window, const Components::Position& position, const Components::Sprite& sprite)
+{
+    int size = 5;
+    sf::ConvexShape diamond(4);
+    diamond.setFillColor(sf::Color::Green);
+    diamond.setPoint(0, sf::Vector2f(0, -size));
+    diamond.setPoint(1, sf::Vector2f(size, 0));
+    diamond.setPoint(2, sf::Vector2f(0, size));
+    diamond.setPoint(3, sf::Vector2f(-size, 0));
+
+    sf::Vector2f marker_position = position.position;
+
+    // TO DO: remove magic numbers
+    marker_position.x -= sprite.sprite.getGlobalBounds().width / 2.f - 48.f;
+    marker_position.y -= sprite.sprite.getGlobalBounds().height / 2.f - 12.f;
+
+    diamond.setPosition(marker_position);
+    window.draw(diamond);
 }

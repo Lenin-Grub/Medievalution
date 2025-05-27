@@ -1,33 +1,30 @@
 #include "SelectSystem.hpp"
 
 
-void SelectSystem::update(entt::registry& registry) 
+void SelectSystem::update(entt::registry& registry)
 {
     static sf::Vector2f start_selection;
     static bool is_selecting = false;
 
-    if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-    {
-        if (!is_selecting)
-        {
-            start_selection = common::mouse_pos_view;
-            is_selecting = true;
+    const bool is_left_mouse_down = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-            auto view = registry.view<Components::Selectable>();
-            for (auto entity : view) 
-            {
-                auto& selectable = view.get<Components::Selectable>(entity);
-                selectable.is_selected = false;
-            }
+    if (is_left_mouse_down && !is_selecting)
+    {
+        start_selection = common::mouse_pos_view;
+        is_selecting = true;
+
+        auto view = registry.view<Components::Selectable>();
+        for (auto entity : view)
+        {
+            auto& selectable = view.get<Components::Selectable>(entity);
+            selectable.is_selected = false;
         }
     }
-    else 
+
+    if (!is_left_mouse_down && is_selecting)
     {
-        if (is_selecting) 
-        {
-            is_selecting = false;
-            selectRectangle(registry, start_selection, common::mouse_pos_view);
-        }
+        is_selecting = false;
+        selectRectangle(registry, start_selection, common::mouse_pos_view);
     }
 }
 

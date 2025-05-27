@@ -8,4 +8,5 @@ public:
 
 private:
     static void selectionBox(sf::RenderWindow& window);
+    static void drawSelectionMarker(sf::RenderWindow& window, const Components::Position& position, const Components::Sprite& sprite);
 };
