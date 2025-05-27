@@ -43,15 +43,15 @@ private:
 
 private:
     sf::RenderWindow& window;
-    sf::Texture texture;
-    sf::Sprite sprite;
-    Animator animator;
+    sf::Texture       texture;
+    sf::Sprite        sprite;
+    Animator          animator;
 
     std::string current_animation_name;
-    int selected_frame_index;
-    int selected_tile_index;
+    int         selected_frame_index;
+    int         selected_tile_index;
 
-    int tileSize = 64;
+    int  frame_size = 64;
 
     bool is_playing = false;
     bool is_looping = false;
