@@ -6,9 +6,8 @@
 #include <memory>
 #include <random>
 
-//#include <spdlog/spdlog.h>
+#include <spdlog/spdlog.h>
 #include <SFML/Audio.hpp>
-//#include <Common/Log.h>
 
 namespace Audio::Music
 {

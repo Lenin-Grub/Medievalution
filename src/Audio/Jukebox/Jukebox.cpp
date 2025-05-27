@@ -24,7 +24,7 @@ namespace Audio::Music
                     auto music = std::unique_ptr<sf::Music>(new sf::Music);
                     if (!music->openFromFile(full_path))
                     {
-                        //LOG_WARN("Jukebox failed to add {}", full_path);
+                        spdlog::warn("Jukebox failed to add {}", full_path);
                         continue;
                     }
                     const auto inserted = catalog.emplace(filename, std::move(music));
@@ -34,7 +34,7 @@ namespace Audio::Music
         }
         else
         {
-            //LOG_ERROR("Invalid path: {}",path);
+            spdlog::error("Invalid path: {}",path);
         }
     }
 
@@ -214,7 +214,7 @@ namespace Audio::Music
         auto found = catalog.find(song);
         if (found == catalog.end())
         {
-            //LOG_WARN("Jukebox request for song {0} which is not in the catalog.", song);
+            spdlog::warn("Jukebox request for song {0} which is not in the catalog.", song);
             return;
         }
         playlist.emplace_back(found->first, found->second.get());
