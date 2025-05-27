@@ -23,15 +23,6 @@ void AnimationClip::clearAllFrames()
     frames.clear();
 }
 
-void AnimationClip::flipHorizontally()
-{
-    for (auto& frame : frames)
-    {
-        frame.rect.left += frame.rect.width;
-        frame.rect.width *= -1;
-    }
-}
-
 #pragma endregion
 
 
@@ -51,7 +42,7 @@ void Animator::addAnimation(const std::string& name, const AnimationClip& clip)
     }
 }
 
-void Animator::clearAllAnimations()
+void Animator::deleatAllAnimations()
 {
     animations.clear();
 }
@@ -113,7 +104,7 @@ void Animator::update(float delta_time)
     float elapsed        = animation_state.elapsed_time;
     float frame_duration = clip.frames[current_index].duration;
 
-    elapsed += delta_time * speed;
+    elapsed += delta_time;
 
     if (elapsed >= frame_duration)
     {
@@ -167,16 +158,6 @@ void Animator::setSprite(const sf::Sprite& sprite)
 const sf::Sprite& Animator::getSprite() const
 {
     return sprite;
-}
-
-void Animator::setAnimationSpeed(float speed) 
-{
-    this->speed = speed;
-}
-
-float Animator::getAnimationSpeed() const 
-{
-    return speed;
 }
 
 void Animator::setAnimationFrame(int frameIndex)

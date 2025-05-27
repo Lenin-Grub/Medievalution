@@ -24,8 +24,6 @@ struct AnimationClip
     bool removeFrame(int index);
 
     void clearAllFrames();
-
-    void flipHorizontally();
 };
 
 #pragma endregion
@@ -42,7 +40,7 @@ public:
 
     void addAnimation(const std::string& name, const AnimationClip& clip);
 
-    void clearAllAnimations();
+    void deleatAllAnimations();
 
     void setAnimation(const std::string& name, bool loop = true);
 
@@ -59,10 +57,6 @@ public:
     void setSprite(const sf::Sprite& sprite);
 
     const sf::Sprite& getSprite() const;
-
-    void setAnimationSpeed(float speed);
-
-    float getAnimationSpeed() const;
 
     void setAnimationFrame(int frameIndex);
 
@@ -84,7 +78,6 @@ private:
     std::map<std::string, AnimationClip> animations;
     AnimationState                       animation_state;
     FinishedCallback                     finished_callback;
-    float                                speed = 1.0f;
 };
 
 #pragma endregion
