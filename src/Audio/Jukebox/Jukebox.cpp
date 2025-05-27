@@ -6,7 +6,7 @@
 namespace Audio::Music 
 {
     Jukebox::Jukebox(const std::string& path) :
-        currentTrackIndex(0),
+        current_track_id(0),
         volume(20),
         status(sf::SoundSource::Stopped),
         looping(true)
@@ -24,7 +24,7 @@ namespace Audio::Music
                     auto music = std::unique_ptr<sf::Music>(new sf::Music);
                     if (!music->openFromFile(full_path))
                     {
-                        LOG_WARN("Jukebox failed to add {}", full_path);
+                        //LOG_WARN("Jukebox failed to add {}", full_path);
                         continue;
                     }
                     const auto inserted = catalog.emplace(filename, std::move(music));
@@ -34,7 +34,7 @@ namespace Audio::Music
         }
         else
         {
-            LOG_ERROR("Invalid path: {}",path);
+            //LOG_ERROR("Invalid path: {}",path);
         }
     }
 
@@ -46,12 +46,12 @@ namespace Audio::Music
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
 
         setVolume(volume);
 
-        playlist[currentTrackIndex].second->play();
+        playlist[current_track_id].second->play();
         status = sf::SoundSource::Playing;
     }
 
@@ -70,9 +70,9 @@ namespace Audio::Music
         {
             return;
         }
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
-        playlist[currentTrackIndex].second->setVolume(this->volume);
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
+        playlist[current_track_id].second->setVolume(this->volume);
     }
 
     float Jukebox::getVolume() const
@@ -87,9 +87,9 @@ namespace Audio::Music
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
-        playlist[currentTrackIndex].second->stop();
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
+        playlist[current_track_id].second->stop();
         status = sf::SoundSource::Stopped;
     }
 
@@ -100,9 +100,9 @@ namespace Audio::Music
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
-        playlist[currentTrackIndex].second->pause();
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
+        playlist[current_track_id].second->pause();
         status = sf::SoundSource::Paused;
     }
 
@@ -114,20 +114,20 @@ namespace Audio::Music
                 return;
             }
 
-            assert(currentTrackIndex >= 0);
-            assert(currentTrackIndex < playlist.size());
+            assert(current_track_id >= 0);
+            assert(current_track_id < playlist.size());
 
             if (status == sf::SoundSource::Playing
-                && playlist[currentTrackIndex].second->getStatus() == sf::SoundSource::Stopped)
+                && playlist[current_track_id].second->getStatus() == sf::SoundSource::Stopped)
             {
 
-                playlist[currentTrackIndex].second->setPlayingOffset(sf::Time::Zero);
+                playlist[current_track_id].second->setPlayingOffset(sf::Time::Zero);
 
-                if (currentTrackIndex == playlist.size() - 1)
+                if (current_track_id == playlist.size() - 1)
                 {
                     if (looping)
                     {
-                        currentTrackIndex = 0;
+                        current_track_id = 0;
                         play();
                     }
                     else
@@ -137,7 +137,7 @@ namespace Audio::Music
                 }
                 else
                 {
-                    ++currentTrackIndex;
+                    ++current_track_id;
                     play();
                 }
             }
@@ -151,8 +151,8 @@ namespace Audio::Music
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
 
         const bool was_playing = playing();
         stop();
@@ -161,33 +161,33 @@ namespace Audio::Music
         {
             if (n > 0)
             {
-                currentTrackIndex = (currentTrackIndex + n) % playlist.size();
+                current_track_id = (current_track_id + n) % playlist.size();
             }
             else
             {
-                currentTrackIndex = playlist.size() + ((currentTrackIndex + n) % playlist.size());
+                current_track_id = playlist.size() + ((current_track_id + n) % playlist.size());
             }
         }
         else {
             if (n > 0) {
-                if (currentTrackIndex + n >= playlist.size())
+                if (current_track_id + n >= playlist.size())
                 {
-                    currentTrackIndex = playlist.size() - 1;
+                    current_track_id = playlist.size() - 1;
                 }
                 else
                 {
-                    currentTrackIndex += n;
+                    current_track_id += n;
                 }
             }
             else
             {
-                if (currentTrackIndex < static_cast<std::size_t>(std::labs(n)))
+                if (current_track_id < static_cast<std::size_t>(std::labs(n)))
                 {
-                    currentTrackIndex = 0;
+                    current_track_id = 0;
                 }
                 else
                 {
-                    currentTrackIndex += n;
+                    current_track_id += n;
                 }
             }
         }
@@ -201,7 +201,7 @@ namespace Audio::Music
     {
         auto orig_status = status;
         stop();
-        currentTrackIndex = 0;
+        current_track_id = 0;
 
         if (orig_status == sf::SoundSource::Playing)
         {
@@ -214,7 +214,7 @@ namespace Audio::Music
         auto found = catalog.find(song);
         if (found == catalog.end())
         {
-            LOG_WARN("Jukebox request for song {0} which is not in the catalog.", song);
+            //LOG_WARN("Jukebox request for song {0} which is not in the catalog.", song);
             return;
         }
         playlist.emplace_back(found->first, found->second.get());
@@ -232,7 +232,7 @@ namespace Audio::Music
     {
         stop();
         playlist.clear();
-        currentTrackIndex = 0;
+        current_track_id = 0;
     }
 
     void Jukebox::shuffle()
@@ -242,14 +242,14 @@ namespace Audio::Music
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
 
-        auto current = playlist[currentTrackIndex];
+        auto current = playlist[current_track_id];
         if (status != sf::SoundSource::Stopped)
         {
             auto it = begin(playlist);
-            std::advance(it, currentTrackIndex);
+            std::advance(it, current_track_id);
             playlist.erase(it);
         }
 
@@ -260,27 +260,27 @@ namespace Audio::Music
             playlist.emplace_front(current);
         }
 
-        currentTrackIndex = 0;
+        current_track_id = 0;
     }
 
     void Jukebox::shuffleRemaining()
     {
-        if (playlist.empty() || currentTrackIndex == playlist.size() - 1)
+        if (playlist.empty() || current_track_id == playlist.size() - 1)
         {
             return;
         }
 
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
 
         auto first = begin(playlist);
         if (status == sf::SoundSource::Stopped)
         {
-            std::advance(first, currentTrackIndex);
+            std::advance(first, current_track_id);
         }
         else
         {
-            std::advance(first, currentTrackIndex + 1);
+            std::advance(first, current_track_id + 1);
         }
 
         shuffle_range(first, end(playlist));
@@ -308,7 +308,7 @@ namespace Audio::Music
 
     std::size_t Jukebox::songsRemaining() const
     {
-        return playlist.size() - currentTrackIndex;
+        return playlist.size() - current_track_id;
     }
 
     std::vector<std::string> Jukebox::getCatalog() const
@@ -337,9 +337,9 @@ namespace Audio::Music
         {
             return "";
         }
-        assert(currentTrackIndex >= 0);
-        assert(currentTrackIndex < playlist.size());
-        return playlist[currentTrackIndex].first;
+        assert(current_track_id >= 0);
+        assert(current_track_id < playlist.size());
+        return playlist[current_track_id].first;
     }
 
     sf::SoundSource::Status Jukebox::getStatus() const

@@ -6,9 +6,9 @@
 #include <memory>
 #include <random>
 
-#include <spdlog/spdlog.h>
+//#include <spdlog/spdlog.h>
 #include <SFML/Audio.hpp>
-#include <Common/Log.h>
+//#include <Common/Log.h>
 
 namespace Audio::Music
 {
@@ -116,7 +116,7 @@ namespace Audio::Music
         std::deque<std::pair<std::string, sf::Music*>>    playlist;          ///< The playlist queue.
         std::map<std::string, std::unique_ptr<sf::Music>> catalog;           ///< The catalog of available songs.
         sf::SoundSource::Status                           status;            ///< The current status of the music playback.
-        int                                               currentTrackIndex; ///< Index of the current track in the playlist.
+        int                                               current_track_id;  ///< Index of the current track in the playlist.
         float                                             volume;            ///< The current volume level.
         bool                                              looping;           ///< Whether the music should loop.
 
