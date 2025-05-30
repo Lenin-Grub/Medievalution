@@ -1,4 +1,4 @@
-﻿#include <Game/Game.h>
+﻿#include "Game/Game.h"
 
 // Off console in release version.
 #ifdef NDEBUG

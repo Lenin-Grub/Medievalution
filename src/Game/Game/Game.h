@@ -1,6 +1,6 @@
 ﻿#pragma once
-#include "States/IntroState/IntroState.hpp"
-#include "States/StateMachine/StateMachine.hpp"
+#include "../States/IntroState/IntroState.hpp"
+#include "../States/StateMachine/StateMachine.hpp"
 #include "Settings/WindowSettings.h"
 
 /**

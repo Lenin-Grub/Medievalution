@@ -1,9 +1,9 @@
 #pragma once
-#include <States/State/State.hpp>
-#include <States/LoadingState/LoadingState.hpp>
-#include <States/BattleState/BattleState.hpp>
-#include <States/SettingsState/SettingsState.hpp>
-#include <States/StateMachine/StateMachine.hpp>
+#include "../State/State.hpp"
+#include "../LoadingState/LoadingState.hpp"
+#include "../BattleState/BattleState.hpp"
+#include "../SettingsState/SettingsState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 class StateMachine;
 

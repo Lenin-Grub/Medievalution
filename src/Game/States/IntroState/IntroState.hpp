@@ -1,7 +1,7 @@
 #pragma once
-#include <States/State/State.hpp>
-#include <States/StateMachine/StateMachine.hpp>
-#include <States/MenuState/MenuState.hpp>
+#include "../State/State.hpp"
+#include "../StateMachine/StateMachine.hpp"
+#include "../MenuState/MenuState.hpp"
 
 class StateMachine;
 

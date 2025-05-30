@@ -30,6 +30,14 @@ Medievalution - мой pet проект, который задуман как и
 Windows
 C++ 20
 
+Вы можете воспользоваться несколькими способами установки сторрних библиотек:
+- скачать вручную и поместить все библиотеки в папку External. Затем установите перменную среды External
+
+для Windows
+    External к примеру D:\External
+
+- либо зависимости должны скачать автоматически через fetchcontent
+
 ### Установка библиотек
 > [!WARNING]
 > Проверьте что у вас есть все сторонние библиотеки для сборки проекта
@@ -37,13 +45,12 @@ C++ 20
 > [!IMPORTANT]
 > Поместите внешние зависимости в папку External
 
->[!NOTE]
-> Библиотеки должны скачаться автоматически через fetchcontent в cmake
 
 #### Сторонние библиотеки: 
-* SFML 
+* SFML
 * SpdLog
 * ImGui
+* ImGui-SFML
 * EnTT
 
 ---
@@ -57,6 +64,14 @@ git clone https://github.com/SFML/SFML.git
 ---
 
 #### Установка ImGui
+* ImGui
+```sh
+git clone -b docking --single-branch https://github.com/ocornut/imgui.git
+```
+>git tag docking
+---
+
+#### Установка ImGui SFML
 * sfml ImGui
 ```sh
 git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
@@ -105,9 +120,13 @@ Medievalution is my pet project envisioned as a dream game. Manage a state on a 
 The project is inspired by games like: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War.
 
 Genre - 4x RTStrategy.
----
-Windows
-C++ 20
+You can use several methods to install third-party libraries:
+- download manually and place all libraries in the External folder. Then set the External environment variable
+
+for Windows
+External for example D:\External
+
+- or dependencies should be downloaded automatically via fetchcontent
 
 ### Install libraries
 > [!WARNING]
@@ -115,9 +134,6 @@ C++ 20
 
 > [!IMPORTANT]
 > Place external dependencies in the External folder
-
->[!NOTE]
-> Libraries should be downloaded automatically via fetchcontent in cmake
 
 #### External libraries: 
 * SFML 

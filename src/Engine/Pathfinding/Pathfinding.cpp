@@ -360,7 +360,6 @@ Node* Pathfinding::getNodeByGridPosition(sf::Vector2i pos)
 
 #pragma endregion
 
-
 #pragma region RenderPathfinding
 
 void PathfindingRenderer::render(const Pathfinding& pathfinding, sf::RenderWindow& window)
@@ -469,7 +468,6 @@ sf::Color PathfindingRenderer::getCostColor(float cost, float maxCost)
 
 #pragma endregion
 
-
 #pragma region InputPathfinding
 
 void PathfindingInputSystem::handleInput(Pathfinding& pathfinding)
@@ -505,7 +503,7 @@ void PathfindingInputSystem::handleInput(Pathfinding& pathfinding)
 
 void GridSystem::generateGrid(Pathfinding& pathfinding, int width, int height)
 {
-    pathfinding.width = width;
+    pathfinding.width  = width;
     pathfinding.height = height;
     pathfinding.nodes.clear();
 

@@ -46,6 +46,7 @@ bool Game::initGraphicSettings() noexcept
     {
         return true;
     }
+    LOG_CRITICAL("Failed init graphic settings");
     return false;
 }
 
@@ -66,12 +67,14 @@ bool Game::initWindow() noexcept
 
         window->setFramerateLimit(WindowSettings::getInstance().settings.fps_limit);
         window->setVerticalSyncEnabled(WindowSettings::getInstance().settings.vertical_sync);
+
         ImGui::SFML::Init(*window);
 
         return true;
     }
     catch (const std::exception& e)
     {
+        LOG_CRITICAL("Failed init window");
         return false;
     }
 }
@@ -86,6 +89,7 @@ bool Game::initIcon() noexcept
     }
     catch (const std::exception& e)
     {
+        LOG_CRITICAL("Failed init icon");
         return false;
     }
 }
@@ -115,6 +119,7 @@ bool Game::initFonts() noexcept
     }
     catch (const std::exception& e)
     {
+        LOG_CRITICAL("Failed init fonts");
         return false;
     }
 }
@@ -123,6 +128,8 @@ bool Game::initLocalization() noexcept
 {
     if (Localization::getInstance().init("translation/rus.json"))
         return true;
+
+    LOG_CRITICAL("Failed init localization");
     return false;
 }
 
@@ -137,6 +144,7 @@ bool Game::initJukebox() noexcept
     }
     catch (const std::exception& e)
     {
+        LOG_CRITICAL("Failed init jukebox");
         return false;
     }
 }

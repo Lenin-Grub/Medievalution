@@ -1,5 +1,5 @@
 #pragma once
-#include <States/State/State.hpp>
+#include "../State/State.hpp"
 
 #include <Animation/Animator/Animator.hpp>
 #include <Animation/AnimationEditor/AnimationEditor.hpp>
@@ -8,7 +8,7 @@
 #include <ECS/Systems/PathfindingSystem/PathfindingSystem.hpp>
 #include <Gizmos/Gizmos.h>
 
-#include "World/BattleMap/BattleMap.hpp"
+#include "../../World/BattleMap/BattleMap.hpp"
 
 enum class ToolState
 {

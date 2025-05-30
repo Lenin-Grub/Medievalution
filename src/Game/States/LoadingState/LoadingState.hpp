@@ -3,9 +3,9 @@
 #include <thread>
 #include <future>
 
-#include <States/State/State.hpp>
-#include <States/GameState/GameState.hpp>
-#include <States/StateMachine/StateMachine.hpp>
+#include "../State/State.hpp"
+#include "../GameState/GameState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
 class StateMachine;
 

@@ -1,7 +1,6 @@
 #include "BattleState.hpp"
 #include "../StateMachine/StateMachine.hpp"
-
-#include <States/SettingsState/SettingsState.hpp>
+#include "../SettingsState/SettingsState.hpp"
 
 BattleState::BattleState(StateData& data, StateMachine& machine, sf::RenderWindow& window, const bool replace)
 : State { data, machine, window, replace }

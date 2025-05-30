@@ -1,9 +1,10 @@
 #pragma once
-#include <States/State/State.hpp>
-#include <States/SettingsState/SettingsState.hpp>
-#include <States/StateMachine/StateMachine.hpp>
+#include "../State/State.hpp"
+#include "../SettingsState/SettingsState.hpp"
+#include "../StateMachine/StateMachine.hpp"
 
-#include "World/WorldMap/WorldMap.h"
+
+#include "../../World/WorldMap/WorldMap.h"
 #include "Pathfinding/Pathfinding.h"
 #include "ECS/Entity/Entity.hpp"
 

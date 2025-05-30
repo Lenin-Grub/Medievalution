@@ -1,0 +1,29 @@
+cmake_minimum_required(VERSION 3.31)
+
+project(Editor)
+
+add_executable(${PROJECT_NAME} Main.cpp resources_editor.rc)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
+set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$(OutDir)")
+
+set(BUILD_SHARED_LIBS OFF)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${SPDLOG_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${ENTT_SOURCE_DIR}/include)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    sfml-graphics
+    sfml-window
+    sfml-system
+    spdlog
+    ImGui-SFML::ImGui-SFML
+    EnTT::EnTT
+    json
+)
+
+target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/ext_libs/openal32.dll  $<TARGET_FILE_DIR:${PROJECT_NAME}>/openal32.dll)
