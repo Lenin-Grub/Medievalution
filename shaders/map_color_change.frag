@@ -6,7 +6,7 @@ uniform vec4 select_color;
 uniform vec4 hover_color;
 uniform float height;
 uniform float width;
-uniform bool is_selected; // New uniform to indicate if the province is selected
+uniform bool is_selected;
 
 vec4 map = texture2D(map_texture, gl_TexCoord[0].xy);
 vec4 color = vec4(0.0f,0.0f,0.0f,1.0f);

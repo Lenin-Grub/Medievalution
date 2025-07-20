@@ -58,10 +58,10 @@ public:
 public:
     int                   load_progress;            ///< @brief The load progress of the world map. 
     float                 transparency;             ///< @brief The transparency of the world map.
-    sf::Shader            shader;                   ///< @brief The shader used for rendering the world map.
+    sf::Shader            shader_texture;           ///< @brief The shader used for rendering the world map.
+    sf::Shader            shader_border;            ///< @brief The shader used for rendering the world map.
     sf::Color             select_color;             ///< @brief The color used for selecting provinces.
     sf::Image             map_image;                ///< @brief The image of the world map. 
-    sf::CircleShape       shape;                    ///< @brief The shape of the world map
 
     bool                  is_selected;             ///< @brief Indicates whether the province is selected.
     sf::Color             selected_province_color; ///< @brief The color of the selected province.
@@ -81,9 +81,11 @@ private:
     /// @private
     void setUniforms();
 
+    void setQuads();
+
     /// @brief Loads the shader.
     /// @private
-    bool loadShader();
+    bool loadShaders();
 
     /// @brief Checks if the mouse is on the map.
     /// @return True if the mouse is on the map, false otherwise.
@@ -94,9 +96,15 @@ private:
     Province      province;
     sf::Color     current_color;
     sf::Texture   map_texture;
+    sf::Texture   atlas_texture;
+    sf::Texture   color_map_texture;
     sf::Texture   s_texture;
     sf::Sprite    s_province_map;
     sf::Sprite    s_texture_map;
+
+    sf::Vector2u map_size;
+
+    sf::VertexArray quad;
 
     std::ifstream file;
     std::string   id, r, g, b, name, comment;

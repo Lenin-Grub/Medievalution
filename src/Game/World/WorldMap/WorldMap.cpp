@@ -21,9 +21,14 @@ bool WorldMap::init()
 {
     if (!loadMapData())      return false;
     if (!loadProvincesMap()) return false;
-    if (!loadShader())       return false;
+    if (!loadShaders())      return false;
     if (!isInitProvinces())  return false;
 
+    s_province_map.setTexture(map_texture);
+    s_texture_map.setTexture(s_texture);
+    map_size = color_map_texture.getSize();
+
+    setQuads();
     setUniforms();
 
     return true;
@@ -48,8 +53,11 @@ bool WorldMap::loadProvincesMap()
 {
     try
     {
-        map_image = ResourceLoader::instance().getImage("Provinces.png");
-        s_texture = ResourceLoader::instance().getTexture("Colormap2.jpg");
+        map_image         = ResourceLoader::instance().getImage("Provinces.png");
+        s_texture         = ResourceLoader::instance().getTexture("Greyscale.jpg");
+        atlas_texture     = ResourceLoader::instance().getTexture("tiles.jpg");
+        color_map_texture = ResourceLoader::instance().getTexture("Colormap.png");
+
         return true;
     }
     catch (const std::ifstream::failure& ex)
@@ -104,18 +112,37 @@ bool WorldMap::isInitProvinces()
 
 void WorldMap::setUniforms()
 {
-    shader.setUniform("map_texture", sf::Shader::CurrentTexture);
-    shader.setUniform("transparency", transparency);
-    shader.setUniform("select_color", sf::Glsl::Vec4(select_color));
-    shader.setUniform("width", (float)map_texture.getSize().x);
-    shader.setUniform("height", (float)map_texture.getSize().y);
+    shader_texture.setUniform("atlas", atlas_texture);
+    shader_texture.setUniform("colormap", color_map_texture);
+    shader_texture.setUniform("tile_size", sf::Vector2f(256, 256));
+    shader_texture.setUniform("atlas_size", sf::Vector2f(2048, 2048));
+
+    shader_border.setUniform("map_texture", sf::Shader::CurrentTexture);
+    shader_border.setUniform("transparency", transparency);
+    shader_border.setUniform("select_color", sf::Glsl::Vec4(select_color));
+    shader_border.setUniform("width", (float)map_texture.getSize().x);
+    shader_border.setUniform("height", (float)map_texture.getSize().y);
 }
 
-bool WorldMap::loadShader()
+void WorldMap::setQuads()
 {
-    if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
+    quad = sf::VertexArray(sf::Quads, 4);
+    quad[0].position = sf::Vector2f(0, 0);
+    quad[1].position = sf::Vector2f(map_size.x, 0);
+    quad[2].position = sf::Vector2f(map_size.x, map_size.y);
+    quad[3].position = sf::Vector2f(0, map_size.y);
+
+    quad[0].texCoords = sf::Vector2f(0, 0);
+    quad[1].texCoords = sf::Vector2f(1, 0);
+    quad[2].texCoords = sf::Vector2f(1, 1);
+    quad[3].texCoords = sf::Vector2f(0, 1);
+}
+
+bool WorldMap::loadShaders()
+{
+    if (!shader_border.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
     {
-        LOG_ERROR("Shader not found");
+        LOG_ERROR("Shader border not found!");
         return false;
     }
 
@@ -124,8 +151,13 @@ bool WorldMap::loadShader()
         LOG_ERROR("Map texture not loaded");
         return false;
     }
-    s_province_map.setTexture(map_texture);
-    s_texture_map.setTexture(s_texture);
+
+    if (!shader_texture.loadFromFile("shaders/map_texture.frag", sf::Shader::Fragment))
+    {
+        LOG_ERROR("Shader texture not found!");
+        return false;
+    }
+
     return true;
 }
 
@@ -222,9 +254,9 @@ bool WorldMap::isMouseOnMap() const
 
 void WorldMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    target.draw(s_texture_map);
-    target.draw(s_province_map, &shader);
-    target.draw(shape);
+    //target.draw(s_texture_map);
+    target.draw(quad, &shader_texture);
+    target.draw(s_province_map, &shader_border);
 }
 
 sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const

@@ -20,13 +20,6 @@ void GameState::init()
     texture = ResourceLoader::instance().getTexture("Spearman.png");
     sprite.setTexture(texture);
     sprite.setTextureRect(sf::IntRect(0,0,64,64));
-
-    auto& provinceCenters = world_map.provinces;
-
-    for (const auto& entry : provinceCenters)
-    {
-        pathfinding.addNode(entry.second.centre);
-    }
 }
 
 void GameState::onDeactivate()
@@ -53,20 +46,6 @@ void GameState::updateEvents()
         data.camera.zoom();
         data.camera.scroll();
 
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num1)) 
-        {
-            sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
-            world_map.shape.setPosition(provinceCenter);
-            pathfinding.start_node = pathfinding.getNode(provinceCenter);
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Num2))
-        {
-            sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
-            world_map.shape.setPosition(provinceCenter);
-            pathfinding.end_node = pathfinding.getNode(provinceCenter);
-        }
-
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
         {
             sf::Color selectedColor = world_map.getColor();
@@ -74,28 +53,6 @@ void GameState::updateEvents()
             {
                 world_map.selected_province_color = selectedColor;
                 world_map.is_selected = true;
-            }
-        }
-
-        PathfindingInputSystem::handleInput(pathfinding);
-
-       // Handle input
-       if( sf::Mouse::isButtonPressed(sf::Mouse::Right) && sf::Keyboard::isKeyPressed(sf::Keyboard::LAlt))
-        {
-            sf::Vector2f provinceCenter = world_map.findProvinceCenter(world_map.getColor());
-            world_map.shape.setPosition(provinceCenter);
-
-            if (firstNode == nullptr) 
-                firstNode = pathfinding.getNode(provinceCenter);
-            else 
-            {
-                secondNode = pathfinding.getNode(provinceCenter);
-                if (firstNode && secondNode && firstNode != secondNode)
-                {
-                    pathfinding.connect(firstNode, secondNode, 1);
-                    firstNode  = nullptr;
-                    secondNode = nullptr;
-                }
             }
         }
     }
@@ -114,14 +71,13 @@ void GameState::update(const float& dtime)
 
     world_map.hover_color  = color;
     world_map.select_color = world_map.selected_province_color;
-    world_map.shader.setParameter("select_color", world_map.select_color);
-    world_map.shader.setParameter("transparency", world_map.transparency);
-    world_map.shader.setParameter("is_selected", world_map.is_selected);
-    world_map.shader.setParameter("hover_color", world_map.hover_color);
+    world_map.shader_border.setParameter("select_color", world_map.select_color);
+    world_map.shader_border.setParameter("transparency", world_map.transparency);
+    world_map.shader_border.setParameter("is_selected", world_map.is_selected);
+    world_map.shader_border.setParameter("hover_color", world_map.hover_color);
 
     updateMousePositions();
     data.camera.update(dtime);
-    //data.camera.focusOn(position);
 }
 
 void GameState::draw(sf::RenderTarget* target)
