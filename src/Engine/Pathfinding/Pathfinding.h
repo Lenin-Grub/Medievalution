@@ -42,11 +42,6 @@ public:
     /// @brief Default constructor.
     Pathfinding();
 
-    /// @brief Initializes the nodes grid with the specified width and height.
-    /// @param width The width of the grid.
-    /// @param height The height of the grid.
-    void initNodes(int width, int height);
-
     /// @brief Finds a path from the start node to the end node using a pathfinding algorithm.
     /// @param start The start node.
     /// @param end The end node.
@@ -55,22 +50,14 @@ public:
     /// @brief Resets the state of all nodes.
     void resetNodes();
 
-    /// @brief Computes the heuristic value between two nodes.
-    /// @param start The start node.
-    /// @param end The end node.
-    /// @return The heuristic value.
-    int heuristic(Node* start, Node* end, HeuristicType type = HeuristicType::Diagonal);
-
     /// @brief Resets the walkable state of all nodes.
     void resetWalkable();
-
-    /// @brief Moves the current node based on the delta time.
-    /// @param deltaTime The time elapsed since the last frame.
-    void move(float deltaTime);
 
     /// @brief Adds a new node at the specified position.
     /// @param position The position of the new node.
     void addNode(const sf::Vector2f& position);
+
+    void removeNode(const sf::Vector2f& position);
 
     /// @brief Connects two nodes, allowing pathfinding between them.
     /// @param node1 The first node to connect.
@@ -81,11 +68,6 @@ public:
     /// @param node1 The first node to disconnect.
     /// @param node2 The second node to disconnect.
     void disconnect(Node* node1, Node* node2);
-
-    /// @brief Connects two nodes, allowing pathfinding between them.
-    /// @param node1 The first node to connect.
-    /// @param node2 The second node to connect.
-    void connectNeighbors(int x, int y, int mapWidth, int mapHeight, bool connectDiagonals = true);
 
     Node* getNodeByGridPosition(sf::Vector2i pos);
 
@@ -105,6 +87,16 @@ public:
     void setPathMode(PathMode mode);
 
     const PathMode& getPathMode() const;
+
+private:
+
+    /// @brief Computes the heuristic value between two nodes.
+    /// @param start The start node.
+    /// @param end The end node.
+    /// @return The heuristic value.
+    int heuristic(Node* start, Node* end, HeuristicType type = HeuristicType::Diagonal);
+
+public:
 
     /// @brief Map of nodes indexed by their position.
     std::unordered_map<sf::Vector2f, Node, Vector2fHash> nodes; 

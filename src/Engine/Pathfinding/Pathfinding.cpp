@@ -17,34 +17,6 @@ Pathfinding::Pathfinding()
 {
 }
 
-void Pathfinding::initNodes(int width, int height)
-{
-    this->width  = width;
-    this->height = height;
-    nodes.clear();
-
-    for (int y = 0; y < height; ++y)
-    {
-        for (int x = 0; x < width; ++x)
-        {
-            sf::Vector2f position;
-
-            if (path_mode == PathMode::Isometric)
-            {
-                float isoX = (x - y) * tile_size.x / 2;
-                float isoY = (x + y) * tile_size.y / 2;
-                position = { isoX, isoY };
-            }
-            else
-            {
-                position = { x * tile_size.x, y * tile_size.y };
-            }
-
-            addNode(position);
-            connectNeighbors(x, y, width, height, true);
-        }
-    }
-}
 
 bool compareNodes(Node* a, Node* b)
 {
@@ -144,20 +116,6 @@ void Pathfinding::resetWalkable()
         Node& node = pair.second;
         node.walkable = true;
     }
-}
-
-void Pathfinding::move(float deltaTime) 
-{
-    if (end_node == nullptr || end_node->parent == nullptr)
-        return;
-
-    if (current_node == nullptr)
-        current_node = start_node;
-
-    Node* next_node = current_node->parent;
-
-    if (next_node != nullptr)
-        current_node = next_node;
 }
 
 void Pathfinding::addNode(const sf::Vector2f& position) 
@@ -288,48 +246,6 @@ void Pathfinding::setPathMode(PathMode mode)
 const PathMode& Pathfinding::getPathMode() const
 {
     return path_mode;
-}
-
-void Pathfinding::connectNeighbors(int x, int y, int map_width, int map_height, bool connect_diagonals)
-{
-    Node* current = getNodeByGridPosition(sf::Vector2i( x, y ));
-
-    if (!current) return;
-
-    const int dx[] = { -1, 0, 1, 0 }; // left, up, right, down
-    const int dy[] = { 0, -1, 0, 1 };
-
-    for (int i = 0; i < 4; ++i)
-    {
-        int nx = x + dx[i];
-        int ny = y + dy[i];
-
-        if (nx >= 0 && ny >= 0 && nx < map_width && ny < map_height)
-        {
-            Node* neighbor = getNodeByGridPosition(sf::Vector2i( nx, ny ));
-            if (neighbor)
-                connect(current, neighbor, 1.0f);
-        }
-    }
-
-    if (connect_diagonals)
-    {
-        const int ddx[] = { -1, 1, -1, 1 };
-        const int ddy[] = { -1, -1, 1, 1 };
-
-        for (int i = 0; i < 4; ++i)
-        {
-            int nx = x + ddx[i];
-            int ny = y + ddy[i];
-
-            if (nx >= 0 && ny >= 0 && nx < map_width && ny < map_height)
-            {
-                Node* diagNeighbor = getNodeByGridPosition(sf::Vector2i( nx, ny ));
-                if (diagNeighbor)
-                    connect(current, diagNeighbor, std::sqrt(2.0f));
-            }
-        }
-    }
 }
 
 Node* Pathfinding::getNodeByGridPosition(sf::Vector2i pos)
