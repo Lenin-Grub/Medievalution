@@ -7,6 +7,7 @@ WorldMap::WorldMap()
     , width(0)
     , is_selected(false)
     , selected_province_color(sf::Color::White)
+    , default_color(sf::Color::White)
 {
     // Do nothing
 }
@@ -18,34 +19,45 @@ WorldMap::~WorldMap()
 
 bool WorldMap::init()
 {
-    loadMapData();
-    loadProvincesMap();
-    loadShader();
-    isInitProvinces();
-    setUniforms();
-    shape.setRadius(5);
-    shape.setFillColor(sf::Color::Red);
+    if (!loadMapData())      return false;
+    if (!loadProvincesMap()) return false;
+    if (!loadShader())       return false;
+    if (!isInitProvinces())  return false;
 
-    return false;
+    setUniforms();
+
+    return true;
 }
 
-void WorldMap::loadMapData()
+bool  WorldMap::loadMapData()
 {
     try
     {
         file.open("resources/Map/Provinces.csv");
+        return true;
     }
     catch (const std::ifstream::failure& ex)
     {
         LOG_ERROR("File <<Provinces.csv>> not found");
         LOG_ERROR(ex.what());
+        return false;
     }
 }
 
-void WorldMap::loadProvincesMap()
+bool WorldMap::loadProvincesMap()
 {
-    map_image = ResourceLoader::instance().getImage("Provinces.png");
-    s_texture = ResourceLoader::instance().getTexture("Colormap2.jpg");
+    try
+    {
+        map_image = ResourceLoader::instance().getImage("Provinces.png");
+        s_texture = ResourceLoader::instance().getTexture("Colormap2.jpg");
+        return true;
+    }
+    catch (const std::ifstream::failure& ex)
+    {
+        LOG_ERROR("Province map not found");
+        LOG_ERROR(ex.what());
+        return false;
+    }
 }
 
 bool WorldMap::isInitProvinces()
@@ -99,63 +111,102 @@ void WorldMap::setUniforms()
     shader.setUniform("height", (float)map_texture.getSize().y);
 }
 
-void WorldMap::loadShader()
+bool WorldMap::loadShader()
 {
     if (!shader.loadFromFile("shaders/map_vert.vert", "shaders/map_color_change.frag"))
+    {
         LOG_ERROR("Shader not found");
+        return false;
+    }
 
-    map_texture.loadFromImage(this->map_image);
+    if (!map_texture.loadFromImage(this->map_image))
+    {
+        LOG_ERROR("Map texture not loaded");
+        return false;
+    }
     s_province_map.setTexture(map_texture);
     s_texture_map.setTexture(s_texture);
+    return true;
 }
 
 const sf::Color WorldMap::getColor()
 {
     if (isMouseOnMap())
-        return current_color = map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y);
+    {
+        current_color = map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y);
+        return current_color;
+    }
     else
-        return sf::Color::White;
+        return default_color;
 }
 
 const sf::Color WorldMap::getColor(sf::Vector2f pos)
 {
-    current_color = map_image.getPixel(pos.x, pos.y);
-    //LOG_INFO("Color {0} {1} {2}", current_color.r, current_color.g, current_color.b);
-    return current_color;
+    if (isMouseOnMap())
+    {
+        current_color = map_image.getPixel(pos.x, pos.y);
+        return current_color;
+    }
+    else
+        return default_color;
 }
 
 int WorldMap::getProvinceID(const sf::Color& color) const
 {
     if (!isMouseOnMap())
         return 0;
-    if (color == map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
-        return provinces.find(color)->second.id;
-    else
+
+    sf::Vector2f pos = common::mouse_pos_view;
+    if (color != map_image.getPixel(pos.x, pos.y))
         return 0;
+
+    auto it = provinces.find(color);
+    if (it == provinces.end())
+        return 0;
+
+    return it->second.id;
 }
 
 int WorldMap::getProvinceID(const sf::Color& color, sf::Vector2f pos) const
 {
-    if (color == map_image.getPixel(pos.x, pos.y))
-        return provinces.find(color)->second.id;
-    else
+    if (color != map_image.getPixel(pos.x, pos.y))
         return 0;
+
+    auto it = provinces.find(color);
+    if (it == provinces.end())
+        return 0;
+
+    return it->second.id;
 }
 
 const std::string WorldMap::getProvinceName(const sf::Color& color) const
 {
     if (!isMouseOnMap())
-        return "not found";
-    if (color == map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
-        return provinces.find(color)->second.name;
-    else
-        return "not found";
+        return "Province not found";
+
+    if (color != map_image.getPixel(common::mouse_pos_view.x, common::mouse_pos_view.y))
+        return "Province not found";
+
+    auto it = provinces.find(color);
+    if (it == provinces.end())
+        return "Province not found";
+
+    return it->second.name;
 }
 
 const std::string WorldMap::getProvinceName(const sf::Color& color, sf::Vector2f pos) const
 {
-    if (color == map_image.getPixel(pos.x,pos.y))
-        return provinces.find(color)->second.name;
+    if (!isMouseOnMap())
+        return "Province not found";
+
+    if (color != map_image.getPixel(pos.x, pos.y))
+        return "Province not found";
+
+    auto it = provinces.find(color);
+    if (it == provinces.end())
+        return "Province not found";
+
+    return it->second.name;
 }
 
 bool WorldMap::isMouseOnMap() const

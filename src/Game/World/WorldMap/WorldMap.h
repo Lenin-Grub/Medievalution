@@ -4,6 +4,7 @@
 #include "Province.h"
 
 #include <fstream>
+#include <optional>
 
     /**
     @class WorldMap
@@ -65,16 +66,16 @@ public:
     bool                  is_selected;             ///< @brief Indicates whether the province is selected.
     sf::Color             selected_province_color; ///< @brief The color of the selected province.
     sf::Color             hover_color;             ///< @brief The color displayed when hovering over a province.
-
+    sf::Color             default_color;
 private:
 
     /// @brief Loads the provinces map.
     /// @private
-    void loadProvincesMap();
+    bool loadProvincesMap();
 
     /// @brief Loads the map data.
     /// @private
-    void loadMapData();
+    bool loadMapData();
 
     /// @brief Sets the uniforms for the shader.
     /// @private
@@ -82,7 +83,7 @@ private:
 
     /// @brief Loads the shader.
     /// @private
-    void loadShader();
+    bool loadShader();
 
     /// @brief Checks if the mouse is on the map.
     /// @return True if the mouse is on the map, false otherwise.
