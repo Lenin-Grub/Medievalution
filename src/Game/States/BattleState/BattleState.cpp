@@ -22,7 +22,8 @@ void BattleState::init()
     battle_map.init();
 
     texture = ResourceLoader::instance().getTexture("Spearman.png");
-    pathfinding.initNodes(64, 64);
+
+    GridSystem::generateGrid(pathfinding, 64, 64);
 
     UnitFactory factory(registry, texture);
 

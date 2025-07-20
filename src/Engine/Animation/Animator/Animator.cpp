@@ -42,7 +42,7 @@ void Animator::addAnimation(const std::string& name, const AnimationClip& clip)
     }
 }
 
-void Animator::deleatAllAnimations()
+void Animator::deleteAllAnimations()
 {
     animations.clear();
 }

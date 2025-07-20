@@ -9,9 +9,10 @@
 
 struct CameraSettings 
 {
-    float min_zoom      = 90.0f;   ///< The maximum zoom level for the camera.
-    float max_zoom      = 1500.0f; ///< The minimum zoom level for the camera.
-    float pan_threshold = 5.0f;    ///< Distance threshold for reaching the focus point.
+    float min_zoom       = 90.0f;   ///< The maximum zoom level for the camera.
+    float max_zoom       = 1500.0f; ///< The minimum zoom level for the camera.
+    float pan_threshold  = 5.0f;    ///< Distance threshold for reaching the focus point.
+    float movement_speed = 1.0f;
 };
 
 struct CameraControls 
@@ -32,7 +33,7 @@ struct CameraControls
 class Camera
 {
 public:
-    Camera();
+    Camera(sf::Vector2f window_size, sf::View& view);
     virtual ~Camera() = default;
 
     /// @brief Sets the default view.
@@ -82,18 +83,35 @@ public:
 
     /// @brief Resets the camera to its initial state.
     void reset() noexcept;
+
+    void setWindowSize(sf::Vector2f size) noexcept;
+
+    void setSettings(CameraSettings settings) noexcept;
+
+    void setSpeed(float speed) noexcept;
+
+    void setBounds(const sf::FloatRect& bounds) noexcept;
+
+    void enableBounds(bool enable) noexcept;
+
+    void clampToBounds(const sf::FloatRect& world_bounds) noexcept;
     
 private:
 
     CameraSettings camera_settings;
     CameraControls camera_controls;
 
-    bool         is_panning;        ///< Indicates whether the camera is currently panning.
-    bool         is_moved_to_focus; ///< Tracks whether the camera has reached the focus point.
-    bool         auto_focusing;     ///< Indicates whether auto-focusing is enabled.
+    bool           is_panning;        ///< Indicates whether the camera is currently panning.
+    bool           is_moved_to_focus; ///< Tracks whether the camera has reached the focus point.
+    bool           is_bounded;
+    bool           auto_focusing;     ///< Indicates whether auto-focusing is enabled.
     
-    sf::Vector2f prev_mouse_pos;    ///< Stores the previous mouse position for panning calculations.
-    sf::Vector2f target_position;   ///< Target position the camera is moving towards.
-    sf::Vector2f target_focus;      ///< Current focus point in world coordinates.
-    sf::Vector2f window_size;
+    sf::Vector2f   prev_mouse_pos;    ///< Stores the previous mouse position for panning calculations.
+    sf::Vector2f   target_position;   ///< Target position the camera is moving towards.
+    sf::Vector2f   target_focus;      ///< Current focus point in world coordinates.
+    sf::Vector2f   window_size;
+    sf::View&      view;
+
+    sf::FloatRect camera_bounds;
+
 };

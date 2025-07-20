@@ -40,7 +40,7 @@ public:
 
     void addAnimation(const std::string& name, const AnimationClip& clip);
 
-    void deleatAllAnimations();
+    void deleteAllAnimations();
 
     void setAnimation(const std::string& name, bool loop = true);
 

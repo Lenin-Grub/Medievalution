@@ -152,7 +152,7 @@ bool Game::initJukebox() noexcept
 void Game::restartApplication()
 {
     state_machine.restart(false);
-    window->close();
+    window.reset();
     ImGui::SFML::Shutdown();
 
     state_machine.is_init = true;

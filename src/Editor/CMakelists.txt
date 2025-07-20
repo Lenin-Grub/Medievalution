@@ -2,7 +2,14 @@ cmake_minimum_required(VERSION 3.31)
 
 project(Editor)
 
-add_executable(${PROJECT_NAME} Main.cpp resources_editor.rc)
+FILE(GLOB_RECURSE HEADERS ${PROJECT_SOURCE_DIR}/*.hpp ${PROJECT_SOURCE_DIR}/*.h ${PROJECT_SOURCE_DIR}/*.inl)
+FILE(GLOB_RECURSE SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
+
+add_executable(${PROJECT_NAME} ${HEADERS} ${SOURCES} resources_editor.rc)
+
+target_include_directories(${PROJECT_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${HEADERS} ${SOURCES})
 
 set_target_properties(${PROJECT_NAME} PROPERTIES RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/bin)
 set_target_properties(${PROJECT_NAME} PROPERTIES VS_DEBUGGER_WORKING_DIRECTORY "$(OutDir)")
@@ -12,6 +19,7 @@ set(BUILD_SHARED_LIBS OFF)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SFML_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${SPDLOG_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${ENTT_SOURCE_DIR}/include)
+target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/Engine)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE
     sfml-graphics
@@ -21,6 +29,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     ImGui-SFML::ImGui-SFML
     EnTT::EnTT
     json
+    Engine
 )
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)

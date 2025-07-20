@@ -12,7 +12,11 @@ class StateMachine;
 
 struct StateData
 {
-    Camera camera;
+private:
+    int widht = WindowSettings::getInstance().settings.resolution.width;
+    int height = WindowSettings::getInstance().settings.resolution.height;
+public:
+    Camera camera{ sf::Vector2f(widht, height), common::view};
     Audio::Music::Jukebox jukebox{ "resources/Audio/Musics/" };
 };
 

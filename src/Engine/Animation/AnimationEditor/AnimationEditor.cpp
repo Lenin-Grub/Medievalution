@@ -47,7 +47,7 @@ void AnimationEditor::drawSpriteSelector()
 
         std::string filename = files[selected];
 
-        animator.deleatAllAnimations();
+        animator.deleteAllAnimations();
 
         texture = ResourceLoader::instance().getTexture(filename + ".png");
         sprite.setTexture(texture);

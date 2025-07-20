@@ -1,17 +1,19 @@
 ﻿#include "Camera.h"
 
-Camera::Camera()
-    : is_panning(false)
+Camera::Camera(sf::Vector2f window_size, sf::View& view)
+    : is_panning (false)
     , is_moved_to_focus (false)
-    , auto_focusing     (false)
+    , auto_focusing (false)
+    , is_bounded(false)
+    , window_size (window_size)
+    , view(view)
 {
-    window_size = sf::Vector2f(WindowSettings::getInstance().settings.resolution.width, WindowSettings::getInstance().settings.resolution.height);
 }
 
 void Camera::setDefaultView() const noexcept
 {
-    common::view.setSize(window_size);
-    common::view.setCenter(window_size / 2.f);
+    view.setSize(window_size);
+    view.setCenter(window_size / 2.f);
 }
 
 void Camera::update(const float& dtime) noexcept
@@ -22,13 +24,14 @@ void Camera::update(const float& dtime) noexcept
 
 void Camera::move(const float& dtime) noexcept
 {
-    float zoom_factor    = common::view.getSize().x / WindowSettings::getInstance().settings.resolution.width;
-    float adjusted_speed = WindowSettings::getInstance().settings.camera_speed * zoom_factor;
+    float zoom_factor    = view.getSize().x / WindowSettings::getInstance().settings.resolution.width;
+    //float adjusted_speed = WindowSettings::getInstance().settings.camera_speed * zoom_factor;
+    float adjusted_speed = 1000 * zoom_factor;
 
-    if (sf::Keyboard::isKeyPressed(camera_controls.up))    { common::view.move(0,-adjusted_speed * dtime   ); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(camera_controls.down))  { common::view.move(0, adjusted_speed * dtime   ); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(camera_controls.left))  { common::view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
-    if (sf::Keyboard::isKeyPressed(camera_controls.right)) { common::view.move(   adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.up))    { view.move(0,-adjusted_speed * dtime   ); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.down))  { view.move(0, adjusted_speed * dtime   ); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.left))  { view.move(  -adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.right)) { view.move(   adjusted_speed * dtime, 0); stopFocus(); }
 }
 
 void Camera::zoom() noexcept
@@ -37,13 +40,13 @@ void Camera::zoom() noexcept
     {
         if (common::sfml_event.mouseWheelScroll.delta > 0)
         {
-            if (common::view.getSize().x <= camera_settings.max_zoom || common::view.getSize().y <= camera_settings.max_zoom)
-                common::view.zoom(1.1);
+            if (view.getSize().x <= camera_settings.max_zoom || view.getSize().y <= camera_settings.max_zoom)
+                view.zoom(1.1);
         }
         else if (common::sfml_event.mouseWheelScroll.delta < 0)
         {
-            if (common::view.getSize().x >= camera_settings.min_zoom || common::view.getSize().y >= camera_settings.min_zoom)
-                common::view.zoom(0.9);
+            if (view.getSize().x >= camera_settings.min_zoom || view.getSize().y >= camera_settings.min_zoom)
+                view.zoom(0.9);
         }
     }
 }
@@ -60,11 +63,11 @@ void Camera::scroll() noexcept
     else if (common::sfml_event.type == sf::Event::MouseMoved && is_panning)
     {
         sf::Vector2f mouse_pos = static_cast<sf::Vector2f>(common::mouse_pos_window);
-        sf::Vector2f offset   = prev_mouse_pos - mouse_pos;
-        prev_mouse_pos        = mouse_pos;
+        sf::Vector2f offset    = prev_mouse_pos - mouse_pos;
+        prev_mouse_pos         = mouse_pos;
 
         if (offset.x * offset.x + offset.y * offset.y > camera_settings.pan_threshold * camera_settings.pan_threshold)
-            common::view.move(offset);
+            view.move(offset);
 
         stopFocus();
     }
@@ -77,8 +80,8 @@ void Camera::scroll() noexcept
 
 void Camera::focusOn() noexcept
 {
-    sf::Vector2f current_сenter = common::view.getCenter();
-    sf::Vector2f direction      = target_position - current_сenter;
+    sf::Vector2f current_center = view.getCenter();
+    sf::Vector2f direction      = target_position - current_center;
     float        smooth         = 50.0f;
     float        distance       = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
@@ -97,9 +100,9 @@ void Camera::focusOn() noexcept
         float move_step  = move_speed * smooth;
 
         if (distance < move_step)
-            common::view.setCenter(target_position);
+            view.setCenter(target_position);
         else
-            common::view.move(direction * move_step);
+            view.move(direction * move_step);
     }
 }
 
@@ -130,4 +133,52 @@ void Camera::reset() noexcept
     is_moved_to_focus = false;
 
     setDefaultView();
+}
+
+void Camera::setWindowSize(sf::Vector2f size) noexcept
+{
+    window_size = size;
+}
+
+void Camera::setSettings(CameraSettings settings) noexcept
+{
+    camera_settings = settings;
+}
+
+void Camera::setSpeed(float speed) noexcept
+{
+    camera_settings.movement_speed = speed;
+}
+
+void Camera::setBounds(const sf::FloatRect& bounds) noexcept
+{
+    camera_bounds = bounds;
+    is_bounded    = true;
+}
+
+void Camera::enableBounds(bool enable) noexcept
+{
+    is_bounded = enable;
+}
+
+void Camera::clampToBounds(const sf::FloatRect& world_bounds) noexcept
+{
+    if (!is_bounded)
+        return;
+
+    sf::Vector2f view_size = view.getSize();
+    sf::Vector2f view_center = view.getCenter();
+
+    float min_x = world_bounds.left + view_size.x / 2.f;
+    float max_x = world_bounds.left + world_bounds.width - view_size.x / 2.f;
+    float min_y = world_bounds.top + view_size.y / 2.f;
+    float max_y = world_bounds.top + world_bounds.height - view_size.y / 2.f;
+
+    float clamped_x = std::clamp(view_center.x, min_x, max_x);
+    float clamped_y = std::clamp(view_center.y, min_y, max_y);
+
+    if (clamped_x != view_center.x || clamped_y != view_center.y)
+    {
+        view.setCenter(clamped_x, clamped_y);
+    }
 }
