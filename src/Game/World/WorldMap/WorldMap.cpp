@@ -1,4 +1,5 @@
-#include "WorldMap.h"
+﻿#include "WorldMap.h"
+#include <iostream>
 
 WorldMap::WorldMap()
     : transparency(0)
@@ -8,6 +9,8 @@ WorldMap::WorldMap()
     , is_selected(false)
     , selected_province_color(sf::Color::White)
     , default_color(sf::Color::White)
+    , BIOME_TILESET_SIZE (2048.0f)
+    , BIOME_TILE_SIZE (256.0f)
 {
     // Do nothing
 }
@@ -24,11 +27,6 @@ bool WorldMap::init()
     if (!loadShaders())      return false;
     if (!isInitProvinces())  return false;
 
-    s_province_map.setTexture(map_texture);
-    s_texture_map.setTexture(s_texture);
-    map_size = color_map_texture.getSize();
-
-    setQuads();
     setUniforms();
 
     return true;
@@ -53,10 +51,12 @@ bool WorldMap::loadProvincesMap()
 {
     try
     {
-        map_image         = ResourceLoader::instance().getImage("Provinces.png");
-        s_texture         = ResourceLoader::instance().getTexture("Greyscale.jpg");
-        atlas_texture     = ResourceLoader::instance().getTexture("tiles.jpg");
-        color_map_texture = ResourceLoader::instance().getTexture("Colormap.png");
+        map_image           = ResourceLoader::instance().getImage("Provinces.png");
+        biome_tiles_texture = ResourceLoader::instance().getTexture("tiles.jpg");
+        biome_texture       = ResourceLoader::instance().getTexture("Colormap.png");
+
+        biome_map.setTexture(biome_texture);
+        province_map.setTexture(province_texture);
 
         return true;
     }
@@ -110,33 +110,32 @@ bool WorldMap::isInitProvinces()
         return false;
 }
 
+
+
 void WorldMap::setUniforms()
 {
-    shader_texture.setUniform("atlas", atlas_texture);
-    shader_texture.setUniform("colormap", color_map_texture);
-    shader_texture.setUniform("tile_size", sf::Vector2f(256, 256));
-    shader_texture.setUniform("atlas_size", sf::Vector2f(2048, 2048));
+    createIndexTexture();
+
+    shader_texture.setUniform("atlas", biome_tiles_texture);
+    shader_texture.setUniform("index_map", biome_pallete_texture);
+    shader_texture.setUniform("tile_size", sf::Vector2f(BIOME_TILE_SIZE, BIOME_TILE_SIZE));
+    shader_texture.setUniform("atlas_size", sf::Vector2f(BIOME_TILESET_SIZE, BIOME_TILESET_SIZE));
+
+    auto biomes = getBiomes();
+    for (size_t i = 0; i < biomes.size(); ++i)
+    {
+        std::string name = "tileIndices[" + std::to_string(i) + "]";
+        shader_texture.setUniform(name.c_str(), biomes[i].tileCoords);
+    }
 
     shader_border.setUniform("map_texture", sf::Shader::CurrentTexture);
     shader_border.setUniform("transparency", transparency);
     shader_border.setUniform("select_color", sf::Glsl::Vec4(select_color));
-    shader_border.setUniform("width", (float)map_texture.getSize().x);
-    shader_border.setUniform("height", (float)map_texture.getSize().y);
+    shader_border.setUniform("width", (float)province_texture.getSize().x);
+    shader_border.setUniform("height", (float)province_texture.getSize().y);
 }
 
-void WorldMap::setQuads()
-{
-    quad = sf::VertexArray(sf::Quads, 4);
-    quad[0].position = sf::Vector2f(0, 0);
-    quad[1].position = sf::Vector2f(map_size.x, 0);
-    quad[2].position = sf::Vector2f(map_size.x, map_size.y);
-    quad[3].position = sf::Vector2f(0, map_size.y);
 
-    quad[0].texCoords = sf::Vector2f(0, 0);
-    quad[1].texCoords = sf::Vector2f(1, 0);
-    quad[2].texCoords = sf::Vector2f(1, 1);
-    quad[3].texCoords = sf::Vector2f(0, 1);
-}
 
 bool WorldMap::loadShaders()
 {
@@ -146,7 +145,7 @@ bool WorldMap::loadShaders()
         return false;
     }
 
-    if (!map_texture.loadFromImage(this->map_image))
+    if (!province_texture.loadFromImage(this->map_image))
     {
         LOG_ERROR("Map texture not loaded");
         return false;
@@ -252,11 +251,71 @@ bool WorldMap::isMouseOnMap() const
         return false;
 }
 
+
+std::vector<WorldMap::Biome> WorldMap::getBiomes()
+{
+    biomes.push_back(Biome(sf::Color(255, 255, 255), { 3.0f, 3.0f }));  // равнины
+    biomes.push_back(Biome(sf::Color(255, 0, 255),   { 0.0f, 0.0f }));  // вода
+    biomes.push_back(Biome(sf::Color(235, 180, 233), { 4.0f, 0.0f }));  // горы
+    biomes.push_back(Biome(sf::Color(213, 144, 199), { 1.0f, 4.0f }));  // предгорья
+    biomes.push_back(Biome(sf::Color(150, 17 , 60 ), { 2.0f, 4.0f }));  // заснеженные горы
+    biomes.push_back(Biome(sf::Color(63 , 125, 0  ), { 5.0f, 5.0f }));  // лес
+    biomes.push_back(Biome(sf::Color(119, 212, 127), { 0.0f, 6.0f }));  // пашня
+    biomes.push_back(Biome(sf::Color(108, 144, 76 ), { 4.0f, 5.0f }));  // лес 2
+    biomes.push_back(Biome(sf::Color(99 , 65 , 38 ), { 7.0f, 4.0f }));  // горы 2
+    return biomes;
+}
+
+void WorldMap::createIndexTexture()
+{
+    auto biomes     = getBiomes();
+    int color_count = biomes.size();
+
+    sf::Image biome_map_image = biome_texture.copyToImage();
+    sf::Image image_ID;
+    image_ID.create(biome_map_image.getSize().x, biome_map_image.getSize().y, sf::Color::Black);
+
+    auto find_closest_ID = [&](const sf::Color& pixel) -> int 
+        {
+            float min_distance = 1e9f;
+            int best_ID = 0;
+            for (int i = 0; i < color_count; ++i) 
+            {
+                float r = static_cast<float>(pixel.r - biomes[i].color.r);
+                float g = static_cast<float>(pixel.g - biomes[i].color.g);
+                float b = static_cast<float>(pixel.b - biomes[i].color.b);
+                float dist = r * r + g * g + b * b;
+                if (dist < min_distance) 
+                {
+                    min_distance = dist;
+                    best_ID = i;
+                }
+            }
+            return best_ID;
+        };
+
+    float scale = 255.0f / static_cast<float>(color_count - 1);
+
+    for (unsigned int y = 0; y < biome_map_image.getSize().y; ++y) 
+    {
+        for (unsigned int x = 0; x < biome_map_image.getSize().x; ++x) 
+        {
+            sf::Color pixel = biome_map_image.getPixel(x, y);
+            int index       = find_closest_ID(pixel);
+            sf::Uint8 r     = static_cast<sf::Uint8>(index * scale);
+            image_ID.setPixel(x, y, sf::Color(r, 0, 0));
+        }
+    }
+
+    biome_pallete_texture.loadFromImage(image_ID);
+    biome_pallete_texture.setSmooth(false);
+}
+
+
 void WorldMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-    //target.draw(s_texture_map);
-    target.draw(quad, &shader_texture);
-    target.draw(s_province_map, &shader_border);
+    target.draw(biome_map, &shader_texture);
+    target.draw(province_map, &shader_border);
 }
 
 sf::Vector2f WorldMap::findProvinceCenter(sf::Color provinceColor) const

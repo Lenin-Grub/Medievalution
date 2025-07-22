@@ -81,7 +81,7 @@ private:
     /// @private
     void setUniforms();
 
-    void setQuads();
+    //void setQuads();
 
     /// @brief Loads the shader.
     /// @private
@@ -93,18 +93,33 @@ private:
     bool isMouseOnMap() const;
 
 private:
+    struct Biome 
+    {
+        sf::Color color;
+        sf::Vector2f tileCoords;
+    };
+
+    std::vector<Biome> biomes;
+
+    sf::Sprite    biome_map;
+    sf::Texture   biome_tiles_texture;
+    sf::Texture   biome_pallete_texture;
+    sf::Texture   biome_texture;
+
+    const float     BIOME_TILESET_SIZE;  ///< Size of biome tileset. 2048x2048.
+    const float     BIOME_TILE_SIZE;      ///< Single tile size in biome_tiles_texture. 256x256.
+
+    const float INDEX_TO_COLOR_SCALE = 255.0f / 8.0f;
+
+    std::vector<Biome> getBiomes();
+
+    void createIndexTexture();
+
+private:
     Province      province;
     sf::Color     current_color;
-    sf::Texture   map_texture;
-    sf::Texture   atlas_texture;
-    sf::Texture   color_map_texture;
-    sf::Texture   s_texture;
-    sf::Sprite    s_province_map;
-    sf::Sprite    s_texture_map;
-
-    sf::Vector2u map_size;
-
-    sf::VertexArray quad;
+    sf::Texture   province_texture;
+    sf::Sprite    province_map;
 
     std::ifstream file;
     std::string   id, r, g, b, name, comment;

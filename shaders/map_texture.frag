@@ -1,50 +1,31 @@
-#version 150 compatibility
+п»ї#version 330 core
+in vec2 gl_TexCoord[1];
+out vec4 gl_FragColor;
 
-uniform sampler2D atlas;     // Текстура-атлас
-uniform sampler2D colormap;  // Цветовая карта
-uniform vec2 tile_size;       // Размер тайла
-uniform vec2 atlas_size;      // Размер атласа
-float tile_scale = 15.0f;     // Масштаб тайлов
+// Р’Р°Р¶РЅРѕ! РљРѕР»РёС‡РµСЃС‚РІРѕ С‚Р°Р№Р»РѕРІ РІ С‚Р°Р№Р»РѕРІРѕР№ РєР°СЂС‚Рµ
+const int tile_max     = 64;
+
+uniform sampler2D atlas;
+uniform sampler2D index_map;
+uniform vec2 tile_size;
+uniform vec2 atlas_size;
+uniform vec2 tileIndices[tile_max];
+
+const float tile_scale = 20.0;
 
 void main() 
 {
-    vec2 texCoord = gl_TexCoord[0].xy;
-    vec4 color = texture2D(colormap, texCoord);
-    vec2 tileIndex = vec2(0.0, 0.0);
+    vec2 tc      = gl_TexCoord[0].xy;
+    float rValue = texture(index_map, tc).r;
+    int index    = int(rValue * 8.0 + 0.5);
+    index        = clamp(index, 0, 8);
 
-if (distance(color.rgb, vec3(1.0, 1.0, 1.0)) < 0.01) 
-    {// трава
-        tileIndex = vec2(3.0, 3.0);
-    } 
-else if (distance(color.rgb, vec3(1.0, 0.0, 1.0)) < 0.01) 
-    {// вода
-        tileIndex = vec2(1.0, 0.0);
-    } 
- else if (distance(color.rgb, vec3(0.922, 0.702, 0.914)) < 0.01) 
-    {// холмы
-        tileIndex = vec2(4.0, 0.0);
-    } 
-else if (distance(color.rgb, vec3(0.835, 0.565, 0.780)) < 0.01) 
-    {
-        tileIndex = vec2(1.0, 4.0);
-    } 
-else if (distance(color.rgb, vec3(0.498, 0.094, 0.235)) < 0.01) 
-    {
-        tileIndex = vec2(2.0, 4.0);
-    } 
-else if (distance(color.rgb, vec3(0.337, 0.486, 0.106)) < 0.01) 
-    {
-        tileIndex = vec2(5.0, 5.0);
-    } 
-else if (distance(color.rgb, vec3(0.596, 0.827, 0.514)) < 0.01) 
-    {
-        tileIndex = vec2(0.0, 6.0);
-    }
+    vec2 tile_id = tileIndices[index];
 
-    vec2 scaledTexCoord = texCoord * tile_scale;
-    vec2 tileUV         = fract(scaledTexCoord * atlas_size / tile_size);
-    tileUV              = clamp(tileUV, 0.001, 0.999);
-    vec2 uv             = (tileIndex * tile_size + tileUV * tile_size) / atlas_size;
-    vec4 finalColor     = texture2D(atlas, uv);
-    gl_FragColor        = finalColor;
+    vec2 tiles_in_atlas = atlas_size / tile_size;
+    vec2 local_uv       = fract(tc * tile_scale * tiles_in_atlas);
+    vec2 uv             = (tile_id + local_uv) / tiles_in_atlas;
+
+    vec4 final_color = texture(atlas, uv);
+    gl_FragColor     = final_color;
 }
