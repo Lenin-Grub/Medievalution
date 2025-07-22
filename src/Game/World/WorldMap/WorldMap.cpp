@@ -27,6 +27,8 @@ bool WorldMap::init()
     if (!loadShaders())      return false;
     if (!isInitProvinces())  return false;
 
+    province_map.setTexture(province_texture);
+
     setUniforms();
 
     return true;
@@ -54,9 +56,7 @@ bool WorldMap::loadProvincesMap()
         map_image           = ResourceLoader::instance().getImage("Provinces.png");
         biome_tiles_texture = ResourceLoader::instance().getTexture("tiles.jpg");
         biome_texture       = ResourceLoader::instance().getTexture("Colormap.png");
-
         biome_map.setTexture(biome_texture);
-        province_map.setTexture(province_texture);
 
         return true;
     }
@@ -277,24 +277,24 @@ void WorldMap::createIndexTexture()
 
     auto find_closest_ID = [&](const sf::Color& pixel) -> int 
         {
-            float min_distance = 1e9f;
-            int best_ID = 0;
-            for (int i = 0; i < color_count; ++i) 
+        float min_distance = 1e9f;
+        int best_ID = 0;
+        for (int i = 0; i < color_count; ++i) 
+        {
+            float r = static_cast<float>(pixel.r - biomes[i].color.r);
+            float g = static_cast<float>(pixel.g - biomes[i].color.g);
+            float b = static_cast<float>(pixel.b - biomes[i].color.b);
+            float dist = r * r + g * g + b * b;
+            if (dist < min_distance) 
             {
-                float r = static_cast<float>(pixel.r - biomes[i].color.r);
-                float g = static_cast<float>(pixel.g - biomes[i].color.g);
-                float b = static_cast<float>(pixel.b - biomes[i].color.b);
-                float dist = r * r + g * g + b * b;
-                if (dist < min_distance) 
-                {
-                    min_distance = dist;
-                    best_ID = i;
-                }
+                min_distance = dist;
+                best_ID = i;
             }
-            return best_ID;
+        }
+        return best_ID;
         };
 
-    float scale = 255.0f / static_cast<float>(color_count - 1);
+    float scale = 255.0f / static_cast<float>(color_count - 1); // 0..8 → 0..255
 
     for (unsigned int y = 0; y < biome_map_image.getSize().y; ++y) 
     {
