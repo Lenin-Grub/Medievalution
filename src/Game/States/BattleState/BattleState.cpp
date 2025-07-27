@@ -196,7 +196,6 @@ void BattleState::renderTools()
                     if (tool == ToolState::Brush)
                     {
                         is_brash = !is_brash;
-                        battle_map.setSelectedTile(m_selected_tile_id);
                         battle_map.setShowPreview(true);
                     }
                     else
@@ -431,6 +430,7 @@ void BattleState::renderTilesetTable()
                 if (ImGui::ImageButton("", tileset_texture_id, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
                 {
                     m_selected_tile_id = row * tileset_cols + col;
+                    battle_map.setSelectedTile(m_selected_tile_id);
                 }
 
                 if (selected)
