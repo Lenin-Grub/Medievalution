@@ -50,6 +50,8 @@ void BattleState::updateEvents()
     if (Input::isKeyPressed(sf::Keyboard::Key::Escape))
         state_machine.lastState();
 
+    battle_map.updatePreview(common::mouse_pos_view);
+
     if (is_brash)
     {
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !ImGui::GetIO().WantCaptureMouse)
