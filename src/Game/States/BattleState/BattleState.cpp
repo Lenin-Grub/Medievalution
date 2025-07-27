@@ -192,9 +192,16 @@ void BattleState::renderTools()
                 if (ImGui::Button((ICON::getStr(icon) + std::string(" ##") + id).c_str()))
                 {
                     if (tool == ToolState::Brush)
+                    {
                         is_brash = !is_brash;
+                        battle_map.setSelectedTile(m_selected_tile_id);
+                        battle_map.setShowPreview(true);
+                    }
                     else
+                    {
                         is_brash = false;
+                        battle_map.setShowPreview(false);
+                    }
 
                     tools       = tool;
                     gizmos.mode = mode;

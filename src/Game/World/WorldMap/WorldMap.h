@@ -63,9 +63,9 @@ public:
     sf::Color             select_color;             ///< @brief The color used for selecting provinces.
     sf::Image             map_image;                ///< @brief The image of the world map. 
 
-    bool                  is_selected;             ///< @brief Indicates whether the province is selected.
-    sf::Color             selected_province_color; ///< @brief The color of the selected province.
-    sf::Color             hover_color;             ///< @brief The color displayed when hovering over a province.
+    bool                  is_selected;              ///< @brief Indicates whether the province is selected.
+    sf::Color             selected_province_color;  ///< @brief The color of the selected province.
+    sf::Color             hover_color;              ///< @brief The color displayed when hovering over a province.
     sf::Color             default_color;
 private:
 
@@ -106,7 +106,7 @@ private:
     sf::Texture   biome_pallete_texture;
     sf::Texture   biome_texture;
 
-    const float     BIOME_TILESET_SIZE;  ///< Size of biome tileset. 2048x2048.
+    const float     BIOME_TILESET_SIZE;   ///< Size of biome tileset. 2048x2048.
     const float     BIOME_TILE_SIZE;      ///< Single tile size in biome_tiles_texture. 256x256.
 
     const float INDEX_TO_COLOR_SCALE = 255.0f / 8.0f;

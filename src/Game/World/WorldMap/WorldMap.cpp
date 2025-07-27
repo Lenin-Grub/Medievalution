@@ -110,8 +110,6 @@ bool WorldMap::isInitProvinces()
         return false;
 }
 
-
-
 void WorldMap::setUniforms()
 {
     createIndexTexture();
@@ -120,6 +118,7 @@ void WorldMap::setUniforms()
     shader_texture.setUniform("index_map", biome_pallete_texture);
     shader_texture.setUniform("tile_size", sf::Vector2f(BIOME_TILE_SIZE, BIOME_TILE_SIZE));
     shader_texture.setUniform("atlas_size", sf::Vector2f(BIOME_TILESET_SIZE, BIOME_TILESET_SIZE));
+    shader_texture.setUniform("u_time", common::dtime);
 
     auto biomes = getBiomes();
     for (size_t i = 0; i < biomes.size(); ++i)
@@ -134,8 +133,6 @@ void WorldMap::setUniforms()
     shader_border.setUniform("width", (float)province_texture.getSize().x);
     shader_border.setUniform("height", (float)province_texture.getSize().y);
 }
-
-
 
 bool WorldMap::loadShaders()
 {
@@ -251,11 +248,10 @@ bool WorldMap::isMouseOnMap() const
         return false;
 }
 
-
 std::vector<WorldMap::Biome> WorldMap::getBiomes()
 {
-    biomes.push_back(Biome(sf::Color(255, 255, 255), { 3.0f, 3.0f }));  // равнины
     biomes.push_back(Biome(sf::Color(255, 0, 255),   { 0.0f, 0.0f }));  // вода
+    biomes.push_back(Biome(sf::Color(255, 255, 255), { 3.0f, 3.0f }));  // равнины
     biomes.push_back(Biome(sf::Color(235, 180, 233), { 4.0f, 0.0f }));  // горы
     biomes.push_back(Biome(sf::Color(213, 144, 199), { 1.0f, 4.0f }));  // предгорья
     biomes.push_back(Biome(sf::Color(150, 17 , 60 ), { 2.0f, 4.0f }));  // заснеженные горы
@@ -294,7 +290,7 @@ void WorldMap::createIndexTexture()
         return best_ID;
         };
 
-    float scale = 255.0f / static_cast<float>(color_count - 1); // 0..8 → 0..255
+    float scale = 255.0f / static_cast<float>(color_count - 1);
 
     for (unsigned int y = 0; y < biome_map_image.getSize().y; ++y) 
     {
@@ -310,7 +306,6 @@ void WorldMap::createIndexTexture()
     biome_pallete_texture.loadFromImage(image_ID);
     biome_pallete_texture.setSmooth(false);
 }
-
 
 void WorldMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
