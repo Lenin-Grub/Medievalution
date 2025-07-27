@@ -25,10 +25,12 @@ public:
     /// @param states Current render states.
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
+    void addTile(int id, sf::Vector2f pos);
+
     /// @brief Adds a tile at the given screen position.
     /// @param id ID of the tile in the tileset.
     /// @param pos Screen coordinates where the tile should be placed.
-    void addTile(const int& id, sf::Vector2f pos) noexcept;
+    //void addTile(const int& id, sf::Vector2f pos) noexcept;
 
     /// @brief Removes a tile at the given screen position.
     /// @param id Unused parameter(always sets tile to Empty).
@@ -51,6 +53,10 @@ public:
     /// @param mouse_pos Screen position(e.g., mouse cursor).
     /// @return Grid coordinates(x, y) of the corresponding tile.
     sf::Vector2i getTileCoordinates(const sf::Vector2f& mouse_pos) const noexcept;
+
+    sf::Vector2f gridToWorld(sf::Vector2i gridPos) const;
+
+    sf::Vector2i worldToGrid(sf::Vector2f worldPos) const;
 
 public:
     std::vector<int> tile_ids;        ///< List of tile IDs for each cell in row-major order.

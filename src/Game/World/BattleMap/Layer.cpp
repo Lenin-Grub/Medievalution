@@ -10,6 +10,7 @@ Layer::Layer(int tileSize, sf::Vector2i board_size, sf::Texture& texture, int in
     , visible(true)
     , layer_index(index)
 {
+    tile_ids.resize(layer_size.x * layer_size.y, static_cast<int>(TileId::Empty));
 }
 
 bool Layer::init()
@@ -17,29 +18,18 @@ bool Layer::init()
     try
     {
         tile_map.setPrimitiveType(sf::Quads);
+        tile_map.resize(layer_size.x * layer_size.y * 4);
 
-        for (int x = 0; x < layer_size.x; x++)
+        for (int y = 0; y < layer_size.y; ++y)
         {
-            for (int y = 0; y < layer_size.y; y++)
+            for (int x = 0; x < layer_size.x; ++x) 
             {
-                float base_x = x * (tile_size / 2) - y * (tile_size / 2);
-                float base_y = (x + y) * tile_size / 4;
-
-                sf::Vertex topLeft(sf::Vector2f(base_x, base_y), sf::Vector2f(0, 0));
-                sf::Vertex topRight(sf::Vector2f(base_x + tile_size, base_y), sf::Vector2f(tile_size, 0));
-                sf::Vertex bottomRight(sf::Vector2f(base_x + tile_size, base_y + tile_size), sf::Vector2f(tile_size, tile_size));
-                sf::Vertex bottomLeft(sf::Vector2f(base_x, base_y + tile_size), sf::Vector2f(0, tile_size));
-
-                tile_map.append(topLeft);
-                tile_map.append(topRight);
-                tile_map.append(bottomRight);
-                tile_map.append(bottomLeft);
+                updateVertex(sf::Vector2f(x, y));
             }
         }
 
         tileset_cols = std::round(tileset_texture.getSize().x / tile_size);
         tileset_rows = std::round(tileset_texture.getSize().y / tile_size);
-        tile_ids.resize(static_cast<int64_t>(layer_size.x * layer_size.y), -1);
 
         return true;
     }
@@ -60,21 +50,20 @@ void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(tile_map, states);
 }
 
-void Layer::addTile(const int& id, sf::Vector2f pos) noexcept
+void Layer::addTile(int id, sf::Vector2f pos)
 {
-    sf::Vector2i tile_coords = getTileCoordinates(pos);
-    int x = tile_coords.x;
-    int y = tile_coords.y;
+    sf::Vector2i grid_pos = worldToGrid(pos);
 
-    if (x < 0 || y < 0 || x >= layer_size.x || y >= layer_size.y)
-        return;
-
-    int index = x + y * layer_size.x;
-    if (tile_ids[index] == id)
-        return;
-
-    tile_ids[index] = id;
-    updateVertex(sf::Vector2f( x, y ));
+    if (grid_pos.x >= 0 && grid_pos.y >= 0 &&
+        grid_pos.x < layer_size.x && grid_pos.y < layer_size.y)
+    {
+        int index = grid_pos.y * layer_size.x + grid_pos.x;
+        if (index >= 0 && index < static_cast<int>(tile_ids.size())) 
+        {
+            tile_ids[index] = id;
+            updateVertices();
+        }
+    }
 }
 
 void Layer::removeTile(const int& id, sf::Vector2f pos) noexcept
@@ -99,7 +88,7 @@ void Layer::updateVertex(sf::Vector2f pos) noexcept
         return;
 
     int index = pos.x + pos.y * layer_size.x;
-    int tileId = tile_ids[index];
+    int tile_Id = tile_ids[index];
 
     float base_x = pos.x * (tile_size / 2) - pos.y * (tile_size / 2);
     float base_y = (pos.x + pos.y) * (tile_size / 4);
@@ -111,7 +100,7 @@ void Layer::updateVertex(sf::Vector2f pos) noexcept
     quad[2].position = sf::Vector2f(base_x + tile_size, base_y + tile_size);
     quad[3].position = sf::Vector2f(base_x, base_y + tile_size);
 
-    if (tileId == static_cast<int>(TileId::Empty))
+    if (tile_Id == static_cast<int>(TileId::Empty))
     {
         quad[0].texCoords = sf::Vector2f(0, 0);
         quad[1].texCoords = sf::Vector2f(0, 0);
@@ -120,13 +109,13 @@ void Layer::updateVertex(sf::Vector2f pos) noexcept
     }
     else
     {
-        int tu = tileId % tileset_cols;
-        int tv = tileId / tileset_cols;
+        int tu = tile_Id % tileset_cols;
+        int tv = tile_Id / tileset_cols;
 
-        quad[0].texCoords = sf::Vector2f(tu * tile_size, tv * tile_size);
-        quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size, tv * tile_size);
+        quad[0].texCoords = sf::Vector2f( tu      * tile_size,  tv      * tile_size);
+        quad[1].texCoords = sf::Vector2f((tu + 1) * tile_size,  tv      * tile_size);
         quad[2].texCoords = sf::Vector2f((tu + 1) * tile_size, (tv + 1) * tile_size);
-        quad[3].texCoords = sf::Vector2f(tu * tile_size, (tv + 1) * tile_size);
+        quad[3].texCoords = sf::Vector2f( tu      * tile_size, (tv + 1) * tile_size);
     }
 }
 
@@ -165,4 +154,18 @@ sf::Vector2i Layer::getTileCoordinates(const sf::Vector2f& mouse_pos) const noex
     }
 
     return sf::Vector2i(tile_x, tile_y);
+}
+
+sf::Vector2f Layer::gridToWorld(sf::Vector2i gridPos) const
+{
+    float world_x = (gridPos.x - gridPos.y) * (tile_size / 2.0f);
+    float world_y = (gridPos.x + gridPos.y) * (tile_size / 4.0f);
+    return { world_x, world_y };
+}
+
+sf::Vector2i Layer::worldToGrid(sf::Vector2f worldPos) const
+{
+    float map_x = (worldPos.x / (tile_size / 2.0f) + worldPos.y / (tile_size / 4.0f)) / 2.0f;
+    float map_y = (worldPos.y / (tile_size / 4.0f) - worldPos.x / (tile_size / 2.0f)) / 2.0f;
+    return { static_cast<int>(std::floor(map_x)), static_cast<int>(std::floor(map_y)) };
 }

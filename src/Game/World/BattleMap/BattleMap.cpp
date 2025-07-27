@@ -9,7 +9,7 @@ bool BattleMap::init()
 {
     try
     {
-        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png"), 0));
+        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png"), static_cast<int>(TileId::Empty)));
         layers.back()->init();
         return true;
     }
@@ -204,27 +204,17 @@ void BattleMap::loadMap(const std::string& file_path)
 
 sf::Vector2i BattleMap::getMouseGridPosition() noexcept
 {
-    if (layers.empty())
-    {
-        LOG_ERROR("Can`t get mouse position, because layer is empty");
-        return common::mouse_pos_grid = { -1, -1 };
-    }
+    if (layers.empty()) 
+        return { -1, -1 };
 
-    const float tileW = layers.at(0)->layer_size.x;
-    const float tileH = layers.at(0)->layer_size.y;
-    const float halfW = tileW / 2, halfH = tileH / 2;
+    const auto& layer = layers[0];
 
-    float mx = common::mouse_pos_view.x; /*+ common::layer_index*/
-    float my = common::mouse_pos_view.y; /*+ halfH * common::layer_index*/
+    sf::Vector2f mousePos = common::mouse_pos_view;
+    sf::Vector2i gridPos = layer->worldToGrid(mousePos);
+    sf::Vector2f checkPos = layer->gridToWorld(gridPos);
 
-    int tileX = (my / halfH + mx / halfW) / 2;
-    int tileY = (my / halfH - mx / halfW) / 2;
+    if (gridPos.x >= 0 && gridPos.y >= 0 && gridPos.x < layer->layer_size.x && gridPos.y < layer->layer_size.y) 
+        return gridPos;
 
-    float screenX = (tileX - tileY) * halfW;
-    float screenY = (tileX + tileY) * halfH;
-
-    float relX = common::mouse_pos_view.x - screenX;
-    float relY = common::mouse_pos_view.y - screenY;
-
-    return common::mouse_pos_grid = { tileX, tileY };
+    return { -1, -1 };
 }
