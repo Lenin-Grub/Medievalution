@@ -8,7 +8,7 @@
 #include <ECS/Systems/PathfindingSystem/PathfindingSystem.hpp>
 #include <Gizmos/Gizmos.h>
 
-#include "../../World/BattleMap/BattleMap.hpp"
+#include <World/BattleMap/BattleMap.hpp>
 
 enum class ToolState
 {
@@ -46,17 +46,17 @@ private:
     // Use for ImGui
 private:
     // Editor gui methods
-    void renderEditor();
+    //void renderEditor();
 
-    void renderTools();
-    void renderLayersSection();
-    void renderTilesetSelector();
-    void renderLayerControls();
-    void renderTilesSection();
-    void renderTilesetTable();
+    //void renderTools();
+    //void renderLayersSection();
+    //void renderTilesetSelector();
+    //void renderLayerControls();
+    //void renderTilesSection();
+    //void renderTilesetTable();
 
     // Metrics gui method
-    void renderMetrics();
+    //void renderMetrics();
 
 private:
     ToolState         tools;

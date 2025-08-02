@@ -4,7 +4,7 @@
 #include "../StateMachine/StateMachine.hpp"
 
 
-#include "../../World/WorldMap/WorldMap.h"
+#include <World/WorldMap/WorldMap.h>
 #include "Pathfinding/Pathfinding.h"
 #include "ECS/Entity/Entity.hpp"
 

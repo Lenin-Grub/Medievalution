@@ -76,6 +76,8 @@ void GameState::update(const float& dtime)
     world_map.shader_border.setParameter("is_selected", world_map.is_selected);
     world_map.shader_border.setParameter("hover_color", world_map.hover_color);
 
+    world_map.shader_texture.setParameter("u_time", common::clock.getElapsedTime().asSeconds());
+
     updateMousePositions();
     data.camera.update(dtime);
 }
