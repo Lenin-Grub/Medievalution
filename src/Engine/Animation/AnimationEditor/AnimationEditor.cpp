@@ -10,7 +10,7 @@ void AnimationEditor::update(const float& delta_time)
     animator.update(delta_time);
 }
 
-void AnimationEditor::gui()
+void AnimationEditor::draw()
 {
     ImGui::Begin("Animation Editor");
 
@@ -301,7 +301,7 @@ void AnimationEditor::drawSpriteSheet()
     }
 
     static int scaleValue = 96;
-    ImGui::SliderInt("Scale", &scaleValue, 32, 128);
+    ImGui::SliderInt("Scale", &scaleValue, 32, 256);
 
     ImTextureID texId = static_cast<ImTextureID>(texture.getNativeHandle());
 

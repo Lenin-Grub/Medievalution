@@ -7,15 +7,17 @@
 
 #include <Common/IconText.h>
 #include <Common/Common.h>
+#include <UI/IDisplay.hpp>
 
 class AnimationEditor 
+    : public UI::IDisplay
 {
 public:
     explicit AnimationEditor(sf::RenderWindow& window);
 
-    void update(const float& delta_time);
+    void update(const float& delta_time) override;
 
-    void gui();
+    void draw() override;
 
 private:
 
