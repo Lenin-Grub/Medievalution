@@ -16,6 +16,13 @@ void Camera::setDefaultView() const noexcept
     view.setCenter(window_size / 2.f);
 }
 
+void Camera::resetView() noexcept
+{
+    view.setSize(window_size);
+    view.setCenter(window_size / 2.f);
+    view.setViewport(sf::FloatRect(0, 0, 1, 1));
+}
+
 void Camera::update(const float& dtime) noexcept
 {
     move(dtime);
@@ -34,6 +41,17 @@ void Camera::move(const float& dtime) noexcept
     if (sf::Keyboard::isKeyPressed(camera_controls.right)) { view.move(   adjusted_speed * dtime, 0); stopFocus(); }
 }
 
+void Camera::move(const float& dtime, const sf::Vector2f& windowSize) noexcept
+{
+    float zoom_factor = view.getSize().x / windowSize.x;
+    float adjusted_speed = 1000 * zoom_factor;
+
+    if (sf::Keyboard::isKeyPressed(camera_controls.up)) { view.move(0, -adjusted_speed * dtime); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.down)) { view.move(0, adjusted_speed * dtime); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.left)) { view.move(-adjusted_speed * dtime, 0); stopFocus(); }
+    if (sf::Keyboard::isKeyPressed(camera_controls.right)) { view.move(adjusted_speed * dtime, 0); stopFocus(); }
+}
+
 void Camera::zoom() noexcept
 {
     if (common::sfml_event.type == sf::Event::MouseWheelScrolled)
@@ -44,6 +62,23 @@ void Camera::zoom() noexcept
                 view.zoom(1.1);
         }
         else if (common::sfml_event.mouseWheelScroll.delta < 0)
+        {
+            if (view.getSize().x >= camera_settings.min_zoom || view.getSize().y >= camera_settings.min_zoom)
+                view.zoom(0.9);
+        }
+    }
+}
+
+void Camera::zoom(const sf::Event& event) noexcept
+{
+    if (event.type == sf::Event::MouseWheelScrolled)
+    {
+        if (event.mouseWheelScroll.delta > 0)
+        {
+            if (view.getSize().x <= camera_settings.max_zoom || view.getSize().y <= camera_settings.max_zoom)
+                view.zoom(1.1);
+        }
+        else if (event.mouseWheelScroll.delta < 0)
         {
             if (view.getSize().x >= camera_settings.min_zoom || view.getSize().y >= camera_settings.min_zoom)
                 view.zoom(0.9);
@@ -73,6 +108,33 @@ void Camera::scroll() noexcept
     }
     else if (common::sfml_event.type == sf::Event::MouseButtonReleased &&
              common::sfml_event.mouseButton.button == sf::Mouse::Middle)
+    {
+        is_panning = false;
+    }
+}
+
+void Camera::scroll(const sf::Event& event, const sf::Vector2i& mousePos) noexcept
+{
+    if (event.type == sf::Event::MouseButtonPressed &&
+        event.mouseButton.button == sf::Mouse::Middle)
+    {
+        prev_mouse_pos = static_cast<sf::Vector2f>(mousePos);
+        is_panning = true;
+        stopFocus();
+    }
+    else if (event.type == sf::Event::MouseMoved && is_panning)
+    {
+        sf::Vector2f mouse_pos = static_cast<sf::Vector2f>(mousePos);
+        sf::Vector2f offset = prev_mouse_pos - mouse_pos;
+        prev_mouse_pos = mouse_pos;
+
+        if (offset.x * offset.x + offset.y * offset.y > camera_settings.pan_threshold * camera_settings.pan_threshold)
+            view.move(offset);
+
+        stopFocus();
+    }
+    else if (event.type == sf::Event::MouseButtonReleased &&
+        event.mouseButton.button == sf::Mouse::Middle)
     {
         is_panning = false;
     }

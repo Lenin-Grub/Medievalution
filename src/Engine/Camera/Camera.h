@@ -39,6 +39,8 @@ public:
     /// @brief Sets the default view.
     void setDefaultView() const noexcept;
 
+    void resetView() noexcept;
+
     /// @brief Updates the camera's state based on the elapsed time.
     /// This method should be called every frame to update the camera's
     /// position and handle any other necessary updates.
@@ -51,15 +53,21 @@ public:
     /// @param dtime The elapsed time since the last update call, in seconds.
     void move(const float& dtime) noexcept;
 
+    void move(const float& dtime, const sf::Vector2f& windowSize) noexcept;
+
     ///@brief Zooms the camera in or out
     ///This method handles the zoom functionality of the camera.The
     /// zoom level is typically adjusted based on user input.
     void zoom() noexcept;
 
+    void zoom(const sf::Event& event) noexcept;
+
     /// @brief Scrolls the camera view.
     /// This method handles the scrolling of the camera view, typically
     /// based on user input such as mouse wheel scrolling.
     void scroll() noexcept;
+
+    void scroll(const sf::Event& event, const sf::Vector2i& mousePos) noexcept;
 
     /// @brief Focuses the camera on a specific target point.
     void focusOn() noexcept;
