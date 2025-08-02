@@ -1,7 +1,10 @@
 #include "BattleMap.hpp"
 
 BattleMap::BattleMap()
-    :current_layer_id(0)
+    : current_layer_id(0)
+    , selected_tile_id (0)
+    , current_tile_id(0)
+    , show_preview(false)
 {
 }
 
@@ -9,7 +12,8 @@ bool BattleMap::init()
 {
     try
     {
-        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png"), static_cast<int>(TileId::Empty)));
+        int layer_id = 0;
+        layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture("Tileset1.png"), layer_id));
         layers.back()->init();
         return true;
     }
@@ -104,6 +108,11 @@ void BattleMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
     {
         if (layer->visible)
             target.draw(*layer, states);
+    }
+
+    if (show_preview)
+    {
+        target.draw(tile_preview, states);
     }
 }
 
@@ -204,17 +213,56 @@ void BattleMap::loadMap(const std::string& file_path)
 
 sf::Vector2i BattleMap::getMouseGridPosition() noexcept
 {
-    if (layers.empty()) 
+    if (layers.empty())
         return { -1, -1 };
 
-    const auto& layer = layers[0];
+    const auto& layer = layers[current_layer_id];
 
     sf::Vector2f mousePos = common::mouse_pos_view;
     sf::Vector2i gridPos = layer->worldToGrid(mousePos);
-    sf::Vector2f checkPos = layer->gridToWorld(gridPos);
 
-    if (gridPos.x >= 0 && gridPos.y >= 0 && gridPos.x < layer->layer_size.x && gridPos.y < layer->layer_size.y) 
+    if (gridPos.x >= 0 && gridPos.y >= 0 && gridPos.x < layer->layer_size.x && gridPos.y < layer->layer_size.y)
         return gridPos;
 
     return { -1, -1 };
+}
+
+void BattleMap::setSelectedTile(int id) noexcept
+{
+    selected_tile_id = id;
+}
+
+void BattleMap::setShowPreview(bool show) noexcept
+{
+    show_preview = show;
+}
+
+void BattleMap::setTileId(int id) noexcept
+{
+    current_tile_id = id;
+}
+
+int BattleMap::getTileId() const noexcept
+{
+    return current_tile_id;
+}
+
+void BattleMap::updatePreview(sf::Vector2f world_pos)
+{
+    if (layers.empty()) return;
+
+    const auto& layer = layers[current_layer_id];
+    sf::Vector2i gridPos = layer->worldToGrid(world_pos);
+    preview_position = layer->gridToWorld(gridPos);
+
+    tile_preview.setSize(sf::Vector2f(layer->tile_size, layer->tile_size));
+    tile_preview.setPosition(preview_position);
+
+    int cols = layer->tileset_cols;
+    int x = (selected_tile_id % cols) * layer->tile_size;
+    int y = (selected_tile_id / cols) * layer->tile_size;
+
+    tile_preview.setTexture(&layer->tileset_texture);
+    tile_preview.setTextureRect(sf::IntRect(x, y, layer->tile_size, layer->tile_size));
+    tile_preview.setFillColor(sf::Color(255, 255, 255, 128));
 }

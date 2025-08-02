@@ -91,7 +91,22 @@ public:
     /// @return Grid coordinates(x, y) of the tile currently under the mouse cursor.
     sf::Vector2i getMouseGridPosition() noexcept;
 
+    void setSelectedTile(int id) noexcept;
+
+    void updatePreview(sf::Vector2f world_pos);
+
+    void setShowPreview(bool show) noexcept;
+
+    void setTileId(int id) noexcept;
+
+    int getTileId() const noexcept;
+
 private:
+    int current_tile_id;
     std::vector<std::unique_ptr<Layer>> layers;    ///< Vector of layers managed by the editor.
     unsigned int current_layer_id;                 ///< Index of the current layer.
+    int selected_tile_id;
+    bool show_preview;
+    sf::RectangleShape tile_preview;
+    sf::Vector2f preview_position;
 };
