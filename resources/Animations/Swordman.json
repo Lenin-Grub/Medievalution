@@ -1,0 +1,2220 @@
+{
+    "animations": {
+        "attack_east": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 468,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_north": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 312,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_north_east": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 390,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_north_west": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 234,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_south": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 0,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_south_east": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 546,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attack_south_west": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 78,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "attacl_west": {
+            "frames": [
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 0,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 78,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 156,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 234,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 312,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 390,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 468,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 546,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 624,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 702,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 780,
+                    "width": 78
+                },
+                {
+                    "duration": 0.15000000596046448,
+                    "height": 78,
+                    "left": 156,
+                    "top": 858,
+                    "width": 78
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_fight3.png"
+        },
+        "idle_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 252,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_north": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 168,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_north_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 210,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_north_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 126,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_south_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 294,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_south": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 0,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_south_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 42,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "idle_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 0,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 42,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 84,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 126,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 168,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 210,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 252,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 294,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 336,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 378,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 420,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 462,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 504,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 546,
+                    "width": 42
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 42,
+                    "left": 84,
+                    "top": 588,
+                    "width": 42
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman_idle4.png"
+        },
+        "run_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 264,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_north": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 176,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_north_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 220,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_north_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 132,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_south": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 0,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_south_east": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 308,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_south_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 44,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        },
+        "run_west": {
+            "frames": [
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 0,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 44,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 88,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 132,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 176,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 220,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 264,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 308,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 352,
+                    "width": 44
+                },
+                {
+                    "duration": 0.09000000357627869,
+                    "height": 44,
+                    "left": 88,
+                    "top": 396,
+                    "width": 44
+                }
+            ],
+            "loop": true,
+            "texture": "Swordman.png"
+        }
+    }
+}
