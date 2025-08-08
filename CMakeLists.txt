@@ -83,3 +83,9 @@ add_subdirectory(${PROJECT_SOURCE_DIR}/src/Engine)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/Game)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/Audio)
 add_subdirectory(${PROJECT_SOURCE_DIR}/src/Editor)
+
+set_target_properties(
+		Core
+		Audio
+		Engine
+    PROPERTIES FOLDER "Engine")
