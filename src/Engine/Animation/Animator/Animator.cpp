@@ -3,12 +3,18 @@
 
 #pragma region AnimationClip
 
-void AnimationClip::addFrame(sf::IntRect rect, float duration)
+Animation::Animation(const std::string& name, const std::string& texture_name)
+    : name(name)
+    , texture_name(texture_name)
+{
+}
+
+void Animation::addFrame(sf::IntRect rect, float duration)
 {
     frames.push_back({ rect, duration });
 }
 
-bool AnimationClip::removeFrame(int index)
+bool Animation::removeFrame(int index)
 {
     if (index >= 0 && index < frames.size())
     {
@@ -18,7 +24,7 @@ bool AnimationClip::removeFrame(int index)
     return false;
 }
 
-void AnimationClip::clearAllFrames()
+void Animation::clearAllFrames()
 {
     frames.clear();
 }
@@ -34,11 +40,29 @@ Animator::Animator(sf::Sprite& sprite)
 {
 }
 
-void Animator::addAnimation(const std::string& name, const AnimationClip& clip)
+void Animator::createNewAnimation(const std::string& name, const std::string& texture_name)
 {
-    if (!clip.frames.empty()) 
+    if (name.empty())
     {
-        animations[name] = clip;
+        LOG_WARN("Animation name is empty");
+        return;
+    }
+
+    Animation anim(name, texture_name);
+    animations.emplace(name, std::move(anim));
+}
+
+void Animator::pushAnimation(const std::string& name, const Animation& animation)
+{
+    if (name.empty())
+    {
+        LOG_WARN("Animation name is empty");
+        return;
+    }
+
+    if (!animation.frames.empty())
+    {
+        animations[name] = animation;
     }
 }
 
@@ -49,20 +73,39 @@ void Animator::deleteAllAnimations()
 
 void Animator::setAnimation(const std::string& name, bool loop)
 {
-    if (animations.find(name) != animations.end()) 
+    auto it = animations.find(name);
+    if (it == animations.end())
     {
-        animation_state.current_animation = name;
-        animation_state.current_frame     = 0;
-        animation_state.elapsed_time      = 0.0f;
-        animation_state.is_looping        = loop;
+        LOG_WARN("Animation not found: {}", name);
+        return;
+    }
 
-        if (!animation_state.is_playing)
-            play();
+    const Animation& anim = it->second;
+
+    animation_state.current_animation = name;
+    animation_state.current_frame = 0;
+    animation_state.elapsed_time = 0.0f;
+    animation_state.is_looping = loop;
+    animation_state.current_texture = anim.texture_name;
+
+    if (!anim.texture_name.empty())
+    {
+        sf::Texture& texture = ResourceLoader::instance().getTexture(anim.texture_name);
+        sprite.setTexture(texture, true);
+    }
+
+    if (!anim.frames.empty())
+    {
+        const auto& firstFrame = anim.frames[0];
+        sprite.setTextureRect(firstFrame.rect);
     }
     else
     {
-        LOG_WARN("Animation not found");
+        sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
     }
+
+    if (!animation_state.is_playing)
+        play();
 }
 
 void Animator::play()
@@ -132,7 +175,19 @@ void Animator::update(float delta_time)
 
     if (current_index >= 0 && current_index < static_cast<int>(clip.frames.size()))
     {
-        sprite.setTextureRect(clip.frames[current_index].rect);
+        const auto& frame = clip.frames[current_index];
+
+        if (frame.flip)
+        {
+            sf::IntRect flippedRect = frame.rect;
+            flippedRect.left += flippedRect.width;
+            flippedRect.width = -flippedRect.width;
+            sprite.setTextureRect(flippedRect);
+        }
+        else
+        {
+            sprite.setTextureRect(frame.rect);
+        }
     }
     else
     {
@@ -140,9 +195,46 @@ void Animator::update(float delta_time)
     }
 }
 
-const std::map<std::string, AnimationClip>& Animator::getAllAnimations() const
+const std::map<std::string, Animation>& Animator::getAllAnimations() const
 {
     return animations;
+}
+
+void Animator::setFlip(bool flip)
+{
+    animation_state.is_flip = flip;
+
+    if (!animation_state.current_animation.empty())
+    {
+        auto it = animations.find(animation_state.current_animation);
+        if (it != animations.end() && animation_state.current_frame < static_cast<int>(it->second.frames.size()))
+        {
+            const auto& frame = it->second.frames[animation_state.current_frame];
+            if (frame.flip != animation_state.is_flip)
+            {
+                sf::IntRect currentRect = sprite.getTextureRect();
+                currentRect.left += currentRect.width;
+                currentRect.width = -currentRect.width;
+                sprite.setTextureRect(currentRect);
+            }
+        }
+    }
+}
+
+bool Animator::getFlip() const
+{
+    return animation_state.is_flip;
+}
+
+void Animator::applyFlip(const sf::IntRect& rect)
+{
+    if (animation_state.is_flip)
+    {
+        sf::Vector2f position = sprite.getPosition();
+        sf::Vector2f scale = sprite.getScale();
+        sprite.setScale(-scale.x, scale.y);
+        sprite.setPosition(position.x - rect.width * abs(scale.x), position.y);
+    }
 }
 
 void Animator::onAnimationFinished(FinishedCallback callback)
@@ -179,6 +271,25 @@ const std::string& Animator::getCurrentAnimationName() const
     return animation_state.current_animation;
 }
 
+bool Animator::renameAnimation(const std::string& oldName, const std::string& newName)
+{
+    auto it = animations.find(oldName);
+    if (it == animations.end())
+        return false;
+
+    if (animations.find(newName) != animations.end())
+        return false;
+
+    Animation anim = std::move(it->second);
+    animations.erase(it);
+    animations[newName] = std::move(anim);
+
+    if (animation_state.current_animation == oldName)
+        animation_state.current_animation = newName;
+
+    return true;
+}
+
 #pragma endregion
 
 
@@ -198,16 +309,12 @@ bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animat
     file >> jsonData;
     file.close();
 
-    if (jsonData.contains("texture"))
-    {
-        std::string textureName = jsonData["texture"];
-    }
-
     if (jsonData.contains("animations"))
     {
         for (auto& [animName, animJson] : jsonData["animations"].items())
         {
-            AnimationClip clip;
+            std::string texture_name = animJson.value("texture", "");
+            Animation clip(animName, texture_name);
 
             if (animJson.contains("frames"))
             {
@@ -226,7 +333,7 @@ bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animat
             }
 
             bool loop = animJson.value("loop", true);
-            animator.addAnimation(animName, clip);
+            animator.pushAnimation(animName, clip);
         }
     }
 
@@ -236,14 +343,16 @@ bool AnimationLoader::loadFromFile(const std::string& filename, Animator& animat
 bool AnimationLoader::saveToFile(const std::string& filename, const Animator& animator)
 {
     json jsonData;
-    jsonData["texture"] = "unknown";
-
     json animationsJson;
 
     const auto& animationsMap = animator.getAllAnimations();
 
     for (const auto& [name, clip] : animationsMap)
     {
+
+        if (!clip.texture_name.empty())
+            animationsJson[name]["texture"] = clip.texture_name;
+
         json framesJson;
         for (const auto& frame : clip.frames)
         {
@@ -262,17 +371,30 @@ bool AnimationLoader::saveToFile(const std::string& filename, const Animator& an
 
     jsonData["animations"] = animationsJson;
 
-    std::ofstream file(filename);
+    std::string full_filename = filename;
+    if (filename.substr(filename.find_last_of(".") + 1) != "json") 
+        full_filename += ".json";
+
+    std::ofstream file(full_filename);
 
     if (!file.is_open())
     {
-        LOG_ERROR("Failed to save animation file: {}", filename);
+        LOG_ERROR("Failed to save animation file: {}", full_filename);
         return false;
     }
 
-    file << jsonData.dump(4);
+    try 
+    {
+        file << jsonData.dump(4);
+    }
+    catch (const std::exception& e) {
+        LOG_ERROR("Failed to serialize JSON for file {}: {}", full_filename, e.what());
+        file.close();
+        return false;
+    }
     file.close();
 
+    LOG_INFO("Successfully saved animation file: {}", full_filename);
     return true;
 }
 

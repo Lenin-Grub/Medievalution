@@ -2,6 +2,7 @@
 
 #include <vector>
 #include <memory>
+#include <Common/IconText.h>
 
 namespace UI
 {

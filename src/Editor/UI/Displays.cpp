@@ -2,12 +2,14 @@
 #include <imgui.h>
 #include <imgui_internal.h>
 
-Displays::Displays(sf::RenderWindow& window, BattleMap& battle_map)
+Displays::Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry)
     : window(window)
     , display_animation(window)
     , display_menu(window, battle_map)
     , display_map_editor(window, battle_map)
-    , display_scene(battle_map)
+    , display_scene(battle_map, registry)
+    , display_scene_hierrarhy(registry)
+    , display_inspector(registry)
     , battle_map(battle_map)
 {
 }
@@ -85,10 +87,11 @@ void Displays::draw()
         ImGuiIO& io = ImGui::GetIO();
         if (io.ConfigFlags & ImGuiConfigFlags_DockingEnable)
         {
-            ImGuiID dockspace_id = ImGui::GetID("MyDockSpace");
+            ImGuiID dockspace_id = ImGui::GetID("MainDockspade");
             ImGui::DockSpace(dockspace_id, ImVec2(0.0f, 0.0f), ImGuiDockNodeFlags_None);
 
             static auto first_time = true;
+
             if (first_time)
             {
                 first_time = false;
@@ -105,19 +108,11 @@ void Displays::draw()
 
                 ImGui::DockBuilderDockWindow("Scene Hierarchy", left);
                 ImGui::DockBuilderDockWindow("Object Details", right_bottom);
-                ImGui::DockBuilderDockWindow("Tileset", right);
-                ImGui::DockBuilderDockWindow("Animation Editor", right);
-                ImGui::DockBuilderDockWindow((SET_ICON_TEXT((Icon::MAP), " Map editor")), right);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::INSTAGRAM), "Animation editor"), right);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::MAP), " Map editor"), right);
                 ImGui::DockBuilderDockWindow("Scene", center);
-                ImGui::DockBuilderDockWindow("Script List", center);
-                ImGui::DockBuilderDockWindow("Package Game", center);
-                ImGui::DockBuilderDockWindow("Tilemap Editor", center);
-                ImGui::DockBuilderDockWindow("Assets", bottom);
-                ImGui::DockBuilderDockWindow("Logs", bottom);
-                ImGui::DockBuilderDockWindow("Content Browser", bottom);
-                ImGui::DockBuilderDockWindow("Properties", right);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::SCRIPT), " Logs"), bottom);
                 ImGui::DockBuilderDockWindow("Inspector", right);
-
                 ImGui::DockBuilderFinish(dockspace_id);
             }
         }

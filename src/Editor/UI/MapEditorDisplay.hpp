@@ -27,8 +27,6 @@ public:
 	void draw() override;
 	void update(const float& delta_time) override;
 
-    void renderTools();
-
     void renderLayersSection();
 
     void renderTilesetSelector();

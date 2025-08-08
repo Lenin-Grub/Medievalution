@@ -1,15 +1,18 @@
 #pragma once
 #include <UI/IDisplay.hpp>
+#include <ECS/Entity/Entity.hpp>
+
+class Registry;
 
 class InspectorDisplay
 	: public UI::IDisplay
 {
 public:
-	InspectorDisplay() = default;
+	InspectorDisplay(Registry& registry);
 	virtual ~InspectorDisplay() = default;
 
 	void draw() override;
-	void update(const float& delta_time) override;
+    void update(const float& delta_time) override;
 
 private:
     bool bool_value = true;
@@ -19,5 +22,5 @@ private:
     int int_value = 0;
     char string_buffer[128] = "Hello, World!";
     const char* ITEMS[3] = { "Item 1", "Item 2", "Item 3" };
-    //sf::Color clear_color{ 255,255,255 };
+    Registry& registry;
 };

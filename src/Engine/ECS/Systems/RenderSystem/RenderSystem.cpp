@@ -1,8 +1,8 @@
 #include  "RenderSystem.hpp"
 
-void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
+void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
 {
-    auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
+    auto view = registry.view<Components::Sprite, Components::Position>();
 
     std::vector<std::tuple<entt::entity, float, float>> sorted_entities;
     for (auto entity : view)
@@ -12,10 +12,10 @@ void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
     }
 
     std::sort(sorted_entities.begin(), sorted_entities.end(),
-        [](const auto& firtst, const auto& second)
+        [](const auto& first, const auto& second)
         {
-            auto [entity_first , current_x, current_y] = firtst;
-            auto [entity_second, next_x, next_y]       = second;
+            auto [entity_first, current_x, current_y] = first;
+            auto [entity_second, next_x, next_y] = second;
 
             if (current_y != next_y)
                 return current_y < next_y;
@@ -26,20 +26,37 @@ void RenderSystem::render(entt::registry& registry, sf::RenderWindow& window)
     for (const auto& [entity, x, y] : sorted_entities)
     {
         const auto& sprite_component = view.get<Components::Sprite>(entity);
-        window.draw(sprite_component.sprite);
 
-        const auto& selectable_component = view.get<Components::Selectable>(entity);
-        if (selectable_component.is_selected)
+        if (sprite_component.sprite.getTexture() == nullptr) 
         {
-            const auto& position_component = view.get<Components::Position>(entity);
-            drawSelectionMarker(window, position_component, sprite_component);
+            LOG_WARN("Entity has not texture");
+            sf::RectangleShape placeholder(sf::Vector2f(32, 32));
+            placeholder.setFillColor(sf::Color::Red);
+            placeholder.setPosition(x, y);
+            window.draw(placeholder);
+        }
+        else 
+        {
+            sf::Sprite drawableSprite = sprite_component.sprite;
+            drawableSprite.setPosition(x, y);
+            window.draw(drawableSprite);
+        }
+
+        if (registry.all_of<Components::Selectable>(entity))
+        {
+            const auto& selectable_component = registry.get<Components::Selectable>(entity);
+            if (selectable_component.is_selected)
+            {
+                const auto& position_component = view.get<Components::Position>(entity);
+                drawSelectionMarker(window, position_component, sprite_component);
+            }
         }
     }
 
     selectionBox(window);
 }
 
-void RenderSystem::selectionBox(sf::RenderWindow& window)
+void RenderSystem::selectionBox(sf::RenderTarget& window)
 {
     static sf::Vector2f start_selection;
     static bool is_selecting = false;
@@ -70,7 +87,7 @@ void RenderSystem::selectionBox(sf::RenderWindow& window)
     window.draw(selection_box);
 }
 
-void RenderSystem::drawSelectionMarker(sf::RenderWindow& window, const Components::Position& position, const Components::Sprite& sprite)
+void RenderSystem::drawSelectionMarker(sf::RenderTarget& window, const Components::Position& position, const Components::Sprite& sprite)
 {
     int size = 5;
     sf::ConvexShape diamond(4);

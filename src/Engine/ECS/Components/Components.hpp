@@ -15,8 +15,8 @@ namespace Components
     struct Position
     {
         sf::Vector2f position { 0.0f, 0.0f };
+        float        rotation { 0.0f };
     };
-
 
     struct Velocity
     {
@@ -41,11 +41,13 @@ namespace Components
 
     struct Sprite
     {
+        std::string        texture_filename{ "" }; ///< texture file name
         sf::Image          imgae;
         sf::Texture        texture;
         sf::Sprite         sprite;
         sf::IntRect        int_rect;
-        sf::RectangleShape shape { sf::Vector2f(0.f, 0.f) };
+        sf::RectangleShape shape { sf::Vector2f(1.0f, 1.0f) };
+        sf::Vector2f       scale{ 1.0f, 1.0f };
     };
 
     struct Pathfinding 
@@ -54,6 +56,7 @@ namespace Components
         Node*              start_node         = nullptr;
         Node*              end_node           = nullptr;
         size_t             current_node_index = 0;
+        bool               is_moving          = false;
     };
 
     struct Selectable

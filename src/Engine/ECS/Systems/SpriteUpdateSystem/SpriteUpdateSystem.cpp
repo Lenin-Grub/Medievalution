@@ -1,6 +1,6 @@
 #include "SpriteUpdateSystem.hpp"
 
-void SpriteSystem::update(entt::registry& registry, std::optional<Animator> animator)
+void SpriteSystem::update(entt::registry& registry)
 {
     auto sprite_view = registry.view<Components::Position, Components::Sprite>();
     for (auto entity : sprite_view)

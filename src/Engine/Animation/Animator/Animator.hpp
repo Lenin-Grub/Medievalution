@@ -12,18 +12,25 @@
 struct Frame 
 {
     sf::IntRect rect;
-    float duration = 1.0f;
+    float       duration = 1.0f;
+    bool        flip     = false;
+    sf::Vector2f pivot = { 0.5f, 0.5f };
 };
 
-struct AnimationClip 
+struct Animation 
 {
-    std::vector<Frame> frames;
+    Animation() = default;
+    Animation(const std::string& name, const std::string& texture_name = "");
 
     void addFrame(sf::IntRect rect, float duration = 1.0f);
 
     bool removeFrame(int index);
 
     void clearAllFrames();
+
+    std::vector<Frame> frames;
+    std::string        texture_name;
+    std::string        name;
 };
 
 #pragma endregion
@@ -35,10 +42,11 @@ class Animator
 public:
     using FinishedCallback = std::function<void(const std::string& animation_name)>;
 
-    Animator() = default;
     explicit Animator(sf::Sprite& sprite);
 
-    void addAnimation(const std::string& name, const AnimationClip& clip);
+    void createNewAnimation(const std::string& name, const std::string& texture_name = "");
+
+    void pushAnimation(const std::string& name, const Animation& animation);
 
     void deleteAllAnimations();
 
@@ -62,22 +70,32 @@ public:
 
     const std::string& getCurrentAnimationName() const;
 
-    const std::map<std::string, AnimationClip>& getAllAnimations() const;
+    bool renameAnimation(const std::string& oldName, const std::string& newName);
+
+    const std::map<std::string, Animation>& getAllAnimations() const;
+
+    void setFlip(bool flip);
+
+    bool getFlip() const;
 
 private:
     struct AnimationState 
     {
         std::string current_animation = "NONE";
+        std::string current_texture   = "NONE";
         int         current_frame     = 0;
         float       elapsed_time      = 0.0f;
         bool        is_playing        = false;
         bool        is_looping        = true;
+        bool        is_flip           = false;
     };
 
     sf::Sprite&                          sprite;
-    std::map<std::string, AnimationClip> animations;
+    std::map<std::string, Animation>     animations;
     AnimationState                       animation_state;
     FinishedCallback                     finished_callback;
+
+    void applyFlip(const sf::IntRect& rect);
 };
 
 #pragma endregion

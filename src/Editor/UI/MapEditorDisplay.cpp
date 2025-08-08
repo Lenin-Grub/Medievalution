@@ -17,7 +17,6 @@ void MapEditorDisplay::draw()
 {
     ImGui::Begin(SET_ICON_TEXT((Icon::MAP), " Map editor"));
 
-    renderTools();
     renderLayersSection();
     renderTilesSection();
 
@@ -27,95 +26,6 @@ void MapEditorDisplay::draw()
 void MapEditorDisplay::update(const float& delta_time)
 {
     battle_map.setTileId(m_selected_tile_id);
-}
-
-void MapEditorDisplay::renderTools()
-{
-    if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::TOOL), "Tools")))
-    {
-        ImGui::Dummy(ImVec2(50.0f, 0.0f));
-        ImGui::SameLine();
-
-        sf::Color green(40, 159, 49, 255);
-        ImVec4 imVecColor(
-            green.r / 255.0f,
-            green.g / 255.0f,
-            green.b / 255.0f,
-            green.a / 255.0f);
-
-        auto renderToolButton = [&](Icon icon, const char* id, ToolState tool, GizmoMode mode)
-            {
-                bool isPressed = tools == tool;
-                if (isPressed)
-                    ImGui::PushStyleColor(ImGuiCol_Button, imVecColor);
-
-                if (ImGui::Button((ICON::getStr(icon) + std::string(" ##") + id).c_str()))
-                {
-                    if (tool == ToolState::Brush)
-                    {
-                        is_brash = !is_brash;
-                        battle_map.setShowPreview(true);
-                    }
-                    else
-                    {
-                        is_brash = false;
-                        battle_map.setShowPreview(false);
-                    }
-
-                    tools = tool;
-                    gizmos.mode = mode;
-                }
-
-                if (isPressed)
-                    ImGui::PopStyleColor();
-            };
-
-        // Select
-        renderToolButton(Icon::SELECT, "Select", ToolState::None, GizmoMode::None);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Move
-        renderToolButton(Icon::OPEN_WITHIN, "Move", ToolState::Translate, GizmoMode::Translate);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Scale
-        renderToolButton(Icon::UNWRAP, "Scale", ToolState::Scale, GizmoMode::Scale);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Rotate
-        renderToolButton(Icon::UPDATE, "Rotate", ToolState::Rotate, GizmoMode::Rotate);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Flip
-        renderToolButton(Icon::FLIP_HORiZONTAL, "Flip", ToolState::Flip, GizmoMode::None);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Space
-        ImGui::Dummy(ImVec2(50.0f, 0.0f));
-        ImGui::SameLine();
-
-        // Brush
-        renderToolButton(Icon::BRUSH, "Brush", ToolState::Brush, GizmoMode::None);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Fill
-        renderToolButton(Icon::FILL, "Fill", ToolState::Fill, GizmoMode::None);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        // Space
-        ImGui::Dummy(ImVec2(50.0f, 0.0f));
-        ImGui::SameLine();
-
-        // Undo
-        renderToolButton(Icon::UNDO, "Undo", ToolState::Undo, GizmoMode::None);
-        ImGui::SameLine(0.0f, 1.0f);
-
-        //Redo
-        renderToolButton(Icon::REDO, "Redo", ToolState::Redo, GizmoMode::None);
-
-        // Gizmo
-        gizmos.drawImGui();
-    }
 }
 
 void MapEditorDisplay::renderLayersSection()

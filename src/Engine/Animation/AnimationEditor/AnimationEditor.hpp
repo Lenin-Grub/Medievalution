@@ -23,6 +23,8 @@ private:
 
     void drawTopPanel();
 
+    void loadUnitAnimations(const std::string& unit_name);
+
     void drawSpriteSelector();
 
     void drawAnimationsPanel();
@@ -53,8 +55,15 @@ private:
     int         selected_frame_index;
     int         selected_tile_index;
 
-    int  frame_size = 64;
+    sf::Vector2i frame_size;
 
     bool is_playing = false;
     bool is_looping = false;
+    bool is_flipp   = false;
+
+private:
+    std::vector<std::string> available_units;
+    std::string current_unit = "Swordman";
+    std::string current_loaded_texture = "";
+    std::string current_texture_for_animation;
 };

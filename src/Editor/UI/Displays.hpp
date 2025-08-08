@@ -9,11 +9,12 @@
 #include "MapEditorDisplay.hpp"
 #include "ObjectDetailsDisplay.hpp"
 #include "InspectorDisplay.hpp"
+#include <ECS/Entity/Entity.hpp>
 
 class Displays
 {
 public:
-	Displays(sf::RenderWindow& window, BattleMap& battle_map);
+	Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry);
 	~Displays() = default;
 
     bool initDockSpace();

@@ -11,8 +11,11 @@
 EditorApplication::EditorApplication()
     : window(sf::VideoMode(1920, 1200), "Medievalution Editor")
     , clear_color(43, 43, 49)
-    , displays(window, battle_map)
+    , delta_time(0.0f)
+    , displays(window, battle_map, registry)
     , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
+    , animator(sprite)
+    , is_brush(false)
 {
     setupWindow();
     setupImGui();
@@ -24,7 +27,7 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::run()
 {
-    dtime = clock.restart().asSeconds();
+    delta_time = clock.restart().asSeconds();
 
     if (!init())
         return;
@@ -45,6 +48,8 @@ bool EditorApplication::init()
         LOG_WARN("Battle map not inited");
         return false;
     }
+
+    GridSystem::generateGrid(pathfinding, 64, 64);
 
     return true;
 }
@@ -124,19 +129,8 @@ void EditorApplication::updateEvents()
     {
         ImGui::SFML::ProcessEvent(common::sfml_event);
 
-        if (Input::isKeyPressed(sf::Keyboard::Key::Escape) || common::sfml_event.type == sf::Event::Closed)
+        if (common::sfml_event.type == sf::Event::Closed || Input::isKeyPressed(sf::Keyboard::Key::Escape))
             window.close();
-
-        battle_map.updatePreview(common::mouse_pos_view);
-
-        //if (true)
-        {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                battle_map.addTile(battle_map.getTileId(), common::mouse_pos_view);
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-                battle_map.removeTile(common::mouse_pos_view);
-        }
 
         if (!ImGui::GetIO().WantCaptureMouse || !ImGui::GetIO().WantCaptureKeyboard)
         {
@@ -144,16 +138,27 @@ void EditorApplication::updateEvents()
             camera.scroll(common::sfml_event, sf::Mouse::getPosition(window));
         }
 
-        ImGui::SFML::ProcessEvent(window, common::sfml_event);
+        if (is_brush)
+        {
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+                battle_map.addTile(battle_map.getTileId(), common::mouse_pos_view);
+
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
+                battle_map.removeTile(common::mouse_pos_view);
+
+            battle_map.updatePreview(common::mouse_pos_view);
+        }
     }
 }
 
 void EditorApplication::update()
 {
     ImGui::SFML::Update(window, clock.restart());
+
     updateMousePositions(&common::view, window);
-    camera.update(dtime);
-    displays.update(dtime);
+    camera.update(delta_time);
+    displays.update(delta_time);
+    registry.update(registry.getRegistry(), delta_time, pathfinding, window);
 }
 
 void EditorApplication::draw(sf::RenderTarget* target)
@@ -161,6 +166,7 @@ void EditorApplication::draw(sf::RenderTarget* target)
     window.clear(clear_color);
 
     displays.draw();
+    registry.draw(registry.getRegistry(), window);
 
     ImGui::SFML::Render(window);
     window.display();

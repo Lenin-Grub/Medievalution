@@ -33,7 +33,8 @@ private:
     void setupWindow();
  
 private:
-    float             dtime = 0.0f;
+    float             delta_time;
+    bool              is_brush;
 
     sf::RenderWindow  window;
     sf::Clock         clock;
@@ -43,4 +44,9 @@ private:
     Displays          displays;
     BattleMap         battle_map;
     Camera            camera;
+
+    Registry          registry;
+    Animator          animator;
+    Pathfinding       pathfinding;
+    sf::Sprite        sprite;
 };

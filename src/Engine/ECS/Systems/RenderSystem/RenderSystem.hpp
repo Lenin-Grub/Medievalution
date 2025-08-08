@@ -4,9 +4,9 @@
 class RenderSystem
 {
 public:
-    static void render(entt::registry& registry, sf::RenderWindow& window);
+    static void render(entt::registry& registry, sf::RenderTarget& window);
 
 private:
-    static void selectionBox(sf::RenderWindow& window);
-    static void drawSelectionMarker(sf::RenderWindow& window, const Components::Position& position, const Components::Sprite& sprite);
+    static void selectionBox(sf::RenderTarget& window);
+    static void drawSelectionMarker(sf::RenderTarget& window, const Components::Position& position, const Components::Sprite& sprite);
 };

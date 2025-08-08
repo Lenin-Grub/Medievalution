@@ -31,11 +31,12 @@ public:
     /// @param animator Animator system used for animation updates.
     /// @param pathfinding Pathfinding system for navigation.
     /// @param window SFML render window used for rendering context.
-    void update(entt::registry& registry, float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window);
+    //void update(entt::registry& registry, float delta_time, Animator animator, Pathfinding& pathfinding, sf::RenderWindow& window);
+    void update(entt::registry& registry, float delta_time, Pathfinding& pathfinding, sf::RenderWindow& window);
 
     /// @brief Draws all entities.
     /// @param window The render window to draw to.
-    void draw(entt::registry& registry, sf::RenderWindow& window);
+    void draw(entt::registry& registry, sf::RenderTarget& window);
 
 private:
     /// @brief Adds a context object(e.g., system or manager) to the registry.
