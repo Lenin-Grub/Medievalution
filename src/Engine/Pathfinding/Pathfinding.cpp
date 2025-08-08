@@ -6,9 +6,9 @@ Pathfinding::Pathfinding()
     : start_node(nullptr)
     , end_node(nullptr)
     , current_node(nullptr)
-    , tile_size(sf::Vector2f(64, 32))
-    , width(50)
-    , height(50)
+    , tile_size(sf::Vector2f(32, 16))
+    , width(128)
+    , height(128)
     , is_path_visible{true}
     , is_nodes_visible(false)
     , is_connections_visible(false)
@@ -220,8 +220,7 @@ Node* Pathfinding::getNodeByMousePosition(const sf::Vector2f& mousePosition)
 
 sf::Vector2i Pathfinding::getMouseGridPosition()
 {
-    const float tileW = 64, tileH = 32;
-    const float halfW = tileW / 2, halfH = tileH / 2;
+    const float halfW = tile_size.x/ 2, halfH = tile_size.y / 2;
 
     float mx = common::mouse_pos_view.x; /* + layer_index        */
     float my = common::mouse_pos_view.y; /* + halfH * layer_index*/
