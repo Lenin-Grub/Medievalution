@@ -30,10 +30,19 @@ private:
     void endView(sf::RenderTarget* target);
     void beginView(sf::RenderTarget*& target);
 
+    std::vector<uint32_t> getSelectedSquads();
+
+    void changeSquadFormation(uint32_t squad_id, Components::FormationType new_type);
+
+    void renderUI();
+
 private:
     BattleMap         battle_map;
     Pathfinding       pathfinding;
     Registry          registry;
 
     sf::Texture       texture;
+
+    std::vector<uint32_t> selected_squads;
+    bool show_imgui = true;
 };

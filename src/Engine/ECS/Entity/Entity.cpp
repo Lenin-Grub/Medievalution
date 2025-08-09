@@ -34,7 +34,7 @@
         AnimationSystem  ::update(registry, delta_time);
         StateSystem      ::update(registry, delta_time);
         HandleInputSystem::update(registry, pathfinding);
-        FormationSystem  ::update(registry, pathfinding);
+        SquadMovementSystem::update(registry, pathfinding, delta_time);
     }
 
     void Registry::draw(entt::registry& registry, sf::RenderTarget& window)

@@ -90,11 +90,21 @@ namespace Components
         CharacterState state = CharacterState::NONE;
     };
 
+    enum class FormationType
+    {
+        Line,       // Линия
+        Square,     // Квадрат  
+        Circle,     // Круг
+        Diamond,    // Ромб
+        Triangle    // Треугольник
+    };
+
     struct Squad
     {
         uint32_t squad_id = 0;        // ID отряда (0 = нет отряда)
         uint32_t formation_index = 0; // Позиция в отряде (0, 1, 2, ...)
         sf::Vector2f formation_offset; // Смещение в формации относительно лидера
         bool is_leader = false;       // Является ли лидером отряда
+        FormationType formation_type = FormationType::Line;
     };
 }
