@@ -34,6 +34,7 @@
         AnimationSystem  ::update(registry, delta_time);
         StateSystem      ::update(registry, delta_time);
         HandleInputSystem::update(registry, pathfinding);
+        FormationSystem  ::update(registry, pathfinding);
     }
 
     void Registry::draw(entt::registry& registry, sf::RenderTarget& window)
@@ -111,6 +112,7 @@
         entity.addComponent<Components::Pathfinding>(Components::Pathfinding{});
         entity.addComponent<Components::Selectable>(Components::Selectable{});
         entity.addComponent<Components::Animation>(Components::Animation{ spriteComponent.sprite });
+        //entity.addComponent<Components::Squad>(Components::Squad{});
 
         auto& animator = entity.getComponent<Components::Animation>().animator;
         AnimationLoader::loadFromFile("Swordman", animator);

@@ -22,10 +22,13 @@ void BattleState::init()
 
     UnitFactory factory(registry, texture);
 
-    Entity spearman1 = factory.createSpearman(sf::Vector2f(0,0));
-    Entity spearman2 = factory.createSpearman(sf::Vector2f(64, 64));
-    Entity spearman3 = factory.createSpearman(sf::Vector2f(128, 64));
-    Entity spearman4 = factory.createSpearman(sf::Vector2f(128, 128));
+    int unitCount = 0;
+    for (int row = 0; row < 4 && unitCount < 16; ++row) {
+        for (int col = 0; col < 5 && unitCount < 20; ++col) {
+            Entity spearman = factory.createSpearman(sf::Vector2f(col * 32, row * 16));
+            unitCount++;
+        }
+    }
    
     LOG_INFO("State Battle\t Init");
 }

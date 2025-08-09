@@ -48,7 +48,7 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
             if (selectable_component.is_selected)
             {
                 const auto& position_component = view.get<Components::Position>(entity);
-                drawSelectionMarker(window, position_component, sprite_component);
+                //drawSelectionMarker(window, position_component, sprite_component);
             }
         }
     }

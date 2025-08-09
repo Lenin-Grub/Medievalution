@@ -9,7 +9,7 @@ Pathfinding::Pathfinding()
     , tile_size(sf::Vector2f(32, 16))
     , width(128)
     , height(128)
-    , is_path_visible{true}
+    , is_path_visible{false}
     , is_nodes_visible(false)
     , is_connections_visible(false)
     , is_beginend_visible(false)
@@ -164,6 +164,29 @@ Node* Pathfinding::getNode(const sf::Vector2f& position)
     if (it != nodes.end())
         return &it->second;
     return nullptr;
+}
+
+Node* Pathfinding::getNodeByPosition(const sf::Vector2f& worldPos)
+{
+    Node* closest = nullptr;
+    float minDistSq = std::numeric_limits<float>::max();
+
+    for (auto& [pos, node] : nodes)
+    {
+        float dx = pos.x - worldPos.x;
+        float dy = pos.y - worldPos.y;
+        float distSq = dx * dx + dy * dy;
+
+        if (distSq < minDistSq)
+        {
+            minDistSq = distSq;
+            closest = &node;
+        }
+    }
+
+    // Опционально: ограничить радиус поиска
+    const float maxSearchDistSq = 1024.0f; // 32*32
+    return (minDistSq <= maxSearchDistSq) ? closest : nullptr;
 }
 
 const std::unordered_map<sf::Vector2f, Node, Vector2fHash>& Pathfinding::getNodes() const

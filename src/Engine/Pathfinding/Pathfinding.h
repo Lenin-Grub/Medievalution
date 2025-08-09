@@ -76,6 +76,8 @@ public:
     /// @return The node at the specified position, or nullptr if not found.
     Node* getNode(const sf::Vector2f& position);
 
+    Node* getNodeByPosition(const sf::Vector2f& worldPos);
+
     const std::unordered_map<sf::Vector2f, Node, Vector2fHash>& getNodes() const;
 
     std::vector<Node*> path() const;
