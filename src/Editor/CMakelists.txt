@@ -26,9 +26,10 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     sfml-window
     sfml-system
     spdlog
-    ImGui-SFML::ImGui-SFML
+    imgui-sfml
     EnTT::EnTT
-    json
+    nlohmann_json
+    opengl32 
     Engine
 )
 
@@ -36,3 +37,26 @@ target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
 add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
     COMMAND ${CMAKE_COMMAND} -E copy ${CMAKE_SOURCE_DIR}/ext_libs/openal32.dll  $<TARGET_FILE_DIR:${PROJECT_NAME}>/openal32.dll)
+
+add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/config
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
+    
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+        ${CMAKE_SOURCE_DIR}/config 
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/config
+    
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+        ${CMAKE_SOURCE_DIR}/resources 
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/resources
+    
+    COMMAND ${CMAKE_COMMAND} -E copy_directory 
+        ${CMAKE_SOURCE_DIR}/shaders 
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/shaders
+    
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${CMAKE_SOURCE_DIR}/ext_libs/openal32.dll
+        $<TARGET_FILE_DIR:${PROJECT_NAME}>/openal32.dll
+    VERBATIM
+)

@@ -25,13 +25,13 @@ target_include_directories(${PROJECT_NAME} PRIVATE ${ENTT_SOURCE_DIR}/include)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/Engine)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_SOURCE_DIR}/src/Audio)
 
-target_link_libraries(${PROJECT_NAME} PUBLIC 
+target_link_libraries(${PROJECT_NAME} PRIVATE 
     Engine
     Audio
-	spdlog
-    ImGui-SFML::ImGui-SFML
+    spdlog
+    imgui-sfml
     EnTT::EnTT
-    json
+    nlohmann_json
 )
 
 

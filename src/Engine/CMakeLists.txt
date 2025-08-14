@@ -1,17 +1,24 @@
-cmake_minimum_required(VERSION 3.31 FATAL_ERROR)
-
 project(Engine)
 
 add_library(${PROJECT_NAME} STATIC)
 
-file(GLOB_RECURSE EDITOR_HEADERS ${PROJECT_SOURCE_DIR}/*.hpp ${PROJECT_SOURCE_DIR}/*.h ${PROJECT_SOURCE_DIR}/*.inl)
-file(GLOB_RECURSE EDITOR_SOURCES ${PROJECT_SOURCE_DIR}/*.cpp)
+file(GLOB_RECURSE ENGINE_HEADERS 
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.hpp 
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.h 
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.inl)
+file(GLOB_RECURSE ENGINE_SOURCES 
+    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp)
 
-target_sources(${PROJECT_NAME} PRIVATE ${EDITOR_HEADERS} ${EDITOR_SOURCES})
+target_sources(${PROJECT_NAME} PRIVATE ${ENGINE_HEADERS} ${ENGINE_SOURCES})
 
-target_include_directories(${PROJECT_NAME} PUBLIC ${PROJECT_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src/Core)
+target_include_directories(${PROJECT_NAME} PUBLIC 
+    ${CMAKE_CURRENT_SOURCE_DIR} 
+    ${CMAKE_SOURCE_DIR}/src/Core
+    ${EXTERNAL_DIR}/imgui
+    ${EXTERNAL_DIR}/imgui-sfml
+)
 
-source_group(TREE ${PROJECT_SOURCE_DIR} FILES ${EDITOR_HEADERS} ${EDITOR_SOURCES})
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${ENGINE_HEADERS} ${ENGINE_SOURCES})
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 
@@ -19,10 +26,11 @@ target_link_libraries(${PROJECT_NAME} PUBLIC
     sfml-graphics
     sfml-window
     sfml-system
-	sfml-audio
-    ImGui-SFML::ImGui-SFML
+    sfml-audio
+    imgui
+    imgui-sfml
     EnTT::EnTT
-    json
+    nlohmann_json
     spdlog
     Core
 )
