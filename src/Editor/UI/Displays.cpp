@@ -1,17 +1,20 @@
 #include "Displays.hpp"
 #include <imgui.h>
 #include <imgui_internal.h>
+#include <Settings/WindowSettings.h>
 
-Displays::Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry)
+Displays::Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry, Gizmo& gizmo)
     : window(window)
     , display_animation(window)
     , display_menu(window, battle_map)
     , display_map_editor(window, battle_map)
-    , display_scene(battle_map, registry)
-    , display_scene_hierrarhy(registry)
+    , display_scene(battle_map, registry, gizmo)
+    , display_scene_hierarchy(registry)
     , display_inspector(registry)
     , battle_map(battle_map)
+    , gizmo (gizmo)
 {
+    display_scene_hierarchy.setSceneDisplay(&display_scene);
 }
 
 bool Displays::initDockSpace()
@@ -55,7 +58,7 @@ bool Displays::initDockSpace()
 bool Displays::create()
 {
     display_menu.draw();
-    display_scene_hierrarhy.draw();
+    display_scene_hierarchy.draw();
     display_scene.draw();
     display_log.draw();
     display_inspector.draw();
@@ -69,6 +72,9 @@ bool Displays::create()
 
     if (display_menu.show_map_editor_window)
         display_map_editor.draw();
+
+    if (display_menu.show_metrics)
+        metrics();
 
     return true;
 }
@@ -123,4 +129,42 @@ void Displays::draw()
         display_animation.update(delta_time);
         display_map_editor.update(delta_time);
         display_scene.update(delta_time);
+    }
+
+    void Displays::metrics()
+    {
+        ImGuiIO& io = ImGui::GetIO();
+        ImGui::SetNextWindowBgAlpha(0.35f);
+        ImGui::Begin("Metrics", nullptr, ImGuiWindowFlags_NoDecoration | ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoFocusOnAppearing | ImGuiWindowFlags_NoNav);
+
+        ImGui::Text("Bla bla bla");
+
+        ImGui::TextColored(ImVec4(1, 1, 0, 1), "Metrics: %.3f ms. | FPS: %.1f", 1000.0f / io.Framerate ,WindowSettings::getInstance().getFPS());
+
+        ImGui::Columns(4, "table_columns");
+        ImGui::Separator();
+
+        ImGui::Text("Coordinates"); ImGui::SameLine();
+        ImGui::NextColumn();
+
+        ImGui::PushStyleColor(ImGuiCol_Button, sf::Color::Red);
+        ImGui::Button("X"); ImGui::SameLine();
+        ImGui::PopStyleColor();
+        ImGui::Text("%.1f", common::mouse_pos_view.x);
+        ImGui::NextColumn();
+
+        ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(40, 159, 49));
+        ImGui::Button("Y"); ImGui::SameLine();
+        ImGui::PopStyleColor();
+        ImGui::Text("%.1f", common::mouse_pos_view.y);
+        ImGui::NextColumn();
+
+        ImGui::PushStyleColor(ImGuiCol_Button, sf::Color(23, 68, 210));
+        ImGui::Button("Z"); ImGui::SameLine();
+        ImGui::PopStyleColor();
+        ImGui::Text("%.1f", 1);
+
+        ImGui::Columns(1);
+
+        ImGui::End();
     }

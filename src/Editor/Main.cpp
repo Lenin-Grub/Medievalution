@@ -1,8 +1,6 @@
 ﻿#include "Application/Application.hpp"
 
-#ifdef NDEBUG
-    #pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
-#endif
+#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 int main()
 {

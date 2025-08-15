@@ -2,32 +2,30 @@
 #include <imgui.h>
 #include <ECS/Entity/Entity.hpp>
 
-uint32_t SceneHierrarhyDisplay::selected_entity_Id = UINT32_MAX;
+uint32_t SceneHierarchyDisplay::selected_entity_Id = SceneHierarchyDisplay::NO_ENTITY_SELECTED;
 
-SceneHierrarhyDisplay::SceneHierrarhyDisplay(Registry& registry)
+SceneHierarchyDisplay::SceneHierarchyDisplay(Registry& registry)
     : registry(registry)
 {
 }
 
-void SceneHierrarhyDisplay::draw()
+void SceneHierarchyDisplay::draw()
 {
     ImGui::Begin("Scene Hierarchy");
 
+    updateDisplayOrder();
+    drawEntityList();
+    drawContextMenu();
+    drawAddEntityPopup();
+
+    ImGui::End();
+}
+
+void SceneHierarchyDisplay::updateDisplayOrder()
+{
     auto view = registry.getRegistry().view<Components::Identification>();
-
-    static entt::entity renaming_entity = entt::null;
-    static char rename_buffer[128] = { 0 };
-    static std::vector<entt::entity> display_order;
-
-    if (display_order.empty())
-    {
-        for (auto entity : view)
-        {
-            display_order.push_back(entity);
-        }
-    }
-
     std::set<entt::entity> currentEntities;
+
     for (auto entity : view)
     {
         currentEntities.insert(entity);
@@ -35,8 +33,7 @@ void SceneHierrarhyDisplay::draw()
 
     display_order.erase(
         std::remove_if(display_order.begin(), display_order.end(),
-            [&currentEntities](entt::entity e) 
-            {
+            [&currentEntities](entt::entity e) {
                 return !currentEntities.count(e);
             }),
         display_order.end()
@@ -49,26 +46,32 @@ void SceneHierrarhyDisplay::draw()
             display_order.push_back(entity);
         }
     }
+}
+
+void SceneHierarchyDisplay::drawEntityList()
+{
+    auto& reg = registry.getRegistry();
 
     for (size_t i = 0; i < display_order.size(); ++i)
     {
         auto entity = display_order[i];
 
-        if (!registry.getRegistry().valid(entity))
+        if (!reg.valid(entity))
             continue;
 
-        auto& id = registry.getRegistry().get<Components::Identification>(entity);
+        auto& id = reg.get<Components::Identification>(entity);
         std::string displayName = id.name + "##" + std::to_string(static_cast<uint32_t>(entity));
 
         uint32_t currentEntityId = static_cast<uint32_t>(entity);
         bool isSelected = (selected_entity_Id == currentEntityId);
 
         ImGui::PushID(currentEntityId);
+
         if (ImGui::Selectable(displayName.c_str(), isSelected))
         {
-            selected_entity_Id = currentEntityId;
-            LOG_INFO("Selected entity ID: {0})", currentEntityId);
+            handleEntitySelection(entity);
         }
+
         ImGui::PopID();
 
         if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0))
@@ -78,41 +81,77 @@ void SceneHierrarhyDisplay::draw()
             rename_buffer[sizeof(rename_buffer) - 1] = 0;
         }
 
-        if (renaming_entity == entity)
-        {
-            ImGui::SetKeyboardFocusHere();
-            std::string inputName = "##Rename" + std::to_string(currentEntityId);
-            if (ImGui::InputText(inputName.c_str(),
-                rename_buffer, sizeof(rename_buffer),
-                ImGuiInputTextFlags_EnterReturnsTrue))
-            {
-                id.name = std::string(rename_buffer);
-                renaming_entity = entt::null;
-            }
+        handleEntityRename(entity);
 
-            if (!ImGui::IsItemActive() && !ImGui::IsMouseClicked(0))
-            {
-                renaming_entity = entt::null;
-            }
-        }
-
-        if (ImGui::BeginPopupContextItem(("EntityContextMenu##" + std::to_string(currentEntityId)).c_str()))
+        std::string contextMenuId = "EntityContextMenu##" + std::to_string(currentEntityId);
+        if (ImGui::BeginPopupContextItem(contextMenuId.c_str()))
         {
             if (ImGui::MenuItem("Delete"))
             {
-                registry.getRegistry().destroy(entity);
-                if (selected_entity_Id == currentEntityId)
-                    selected_entity_Id = UINT32_MAX;
-                if (renaming_entity == entity)
-                    renaming_entity = entt::null;
+                handleEntityDeletion(entity);
             }
             ImGui::EndPopup();
         }
     }
+}
 
+void SceneHierarchyDisplay::handleEntitySelection(entt::entity entity)
+{
+    uint32_t entityId = static_cast<uint32_t>(entity);
+    selected_entity_Id = entityId;
+
+    if (scene_display) {
+        scene_display->setSelectedEntity(entity);
+    }
+
+    LOG_INFO("Selected entity ID: {}", entityId);
+}
+
+void SceneHierarchyDisplay::handleEntityRename(entt::entity entity)
+{
+    if (renaming_entity != entity)
+        return;
+
+    auto& reg = registry.getRegistry();
+    auto& id = reg.get<Components::Identification>(entity);
+
+    ImGui::SetKeyboardFocusHere();
+    std::string inputName = "##Rename" + std::to_string(static_cast<uint32_t>(entity));
+
+    if (ImGui::InputText(inputName.c_str(), rename_buffer, sizeof(rename_buffer),
+        ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        id.name = std::string(rename_buffer);
+        renaming_entity = entt::null;
+    }
+
+    if (!ImGui::IsItemActive() && !ImGui::IsMouseClicked(0))
+    {
+        renaming_entity = entt::null;
+    }
+}
+
+void SceneHierarchyDisplay::handleEntityDeletion(entt::entity entity)
+{
+    uint32_t entityId = static_cast<uint32_t>(entity);
+
+    registry.getRegistry().destroy(entity);
+
+    if (selected_entity_Id == entityId)
+        selected_entity_Id = NO_ENTITY_SELECTED;
+
+    if (renaming_entity == entity)
+        renaming_entity = entt::null;
+}
+
+void SceneHierarchyDisplay::drawContextMenu()
+{
     if (ImGui::IsWindowHovered() && ImGui::IsMouseClicked(1) && !ImGui::IsAnyItemHovered())
         ImGui::OpenPopup("AddGameObjectMenu");
+}
 
+void SceneHierarchyDisplay::drawAddEntityPopup()
+{
     if (ImGui::BeginPopup("AddGameObjectMenu"))
     {
         if (ImGui::MenuItem("Add Game Object"))
@@ -124,33 +163,33 @@ void SceneHierrarhyDisplay::draw()
         }
         ImGui::EndPopup();
     }
-
-    ImGui::End();
 }
 
-void SceneHierrarhyDisplay::update(const float& delta_time)
+void SceneHierarchyDisplay::update(const float& delta_time)
 {
+
 }
 
-uint32_t SceneHierrarhyDisplay::getSelectedEntityId()
+uint32_t SceneHierarchyDisplay::getSelectedEntityId()
 {
     return selected_entity_Id;
 }
 
-void SceneHierrarhyDisplay::setSelectedEntityId(uint32_t id)
+void SceneHierarchyDisplay::setSelectedEntityId(uint32_t id)
 {
     selected_entity_Id = id;
 }
 
-entt::entity SceneHierrarhyDisplay::getSelectedEntity(Registry& registry)
+entt::entity SceneHierarchyDisplay::getSelectedEntity(Registry& registry)
 {
-    if (selected_entity_Id == UINT32_MAX)
+    if (selected_entity_Id == NO_ENTITY_SELECTED)
         return entt::null;
 
-    // Преобразуем ID обратно в entity
     entt::entity entity = entt::entity(selected_entity_Id);
-    if (registry.getRegistry().valid(entity))
-        return entity;
+    return registry.getRegistry().valid(entity) ? entity : entt::null;
+}
 
-    return entt::null;
+void SceneHierarchyDisplay::setSceneDisplay(SceneDisplay *scene_display)
+{ 
+    this->scene_display = scene_display;
 }

@@ -14,7 +14,7 @@
 class Displays
 {
 public:
-	Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry);
+	Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry, Gizmo& gizmo);
 	~Displays() = default;
 
     bool initDockSpace();
@@ -22,16 +22,18 @@ public:
     void draw();
     void update(const float& delta_time);
 
+    void metrics();
+
     void initDockingLayout();
 
 private:
-    sf::RenderWindow& window;
-    sf::Clock         clock;
-    sf::Vector2f      window_size;
-    sf::RenderTexture render_texture;
+    sf::RenderWindow&     window;
+    sf::Clock             clock;
+    sf::Vector2f          window_size;
+    sf::RenderTexture     render_texture;
 
     LogDisplay            display_log;
-    SceneHierrarhyDisplay display_scene_hierrarhy;
+    SceneHierarchyDisplay display_scene_hierarchy;
     SceneDisplay          display_scene;
     AnimationDisplay      display_animation;
     MenuDisplay           display_menu;
@@ -39,5 +41,6 @@ private:
     ObjectDetailsDisplay  display_object_details;
     InspectorDisplay      display_inspector;
 
-    BattleMap&             battle_map;
+    BattleMap&            battle_map;
+    Gizmo&                gizmo;
 };

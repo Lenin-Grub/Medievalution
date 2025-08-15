@@ -4,23 +4,40 @@
 
 class Registry;
 
-class InspectorDisplay
-	: public UI::IDisplay
+class InspectorDisplay : public UI::IDisplay
 {
 public:
-	InspectorDisplay(Registry& registry);
-	virtual ~InspectorDisplay() = default;
+    explicit InspectorDisplay(Registry& registry);
+    ~InspectorDisplay() override = default;
 
-	void draw() override;
+    void draw() override;
     void update(const float& delta_time) override;
 
+    // Helper methods
 private:
-    bool bool_value = true;
-    float float_value = 0.0f;
-    float dtime = 0.0f;
-    int current_item = 0;
-    int int_value = 0;
-    char string_buffer[128] = "Hello, World!";
-    const char* ITEMS[3] = { "Item 1", "Item 2", "Item 3" };
+    void drawHeader();
+    void drawAddComponentButton();
+    void drawComponentListPopup(entt::entity selected);
+    void drawTransformSection(entt::entity selected);
+    void drawMovementSection(entt::entity selected);
+    void drawSpriteSection(entt::entity selected);
+    void drawIndividualComponents(entt::entity selected);
+    void drawStateSection(entt::entity selected);
+    void drawFormation(entt::entity selected);
+
+    // Component-specific drawing methods
+private:
+    void drawSelectableComponent(entt::entity selected);
+    void drawPositionComponent(entt::entity selected);
+    void drawScaleComponent(entt::entity selected);
+    void drawRotationComponent(entt::entity selected);
+    void drawControlComponent(entt::entity selected);
+    void drawVelocityComponent(entt::entity selected);
+    void drawPathComponent(entt::entity selected);
+    void drawAnimationComponent(entt::entity selected);
+    void drawStateComponent(entt::entity selected);
+
+private:
     Registry& registry;
+    static constexpr uint32_t NO_ENTITY_SELECTED = UINT32_MAX;
 };

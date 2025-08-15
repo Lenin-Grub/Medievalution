@@ -3,23 +3,24 @@
 #include <World/BattleMap/BattleMap.hpp>
 #include <Camera/Camera.h>
 #include <ECS/Entity/Entity.hpp>
+#include <Gizmos/Gizmos.h>
 
 class SceneDisplay
-	: public UI::IDisplay
+    : public UI::IDisplay
 {
 public:
-	SceneDisplay(BattleMap& battle_map, Registry& registry);
-	virtual ~SceneDisplay() = default;
+    SceneDisplay(BattleMap& battle_map, Registry& registry, Gizmo& gizmo);
+    virtual ~SceneDisplay() = default;
 
-	void draw() override;
-	void update(const float& delta_time) override;
+    void draw() override;
+    void update(const float& delta_time) override;
+
+    void setSelectedEntity(entt::entity entity);
 
 private:
-	BattleMap& battle_map;
-	Registry& registry;
+    BattleMap&  battle_map;
+    Registry&   registry;
+    Gizmo&      gizmo;
 
-	bool              is_brash;
-	bool              show_editor_window = false;
-	bool              show_metrics_window = false;
-	bool              show_animator_window = false;
+    entt::entity selected_entity = entt::null;
 };

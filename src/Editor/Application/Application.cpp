@@ -10,12 +10,14 @@
 
 EditorApplication::EditorApplication()
     : window(sf::VideoMode(1920, 1200), "Medievalution Editor")
-    , clear_color(43, 43, 49)
+    //, clear_color(43, 43, 49)
+    , clear_color(36, 37, 45)
     , delta_time(0.0f)
-    , displays(window, battle_map, registry)
+    , displays(window, battle_map, registry, gizmo)
     , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
     , animator(sprite)
     , is_brush(false)
+    , gizmo(registry)
 {
     setupWindow();
     setupImGui();
@@ -167,7 +169,7 @@ void EditorApplication::draw(sf::RenderTarget* target)
 
     displays.draw();
     registry.draw(registry.getRegistry(), window);
-
+    
     ImGui::SFML::Render(window);
     window.display();
 }

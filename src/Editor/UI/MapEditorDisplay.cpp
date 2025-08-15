@@ -6,10 +6,7 @@
 
 MapEditorDisplay::MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map)
     : battle_map(battle_map)
-    , gizmos(window, sf::Vector2f(10, 10))
     , m_selected_tile_id(0)
-    , is_brash(false)
-    , tools(ToolState::None)
 {
 }
 
@@ -46,14 +43,10 @@ void MapEditorDisplay::renderTilesetSelector()
     static bool show_tileset_selector = false;
 
     if (ImGui::Button(SET_ICON_TEXT((Icon::ADD_FILES), "Add")))
-    {
         show_tileset_selector = true;
-    }
 
     if (show_tileset_selector)
-    {
         ImGui::OpenPopup("Select Tileset");
-    }
 
     if (ImGui::BeginPopupModal("Select Tileset", NULL, ImGuiWindowFlags_AlwaysAutoResize))
     {
@@ -80,9 +73,7 @@ void MapEditorDisplay::renderTilesetSelector()
     ImGui::SameLine();
 
     if (ImGui::Button(SET_ICON_TEXT((Icon::REMOVE_FILES), " Remove")))
-    {
         battle_map.removeLayer();
-    }
 
     ImGui::Separator();
 }
@@ -111,16 +102,12 @@ void MapEditorDisplay::renderLayerControls()
 
             ImGui::TableSetColumnIndex(1);
             if (ImGui::Selectable(display_layer_name.c_str(), battle_map.getCurrentLayerID() == i))
-            {
                 battle_map.setCurrentLayerID(i);
-            }
 
             ImGui::TableSetColumnIndex(2);
             ImGui::PushID(static_cast<int>(i));
             if (ImGui::Button(SET_ICON(Icon::EDIT)))
-            {
                 ImGui::OpenPopup("Rename Layer");
-            }
 
             if (ImGui::BeginPopup("Rename Layer"))
             {
@@ -144,9 +131,7 @@ void MapEditorDisplay::renderLayerControls()
 void MapEditorDisplay::renderTilesSection()
 {
     if (ImGui::CollapsingHeader(SET_ICON_TEXT((Icon::FOUR_QUADS), "Tiles")))
-    {
         renderTilesetTable();
-    }
 }
 
 void MapEditorDisplay::renderTilesetTable()
