@@ -54,5 +54,9 @@ private:
     std::shared_ptr<LogDisplaySink> log_sink;
     bool auto_scroll     = true;
     bool show_timestamps = true;
-    int  level_filter    = 0;
+    bool show_debug      = true;
+    bool show_info       = true;
+    bool show_warn       = true;
+    bool show_error      = true;
+    bool show_critical   = true;
 };

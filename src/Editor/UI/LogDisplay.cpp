@@ -74,9 +74,22 @@ void LogDisplay::draw()
     ImGui::Checkbox("Show timestamps", &show_timestamps);
     
     ImGui::SameLine();
-    ImGui::SetNextItemWidth(120);
-    const char* level_names[] = { "All", "Debug", "Info", "Warn", "Error", "Critical" };
-    ImGui::Combo("Level", &level_filter, level_names, IM_ARRAYSIZE(level_names));
+    ImGui::Text("Levels:");
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Debug", &show_debug);
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Info", &show_info);
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Warn", &show_warn);
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Error", &show_error);
+    
+    ImGui::SameLine();
+    ImGui::Checkbox("Critical", &show_critical);
     
     ImGui::Separator();
     
@@ -86,7 +99,30 @@ void LogDisplay::draw()
         
         for (const auto& entry : logs)
         {
-            if (level_filter > 0 && static_cast<int>(entry.level) < level_filter - 1)
+            bool should_show = false;
+            switch (entry.level)
+            {
+                case spdlog::level::debug:
+                    should_show = show_debug;
+                    break;
+                case spdlog::level::info:
+                    should_show = show_info;
+                    break;
+                case spdlog::level::warn:
+                    should_show = show_warn;
+                    break;
+                case spdlog::level::err:
+                    should_show = show_error;
+                    break;
+                case spdlog::level::critical:
+                    should_show = show_critical;
+                    break;
+                default:
+                    should_show = true;
+                    break;
+            }
+            
+            if (!should_show)
                 continue;
                 
             drawLog(entry);
