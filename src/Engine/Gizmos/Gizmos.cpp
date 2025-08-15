@@ -197,7 +197,7 @@ void Gizmo::drawRotateHandle(const sf::Vector2f& center, sf::RenderTarget& targe
         if (target_entity != entt::null) {
             auto* rotation_component = registry.getRegistry().try_get<Components::Position>(target_entity);
             if (rotation_component)
-                actual_angle = rotation_component->rotation;
+                actual_angle = rotation_component->angle;
         }
 
         sf::CircleShape stick(7.0f);
@@ -265,7 +265,7 @@ void Gizmo::handleInput(entt::registry& registry, const sf::Vector2f& mouse_pos,
     auto* rotation_component = registry.try_get<Components::Position>(target_entity);
 
     sf::Vector2f center = position.position;
-    float current_angle = rotation_component ? rotation_component->rotation : 0.0f;
+    float current_angle = rotation_component ? rotation_component->angle : 0.0f;
     sf::Vector2f current_scale = scale_component ? scale_component->scale : sf::Vector2f(1.0f, 1.0f);
 
     if (!mouse_pressed) 
@@ -367,14 +367,14 @@ void Gizmo::handleRotation(const sf::Vector2f& mouse_pos, Components::Position* 
     float deltaAngle = atan2(mouse_pos.y  - center.y, mouse_pos.x  - center.x) 
                      - atan2(drag_start.y - center.y, drag_start.x - center.x);
 
-    rotation_component->rotation += deltaAngle * 180.0f / std::numbers::pi;
+    rotation_component->angle += deltaAngle * 180.0f / std::numbers::pi;
 
-    if (rotation_component->rotation < 0.0f)
-        rotation_component->rotation += 360.0f;
-    else if (rotation_component->rotation >= 360.0f)
-        rotation_component->rotation -= 360.0f;
+    if (rotation_component->angle < 0.0f)
+        rotation_component->angle += 360.0f;
+    else if (rotation_component->angle >= 360.0f)
+        rotation_component->angle -= 360.0f;
 
-    initial_angle = rotation_component->rotation;
+    initial_angle = rotation_component->angle;
 }
 
 void Gizmo::drawDashedLine(const sf::Vector2f& start, const sf::Vector2f& end, sf::RenderTarget& target)
