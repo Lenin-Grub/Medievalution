@@ -82,16 +82,33 @@ void Animator::setAnimation(const std::string& name, bool loop)
 
     const Animation& anim = it->second;
 
+    if (animation_state.current_animation == name)
+    {
+        animation_state.is_looping = loop;
+
+        if (!animation_state.is_playing)
+            play();
+        return;
+    }
+
+    //LOG_DEBUG("Actually changing animation: {} -> {}",animation_state.current_animation, name);
+
     animation_state.current_animation = name;
     animation_state.current_frame = 0;
     animation_state.elapsed_time = 0.0f;
     animation_state.is_looping = loop;
-    animation_state.current_texture = anim.texture_name;
 
-    if (!anim.texture_name.empty())
+    if (!anim.texture_name.empty() && animation_state.current_texture != anim.texture_name)
     {
+        //LOG_INFO("Changing texture from {} to {}", animation_state.current_texture, anim.texture_name);
+
         sf::Texture& texture = ResourceLoader::instance().getTexture(anim.texture_name);
         sprite.setTexture(texture, true);
+        animation_state.current_texture = anim.texture_name;
+    }
+    else if (!anim.texture_name.empty())
+    {
+        //LOG_DEBUG("Texture unchanged: {}", anim.texture_name);
     }
 
     if (!anim.frames.empty())
