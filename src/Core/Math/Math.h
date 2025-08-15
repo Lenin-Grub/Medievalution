@@ -1,4 +1,5 @@
 #pragma once
+#include <SFML/System.hpp>
 
 /**
  * @brief A utility class providing common mathematical operations.

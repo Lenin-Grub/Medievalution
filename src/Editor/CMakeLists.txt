@@ -29,9 +29,17 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     imgui-sfml
     EnTT::EnTT
     nlohmann_json
-    opengl32 
     Engine
 )
+
+if(WIN32)
+    target_link_libraries(${PROJECT_NAME} PRIVATE opengl32)
+elseif(UNIX AND NOT APPLE)
+    find_package(OpenGL REQUIRED)
+    target_link_libraries(${PROJECT_NAME} PRIVATE OpenGL::GL)
+elseif(APPLE)
+    target_link_libraries(${PROJECT_NAME} PRIVATE "-framework OpenGL")
+endif()
 
 target_compile_features(${PROJECT_NAME} PUBLIC cxx_std_20)
 

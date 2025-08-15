@@ -28,8 +28,12 @@ void LogDisplaySink::sink_it_(const spdlog::details::log_msg& msg)
     auto ms = std::chrono::duration_cast<std::chrono::milliseconds>(msg.time.time_since_epoch()) % 1000;
     
     std::tm tm;
-    localtime_s(&tm, &time_t);
-    
+    #if defined(_WIN32)
+        localtime_s(&tm, &time_t);
+    #elif defined(__linux__)
+        localtime_r(&time_t, &tm);
+    #endif
+
     char timestamp_buffer[64];
     std::strftime(timestamp_buffer, sizeof(timestamp_buffer), "%H:%M:%S", &tm);
     entry.timestamp = fmt::format("{}.{:03d}", timestamp_buffer, ms.count());

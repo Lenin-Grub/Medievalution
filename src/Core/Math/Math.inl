@@ -1,5 +1,6 @@
 #pragma once
 #include "Math.h"
+#include <complex>
 
 template <typename T1, typename T2>
 float Math::convertToPercentage(T1 first, T2 percentage) 
