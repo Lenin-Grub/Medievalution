@@ -1,7 +1,7 @@
 #include "Application.hpp"
 
-#include <imgui-SFML.h>
 #include <imgui.h>
+#include <imgui-SFML.h>
 
 #include <Resource/ResourceManager.hpp>
 #include <Common/IconText.h>

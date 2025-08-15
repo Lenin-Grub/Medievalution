@@ -44,10 +44,10 @@ function(download_repo NAME REPO TAG)
     endif()
 endfunction()
 
-download_repo(sfml https://github.com/SFML/SFML.git 2.6.0)
+download_repo(sfml https://github.com/SFML/SFML.git 2.6.x)
 download_repo(spdlog https://github.com/gabime/spdlog.git v1.x)
 download_repo(entt https://github.com/skypjack/entt.git master)
-download_repo(imgui https://github.com/ocornut/imgui.git docking)
+download_repo(imgui https://github.com/ocornut/imgui.git v1.89.9-docking)
 download_repo(imgui-sfml https://github.com/SFML/imgui-sfml.git 2.6.x)
 
 set(LIB_OUTPUT_DIR ${CMAKE_BINARY_DIR}/lib)
@@ -188,4 +188,4 @@ add_dependencies(Editor copy_resources)
 add_dependencies(Medievalution copy_resources)
 
 set_target_properties( Core Audio Engine PROPERTIES FOLDER "02 Engine" )
-set_target_properties( imgui imgui-sfml spdlog copy_resources sfml-system sfml-window sfml-graphics sfml-audio sfml-main sfml-network PROPERTIES FOLDER "01 Libraries" )
+#set_target_properties( imgui imgui-sfml spdlog copy_resources sfml-system sfml-window sfml-graphics sfml-audio sfml-main sfml-network PROPERTIES FOLDER "01 Libraries" )

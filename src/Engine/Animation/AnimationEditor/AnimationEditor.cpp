@@ -379,7 +379,7 @@ void AnimationEditor::drawSpriteSheet()
             sprite.setTextureRect(sf::IntRect(0, 0, 0, 0));
         }
     }
-    ImTextureID texId = static_cast<ImTextureID>(texture.getNativeHandle());
+    ImTextureID texId = reinterpret_cast<ImTextureID>(texture.getNativeHandle());
     if (!ImGui::BeginTable("Tiles", cols, ImGuiTableFlags_ScrollX | ImGuiTableFlags_ScrollY))
     {
         ImGui::EndChild();

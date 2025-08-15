@@ -1,0 +1,12 @@
+{
+  "name": "medievalution",
+  "version-string": "0.0.1",
+  "dependencies": [
+    "sfml",
+    "imgui",
+    "imgui-sfml",
+    "spdlog",
+    "entt",
+    "nlohmann-json"
+  ]
+}
