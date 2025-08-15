@@ -1,4 +1,5 @@
 #include "SelectSystem.hpp"
+#include <imgui.h>
 
 
 void SelectSystem::update(entt::registry& registry)
@@ -7,6 +8,9 @@ void SelectSystem::update(entt::registry& registry)
     static bool is_selecting = false;
 
     const bool is_left_mouse_down = sf::Mouse::isButtonPressed(sf::Mouse::Left);
+
+    if (ImGui::GetIO().WantCaptureMouse)
+        return;
 
     if (is_left_mouse_down && !is_selecting)
     {

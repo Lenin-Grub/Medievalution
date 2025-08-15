@@ -15,7 +15,7 @@ namespace Components
     struct Position
     {
         sf::Vector2f position { 0.0f, 0.0f };
-        float        rotation { 0.0f };
+        float        angle    { 0.0f };
     };
 
     struct Velocity
@@ -24,24 +24,14 @@ namespace Components
         float        speed    { 1.0f };
     };
 
-
-    enum class Direction
-    {
-        None = 0,
-        Up,
-        Down,
-        Left,
-        Right
-    };
-
-    struct Control
+    struct Direction
     {
         sf::Vector2f direction { 0.0f, 0.0f };
     };
 
     struct Sprite
     {
-        std::string        texture_filename{ "" }; ///< texture file name
+        std::string        texture_filename{ "" };
         sf::Image          imgae;
         sf::Texture        texture;
         sf::Sprite         sprite;
@@ -74,7 +64,7 @@ namespace Components
         }
     };
 
-    enum class CharacterState 
+    enum class CharacterState
     {
         NONE = 0,
         Idle,
@@ -92,19 +82,18 @@ namespace Components
 
     enum class FormationType
     {
-        Line,       // Линия
-        Square,     // Квадрат  
-        Circle,     // Круг
-        Diamond,    // Ромб
-        Triangle    // Треугольник
+        //NONE = 0,
+        Line,
+        Square,
+        Circle,
     };
 
-    struct Squad
+    struct Formation
     {
-        uint32_t squad_id = 0;        // ID отряда (0 = нет отряда)
-        uint32_t formation_index = 0; // Позиция в отряде (0, 1, 2, ...)
-        sf::Vector2f formation_offset; // Смещение в формации относительно лидера
-        bool is_leader = false;       // Является ли лидером отряда
+        uint32_t squad_id = 0;
+        uint32_t formation_index = 0;
+        sf::Vector2f formation_offset;
+        bool is_leader = false;
         FormationType formation_type = FormationType::Line;
     };
 }

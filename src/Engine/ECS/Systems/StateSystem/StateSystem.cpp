@@ -1,129 +1,118 @@
 #include "StateSystem.hpp"
 
-#include "StateSystem.hpp"
+std::unordered_map<entt::entity, EntityStateCache> StateSystem::entity_cache;
 
-void StateSystem::update(entt::registry& registry, float delta_time)
+void StateSystem::update(entt::registry& registry, float delta_time) 
 {
-    auto view = registry.view<Components::State, Components::Animation, Components::Position>(entt::exclude<Components::Pathfinding>);
+    auto view = registry.view<Components::State, Components::Animation, Components::Position>();
     auto path_view = registry.view<Components::State, Components::Animation, Components::Pathfinding, Components::Position>();
 
-    static std::unordered_map<entt::entity, Components::CharacterState> last_state;
-    static std::unordered_map<entt::entity, std::string> last_animation;
-    static std::unordered_map<entt::entity, std::string> last_direction;
-
-    // No Pathfinding
-    for (auto entity : view)
+    // With Pathfinding
+    for (auto entity : path_view) 
     {
-        auto& state = registry.get<Components::State>(entity);
-        auto& animation = registry.get<Components::Animation>(entity);
-        auto& pos_comp = registry.get<Components::Position>(entity);
+        updateEntity(registry, entity, true);
+    }
 
-        std::string anim_name;
-        bool loop = true;
-        std::string direction = "south";
-
-        if (auto* vel = registry.try_get<Components::Velocity>(entity))
+    // Whitout Pathfinding
+    for (auto entity : view) 
+    {
+        if (!registry.all_of<Components::Pathfinding>(entity)) 
         {
-            direction = getDirectionFromOffset(vel->velocity);
-        }
-
-        if (state.state == Components::CharacterState::Move)
-        {
-            anim_name = "run_" + direction;
-        }
-        else if (state.state == Components::CharacterState::Attack)
-        {
-            anim_name = "attack_" + direction;
-            loop = false;
-        }
-        else if (state.state == Components::CharacterState::Idle)
-        {
-            anim_name = "idle_" + direction;
-        }
-        else
-        {
-            anim_name = "idle_south"; // or last_animation
-        }
-
-        bool state_changed = last_state[entity] != state.state;
-        bool direction_changed = last_direction[entity] != direction;
-        bool should_update = state_changed || direction_changed;
-
-        if (!anim_name.empty() && should_update)
-        {
-            animation.animator.setAnimation(anim_name, loop);
-
-            last_animation[entity] = anim_name;
-            last_state[entity]     = state.state;
-            last_direction[entity] = direction;
+            updateEntity(registry, entity, false);
         }
     }
 
-    // With Pathfinding
-    for (auto entity : path_view)
+    for (auto it = entity_cache.begin(); it != entity_cache.end();) 
     {
-        auto& state     = registry.get<Components::State>(entity);
-        auto& animation = registry.get<Components::Animation>(entity);
-        auto& path_comp = registry.get<Components::Pathfinding>(entity);
-        auto& pos_comp  = registry.get<Components::Position>(entity);
-
-        std::string anim_name;
-        bool loop = true;
-        std::string direction = "south";
-
-        if (state.state == Components::CharacterState::Move && !path_comp.path.empty() &&
-            path_comp.current_node_index < path_comp.path.size())
-        {
-            Node* next_node = path_comp.path[path_comp.current_node_index];
-            sf::Vector2f offset = next_node->position - pos_comp.position;
-            direction = getDirectionFromOffset(offset);
-            anim_name = "run_" + direction;
-        }
-        else if (state.state == Components::CharacterState::Attack)
-        {
-            auto it = last_direction.find(entity);
-            direction = (it != last_direction.end()) ? it->second : "south";
-            anim_name = "attack_" + direction;
-            loop = false;
-        }
-        else if (state.state == Components::CharacterState::Idle)
-        {
-            auto it = last_direction.find(entity);
-            direction = (it != last_direction.end()) ? it->second : "south";
-            anim_name = "idle_" + direction;
-        }
-
-        bool state_changed     = last_state[entity] != state.state;
-        bool direction_changed = last_direction[entity] != direction;
-        bool should_update     = state_changed || direction_changed;
-
-        if (!anim_name.empty() && should_update)
-        {
-            animation.animator.setAnimation(anim_name, loop);
-            last_animation[entity] = anim_name;
-            last_state[entity]     = state.state;
-            last_direction[entity] = direction;
-        }
+        if (!registry.valid(it->first))
+            it = entity_cache.erase(it);
+        else
+            ++it;
     }
 }
 
-std::string StateSystem::getDirectionFromOffset(const sf::Vector2f& offset)
+void StateSystem::updateEntity(entt::registry& registry, entt::entity entity, bool has_pathfinding) 
+{
+    auto& state = registry.get<Components::State>(entity);
+    auto& animation = registry.get<Components::Animation>(entity);
+    auto& pos_comp = registry.get<Components::Position>(entity);
+
+    std::string direction = "south";
+    bool loop = true;
+
+    if (has_pathfinding) 
+    {
+        auto& path_comp = registry.get<Components::Pathfinding>(entity);
+        if (state.state == Components::CharacterState::Move && !path_comp.path.empty() &&
+            path_comp.current_node_index < path_comp.path.size()) {
+            Node* next_node = path_comp.path[path_comp.current_node_index];
+            sf::Vector2f offset = next_node->position - pos_comp.position;
+            direction = getDirectionFromOffset(offset);
+        }
+        else 
+        {
+            auto it = entity_cache.find(entity);
+            if (it != entity_cache.end()) 
+                direction = it->second.last_direction;
+        }
+    }
+    else 
+    {
+        if (auto* vel = registry.try_get<Components::Velocity>(entity))
+            direction = getDirectionFromOffset(vel->velocity);
+    }
+
+    bool loop_out;
+    std::string anim_name = getAnimationName(state.state, direction, loop_out);
+
+    auto& cache = entity_cache[entity];
+    bool state_changed = cache.last_state != state.state;
+    bool direction_changed = cache.last_direction != direction;
+    bool should_update = state_changed || direction_changed || cache.last_animation != anim_name;
+
+    if (should_update) 
+    {
+        animation.animator.setAnimation(anim_name, loop_out);
+        cache.last_state = state.state;
+        cache.last_direction = direction;
+        cache.last_animation = anim_name;
+    }
+}
+
+std::string StateSystem::getAnimationName(Components::CharacterState state, const std::string& direction, bool& loop) 
+{
+    loop = true;
+
+    switch (state) 
+    {
+    case Components::CharacterState::Idle:
+        return "idle_" + direction;
+    case Components::CharacterState::Move:
+        return "run_" + direction;
+    case Components::CharacterState::Attack:
+        loop = false;
+        return "attack_" + direction;
+    default:
+        return "idle_south";
+    }
+}
+
+std::string StateSystem::getDirectionFromOffset(const sf::Vector2f& offset) 
 {
     float x = offset.x;
     float y = offset.y;
 
-    // Normalize
     int dx = (std::abs(x) > 0.1f) ? (x > 0 ? 1 : -1) : 0;
     int dy = (std::abs(y) > 0.1f) ? (y > 0 ? 1 : -1) : 0;
 
-    if (dx == 1  && dy == 0)  return "east";
-    if (dx == -1 && dy == 0)  return "west";
-    if (dx == 0  && dy == 1)  return "south";
-    if (dx == 0  && dy == -1) return "north";
-    if (dx == 1  && dy == -1) return "north_east";
+    if (dx == 1 && dy == 0) return "east";
+    if (dx == -1 && dy == 0) return "west";
+    if (dx == 0 && dy == 1) return "south";
+    if (dx == 0 && dy == -1) return "north";
+    if (dx == 1 && dy == -1) return "north_east";
     if (dx == -1 && dy == -1) return "north_west";
-    if (dx == 1  && dy == 1)  return "south_east";
-    if (dx == -1 && dy == 1)  return "south_west";
+    if (dx == 1 && dy == 1) return "south_east";
+    if (dx == -1 && dy == 1) return "south_west";
 
-    return "south"; // default
+    return "south";
 }

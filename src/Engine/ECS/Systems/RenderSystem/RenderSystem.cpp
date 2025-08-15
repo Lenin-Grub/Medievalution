@@ -37,9 +37,12 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
         }
         else 
         {
-            sf::Sprite drawableSprite = sprite_component.sprite;
-            drawableSprite.setPosition(x, y);
-            window.draw(drawableSprite);
+            //sf::Sprite drawableSprite = sprite_component.sprite;
+            //drawableSprite.setPosition(x, y);
+            //window.draw(drawableSprite);
+            //sf::Sprite drawableSprite = sprite_component.sprite;
+            //sprite_component.sprite.setPosition(x, y);
+            window.draw(sprite_component.sprite);
         }
 
         if (registry.all_of<Components::Selectable>(entity))
