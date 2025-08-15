@@ -22,25 +22,26 @@ void BattleState::init()
 
     UnitFactory factory(registry, texture);
 
-    //int unitCount = 0;
-    //for (int row = 0; row < 4 && unitCount < 16; ++row) {
-    //    for (int col = 0; col < 5 && unitCount < 20; ++col) {
-    //        Entity spearman = factory.createSpearman(sf::Vector2f(col * 32, row * 16));
-    //        unitCount++;
-    //    }
-    //}
+    int unitCount = 0;
+    for (int row = 0; row < 4 && unitCount < 5; ++row) 
+    {
+        for (int col = 0; col < 5 && unitCount < 20; ++col) 
+        {
+            Entity spearman = factory.createSpearman(sf::Vector2f(col /** 32*/, row /** 16*/));
+            unitCount++;
+        }
+    }
+
 
     uint32_t squad_id = 1;
-
-    // Создаем 10 юнитов в линию
-    for (int i = 0; i < 10; ++i) {
-        // Начальная позиция: юниты в линию по горизонтали
-        sf::Vector2f start_pos(320 + i * 32, 320);
+    for (int i = 0; i < 10; ++i) 
+    {
+        sf::Vector2f start_pos(-320 + i * 32, 320);
 
         Entity spearman = factory.createSpearman(start_pos);
         entt::entity entity = spearman.getEntity();
 
-        auto& squad_comp = registry.getRegistry().emplace_or_replace<Components::Squad>(entity);
+        auto& squad_comp = registry.getRegistry().emplace_or_replace<Components::Formation>(entity);
         squad_comp.squad_id = squad_id;
         squad_comp.formation_index = i;
         squad_comp.is_leader = (i == 0);
@@ -49,19 +50,18 @@ void BattleState::init()
 
     uint32_t squad2_id = 2;
 
-    // Создаем 10 юнитов в линию немного ниже
-    for (int i = 0; i < 10; ++i) {
-        // Начальная позиция: юниты в линию по горизонтали, ниже первого отряда
+    for (int i = 0; i < 10; ++i) 
+    {
         sf::Vector2f start_pos(320 + i * 32, 640);
 
         Entity spearman = factory.createSpearman(start_pos);
         entt::entity entity = spearman.getEntity();
 
-        auto& squad_comp = registry.getRegistry().emplace_or_replace<Components::Squad>(entity);
+        auto& squad_comp = registry.getRegistry().emplace_or_replace<Components::Formation>(entity);
         squad_comp.squad_id = squad2_id;
         squad_comp.formation_index = i;
         squad_comp.is_leader = (i == 0);
-        squad_comp.formation_type = Components::FormationType::Triangle;
+        squad_comp.formation_type = Components::FormationType::Line;
     }
    
     LOG_INFO("State Battle\t Init");
@@ -147,13 +147,13 @@ std::vector<uint32_t> BattleState::getSelectedSquads()
     std::vector<uint32_t> squads;
     std::unordered_set<uint32_t> unique_squads;
 
-    auto selectable_view = registry.getRegistry().view<Components::Selectable, Components::Squad>();
+    auto selectable_view = registry.getRegistry().view<Components::Selectable, Components::Formation>();
     for (auto entity : selectable_view)
     {
         auto& selectable = selectable_view.get<Components::Selectable>(entity);
         if (selectable.is_selected)
         {
-            auto& squad = selectable_view.get<Components::Squad>(entity);
+            auto& squad = selectable_view.get<Components::Formation>(entity);
             if (squad.squad_id != 0)
             {
                 unique_squads.insert(squad.squad_id);
@@ -167,10 +167,10 @@ std::vector<uint32_t> BattleState::getSelectedSquads()
 
 void BattleState::changeSquadFormation(uint32_t squad_id, Components::FormationType new_type)
 {
-    auto squad_view = registry.getRegistry().view<Components::Squad>();
+    auto squad_view = registry.getRegistry().view<Components::Formation>();
     for (auto entity : squad_view)
     {
-        auto& squad = registry.getRegistry().get<Components::Squad>(entity);
+        auto& squad = registry.getRegistry().get<Components::Formation>(entity);
         if (squad.squad_id == squad_id)
         {
             squad.formation_type = new_type;
@@ -184,15 +184,6 @@ void BattleState::renderUI()
 
     ImGui::Begin("Battle Control", &show_imgui);
 
-    // Кнопка для показа/скрытия интерфейса
-    if (ImGui::Button("Toggle UI"))
-    {
-        show_imgui = !show_imgui;
-    }
-
-    ImGui::Separator();
-
-    // Получаем выделенные отряды
     selected_squads = getSelectedSquads();
 
     if (selected_squads.empty())
@@ -203,7 +194,6 @@ void BattleState::renderUI()
     {
         ImGui::Text("Selected squads: %zu", selected_squads.size());
 
-        // Определяем массив имен формаций локально
         const char* formation_names[] = { "Line", "Square", "Circle"/*, "Diamond", "Triangle" */};
 
         for (size_t i = 0; i < selected_squads.size(); ++i)
@@ -213,12 +203,11 @@ void BattleState::renderUI()
 
             ImGui::Text("Squad ID: %u", squad_id);
 
-            // Получаем текущий тип формации первого юнита отряда
             Components::FormationType current_type = Components::FormationType::Line;
-            auto squad_view = registry.getRegistry().view<Components::Squad>();
+            auto squad_view = registry.getRegistry().view<Components::Formation>();
             for (auto entity : squad_view)
             {
-                auto& squad = registry.getRegistry().get<Components::Squad>(entity);
+                auto& squad = registry.getRegistry().get<Components::Formation>(entity);
                 if (squad.squad_id == squad_id)
                 {
                     current_type = squad.formation_type;
@@ -226,7 +215,6 @@ void BattleState::renderUI()
                 }
             }
 
-            // Выпадающий список для выбора формации
             int current_selection = static_cast<int>(current_type);
 
             if (ImGui::Combo(("Formation##" + std::to_string(squad_id)).c_str(),
@@ -242,32 +230,29 @@ void BattleState::renderUI()
 
     ImGui::Separator();
 
-    // Информация об отрядах
     ImGui::Text("Squads Info:");
-    auto squad_view = registry.getRegistry().view<Components::Squad>();
+    auto squad_view = registry.getRegistry().view<Components::Formation>();
     std::unordered_set<uint32_t> squad_ids;
     for (auto entity : squad_view)
     {
-        auto& squad = registry.getRegistry().get<Components::Squad>(entity);
+        auto& squad = registry.getRegistry().get<Components::Formation>(entity);
         if (squad.squad_id != 0)
         {
             squad_ids.insert(squad.squad_id);
         }
     }
 
-    // Определяем массив имен формаций повторно
     const char* formation_names[] = { "Line", "Square", "Circle", "Diamond", "Triangle" };
 
     for (uint32_t squad_id : squad_ids)
     {
-        // Подсчитываем количество юнитов в отряде
         int unit_count = 0;
         bool is_selected = false;
         Components::FormationType formation_type = Components::FormationType::Line;
 
         for (auto entity : squad_view)
         {
-            auto& squad = registry.getRegistry().get<Components::Squad>(entity);
+            auto& squad = registry.getRegistry().get<Components::Formation>(entity);
             if (squad.squad_id == squad_id)
             {
                 unit_count++;
@@ -275,7 +260,6 @@ void BattleState::renderUI()
                 {
                     formation_type = squad.formation_type;
                 }
-                // Проверяем, выделен ли хотя бы один юнит отряда
                 if (registry.getRegistry().all_of<Components::Selectable>(entity))
                 {
                     auto& selectable = registry.getRegistry().get<Components::Selectable>(entity);
