@@ -24,11 +24,6 @@ public:
     void setActiveTool(ToolType tool);
     ToolType getActiveTool() const;
     bool isToolActive(ToolType tool) const;
-    bool isBrushActive() const;
-    bool isSelectActive() const;
-    bool isTranslateActive() const;
-    bool isScaleActive() const;
-    bool isRotateActive() const;
 
 private:
     ToolsState() : active_tool(ToolType::None) {}

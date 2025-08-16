@@ -81,7 +81,7 @@ void SceneDisplay::draw()
 
     if (ImGui::Button(SET_ICON(Icon::BRUSH)))
     {
-        if (!ToolsState::instance().isBrushActive())
+        if (!ToolsState::instance().isToolActive(ToolType::Brush))
         {
             ToolsState::instance().setActiveTool(ToolType::Brush);
             is_brash = !is_brash;
