@@ -59,4 +59,5 @@ private:
     bool show_warn       = true;
     bool show_error      = true;
     bool show_critical   = true;
+    char search_query[256] = "";
 };

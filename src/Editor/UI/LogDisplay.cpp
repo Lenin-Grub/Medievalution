@@ -65,42 +65,45 @@ LogDisplay::LogDisplay()
 void LogDisplay::draw()
 {
     ImGui::Begin(SET_ICON_TEXT((Icon::SCRIPT), " Logs"));
-    
+
     if (ImGui::Button("Clear"))
     {
         log_sink->clear_logs();
     }
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Auto-scroll", &auto_scroll);
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Show timestamps", &show_timestamps);
-    
+
     ImGui::SameLine();
     ImGui::Text("Levels:");
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Debug", &show_debug);
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Info", &show_info);
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Warn", &show_warn);
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Error", &show_error);
-    
+
     ImGui::SameLine();
     ImGui::Checkbox("Critical", &show_critical);
-    
+
+    ImGui::SameLine();
+    ImGui::InputText("Search", search_query, sizeof(search_query));
+
     ImGui::Separator();
-    
+
     if (ImGui::BeginChild("LogArea", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar))
     {
         auto logs = log_sink->get_logs();
-        
+
         for (const auto& entry : logs)
         {
             bool should_show = false;
@@ -125,20 +128,23 @@ void LogDisplay::draw()
                     should_show = true;
                     break;
             }
-            
+
             if (!should_show)
                 continue;
-                
+
+            if (search_query[0] != '\0' && entry.message.find(search_query) == std::string::npos)
+                continue;
+
             drawLog(entry);
         }
-        
+
         if (auto_scroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY())
         {
             ImGui::SetScrollHereY(1.0f);
         }
     }
     ImGui::EndChild();
-    
+
     ImGui::End();
 }
 
