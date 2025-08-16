@@ -87,7 +87,7 @@ unsigned int BattleMap::getCurrentLayerID() const noexcept
 
 void BattleMap::setCurrentLayerID(size_t index) noexcept
 {
-    if (index < layers.size()) 
+    if (index < layers.size())
         current_layer_id = index;
 }
 
@@ -131,7 +131,7 @@ void BattleMap::saveMap(const std::string& file_path) const
         json_layer["layer_size_y"] = layer->layer_size.y;
         json_layer["visible"] = layer->visible;
         json_layer["layer_index"] = layer->layer_index;
-        json_layer["tileset_texture"] = "Tileset1.png"; // TODO: ñäåëàòü äèíàìè÷åñêîå èìÿ
+        json_layer["tileset_texture"] = "Tileset1.png"; // TODO: ÑÐ´ÐµÐ»Ð°Ñ‚ÑŒ Ð´Ð¸Ð½Ð°Ð¼Ð¸Ñ‡ÐµÑÐºÐ¾Ðµ Ð¸Ð¼Ñ
         json_layer["tile_ids"] = layer->tile_ids;
 
         json_map["layers"].push_back(json_layer);
@@ -235,6 +235,11 @@ void BattleMap::setSelectedTile(int id) noexcept
 void BattleMap::setShowPreview(bool show) noexcept
 {
     show_preview = show;
+}
+
+bool BattleMap::isShowPreview() const noexcept
+{
+    return show_preview;
 }
 
 void BattleMap::setTileId(int id) noexcept

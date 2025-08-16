@@ -3,10 +3,12 @@
 #include <imgui.h>
 #include <Common/IconText.h>
 #include <SFML/Graphics.hpp>
+#include "ToolsState.hpp"
 
 MapEditorDisplay::MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map)
     : battle_map(battle_map)
     , m_selected_tile_id(0)
+    , is_brash(false)
 {
 }
 

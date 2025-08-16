@@ -2,17 +2,17 @@
 
 #include <UI/IDisplay.hpp>
 #include <World/BattleMap/BattleMap.hpp>
-
+#include "ToolsState.hpp"
 
 class MapEditorDisplay
-	: public UI::IDisplay
+    : public UI::IDisplay
 {
 public:
-	MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map);
-	virtual ~MapEditorDisplay() = default;
+    MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map);
+    virtual ~MapEditorDisplay() = default;
 
-	void draw() override;
-	void update(const float& delta_time) override;
+    void draw() override;
+    void update(const float& delta_time) override;
 
 private:
     void renderLayersSection();
@@ -27,4 +27,6 @@ private:
 
     sf::Sprite        sprite;
     sf::Texture       texture;
+
+    bool is_brash;
 };

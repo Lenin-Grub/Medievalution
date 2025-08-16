@@ -23,4 +23,5 @@ private:
     Gizmo&      gizmo;
 
     entt::entity selected_entity = entt::null;
+    bool is_brash = false;
 };

@@ -97,6 +97,8 @@ public:
 
     void setShowPreview(bool show) noexcept;
 
+    bool isShowPreview() const noexcept;
+
     void setTileId(int id) noexcept;
 
     int getTileId() const noexcept;
