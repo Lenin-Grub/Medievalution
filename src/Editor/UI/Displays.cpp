@@ -63,6 +63,7 @@ bool Displays::create()
     display_log.draw();
     display_inspector.draw();
     display_object_details.draw();
+    display_assets.draw();
 
     if (display_menu.show_demo_window)
         ImGui::ShowDemoWindow(&display_menu.show_demo_window);
@@ -118,6 +119,7 @@ void Displays::draw()
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::MAP), " Map editor"), right);
                 ImGui::DockBuilderDockWindow("Scene", center);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::SCRIPT), " Logs"), bottom);
+                ImGui::DockBuilderDockWindow("Assets", bottom);
                 ImGui::DockBuilderDockWindow("Inspector", right);
                 ImGui::DockBuilderFinish(dockspace_id);
             }

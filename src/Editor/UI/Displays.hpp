@@ -9,6 +9,7 @@
 #include "MapEditorDisplay.hpp"
 #include "ObjectDetailsDisplay.hpp"
 #include "InspectorDisplay.hpp"
+#include "AssetsDisplay.hpp"
 #include <ECS/Entity/Entity.hpp>
 
 class Displays
@@ -40,6 +41,7 @@ private:
     MapEditorDisplay      display_map_editor;
     ObjectDetailsDisplay  display_object_details;
     InspectorDisplay      display_inspector;
+    AssetsDisplay         display_assets;
 
     BattleMap&            battle_map;
     Gizmo&                gizmo;
