@@ -16,86 +16,47 @@
 - [Сборка CMake](#cборка-cmake)
 ---
 
+
 ## О проекте
 
 Medievalution - мой pet проект, который задуман как игра мечты. Управляйте государством на глобальной карте и сражайтесь на полях битвы в реальном времени. Игра будет охватывать период времени с падения Западной римской империи до падения Константинополя в 1453. Сражайтесь в битвах, торгуйте, заключайте союзы и объявляйте войны.
 
-Проект вдохновлен такими играми как: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War. 
+Проект вдохновлен такими играми как: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War.
 * Жанр - 4x RTStrategy.
 
 ---
 
-## Сторонние библиотеки
+## Зависимости
 
-Windows
+Windows & Linux
 C++ 20
 
-Вы можете воспользоваться несколькими способами установки сторрних библиотек:
-- скачать вручную и поместить все библиотеки в папку External. Затем установите перменную среды External
+> [!IMPORTANT]
+> Установите переменную среды External.
+> В качестве пути установите любой путь, где хранятся ваши бибилиотеки, либо куда вы хотите чтобы они скачались автоматически.
 
-для Windows
-    External к примеру D:\External
+К примеру для Windows
 
-- либо зависимости должны скачать автоматически через fetchcontent
+    External
+    D:\External
 
-### Установка библиотек
+Либо пропишите нужный вам путь вручную в главном CmakeLists.txt
+
+    set(EXTERNAL_DIR "D:/External")
+
+- нужные зависимости должны скачаться автоматически с GitHub
+
 > [!WARNING]
 > Проверьте что у вас есть все сторонние библиотеки для сборки проекта
 
-> [!IMPORTANT]
-> Поместите внешние зависимости в папку External
-
-
-#### Сторонние библиотеки: 
-* SFML
+### Сторонние библиотеки:
+* SFML 2.6.x
 * SpdLog
-* ImGui
-* ImGui-SFML
+* ImGui 1.89
+* ImGui-SFML 2.6.x
 * EnTT
 
----
-
-#### Установка SFML
-
-* sfml 2.6.0
-```sh
-git clone https://github.com/SFML/SFML.git
-```
----
-
-#### Установка ImGui
-* ImGui
-```sh
-git clone -b docking --single-branch https://github.com/ocornut/imgui.git
-```
->git tag docking
----
-
-#### Установка ImGui SFML
-* sfml ImGui
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
-```
->git tag docking
----
-
-#### Установка EnTT
-* entt
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/skypjack/entt.git)
-```
----
-#### Установка SpdLog
-* spdlog
-```sh
-git clone git clone https://github.com/gabime/spdlog.git
-```
----
-
-## Cборка CMake
-
->[!TIP]
->Использйте **runscript.bat** для сборки
+### Cборка CMake
 
 ```sh
 git clone https://github.com/Lenin-Grub/Medievalution.git
@@ -104,78 +65,55 @@ mkdir build
 cd build
 cmake ..
 ```
+
 ---
----
-## Сontents
 ### English
-- [About](#about)
-- [Install Libraries](#install-libraries)
-- [Third-party Libraries](#external-libraries)
-- [Build with CMake](#build-with-cmake)
+- [About the Project](#about-the-project)
+- [Dependencies](#dependencies)
+- [Installing Libraries](#installing-libraries)
+- [CMake Build](#cmake-build)
+---
 
+## About the Project
 
-## About
+Medievalution is my pet project, envisioned as the game of my dreams. Manage a state on a global map and fight in real-time battles. The game will cover the period from the fall of the Western Roman Empire to the fall of Constantinople in 1453. Fight in battles, trade, form alliances, and declare wars.
 
-Medievalution is my pet project envisioned as a dream game. Manage a state on a global map and fight on battlefields in real-time. The game will cover the period from the fall of the Western Roman Empire to the fall of Constantinople in 1453. Fight in battles, trade, form alliances, and declare wars.
-The project is inspired by games like: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War.
+The project is inspired by games such as: Victoria II, Crusader Kings II, Europa Universalis IV, Knights of Honor, Total War.
+* Genre - 4x RTStrategy.
 
-Genre - 4x RTStrategy.
-You can use several methods to install third-party libraries:
-- download manually and place all libraries in the External folder. Then set the External environment variable
+---
 
-for Windows
-External for example D:\External
+## Dependencies
 
-- or dependencies should be downloaded automatically via fetchcontent
-
-### Install libraries
-> [!WARNING]
-> Check that you have all third-party libraries to build the project
+Windows & Linux
+C++ 20
 
 > [!IMPORTANT]
-> Place external dependencies in the External folder
+> Set the External environment variable.
+> Use any path where your libraries are stored, or where you want them to be automatically downloaded.
 
-#### External libraries: 
-* SFML 
+For example, for Windows:
+
+    External
+    D:\External
+
+Or specify the path manually in the main CMakeLists.txt:
+
+    set(EXTERNAL_DIR "D:/External")
+
+- The necessary dependencies should be automatically downloaded from GitHub
+
+> [!WARNING]
+> Make sure you have all the necessary external libraries for building the project
+
+### External Libraries:
+* SFML 2.6.x
 * SpdLog
-* ImGui
+* ImGui 1.89
+* ImGui-SFML 2.6.x
 * EnTT
 
----
-
-#### Install SFML
-
-* sfml 2.6.0
-```sh
-git clone https://github.com/SFML/SFML.git
-```
----
-
-#### Install ImGui
-* sfml ImGui
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/SFML/imgui-sfml.git)
-```
->git tag docking
----
-
-#### Install EnTT
-* entt
-```sh
-git clone [https://github.com/SFML/SFML.git](https://github.com/skypjack/entt.git)
-```
----
-#### Install SpdLog
-* spdlog
-```sh
-git clone git clone https://github.com/gabime/spdlog.git
-```
----
-
-## Build with CMake
-
->[!TIP]
->Use **runscript.bat** to fast build
+### CMake Build
 
 ```sh
 git clone https://github.com/Lenin-Grub/Medievalution.git
