@@ -60,6 +60,7 @@ jobs:
       run: |
         mkdir release
         copy bin\Release\Medievalution.exe release\
+        copy bin\Release\Editor.exe release\
         xcopy /E /I config release\config\
         xcopy /E /I resources release\resources\
         xcopy /E /I shaders release\shaders\
