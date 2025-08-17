@@ -23,7 +23,7 @@ void InspectorDisplay::draw()
     entt::entity selected = entt::entity(selectedId);
     auto& reg = registry.getRegistry();
 
-    if (!reg.valid(selected)) 
+    if (!reg.valid(selected))
     {
         ImGui::Text("Selected entity is not valid");
         ImGui::End();
@@ -32,7 +32,7 @@ void InspectorDisplay::draw()
 
     drawHeader();
     drawAddComponentButton();
-
+    
     ImGui::Separator();
     auto& id = reg.get<Components::Identification>(selected);
     ImGui::Text("Selected: %s id: %i", id.name.c_str(), selectedId);
@@ -59,8 +59,6 @@ void InspectorDisplay::drawAddComponentButton()
 {
     if (ImGui::Button("Add Component"))
         ImGui::OpenPopup("component_popup");
-
-    ImGui::SeparatorText("Components list");
 }
 
 void InspectorDisplay::drawComponentListPopup(entt::entity selected)
@@ -473,11 +471,40 @@ void InspectorDisplay::drawPathComponent(entt::entity selected)
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::CollapsingHeader("Pathfinding", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        auto& pathfinding = registry.getRegistry().get<Components::Pathfinding>(selected);
+
         ImGui::Text("Pathfinding");
         ImGui::SameLine(ImGui::GetWindowWidth() - 50);
         if (ImGui::SmallButton(SET_ICON_TEXT((Icon::DUMP_FULL), "##RemovePathfinding")))
         {
             registry.getRegistry().remove<Components::Pathfinding>(selected);
+        }
+
+        ImGui::Checkbox("Is Moving", &pathfinding.is_moving);
+
+        ImGui::Separator();
+
+        if (pathfinding.start_node)
+        {
+            ImGui::Text("Start Node: %.1f x %.1f", pathfinding.start_node->position.x, pathfinding.start_node->position.y); 
+        }
+        else
+        {
+            ImGui::Text("Start Node: None");
+        }
+
+        if (pathfinding.end_node)
+        {
+            ImGui::Text("End Node: %.1f x %.1f", pathfinding.end_node->position.x, pathfinding.end_node->position.y); 
+        }
+        else
+        {
+            ImGui::Text("End Node: None");
+        }
+
+        if (pathfinding.current_node_index)
+        {
+            ImGui::Text("Current Node: %i", pathfinding.current_node_index); 
         }
     }
 }
@@ -487,12 +514,16 @@ void InspectorDisplay::drawAnimationComponent(entt::entity selected)
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::CollapsingHeader("Animation", ImGuiTreeNodeFlags_DefaultOpen))
     {
+        auto& animation = registry.getRegistry().get<Components::Animation>(selected);
+
         ImGui::Text("Animation");
         ImGui::SameLine(ImGui::GetWindowWidth() - 50);
         if (ImGui::SmallButton(SET_ICON_TEXT((Icon::DUMP_FULL), "##RemoveAnimation")))
         {
             registry.getRegistry().remove<Components::Animation>(selected);
         }
+
+        ImGui::Separator();
     }
 }
 
@@ -528,8 +559,8 @@ void InspectorDisplay::drawFormation(entt::entity selected)
     ImGui::SetNextItemOpen(true, ImGuiCond_Once);
     if (ImGui::CollapsingHeader("Formation", ImGuiTreeNodeFlags_DefaultOpen))
     {
-        auto& selectable = registry.getRegistry().get<Components::Formation>(selected);
-        Components::Formation new_formation = selectable;
+        auto& formation = registry.getRegistry().get<Components::Formation>(selected);
+        Components::Formation new_formation = formation;
 
         ImGui::Checkbox("Leader", &new_formation.is_leader);
 
@@ -540,6 +571,30 @@ void InspectorDisplay::drawFormation(entt::entity selected)
         {
             auto newState = new_formation.formation_type;
             new_formation.formation_type = static_cast<Components::FormationType>(current_formation_id);
+        }
+
+        ImGui::Separator();
+
+        // Squad ID
+        int squadId = static_cast<int>(new_formation.squad_id);
+        if (ImGui::InputInt("Squad ID", &squadId))
+        {
+            new_formation.squad_id = static_cast<uint32_t>(squadId);
+        }
+
+        // Formation Index
+        int formationIndex = static_cast<int>(new_formation.formation_index);
+        if (ImGui::InputInt("Formation Index", &formationIndex))
+        {
+            new_formation.formation_index = static_cast<uint32_t>(formationIndex);
+        }
+
+        // Formation Offset
+        float offset[2] = { new_formation.formation_offset.x, new_formation.formation_offset.y };
+        if (ImGui::InputFloat2("Formation Offset", offset))
+        {
+            new_formation.formation_offset.x = offset[0];
+            new_formation.formation_offset.y = offset[1];
         }
     }
 }
