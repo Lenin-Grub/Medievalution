@@ -38,17 +38,23 @@ void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f&
     auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
     for (auto entity : view)
     {
-        auto& sprite_component      = view.get<Components::Sprite>    (entity);
-        auto& position_component    = view.get<Components::Position>  (entity);
-        auto& selectable_component  = view.get<Components::Selectable>(entity);
+        auto& sprite_component     = view.get<Components::Sprite>(entity);
+        auto& position_component   = view.get<Components::Position>(entity);
+        auto& selectable_component = view.get<Components::Selectable>(entity);
 
-        sf::FloatRect entity_bounds = sprite_component.sprite.getGlobalBounds();
-        entity_bounds.left          = position_component.position.x - 8;
-        entity_bounds.top           = position_component.position.y - 32;
+        sf::FloatRect entity_bounds;
+        entity_bounds.left = position_component.position.x;
+        entity_bounds.top  = position_component.position.y;
+        
+        sf::FloatRect sprite_bounds = sprite_component.sprite.getGlobalBounds();
+        entity_bounds =  sprite_bounds;
+
+        entity_bounds.left -= entity_bounds.width / 2;
+        entity_bounds.top  -= entity_bounds.height / 2;
 
         if (selection_rect.intersects(entity_bounds))
+        {
             selectable_component.is_selected = true;
-        else if (entity_bounds.contains(end))
-            selectable_component.is_selected = true;
+        }
     }
 }
