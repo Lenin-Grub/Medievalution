@@ -26,6 +26,7 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
     for (const auto& [entity, x, y] : sorted_entities)
     {
         const auto& sprite_component = view.get<Components::Sprite>(entity);
+        const auto& position_component = view.get<Components::Position>(entity);
 
         if (sprite_component.sprite.getTexture() == nullptr)
         {
@@ -37,7 +38,12 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
         }
         else
         {
-            window.draw(sprite_component.sprite);
+            sf::Sprite transformed_sprite = sprite_component.sprite;
+            transformed_sprite.setScale(sprite_component.scale);
+            transformed_sprite.setRotation(position_component.angle);
+            transformed_sprite.setPosition(position_component.position);
+
+            window.draw(transformed_sprite);
         }
 
         if (registry.all_of<Components::Selectable>(entity))
@@ -52,7 +58,6 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
     }
         selectionBox(window, common::mouse_pos_view);
 }
-
 
 void RenderSystem::selectionBox(sf::RenderTarget& window, sf::Vector2f mouse_pos)
 {
