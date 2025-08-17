@@ -27,7 +27,7 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
     {
         const auto& sprite_component = view.get<Components::Sprite>(entity);
 
-        if (sprite_component.sprite.getTexture() == nullptr) 
+        if (sprite_component.sprite.getTexture() == nullptr)
         {
             LOG_WARN("Entity has not texture");
             sf::RectangleShape placeholder(sf::Vector2f(32, 32));
@@ -35,13 +35,8 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
             placeholder.setPosition(x, y);
             window.draw(placeholder);
         }
-        else 
+        else
         {
-            //sf::Sprite drawableSprite = sprite_component.sprite;
-            //drawableSprite.setPosition(x, y);
-            //window.draw(drawableSprite);
-            //sf::Sprite drawableSprite = sprite_component.sprite;
-            //sprite_component.sprite.setPosition(x, y);
             window.draw(sprite_component.sprite);
         }
 
@@ -51,22 +46,22 @@ void RenderSystem::render(entt::registry& registry, sf::RenderTarget& window)
             if (selectable_component.is_selected)
             {
                 const auto& position_component = view.get<Components::Position>(entity);
-                //drawSelectionMarker(window, position_component, sprite_component);
+                drawSelectionMarker(window, position_component, sprite_component);
             }
         }
     }
-
-    selectionBox(window);
+        selectionBox(window, common::mouse_pos_view);
 }
 
-void RenderSystem::selectionBox(sf::RenderTarget& window)
+
+void RenderSystem::selectionBox(sf::RenderTarget& window, sf::Vector2f mouse_pos)
 {
     static sf::Vector2f start_selection;
     static bool is_selecting = false;
 
     if (sf::Mouse::isButtonPressed(sf::Mouse::Left) && !is_selecting)
     {
-        start_selection = common::mouse_pos_view;
+        start_selection = mouse_pos;
         is_selecting = true;
     }
 
@@ -81,7 +76,7 @@ void RenderSystem::selectionBox(sf::RenderTarget& window)
     selection_box.setOutlineColor(sf::Color::Black);
     selection_box.setOutlineThickness(1);
 
-    sf::Vector2f current_mouse_pos = common::mouse_pos_view;
+    sf::Vector2f current_mouse_pos = mouse_pos;
     sf::Vector2f size = current_mouse_pos - start_selection;
 
     selection_box.setPosition(start_selection);

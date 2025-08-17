@@ -29,7 +29,6 @@ private:
  
 private:
     float             delta_time;
-    bool              is_brush;
 
     sf::RenderWindow  window;
     sf::Clock         clock;

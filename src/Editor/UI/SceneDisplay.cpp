@@ -134,20 +134,12 @@ void SceneDisplay::draw()
         ImGui::SetCursorScreenPos(canvas_pos);
         ImGui::InvisibleButton("canvas", canvas_size);
 
-        sf::Vector2f world_mouse_pos;
         bool is_mouse_over_canvas = ImGui::IsItemHovered();
 
         if (is_mouse_over_canvas)
         {
             ImVec2 mouse_pos = ImGui::GetMousePos();
-            ImVec2 local_pos;
-            local_pos.x = mouse_pos.x - canvas_pos.x;
-            local_pos.y = mouse_pos.y - canvas_pos.y;
-
-            sf::Vector2f relative_pos(local_pos.x / canvas_size.x, local_pos.y / canvas_size.y);
-
-            world_mouse_pos.x = scaled_view.getCenter().x - new_view_size.x * 0.5f + relative_pos.x * new_view_size.x;
-            world_mouse_pos.y = scaled_view.getCenter().y - new_view_size.y * 0.5f + relative_pos.y * new_view_size.y;
+            world_mouse_pos = calculateWorldMousePos(mouse_pos, canvas_pos, canvas_size, scaled_view);
 
             if (battle_map.isShowPreview())
             {
@@ -197,4 +189,19 @@ void SceneDisplay::setSelectedEntity(entt::entity entity)
 
     else if (selected_entity == entt::null)
         gizmo.deactivate();
+}
+
+sf::Vector2f SceneDisplay::calculateWorldMousePos(const ImVec2& mouse_pos, const ImVec2& canvas_pos, const ImVec2& canvas_size, const sf::View& scaled_view)
+{
+    ImVec2 local_pos;
+    local_pos.x = mouse_pos.x - canvas_pos.x;
+    local_pos.y = mouse_pos.y - canvas_pos.y;
+
+    sf::Vector2f relative_pos(local_pos.x / canvas_size.x, local_pos.y / canvas_size.y);
+
+    sf::Vector2f world_mouse_pos;
+    world_mouse_pos.x = scaled_view.getCenter().x - scaled_view.getSize().x * 0.5f + relative_pos.x * scaled_view.getSize().x;
+    world_mouse_pos.y = scaled_view.getCenter().y - scaled_view.getSize().y * 0.5f + relative_pos.y * scaled_view.getSize().y;
+
+    return world_mouse_pos;
 }

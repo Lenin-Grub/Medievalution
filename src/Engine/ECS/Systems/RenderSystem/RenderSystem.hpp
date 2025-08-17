@@ -7,6 +7,6 @@ public:
     static void render(entt::registry& registry, sf::RenderTarget& window);
 
 private:
-    static void selectionBox(sf::RenderTarget& window);
+    static void selectionBox(sf::RenderTarget& window, sf::Vector2f mouse_pos);
     static void drawSelectionMarker(sf::RenderTarget& window, const Components::Position& position, const Components::Sprite& sprite);
 };

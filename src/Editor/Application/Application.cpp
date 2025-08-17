@@ -16,7 +16,6 @@ EditorApplication::EditorApplication()
     , displays(window, battle_map, registry, gizmo)
     , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
     , animator(sprite)
-    , is_brush(false)
     , gizmo(registry)
 {
     setupWindow();
@@ -60,7 +59,8 @@ void EditorApplication::updateMousePositions(sf::View* view, sf::RenderWindow& w
 {
     common::mouse_pos_screen = sf::Mouse::getPosition();
     common::mouse_pos_window = sf::Mouse::getPosition(window);
-    common::mouse_pos_view = window.mapPixelToCoords(sf::Mouse::getPosition(window), *view);
+    // common::mouse_pos_view   = window.mapPixelToCoords(sf::Mouse::getPosition(window), *view);
+    common::mouse_pos_view   = displays.world_mouse_pos;
 }
 
 bool EditorApplication::initIcon(sf::RenderWindow& window)
@@ -138,17 +138,6 @@ void EditorApplication::updateEvents()
         {
             camera.zoom(common::sfml_event);
             camera.scroll(common::sfml_event, sf::Mouse::getPosition(window));
-        }
-
-        if (is_brush)
-        {
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
-                battle_map.addTile(battle_map.getTileId(), common::mouse_pos_view);
-
-            if (sf::Mouse::isButtonPressed(sf::Mouse::Right))
-                battle_map.removeTile(common::mouse_pos_view);
-
-            battle_map.updatePreview(common::mouse_pos_view);
         }
     }
 }

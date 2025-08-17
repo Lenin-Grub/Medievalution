@@ -4,6 +4,7 @@
 #include <Camera/Camera.h>
 #include <ECS/Entity/Entity.hpp>
 #include <Gizmos/Gizmos.h>
+#include <imgui.h>
 
 class SceneDisplay
     : public UI::IDisplay
@@ -16,6 +17,9 @@ public:
     void update(const float& delta_time) override;
 
     void setSelectedEntity(entt::entity entity);
+    sf::Vector2f calculateWorldMousePos(const ImVec2& mouse_pos,const ImVec2& canvas_pos,const ImVec2& canvas_size,const sf::View& scaled_view);
+
+    sf::Vector2f world_mouse_pos;
 
 private:
     BattleMap&  battle_map;

@@ -131,6 +131,7 @@ void Displays::draw()
         display_animation.update(delta_time);
         display_map_editor.update(delta_time);
         display_scene.update(delta_time);
+        world_mouse_pos = display_scene.world_mouse_pos;
     }
 
     void Displays::metrics()

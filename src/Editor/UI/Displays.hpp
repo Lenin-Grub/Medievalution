@@ -27,6 +27,7 @@ public:
 
     void initDockingLayout();
 
+    sf::Vector2f world_mouse_pos;
 private:
     sf::RenderWindow&     window;
     sf::Clock             clock;
