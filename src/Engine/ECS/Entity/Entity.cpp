@@ -30,7 +30,7 @@
         ControlSystem    ::update(registry);
         MovementSystem   ::update(registry, delta_time);
         SpriteSystem     ::update(registry);
-        SelectSystem     ::update(registry);
+        SelectSystem     ::update(registry, common::mouse_pos_view);
         StateSystem      ::update(registry, delta_time);
         AnimationSystem  ::update(registry, delta_time);
         HandleInputSystem::update(registry, pathfinding);

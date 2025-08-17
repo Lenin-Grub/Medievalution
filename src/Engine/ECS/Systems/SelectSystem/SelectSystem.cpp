@@ -1,20 +1,19 @@
 #include "SelectSystem.hpp"
 #include <imgui.h>
 
-
-void SelectSystem::update(entt::registry& registry)
+void SelectSystem::update(entt::registry& registry, const sf::Vector2f& mouse_pos)
 {
     static sf::Vector2f start_selection;
     static bool is_selecting = false;
 
     const bool is_left_mouse_down = sf::Mouse::isButtonPressed(sf::Mouse::Left);
 
-    if (ImGui::GetIO().WantCaptureMouse)
-        return;
+    // if (ImGui::GetIO().WantCaptureMouse)
+    //     return;
 
     if (is_left_mouse_down && !is_selecting)
     {
-        start_selection = common::mouse_pos_view;
+        start_selection = mouse_pos;
         is_selecting = true;
 
         auto view = registry.view<Components::Selectable>();
@@ -28,16 +27,16 @@ void SelectSystem::update(entt::registry& registry)
     if (!is_left_mouse_down && is_selecting)
     {
         is_selecting = false;
-        selectRectangle(registry, start_selection, common::mouse_pos_view);
+        selectRectangle(registry, start_selection, mouse_pos);
     }
 }
 
-void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f& start, const sf::Vector2f& end) 
+void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f& start, const sf::Vector2f& end)
 {
     sf::FloatRect selection_rect(start, end - start);
 
     auto view = registry.view<Components::Sprite, Components::Position, Components::Selectable>();
-    for (auto entity : view) 
+    for (auto entity : view)
     {
         auto& sprite_component      = view.get<Components::Sprite>    (entity);
         auto& position_component    = view.get<Components::Position>  (entity);
@@ -47,9 +46,9 @@ void SelectSystem::selectRectangle(entt::registry& registry, const sf::Vector2f&
         entity_bounds.left          = position_component.position.x - 8;
         entity_bounds.top           = position_component.position.y - 32;
 
-        if (selection_rect.intersects(entity_bounds)) 
+        if (selection_rect.intersects(entity_bounds))
             selectable_component.is_selected = true;
-        else if (entity_bounds.contains(common::mouse_pos_view))
+        else if (entity_bounds.contains(end))
             selectable_component.is_selected = true;
     }
 }
