@@ -49,8 +49,8 @@ jobs:
       id: create_release
       uses: softprops/action-gh-release@v1
       with:
-        tag_name: v0.0.1d
-        name: Release v0.0.1d
+        tag_name: v0.0.1e
+        name: Release v0.0.1e
         draft: false
         prerelease: false
       env:
