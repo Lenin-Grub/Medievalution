@@ -165,18 +165,25 @@ void AssetsDisplay::displayTextures()
             if (ImGui::IsItemHovered())
             {
                 ImGui::BeginTooltip();
-                
+
                 ImGui::Text("%s", texture_name.c_str());
-                
+
                 ImVec2 tex_size(static_cast<float>(tex.getSize().x), static_cast<float>(tex.getSize().y));
                 ImGui::Text("Size: %.0f x %.0f", tex_size.x, tex_size.y);
-                
+
                 ImGui::Separator();
-                
+
                 ImVec2 largeSize(256.0f, 256.0f);
                 ImGui::Image(texture_id, largeSize, uv0, uv1, tint_color, ImVec4(1.0f, 1.0f, 1.0f, 0.5f));
-                
+
                 ImGui::EndTooltip();
+            }
+
+            if (ImGui::BeginDragDropSource())
+            {
+                ImGui::SetDragDropPayload("TEXTURE", texture_name.c_str(), texture_name.size() + 1, ImGuiCond_Once);
+                ImGui::Image(texture_id, size, uv0, uv1, tint_color, background_color);
+                ImGui::EndDragDropSource();
             }
 
             ImGui::PopID();

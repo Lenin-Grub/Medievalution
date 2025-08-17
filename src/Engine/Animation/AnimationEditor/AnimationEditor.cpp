@@ -96,6 +96,18 @@ void AnimationEditor::drawAnimationsPanel()
     static char new_animation_texture[128] = "";
     ImGui::InputText("Texture Name", new_animation_texture, IM_ARRAYSIZE(new_animation_texture));
 
+    if (ImGui::BeginDragDropTarget())
+    {
+        const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("TEXTURE");
+        if (payload != nullptr)
+        {
+            std::string dropped_texture = std::string(static_cast<const char*>(payload->Data), payload->DataSize);
+            strncpy(new_animation_texture, dropped_texture.c_str(), sizeof(new_animation_texture) - 1);
+            new_animation_texture[sizeof(new_animation_texture) - 1] = '\0';
+        }
+        ImGui::EndDragDropTarget();
+    }
+
     if (ImGui::Button("Add Animation") && new_animation_name[0])
     {
         animator.createNewAnimation(new_animation_name, new_animation_texture);
@@ -120,9 +132,9 @@ void AnimationEditor::drawAnimationsPanel()
             animator.setAnimation(current_animation_name, true);
 
             const std::string& anim_texture_name = animation.texture_name;
-            if (!anim_texture_name.empty()) 
+            if (!anim_texture_name.empty())
             {
-                if (anim_texture_name != current_unit + ".png") 
+                if (anim_texture_name != current_unit + ".png")
                 {
                     texture = ResourceLoader::instance().getTexture(anim_texture_name);
                     if (texture.getSize().x > 0)
@@ -130,7 +142,7 @@ void AnimationEditor::drawAnimationsPanel()
                         sprite.setTexture(texture);
                         selected_tile_index = -1;
                     }
-                    else 
+                    else
                     {
                         LOG_WARN("Failed to load texture: {}", anim_texture_name);
                         texture = ResourceLoader::instance().getTexture(current_unit + ".png");
@@ -140,13 +152,13 @@ void AnimationEditor::drawAnimationsPanel()
                     }
                 }
             }
-            else 
+            else
             {
-                if (current_unit + ".png" != (texture.getSize().x > 0 ? "loaded" : "")) 
+                if (current_unit + ".png" != (texture.getSize().x > 0 ? "loaded" : ""))
                 {
                     texture = ResourceLoader::instance().getTexture(current_unit + ".png");
 
-                    if (texture.getSize().x > 0) 
+                    if (texture.getSize().x > 0)
                     {
                         sprite.setTexture(texture);
                         selected_tile_index = -1;
