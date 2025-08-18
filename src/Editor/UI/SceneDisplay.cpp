@@ -77,6 +77,9 @@ void SceneDisplay::draw()
     }
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Rotate Tool (R)");
+        
+    ImGui::SameLine();    
+    ImGui::Dummy(ImVec2(50,0));
     ImGui::SameLine();
 
     if (ImGui::Button(SET_ICON(Icon::BRUSH)))
@@ -90,6 +93,15 @@ void SceneDisplay::draw()
     }
     if (ImGui::IsItemHovered())
         ImGui::SetTooltip("Brush Tool (B)");
+
+    ImGui::SameLine();
+    if (ImGui::Button(SET_ICON(Icon::FILL)))
+    {
+        battle_map.fill(1);
+    }
+
+    if (ImGui::IsItemHovered())
+        ImGui::SetTooltip("Fill Tool (G)");
 
     ImVec2 canvas_size = ImGui::GetContentRegionAvail();
     ImVec2 canvas_pos  = ImGui::GetCursorScreenPos();

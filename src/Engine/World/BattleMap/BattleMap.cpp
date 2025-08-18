@@ -35,6 +35,21 @@ void BattleMap::removeTile(sf::Vector2f pos) noexcept
         layers.at(current_layer_id)->addTile(static_cast<int>(TileId::Empty), pos);
 }
 
+void BattleMap::fill(int selected_tile_id)
+{
+    if (!layers.empty())
+    {
+        auto& current_layer = layers[current_layer_id];
+
+        for (auto& tile_id : current_layer->tile_ids)
+        {
+            tile_id = selected_tile_id;
+        }
+
+        current_layer->updateVertices();
+    }
+}
+
 void BattleMap::addLayer(const std::string& name) noexcept
 {
    layers.push_back(std::make_unique<Layer>(64, sf::Vector2i(50, 50), ResourceLoader::instance().getTexture(name), ++current_layer_id));
@@ -271,3 +286,4 @@ void BattleMap::updatePreview(sf::Vector2f world_pos)
     tile_preview.setTextureRect(sf::IntRect(x, y, layer->tile_size, layer->tile_size));
     tile_preview.setFillColor(sf::Color(255, 255, 255, 128));
 }
+
