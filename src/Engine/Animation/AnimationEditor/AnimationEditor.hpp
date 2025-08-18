@@ -41,6 +41,8 @@ private:
 
     void updateSelectedTileFromFrame();
 
+    void applyDurationToAllFrames();
+
 private:
 
     void addFrameFromSelectedTile();

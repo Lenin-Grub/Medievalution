@@ -257,6 +257,18 @@ void AnimationEditor::drawFrameControls()
     ImGui::DragInt("Height", &frame.rect.height);
     ImGui::Separator();
     ImGui::DragFloat("Duration (s)", &frame.duration, 0.01f, 0.01f, 10.0f, "%.2f");
+    if (ImGui::IsItemHovered() && ImGui::IsMouseReleased(ImGuiMouseButton_Right))
+    {
+        ImGui::OpenPopup("ApplyDurationMenu");
+    }
+    if (ImGui::BeginPopup("ApplyDurationMenu"))
+    {
+        if (ImGui::MenuItem("Apply to all"))
+        {
+            applyDurationToAllFrames();
+        }
+        ImGui::EndPopup();
+    }
     ImGui::Checkbox("Flip", &frame.flip);
     ImGui::EndChild();
 }
@@ -500,4 +512,28 @@ void AnimationEditor::addFrameFromSelectedTile()
     selected_frame_index = static_cast<int>(modifiedClip.frames.size() - 1);
     animator.pushAnimation(current_animation_name, modifiedClip);
     sprite.setTextureRect(rect);
+}
+
+void AnimationEditor::applyDurationToAllFrames()
+{
+    if (current_animation_name.empty() || selected_frame_index < 0)
+        return;
+
+    auto& animations = animator.getAllAnimations();
+    auto it = animations.find(current_animation_name);
+    if (it == animations.end())
+        return;
+
+    Animation modified_animation = it->second;
+    auto& frames = modified_animation.frames;
+    if (frames.empty())
+        return;
+
+    float current_duration = frames[selected_frame_index].duration;
+    for (auto& frame : frames)
+    {
+        frame.duration = current_duration;
+    }
+
+    animator.pushAnimation(current_animation_name, modified_animation);
 }

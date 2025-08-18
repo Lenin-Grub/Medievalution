@@ -79,7 +79,7 @@ public:
     bool getFlip() const;
 
 private:
-    struct AnimationState 
+    struct AnimationState
     {
         std::string current_animation = "NONE";
         std::string current_texture   = "NONE";
