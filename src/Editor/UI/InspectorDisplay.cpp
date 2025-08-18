@@ -25,6 +25,7 @@ void InspectorDisplay::draw()
 
     if (!reg.valid(selected))
     {
+        LOG_WARN("Selected entity is not valid: {}", selectedId);
         ImGui::Text("Selected entity is not valid");
         ImGui::End();
         return;
@@ -34,9 +35,16 @@ void InspectorDisplay::draw()
     drawAddComponentButton();
     
     ImGui::Separator();
-    auto& id = reg.get<Components::Identification>(selected);
-    ImGui::Text("Selected: %s id: %i", id.name.c_str(), selectedId);
-    ImGui::Text("Group: %s", id.group.c_str());
+    if (auto id = reg.try_get<Components::Identification>(selected))
+    {
+        ImGui::Text("Selected:"); 
+        ImGui::SameLine(); 
+        ImGui::Selectable(id->name.c_str());
+        ImGui::Text("Group:   "); 
+        ImGui::SameLine(); 
+        ImGui::Selectable(id->group.c_str());
+        ImGui::Text("ID: %i", selectedId); 
+    }
     ImGui::Separator();
 
     drawSelectableComponent(selected);
@@ -185,6 +193,8 @@ void InspectorDisplay::drawTransformSection(entt::entity selected)
 
         if (reg.all_of<Components::Position>(selected))
             drawRotationComponent(selected);
+
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 
@@ -399,6 +409,8 @@ void InspectorDisplay::drawSpriteSection(entt::entity selected)
             );
             spriteComponent.sprite.setColor(newColor);
         }
+
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 
@@ -506,6 +518,8 @@ void InspectorDisplay::drawPathComponent(entt::entity selected)
         {
             ImGui::Text("Current Node: %i", pathfinding.current_node_index); 
         }
+
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 
@@ -524,6 +538,7 @@ void InspectorDisplay::drawAnimationComponent(entt::entity selected)
         }
 
         ImGui::Separator();
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 
@@ -548,6 +563,7 @@ void InspectorDisplay::drawStateSection(entt::entity selected)
                 state.state = static_cast<Components::CharacterState>(currentStateIndex);
             }
         }
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 
@@ -596,6 +612,8 @@ void InspectorDisplay::drawFormation(entt::entity selected)
             new_formation.formation_offset.x = offset[0];
             new_formation.formation_offset.y = offset[1];
         }
+
+        ImGui::Dummy(ImVec2(0,50));
     }
 }
 

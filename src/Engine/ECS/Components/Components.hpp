@@ -8,7 +8,7 @@ namespace Components
     struct Identification
     {
         std::string   name  { "Game Object" };
-        std::string   group { "" };
+        std::string   group { " " };
         std::int32_t  id    { -1 };
     };
 
