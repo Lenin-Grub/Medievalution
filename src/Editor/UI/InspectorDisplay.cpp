@@ -9,7 +9,7 @@ InspectorDisplay::InspectorDisplay(Registry& registry)
 
 void InspectorDisplay::draw()
 {
-    ImGui::Begin("Inspector");
+    ImGui::Begin(SET_ICON_TEXT((Icon::FOUR_QUADS),"Inspector"));
 
     uint32_t selectedId = SceneHierarchyDisplay::getSelectedEntityId();
 
@@ -305,6 +305,8 @@ void InspectorDisplay::drawMovementSection(entt::entity selected)
 
         if (reg.all_of<Components::Velocity>(selected))
             drawVelocityComponent(selected);
+
+        ImGui::Dummy(ImVec2(0, 50));
     }
 }
 

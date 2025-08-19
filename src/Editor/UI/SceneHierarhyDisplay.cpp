@@ -11,7 +11,7 @@ SceneHierarchyDisplay::SceneHierarchyDisplay(Registry& registry)
 
 void SceneHierarchyDisplay::draw()
 {
-    ImGui::Begin("Scene Hierarchy");
+    ImGui::Begin(SET_ICON_TEXT((Icon::GRAF),"Scene Hierarchy"));
 
     updateDisplayOrder();
     drawEntityList();

@@ -182,7 +182,7 @@ void HandleInputSystem::moveSquadUnit(entt::registry& registry, Pathfinding& glo
             path_component.end_node = nullptr;
             if (auto* state = registry.try_get<Components::State>(entity)) 
             {
-                if (state->state == Components::CharacterState::Move) 
+                if (state->state == Components::CharacterState::Run) 
                 {
                     state->state = Components::CharacterState::Idle;
                 }

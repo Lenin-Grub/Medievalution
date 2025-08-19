@@ -10,12 +10,13 @@ SceneDisplay::SceneDisplay(BattleMap& battle_map, Registry& registry, Gizmo& giz
     , registry(registry)
     , gizmo(gizmo)
     , is_brash(false)
+    , show_grid(true)
 {
 }
 
 void SceneDisplay::draw()
 {
-    ImGui::Begin("Scene");
+    ImGui::Begin(SET_ICON_TEXT((Icon::GLOBE), "Scene"));
     ImGui::Text("Game View - %dx%d", (int)ImGui::GetContentRegionAvail().x, (int)ImGui::GetContentRegionAvail().y);
 
     ImGui::SeparatorText(SET_ICON_TEXT((Icon::TOOL), "Tools"));
@@ -143,6 +144,11 @@ void SceneDisplay::draw()
         battle_map.draw(render_texture, sf::RenderStates::Default);
         registry.draw(registry.getRegistry(), render_texture);
 
+        if (show_grid)
+        {
+            drawIsometricGrid(render_texture, scaled_view);
+        }
+
         ImGui::SetCursorScreenPos(canvas_pos);
         ImGui::InvisibleButton("canvas", canvas_size);
 
@@ -216,4 +222,55 @@ sf::Vector2f SceneDisplay::calculateWorldMousePos(const ImVec2& mouse_pos, const
     world_mouse_pos.y = scaled_view.getCenter().y - scaled_view.getSize().y * 0.5f + relative_pos.y * scaled_view.getSize().y;
 
     return world_mouse_pos;
+}
+
+void SceneDisplay::drawIsometricGrid(sf::RenderTarget& target, const sf::View& view)
+{
+    sf::Vector2f view_center = view.getCenter();
+    sf::Vector2f view_size = view.getSize();
+
+    float left   = view_center.x - view_size.x * 0.5f;
+    float right  = view_center.x + view_size.x * 0.5f;
+    float top    = view_center.y - view_size.y * 0.5f;
+    float bottom = view_center.y + view_size.y * 0.5f;
+
+    const float tile_width = 64.0f;
+    const float tile_height = 32.0f;
+    const sf::Color grid_color(100, 100, 100, 100);
+
+
+    std::vector<sf::Vertex> grid_lines;
+
+    int start_x = (int)(left / tile_width)  - 2;
+    int end_x   = (int)(right / tile_width) + 2;
+    int start_y = (int)(top / tile_height)  - 2;
+    int end_y   = (int)(bottom / tile_height) + 2;
+
+    for (int x = start_x; x <= end_x; ++x)
+    {
+        for (int y = start_y; y <= end_y; ++y)
+        {
+            sf::Vector2f top_point(x * tile_width, y * tile_height);
+            sf::Vector2f left_point((x - 0.5f) * tile_width, (y + 0.5f) * tile_height);
+            sf::Vector2f right_point((x + 0.5f) * tile_width, (y + 0.5f) * tile_height);
+            sf::Vector2f bottom_point(x * tile_width, (y + 1) * tile_height);
+
+            grid_lines.push_back(sf::Vertex(top_point, grid_color));
+            grid_lines.push_back(sf::Vertex(left_point, grid_color));
+
+            grid_lines.push_back(sf::Vertex(left_point, grid_color));
+            grid_lines.push_back(sf::Vertex(bottom_point, grid_color));
+
+            grid_lines.push_back(sf::Vertex(bottom_point, grid_color));
+            grid_lines.push_back(sf::Vertex(right_point, grid_color));
+
+            grid_lines.push_back(sf::Vertex(right_point, grid_color));
+            grid_lines.push_back(sf::Vertex(top_point, grid_color));
+        }
+    }
+
+    if (!grid_lines.empty())
+    {
+        target.draw(grid_lines.data(), grid_lines.size(), sf::Lines);
+    }
 }

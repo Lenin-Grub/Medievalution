@@ -79,7 +79,7 @@ void PathfindingSystem::setIdleStateIfMoving(entt::registry& registry, entt::ent
 {
     if (auto* state = registry.try_get<Components::State>(entity))
     {
-        if (state->state == Components::CharacterState::Move)
+        if (state->state == Components::CharacterState::Run)
         {
             state->state = Components::CharacterState::Idle;
         }
@@ -157,9 +157,9 @@ void PathfindingSystem::setCharacterState(entt::registry& registry, entt::entity
 {
     if (auto* state = registry.try_get<Components::State>(entity))
     {
-        if (state->state != Components::CharacterState::Move)
+        if (state->state != Components::CharacterState::Run)
         {
-            state->state = Components::CharacterState::Move;
+            state->state = Components::CharacterState::Run;
         }
     }
 }

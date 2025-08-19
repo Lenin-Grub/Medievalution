@@ -113,14 +113,14 @@ void Displays::draw()
                 auto bottom       = ImGui::DockBuilderSplitNode(center, ImGuiDir_Down, 0.25f,  nullptr, &center);
                 auto right_bottom = ImGui::DockBuilderSplitNode(right , ImGuiDir_Down, 0.40f,  nullptr, &right);
 
-                ImGui::DockBuilderDockWindow("Scene Hierarchy", left);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::GRAF), "Scene Hierarchy"), left);
                 ImGui::DockBuilderDockWindow("Object Details", right_bottom);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::INSTAGRAM), "Animation editor"), right);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::MAP), " Map editor"), right);
-                ImGui::DockBuilderDockWindow("Scene", center);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::GLOBE),"Scene"), center);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::SCRIPT), " Logs"), bottom);
-                ImGui::DockBuilderDockWindow("Assets", bottom);
-                ImGui::DockBuilderDockWindow("Inspector", right);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::FOLDER), "Assets"), bottom);
+                ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::FOUR_QUADS), "Inspector"), right);
                 ImGui::DockBuilderFinish(dockspace_id);
             }
         }

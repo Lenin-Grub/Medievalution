@@ -33,9 +33,9 @@ void StateSystem::update(entt::registry& registry, float delta_time)
 
 void StateSystem::updateEntity(entt::registry& registry, entt::entity entity, bool has_pathfinding) 
 {
-    auto& state = registry.get<Components::State>(entity);
+    auto& state     = registry.get<Components::State>(entity);
     auto& animation = registry.get<Components::Animation>(entity);
-    auto& pos_comp = registry.get<Components::Position>(entity);
+    auto& pos_comp  = registry.get<Components::Position>(entity);
 
     std::string direction = "south";
     bool loop = true;
@@ -43,8 +43,8 @@ void StateSystem::updateEntity(entt::registry& registry, entt::entity entity, bo
     if (has_pathfinding) 
     {
         auto& path_comp = registry.get<Components::Pathfinding>(entity);
-        if (state.state == Components::CharacterState::Move && !path_comp.path.empty() &&
-            path_comp.current_node_index < path_comp.path.size()) {
+        if (state.state == Components::CharacterState::Run && !path_comp.path.empty() && path_comp.current_node_index < path_comp.path.size()) 
+        {
             Node* next_node = path_comp.path[path_comp.current_node_index];
             sf::Vector2f offset = next_node->position - pos_comp.position;
             direction = getDirectionFromOffset(offset);
@@ -87,11 +87,24 @@ std::string StateSystem::getAnimationName(Components::CharacterState state, cons
     {
     case Components::CharacterState::Idle:
         return "idle_" + direction;
-    case Components::CharacterState::Move:
+    case Components::CharacterState::Run:
         return "run_" + direction;
+    case Components::CharacterState::Walk:
+        return "walk_" + direction;
+    case Components::CharacterState::Taunt:
+        return "taunt_" + direction;
+    case Components::CharacterState::Dead:
+        loop = false;
+        return "dead_" + direction;
+    case Components::CharacterState::Hit:
+        loop = false;
+        return "hit_" + direction;
     case Components::CharacterState::Attack:
         loop = false;
         return "attack_" + direction;
+    case Components::CharacterState::Shoot:
+        loop = false;
+        return "shoot_" + direction;
     default:
         return "idle_south";
     }

@@ -68,11 +68,13 @@ namespace Components
     {
         NONE = 0,
         Idle,
-        Move,
+        Walk,
+        Run,
         Attack,
         Dead,
         Shoot,
         Hit,
+        Taunt,
     };
 
     struct State

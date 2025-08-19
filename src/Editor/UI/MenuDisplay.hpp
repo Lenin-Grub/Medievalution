@@ -11,7 +11,6 @@ public:
 	virtual ~MenuDisplay() = default;
 
 	void draw() override;
-	void metrics();
 	void update(const float& delta_time) override;
 
 public:

@@ -15,7 +15,7 @@ AssetsDisplay::~AssetsDisplay()
 
 void AssetsDisplay::draw()
 {
-    ImGui::Begin("Assets");
+    ImGui::Begin(SET_ICON_TEXT((Icon::FOLDER), "Assets"));
     displayAssets();
     ImGui::End();
 }

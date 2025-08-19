@@ -186,7 +186,7 @@ void SquadMovementSystem::updatePathWithTemporaryWalkable(entt::registry& regist
 
         if (auto* state = registry.try_get<Components::State>(member))
         {
-            state->state = Components::CharacterState::Move;
+            state->state = Components::CharacterState::Run;
         }
     }
 
@@ -332,7 +332,7 @@ void SquadMovementSystem::updateMovement(entt::registry& registry, Pathfinding& 
         {
             if (auto* state = registry.try_get<Components::State>(entity)) 
             {
-                if (state->state == Components::CharacterState::Move)
+                if (state->state == Components::CharacterState::Run)
                     state->state = Components::CharacterState::Idle;
             }
             continue;
@@ -354,7 +354,7 @@ void SquadMovementSystem::updateMovement(entt::registry& registry, Pathfinding& 
             {
                 if (auto* state = registry.try_get<Components::State>(entity)) 
                 {
-                    if (state->state == Components::CharacterState::Move) 
+                    if (state->state == Components::CharacterState::Run) 
                     {
                         state->state = Components::CharacterState::Idle;
                     }
@@ -373,7 +373,7 @@ void SquadMovementSystem::updateMovement(entt::registry& registry, Pathfinding& 
             {
                 if (state->state == Components::CharacterState::Idle && !path_comp.path.empty()) 
                 {
-                    state->state = Components::CharacterState::Move;
+                    state->state = Components::CharacterState::Run;
                 }
             }
         }

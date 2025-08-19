@@ -69,6 +69,13 @@ void MenuDisplay::draw()
 
             ImGui::EndMenu();
         }
+
+        //ImGui::BeginMenu("Settings");
+        //ImGui::EndMenu();
+
+        //ImGui::BeginMenu("Help");
+        //ImGui::EndMenu();
+
         ImGui::EndMenuBar();
     }
 }

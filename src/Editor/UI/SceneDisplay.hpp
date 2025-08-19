@@ -19,6 +19,8 @@ public:
     void setSelectedEntity(entt::entity entity);
     sf::Vector2f calculateWorldMousePos(const ImVec2& mouse_pos,const ImVec2& canvas_pos,const ImVec2& canvas_size,const sf::View& scaled_view);
 
+    void drawIsometricGrid(sf::RenderTarget& target, const sf::View& view);
+
     sf::Vector2f world_mouse_pos;
 
 private:
@@ -28,4 +30,5 @@ private:
 
     entt::entity selected_entity = entt::null;
     bool is_brash = false;
+    bool show_grid;
 };
