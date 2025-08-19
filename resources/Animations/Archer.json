@@ -3,70 +3,70 @@
         "idle_east": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 282,
                     "top": 423,
@@ -79,70 +79,70 @@
         "idle_north": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 188,
                     "top": 423,
@@ -155,70 +155,70 @@
         "idle_north_east": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 235,
                     "top": 423,
@@ -231,70 +231,70 @@
         "idle_north_west": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 141,
                     "top": 423,
@@ -307,70 +307,70 @@
         "idle_south": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 0,
                     "top": 423,
@@ -383,70 +383,70 @@
         "idle_south_east": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 329,
                     "top": 423,
@@ -459,70 +459,70 @@
         "idle_south_west": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 47,
                     "top": 423,
@@ -535,70 +535,70 @@
         "idle_west": {
             "frames": [
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 0,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 47,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 94,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 141,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 188,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 235,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 282,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 329,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 376,
                     "width": 47
                 },
                 {
-                    "duration": 0.15000000596046448,
+                    "duration": 0.07000000029802322,
                     "height": 47,
                     "left": 94,
                     "top": 423,
@@ -607,6 +607,614 @@
             ],
             "loop": true,
             "texture": "Archer.png"
+        },
+        "run_east": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 324,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_north_west": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 162,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_north": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 216,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_north_east": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 270,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_south": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 0,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_south_east": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 378,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_south_west": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 54,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
+        },
+        "run_west": {
+            "frames": [
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 0,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 54,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 108,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 162,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 216,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 270,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 324,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 378,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 432,
+                    "width": 54
+                },
+                {
+                    "duration": 0.07000000029802322,
+                    "height": 54,
+                    "left": 108,
+                    "top": 486,
+                    "width": 54
+                }
+            ],
+            "loop": true,
+            "texture": "Archer_run.png"
         }
     }
 }
