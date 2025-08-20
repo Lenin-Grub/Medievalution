@@ -42,7 +42,11 @@ class Animator
 public:
     using FinishedCallback = std::function<void(const std::string& animation_name)>;
 
-    explicit Animator(sf::Sprite& sprite);
+     Animator() = default;
+
+     Animator(sf::Sprite& sprite);
+
+     virtual ~Animator() = default;
 
     void createNewAnimation(const std::string& name, const std::string& texture_name = "");
 

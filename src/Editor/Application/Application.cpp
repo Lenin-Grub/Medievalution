@@ -15,11 +15,9 @@ EditorApplication::EditorApplication()
     , delta_time(0.0f)
     , displays(window, battle_map, registry, gizmo)
     , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
-    , animator(sprite)
+    , animator(animator)
     , gizmo(registry)
 {
-    setupWindow();
-    setupImGui();
 }
 
 EditorApplication::~EditorApplication()
@@ -28,6 +26,9 @@ EditorApplication::~EditorApplication()
 
 void EditorApplication::run()
 {
+    setupWindow();
+    setupImGui();
+
     delta_time = clock.restart().asSeconds();
 
     if (!init())
@@ -59,8 +60,7 @@ void EditorApplication::updateMousePositions(sf::View* view, sf::RenderWindow& w
 {
     common::mouse_pos_screen = sf::Mouse::getPosition();
     common::mouse_pos_window = sf::Mouse::getPosition(window);
-    // common::mouse_pos_view   = window.mapPixelToCoords(sf::Mouse::getPosition(window), *view);
-    common::mouse_pos_view   = displays.world_mouse_pos;
+    common::mouse_pos_view   = displays.getWorldMousePos();
 }
 
 bool EditorApplication::initIcon(sf::RenderWindow& window)
@@ -110,8 +110,18 @@ bool EditorApplication::initFonts()
 
 void EditorApplication::setupImGui()
 {
-    ImGui::SFML::Init(window);
-    initFonts();
+    if (!ImGui::SFML::Init(window))
+    {
+        LOG_CRITICAL("ImGui winodw not inited");
+        return;
+    }
+
+    if (!initFonts())
+    {
+        LOG_CRITICAL("Fonts not inited");
+        return;
+    }
+
     ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
     io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
@@ -122,7 +132,11 @@ void EditorApplication::setupWindow()
     window.setFramerateLimit(60);
     sf::Vector2f window_size = static_cast<sf::Vector2f>(window.getSize());
 
-    initIcon(window);
+    if (!initIcon(window))
+    {
+        LOG_CRITICAL("Application icon not inited");
+        return;
+    }
 }
 
 void EditorApplication::updateEvents()
@@ -136,6 +150,9 @@ void EditorApplication::updateEvents()
 
         if (!ImGui::GetIO().WantCaptureMouse || !ImGui::GetIO().WantCaptureKeyboard)
         {
+            if (!displays.display_scene.isHover())
+                return;
+
             camera.zoom(common::sfml_event);
             camera.scroll(common::sfml_event, sf::Mouse::getPosition(window));
         }
@@ -147,7 +164,10 @@ void EditorApplication::update()
     ImGui::SFML::Update(window, clock.restart());
 
     updateMousePositions(&common::view, window);
-    camera.update(delta_time);
+    
+    if (displays.display_scene.isHover())
+        camera.update(delta_time);
+    
     displays.update(delta_time);
     registry.update(registry.getRegistry(), delta_time, pathfinding, window);
 }

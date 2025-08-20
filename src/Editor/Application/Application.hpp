@@ -43,5 +43,4 @@ private:
     Registry          registry;
     Animator          animator;
     Pathfinding       pathfinding;
-    sf::Sprite        sprite;
 };

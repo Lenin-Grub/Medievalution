@@ -3,7 +3,8 @@
 #include <ECS/Entity/Entity.hpp>
 #include "SceneDisplay.hpp"
 
-class SceneHierarchyDisplay : public UI::IDisplay
+class SceneHierarchyDisplay 
+    : public UI::IDisplay
 {
 public:
     explicit SceneHierarchyDisplay(Registry& registry);

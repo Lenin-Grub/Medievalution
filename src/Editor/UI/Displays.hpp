@@ -27,13 +27,9 @@ public:
 
     void initDockingLayout();
 
-    sf::Vector2f world_mouse_pos;
-private:
-    sf::RenderWindow&     window;
-    sf::Clock             clock;
-    sf::Vector2f          window_size;
-    sf::RenderTexture     render_texture;
+    sf::Vector2f getWorldMousePos() const;
 
+public:
     LogDisplay            display_log;
     SceneHierarchyDisplay display_scene_hierarchy;
     SceneDisplay          display_scene;
@@ -43,6 +39,10 @@ private:
     ObjectDetailsDisplay  display_object_details;
     InspectorDisplay      display_inspector;
     AssetsDisplay         display_assets;
+
+private:
+    sf::RenderWindow&     window;
+    sf::Vector2f          world_mouse_pos;
 
     BattleMap&            battle_map;
     Gizmo&                gizmo;

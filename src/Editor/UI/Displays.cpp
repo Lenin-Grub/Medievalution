@@ -114,16 +114,21 @@ void Displays::draw()
                 auto right_bottom = ImGui::DockBuilderSplitNode(right , ImGuiDir_Down, 0.40f,  nullptr, &right);
 
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::GRAF), "Scene Hierarchy"), left);
-                ImGui::DockBuilderDockWindow("Object Details", right_bottom);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::INSTAGRAM), "Animation editor"), right);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::MAP), " Map editor"), right);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::GLOBE),"Scene"), center);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::SCRIPT), " Logs"), bottom);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::FOLDER), "Assets"), bottom);
                 ImGui::DockBuilderDockWindow(SET_ICON_TEXT((Icon::FOUR_QUADS), "Inspector"), right);
+                ImGui::DockBuilderDockWindow("Object Details", right_bottom);
                 ImGui::DockBuilderFinish(dockspace_id);
             }
         }
+    }
+
+    sf::Vector2f Displays::getWorldMousePos() const
+    {
+        return world_mouse_pos;
     }
 
     void Displays::update(const float& delta_time)
@@ -131,7 +136,7 @@ void Displays::draw()
         display_animation.update(delta_time);
         display_map_editor.update(delta_time);
         display_scene.update(delta_time);
-        world_mouse_pos = display_scene.world_mouse_pos;
+        world_mouse_pos = display_scene.getWorldMousePos();
     }
 
     void Displays::metrics()
