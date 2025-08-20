@@ -4,9 +4,10 @@
 #include <Common/IconText.h>
 #include <SFML/Graphics.hpp>
 #include "ToolsState.hpp"
+#include "EditorData.hpp"
 
-MapEditorDisplay::MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map)
-    : battle_map(battle_map)
+MapEditorDisplay::MapEditorDisplay(sf::RenderWindow& window, EditorData& data)
+    : battle_map(data.battle_map)
     , m_selected_tile_id(0)
     , is_brash(false)
 {

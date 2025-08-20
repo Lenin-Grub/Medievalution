@@ -1,13 +1,15 @@
 #pragma once
 #include <UI/IDisplay.hpp>
 #include <ECS/Entity/Entity.hpp>
+#include "EditorData.hpp"
 
 class Registry;
 
-class InspectorDisplay : public UI::IDisplay
+class InspectorDisplay 
+    : public UI::IDisplay
 {
 public:
-    explicit InspectorDisplay(Registry& registry);
+    InspectorDisplay(EditorData& data);
     ~InspectorDisplay() override = default;
 
     void draw() override;
@@ -35,7 +37,6 @@ private:
     void drawVelocityComponent(entt::entity selected);
     void drawPathComponent(entt::entity selected);
     void drawAnimationComponent(entt::entity selected);
-    void drawStateComponent(entt::entity selected);
 
 private:
     Registry& registry;

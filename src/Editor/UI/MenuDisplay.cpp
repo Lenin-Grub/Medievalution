@@ -2,9 +2,10 @@
 #include <imgui.h>
 
 
-MenuDisplay::MenuDisplay(sf::RenderWindow& window, BattleMap& battle_map)
+
+MenuDisplay::MenuDisplay(sf::RenderWindow& window, EditorData& data)
     : window(window)
-    , battle_map(battle_map)
+    , battle_map(data.battle_map)
 {
 }
 

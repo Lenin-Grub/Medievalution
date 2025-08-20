@@ -6,7 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <Resource/ResourceManager.hpp>
 
-class AssetsDisplay : public UI::IDisplay
+class AssetsDisplay 
+    : public UI::IDisplay
 {
 public:
     AssetsDisplay();

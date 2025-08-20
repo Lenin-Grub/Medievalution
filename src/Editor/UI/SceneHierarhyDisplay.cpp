@@ -1,11 +1,12 @@
 #include "SceneHierarhyDisplay.hpp"
 #include <imgui.h>
 #include <ECS/Entity/Entity.hpp>
+#include "EditorData.hpp"
 
 uint32_t SceneHierarchyDisplay::selected_entity_Id = SceneHierarchyDisplay::NO_ENTITY_SELECTED;
 
-SceneHierarchyDisplay::SceneHierarchyDisplay(Registry& registry)
-    : registry(registry)
+SceneHierarchyDisplay::SceneHierarchyDisplay(EditorData& data)
+    : registry(data.registry)
 {
 }
 

@@ -2,12 +2,13 @@
 #include <UI/IDisplay.hpp>
 #include <SFML/Graphics.hpp>
 #include <World/BattleMap/BattleMap.hpp>
+#include "EditorData.hpp"
 
 class MenuDisplay
 	: public UI::IDisplay
 {
 public:
-	MenuDisplay(sf::RenderWindow& window, BattleMap& battle_map);
+	MenuDisplay(sf::RenderWindow& window, EditorData& data);
 	virtual ~MenuDisplay() = default;
 
 	void draw() override;

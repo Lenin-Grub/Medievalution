@@ -3,12 +3,13 @@
 #include <UI/IDisplay.hpp>
 #include <World/BattleMap/BattleMap.hpp>
 #include "ToolsState.hpp"
+#include "EditorData.hpp"
 
 class MapEditorDisplay
     : public UI::IDisplay
 {
 public:
-    MapEditorDisplay(sf::RenderWindow& window, BattleMap& battle_map);
+    MapEditorDisplay(sf::RenderWindow& window, EditorData& data);
     virtual ~MapEditorDisplay() = default;
 
     void draw() override;

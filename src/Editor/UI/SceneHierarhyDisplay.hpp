@@ -7,7 +7,7 @@ class SceneHierarchyDisplay
     : public UI::IDisplay
 {
 public:
-    explicit SceneHierarchyDisplay(Registry& registry);
+    SceneHierarchyDisplay(EditorData& data);
     ~SceneHierarchyDisplay() override = default;
 
     void draw() override;

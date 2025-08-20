@@ -4,10 +4,10 @@
 #include "MapEditorDisplay.hpp"
 #include "SceneHierarhyDisplay.hpp"
 
-SceneDisplay::SceneDisplay(BattleMap& battle_map, Registry& registry, Gizmo& gizmo)
-    : battle_map(battle_map)
-    , registry(registry)
-    , gizmo(gizmo)
+SceneDisplay::SceneDisplay(EditorData& data)
+    : battle_map(data.battle_map)
+    , registry(data.registry)
+    , gizmo(data.gizmo)
     , show_grid(true)
     , is_hovered(false)
 {

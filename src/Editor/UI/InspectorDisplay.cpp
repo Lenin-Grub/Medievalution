@@ -2,8 +2,9 @@
 #include <imgui.h>
 #include <Resource/ResourceManager.hpp>
 #include "SceneHierarhyDisplay.hpp"
-InspectorDisplay::InspectorDisplay(Registry& registry)
-    : registry(registry)
+
+InspectorDisplay::InspectorDisplay(EditorData& data)
+    : registry(data.registry)
 {
 }
 

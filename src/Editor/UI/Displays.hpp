@@ -1,6 +1,8 @@
 #pragma once
 #include <SFML/Graphics.hpp>
-#include <Camera/Camera.h>
+#include <ECS/Entity/Entity.hpp>
+
+#include "EditorData.hpp"
 #include "LogDisplay.hpp"
 #include "SceneHierarhyDisplay.hpp"
 #include "SceneDisplay.hpp"
@@ -8,14 +10,13 @@
 #include "MenuDisplay.hpp"
 #include "MapEditorDisplay.hpp"
 #include "ObjectDetailsDisplay.hpp"
-#include "InspectorDisplay.hpp"
 #include "AssetsDisplay.hpp"
-#include <ECS/Entity/Entity.hpp>
+#include "InspectorDisplay.hpp"
 
 class Displays
 {
 public:
-	Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry, Gizmo& gizmo);
+	Displays(sf::RenderWindow& window, EditorData& data);
 	~Displays() = default;
 
     bool initDockSpace();
@@ -43,7 +44,4 @@ public:
 private:
     sf::RenderWindow&     window;
     sf::Vector2f          world_mouse_pos;
-
-    BattleMap&            battle_map;
-    Gizmo&                gizmo;
 };

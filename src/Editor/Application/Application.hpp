@@ -3,8 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include "../UI/Displays.hpp"
 
-#include <Gizmos/Gizmos.h>
-
 class EditorApplication
 {
 public:
@@ -35,12 +33,6 @@ private:
     sf::Vector2f      window_size;
     sf::Color         clear_color;
 
+    EditorData        data;
     Displays          displays;
-    BattleMap         battle_map;
-    Camera            camera;
-    Gizmo             gizmo;
-
-    Registry          registry;
-    Animator          animator;
-    Pathfinding       pathfinding;
 };

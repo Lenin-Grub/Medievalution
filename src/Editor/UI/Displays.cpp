@@ -3,16 +3,16 @@
 #include <imgui_internal.h>
 #include <Settings/WindowSettings.h>
 
-Displays::Displays(sf::RenderWindow& window, BattleMap& battle_map, Registry& registry, Gizmo& gizmo)
+
+
+Displays::Displays(sf::RenderWindow& window, EditorData& data)
     : window(window)
     , display_animation(window)
-    , display_menu(window, battle_map)
-    , display_map_editor(window, battle_map)
-    , display_scene(battle_map, registry, gizmo)
-    , display_scene_hierarchy(registry)
-    , display_inspector(registry)
-    , battle_map(battle_map)
-    , gizmo (gizmo)
+    , display_menu(window, data)
+    , display_map_editor(window, data)
+    , display_scene(data)
+    , display_scene_hierarchy(data)
+    , display_inspector(data)
 {
     display_scene_hierarchy.setSceneDisplay(&display_scene);
 }

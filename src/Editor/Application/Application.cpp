@@ -10,13 +10,10 @@
 
 EditorApplication::EditorApplication()
     : window(sf::VideoMode(1920, 1200), "Medievalution Editor")
-    //, clear_color(43, 43, 49)
     , clear_color(36, 37, 45)
     , delta_time(0.0f)
-    , displays(window, battle_map, registry, gizmo)
-    , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
-    , animator(animator)
-    , gizmo(registry)
+    , data(window)
+    , displays(window, data)
 {
 }
 
@@ -45,13 +42,13 @@ void EditorApplication::run()
 
 bool EditorApplication::init()
 {
-    if (!battle_map.init())
+    if (!data.battle_map.init())
     {
         LOG_WARN("Battle map not inited");
         return false;
     }
 
-    GridSystem::generateGrid(pathfinding, 64, 64);
+    GridSystem::generateGrid(data.pathfinding, 64, 64);
 
     return true;
 }
@@ -153,8 +150,8 @@ void EditorApplication::updateEvents()
             if (!displays.display_scene.isHover())
                 return;
 
-            camera.zoom(common::sfml_event);
-            camera.scroll(common::sfml_event, sf::Mouse::getPosition(window));
+            data.camera.zoom(common::sfml_event);
+            data.camera.scroll(common::sfml_event, sf::Mouse::getPosition(window));
         }
     }
 }
@@ -166,10 +163,10 @@ void EditorApplication::update()
     updateMousePositions(&common::view, window);
     
     if (displays.display_scene.isHover())
-        camera.update(delta_time);
+        data.camera.update(delta_time);
     
     displays.update(delta_time);
-    registry.update(registry.getRegistry(), delta_time, pathfinding, window);
+    data.registry.update(data.registry.getRegistry(), delta_time, data.pathfinding, window);
 }
 
 void EditorApplication::draw(sf::RenderTarget* target)
@@ -177,7 +174,7 @@ void EditorApplication::draw(sf::RenderTarget* target)
     window.clear(clear_color);
 
     displays.draw();
-    registry.draw(registry.getRegistry(), window);
+    data.registry.draw(data.registry.getRegistry(), window);
     
     ImGui::SFML::Render(window);
     window.display();
