@@ -17,11 +17,16 @@ struct EditorData
 
     sf::RenderWindow& window;
 
+    int selected_tile_id;
+    bool is_brash;
+
     EditorData(sf::RenderWindow& window)
     : window(window)
-    ,camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
+    , camera(static_cast<sf::Vector2f>(window.getSize()), common::view)
     , animator(animator)
     , gizmo(registry)
+    , is_brash(false)
+    , selected_tile_id(0)
     {
     }
 };

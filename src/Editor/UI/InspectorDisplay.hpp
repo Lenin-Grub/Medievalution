@@ -13,11 +13,11 @@ public:
     ~InspectorDisplay() override = default;
 
     void draw() override;
+    void drawIdentification(entt::registry& reg, entt::entity selected, uint32_t selectedId);
     void update(const float& delta_time) override;
 
     // Helper methods
 private:
-    void drawHeader();
     void drawAddComponentButton();
     void drawComponentListPopup(entt::entity selected);
     void drawTransformSection(entt::entity selected);
@@ -41,4 +41,12 @@ private:
 private:
     Registry& registry;
     static constexpr uint32_t NO_ENTITY_SELECTED = UINT32_MAX;
+
+    bool is_renaming_name  = false;
+    bool is_renaming_group = false;
+
+    char rename_buffer_name[256]  = "";
+    char rename_buffer_group[256] = "";
+
+    entt::entity renaming_entity = entt::null;
 };

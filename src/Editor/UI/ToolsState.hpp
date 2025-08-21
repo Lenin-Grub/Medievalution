@@ -1,15 +1,15 @@
 #pragma once
-
 #include <string>
 
 enum class ToolType
 {
     None,
-    Brush,
     Select,
     Translate,
     Scale,
-    Rotate
+    Rotate,
+    Brush,
+    Bucket,
 };
 
 class ToolsState

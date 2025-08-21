@@ -1,4 +1,5 @@
 #include "BattleMap.hpp"
+#include <stack>
 
 BattleMap::BattleMap()
     : current_layer_id(0)
@@ -35,19 +36,60 @@ void BattleMap::removeTile(sf::Vector2f pos) noexcept
         layers.at(current_layer_id)->addTile(static_cast<int>(TileId::Empty), pos);
 }
 
-void BattleMap::fill(int selected_tile_id)
+void BattleMap::bucket(int new_tile_id, sf::Vector2f world_pos)
 {
-    if (!layers.empty())
+    if (layers.empty() || current_layer_id >= layers.size())
+        return;
+
+    auto& layer = layers[current_layer_id];
+
+    sf::Vector2i grid_pos = layer->worldToGrid(world_pos);
+    int start_x = grid_pos.x;
+    int start_y = grid_pos.y;
+
+    int width = layer->layer_size.x;
+    int height = layer->layer_size.y;
+
+    if (start_x < 0 || start_x >= width || start_y < 0 || start_y >= height)
+        return;
+
+    int old_tile_id = layer->getTileId(grid_pos);
+    if (old_tile_id == new_tile_id)
+        return;
+
+    std::stack<std::pair<int, int>> stack;
+    std::vector<std::vector<bool>> visited(height, std::vector<bool>(width, false));
+
+    stack.push({ start_x, start_y });
+    visited[start_y][start_x] = true;
+
+    while (!stack.empty())
     {
-        auto& current_layer = layers[current_layer_id];
+        auto [x, y] = stack.top();
+        stack.pop();
 
-        for (auto& tile_id : current_layer->tile_ids)
+        int index = y * width + x;
+        layer->tile_ids[index] = new_tile_id;
+
+        int dx[] = { 0,  0, -1, 1 };
+        int dy[] = { -1,  1,  0, 0 };
+
+        for (int i = 0; i < 4; ++i)
         {
-            tile_id = selected_tile_id;
-        }
+            int nx = x + dx[i];
+            int ny = y + dy[i];
 
-        current_layer->updateVertices();
+            if (nx >= 0 && nx < width && ny >= 0 && ny < height && !visited[ny][nx])
+            {
+                if (layer->getTileId({ nx, ny }) == old_tile_id)
+                {
+                    visited[ny][nx] = true;
+                    stack.push({ nx, ny });
+                }
+            }
+        }
     }
+    layer->updateVertices();
 }
 
 void BattleMap::addLayer(const std::string& name) noexcept

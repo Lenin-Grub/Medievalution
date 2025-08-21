@@ -32,22 +32,8 @@ void InspectorDisplay::draw()
         return;
     }
 
-    drawHeader();
     drawAddComponentButton();
-    
-    ImGui::Separator();
-    if (auto id = reg.try_get<Components::Identification>(selected))
-    {
-        ImGui::Text("Selected:"); 
-        ImGui::SameLine(); 
-        ImGui::Selectable(id->name.c_str());
-        ImGui::Text("Group:   "); 
-        ImGui::SameLine(); 
-        ImGui::Selectable(id->group.c_str());
-        ImGui::Text("ID: %i", selectedId); 
-    }
-    ImGui::Separator();
-
+    drawIdentification(reg, selected, selectedId);
     drawSelectableComponent(selected);
     drawComponentListPopup(selected);
     drawTransformSection(selected);
@@ -60,9 +46,98 @@ void InspectorDisplay::draw()
     ImGui::End();
 }
 
-void InspectorDisplay::drawHeader()
+void InspectorDisplay::drawIdentification(entt::registry& reg, entt::entity selected, uint32_t selectedId)
 {
+    ImGui::Dummy(ImVec2(0, 10));
+    auto id = reg.try_get<Components::Identification>(selected);
+    // === Name Field ===
+    ImGui::Text("Selected:");
+    ImGui::SameLine();
+
+    std::string name_label = id->name + "##NameLabel_" + std::to_string(selectedId);
+    ImGui::PushID("NameSelectable");
+
+    if (renaming_entity == selected && is_renaming_name)
+    {
+        ImGui::SetKeyboardFocusHere();
+        if (ImGui::InputText("##NameInput", rename_buffer_name, sizeof(rename_buffer_name), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            id->name = std::string(rename_buffer_name);
+            renaming_entity = entt::null;
+            is_renaming_name = false;
+        }
+
+        if (!ImGui::IsItemActive() && ImGui::IsMouseClicked(0))
+        {
+            renaming_entity = entt::null;
+            is_renaming_name = false;
+        }
+    }
+    else
+    {
+        if (ImGui::Selectable(name_label.c_str(), false))
+        {
+            // Single click Ч ничего не делаем
+        }
+
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+        {
+            renaming_entity = selected;
+            is_renaming_name = true;
+            is_renaming_group = false;  // убедимс€, что другой режим выключен
+            std::strncpy(rename_buffer_name, id->name.c_str(), sizeof(rename_buffer_name) - 1);
+            rename_buffer_name[sizeof(rename_buffer_name) - 1] = '\0';
+        }
+    }
+    ImGui::PopID();
+
+    // === Group Field ===
+    ImGui::Text("Group:");
+    ImGui::SameLine();
+
+    std::string group_label = id->group + "##GroupLabel_" + std::to_string(selectedId);
+    ImGui::PushID("GroupSelectable");
+
+    if (renaming_entity == selected && is_renaming_group)
+    {
+        ImGui::SetKeyboardFocusHere();
+        if (ImGui::InputText("##GroupInput", rename_buffer_group, sizeof(rename_buffer_group), ImGuiInputTextFlags_EnterReturnsTrue))
+        {
+            id->group = std::string(rename_buffer_group);
+            renaming_entity = entt::null;
+            is_renaming_group = false;
+        }
+
+        if (!ImGui::IsItemActive() && ImGui::IsMouseClicked(0))
+        {
+            renaming_entity = entt::null;
+            is_renaming_group = false;
+        }
+    }
+    else
+    {
+        if (ImGui::Selectable(group_label.c_str(), false))
+        {
+            // Single click
+        }
+
+        if (ImGui::IsItemHovered() && ImGui::IsMouseDoubleClicked(0))
+        {
+            renaming_entity = selected;
+            is_renaming_group = true;
+            is_renaming_name = false;  // выключаем редактирование имени
+            std::strncpy(rename_buffer_group, id->group.c_str(), sizeof(rename_buffer_group) - 1);
+            rename_buffer_group[sizeof(rename_buffer_group) - 1] = '\0';
+        }
+    }
+    ImGui::PopID();
+
+    // === ID Field ===
+    ImGui::Text("ID: %u", selectedId);
+    ImGui::Dummy(ImVec2(0, 10));
+    ImGui::Separator();
 }
+
 
 void InspectorDisplay::drawAddComponentButton()
 {

@@ -10,6 +10,7 @@ SceneDisplay::SceneDisplay(EditorData& data)
     , gizmo(data.gizmo)
     , show_grid(true)
     , is_hovered(false)
+    , data(data)
 {
 }
 
@@ -17,6 +18,11 @@ void SceneDisplay::update(const float& delta_time)
 {
     if (gizmo.isActive() && selected_entity != entt::null && !ToolsState::instance().isToolActive(ToolType::Brush))
         gizmo.update(registry.getRegistry(), world_mouse_pos, ImGui::IsMouseDown(0));
+
+    if (ToolsState::instance().isToolActive(ToolType::Bucket) && ImGui::IsMouseClicked(0))
+    {
+        battle_map.bucket(data.selected_tile_id, world_mouse_pos);
+    }
 }
 
 void SceneDisplay::draw()
@@ -106,7 +112,6 @@ void SceneDisplay::drawToolbar()
     if (ImGui::Button(SET_ICON(Icon::BRUSH)))
     {
         ToolsState::instance().setActiveTool(ToolType::Brush);
-        //is_brash = !is_brash;
         battle_map.setShowPreview(true);
     }
 
@@ -117,7 +122,7 @@ void SceneDisplay::drawToolbar()
     // Fill Tool
     if (ImGui::Button(SET_ICON(Icon::FILL)))
     {
-        battle_map.fill(1);
+        setActiveTool(ToolType::Bucket, GizmoMode::None, false);
     }
     if (ImGui::IsItemHovered()) ImGui::SetTooltip("Fill Tool (G)");
 }
@@ -134,7 +139,6 @@ void SceneDisplay::setActiveTool(ToolType tool, GizmoMode gizmo_mode, bool shoul
     {
         gizmo.deactivate();
     }
-    //is_brash = false;
     battle_map.setShowPreview(false);
 }
 

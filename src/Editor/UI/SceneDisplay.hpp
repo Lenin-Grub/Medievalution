@@ -40,11 +40,12 @@ private:
     void presentTextureToImGui(const sf::Texture& texture, const ImVec2& canvas_pos, const ImVec2& canvas_size);
 
 private:
-    sf::Vector2f world_mouse_pos;
+    EditorData&  data;
     BattleMap&   battle_map;
     Registry&    registry;
     Gizmo&       gizmo;
 
+    sf::Vector2f world_mouse_pos;
     entt::entity selected_entity = entt::null;
     bool show_grid;
     bool is_hovered;

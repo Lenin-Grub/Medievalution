@@ -34,7 +34,7 @@ public:
     /// @param pos The position where the tile should be removed.
     void removeTile(sf::Vector2f pos) noexcept;
 
-    void fill(int selected_tile_id);
+    void bucket(int new_tile_id, sf::Vector2f world_pos);
 
     /// @brief Adds a new layer with the specified name.
     /// @param name The name of the new layer.

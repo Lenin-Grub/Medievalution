@@ -23,11 +23,9 @@ private:
     void renderTilesetTable();
 
 private:
-    int               m_selected_tile_id;
     BattleMap&        battle_map;
+    EditorData&       data;
 
     sf::Sprite        sprite;
     sf::Texture       texture;
-
-    bool is_brash;
 };

@@ -2,7 +2,6 @@
 #include "../State/State.hpp"
 
 #include <Animation/Animator/Animator.hpp>
-#include <Animation/AnimationEditor/AnimationEditor.hpp>
 #include <Pathfinding/Pathfinding.h>
 #include <ECS/Entity/Entity.hpp>
 #include <ECS/Systems/PathfindingSystem/PathfindingSystem.hpp>

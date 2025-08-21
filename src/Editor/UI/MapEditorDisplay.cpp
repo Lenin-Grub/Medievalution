@@ -8,8 +8,7 @@
 
 MapEditorDisplay::MapEditorDisplay(sf::RenderWindow& window, EditorData& data)
     : battle_map(data.battle_map)
-    , m_selected_tile_id(0)
-    , is_brash(false)
+    , data(data)
 {
 }
 
@@ -25,7 +24,7 @@ void MapEditorDisplay::draw()
 
 void MapEditorDisplay::update(const float& delta_time)
 {
-    battle_map.setTileId(m_selected_tile_id);
+    battle_map.setTileId(data.selected_tile_id);
 }
 
 void MapEditorDisplay::renderLayersSection()
@@ -168,7 +167,7 @@ void MapEditorDisplay::renderTilesetTable()
                 ImVec2 uv1 = ImVec2((col + 1) / (float)tileset_cols, (row + 1) / (float)tileset_rows);
 
                 int current_id = row * tileset_cols + col;
-                bool selected = m_selected_tile_id == current_id;
+                bool selected = data.selected_tile_id == current_id;
 
                 if (selected)
                 {
@@ -178,8 +177,8 @@ void MapEditorDisplay::renderTilesetTable()
 
                 if (ImGui::ImageButton("", tileset_texture_id, scale_factor, uv0, uv1, ImVec4(0, 0, 0, 1), ImVec4(1, 1, 1, 1)))
                 {
-                    m_selected_tile_id = row * tileset_cols + col;
-                    battle_map.setSelectedTile(m_selected_tile_id);
+                    data.selected_tile_id = row * tileset_cols + col;
+                    battle_map.setSelectedTile(data.selected_tile_id);
                 }
 
                 if (selected)
