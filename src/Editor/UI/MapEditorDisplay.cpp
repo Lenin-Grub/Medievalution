@@ -143,6 +143,12 @@ void MapEditorDisplay::renderTilesetTable()
     const  int max_value = 128;
 
     ImGui::SliderInt("Scale", &value, min_value, max_value);
+    if (ImGui::IsItemHovered())
+    {
+        ImGui::BeginTooltip();
+        ImGui::Text("Scale of the tileset display.");
+        ImGui::EndTooltip();
+    }
     ImGui::Separator();
 
     sf::Texture& tileset_Texture = battle_map.getTilesetTexture();
@@ -179,6 +185,13 @@ void MapEditorDisplay::renderTilesetTable()
                 {
                     data.selected_tile_id = row * tileset_cols + col;
                     battle_map.setSelectedTile(data.selected_tile_id);
+                }
+
+                if (ImGui::IsItemHovered())
+                {
+                    ImGui::BeginTooltip();
+                    ImGui::Text("Tile ID: %d", row * tileset_cols + col);
+                    ImGui::EndTooltip();
                 }
 
                 if (selected)
